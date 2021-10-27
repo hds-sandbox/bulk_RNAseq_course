@@ -1,0 +1,25 @@
+site_name: bulk_rnaseq
+nav:
+    - Home: index.md
+    - HPC 101: getstarted.md
+    - Best practices: best.md
+    - HPC programming: progr.md
+docs_dir: develop
+site_dir: docs
+plugins:
+    - search
+extra_css:
+    - extra.css
+theme: 
+    name: material
+    logo: 'img/logo.png'
+markdown_extensions:
+  - pymdownx.tabbed
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.tasklist:
+      custom_checkbox: true

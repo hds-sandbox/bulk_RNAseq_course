@@ -1,0 +1,372 @@
+---
+title: "bulk RNAseq template"
+author: "Author"
+date: '`r Sys.Date()`'
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_format='all',
+                        output_dir='../reports/')})
+output:
+  # To create PDF report, uncomment below
+  #pdf_document:
+  #  toc: yes
+  html_document:
+    number_sections: yes
+    theme: yeti
+    toc: yes
+    toc_float: yes
+    df_print: paged
+    dev: png
+---
+
+```{r knitr, include = FALSE}
+DOCNAME = knitr::current_input()
+knitr::opts_chunk$set(autodep        = TRUE,
+                      cache          = FALSE,
+                      cache.path     = paste0("cache/", DOCNAME, "/"),
+                      cache.comments = TRUE,
+                      echo           = TRUE,
+                      error          = FALSE,
+                      fig.align      = "center",
+                      fig.path       = paste0("../reports/figures/", DOCNAME, "/"),
+                      fig.width      = 10,
+                      fig.height     = 8,
+                      message        = FALSE,
+                      warning        = FALSE)
+```
+
+# Introduction
+
+This is a bulk RNAseq analysis template using the DESEQ2 package
+
+# Load libraries
+```{r}
+library(DESeq2)
+library(tidyverse)
+library(RColorBrewer)
+library(pheatmap)
+library(gprofiler2)
+```
+
+# Load data
+In order to procede with the analysis we need two dataframes:
+- Count matrix dataframe with gene names as rows (and rownames) and samples as columns (and column names). 
+- Sample metadata dataframe with samples as rows (and rownames) and metadata variables as columns (and column names).
+
+Ideally, the sample metadata will contain information about the conditions, treatments, replicates, etc.
+
+The airway dataset contains a count matrix and the metadata, which is a good example to use as a template
+```{r}
+cts <- data.frame(read.csv(file = "../data/SRP008496_cts.tsv", sep = "\t", row.names = "ensembl_id"))
+coldata <- data.frame(read.csv(file = "../data/SRP008496_metadata.tsv", sep = "\t", row.names = "ID"))
+```
+
+The count matrix looks like this:
+```{r}
+head(cts)
+```
+
+While the sample metadata looks like this:
+```{r}
+head(coldata)
+```
+
+Making the metadata factors will establish the order of the metadata variables. If you never tell the DESeq2 functions which level you want to compare against (e.g. which level represents the control group), the comparisons will be based on the alphabetical order of the levels. This is important since the first level of the metadata will be the reference sample/condition for the DE analysis.
+```{r}
+coldata$group <- factor(coldata$group)
+paste("The order of the conditions is:", paste(unique(coldata$group), collapse=", "))
+```
+
+## Metadata factor levels
+If you want to change the order of the factor levels you can use one of these two.
+NOTE: this has to be done before running the *DESeq()* function.
+```{r}
+#coldata$group <- factor(coldata$group, levels = c("non_tumor","tumor"))
+coldata$group <- relevel(coldata$group, ref = "non_tumor") #Specifies "non_tumor" as the reference level
+```
+
+## Create DESeq object
+We create the DESeq object from the count matrix and the metadata. We specify that the analysis will be based on the design column.
+```{r}
+dds <- DESeqDataSetFromMatrix(countData = cts,
+                              colData = coldata,
+                              design = ~ group)
+dds
+```
+
+## Pre-filtering
+We can reduce the computational resorces of the analysis by removing genes that are very hardly expressed.
+```{r}
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+```
+
+You can still change the order of the factors of the object "dds" before running the *DESeq()* function.
+
+Also, you can collapse technical replicates using the function *collapseReplicates()*.
+
+# Differential expression analysis
+Now we can run the DEA using the *DESeq()* function.
+```{r}
+dds <- DESeq(dds)
+res <- results(dds)
+head(data.frame(res))
+```
+
+Information about the results columns can be retrieved using the following snippet:
+```{r}
+mcols(res)$description
+```
+
+In this example, we only have two conditions: "non_tumor" and "tumor", so there is no need to specify which comparison we would like to make.
+If your experiment contains more than two conditions, there are different ways of specifying which comparison you would like to make.
+
+First, the "contrast" argument will take a vector that specifies the metadata and the order of the comparison. In this case, you can swap the order of the condition levels.
+```{r}
+res <- results(dds, contrast=c("group","non_tumor","tumor"))
+#head(data.frame(res))
+```
+
+Second, "name" argument will use the results of the *resultsNames()* function. This function creates possible combinations of conditions, but always using the reference condition for the comparison.
+```{r}
+resultsNames(dds)
+res <- results(dds, name="group_tumor_vs_non_tumor")
+#head(data.frame(res))
+```
+
+## Extracting results
+The output of the *res()* function is the one you want to use/save to identify differentially expressed genes using log2 Fold Change or adjusted p-value thresholds.
+
+There is a chance that the adjusted p-value is NA. If you will work on this results, it might be helpful to change all NA to an adjusted p-value of 1.
+```{r}
+res$padj[is.na(res$padj)] <- 1
+```
+
+We can have a quick look of the adjusted p-value results by using the following custom function:
+```{r}
+results_summary <- function(x, alpha = 0.05, LFC = 1) {
+  ngenes <- nrow(x)
+  signif <- sum(x$padj < alpha, na.rm = T)
+  up <- sum(x$padj < alpha & x$log2FoldChange > LFC, na.rm = T)
+  down <- sum(x$padj < alpha & x$log2FoldChange < -LFC, na.rm = T)
+  results <- c(paste0("Number of genes: ", ngenes),
+    paste0("Number of genes with adjusted p-value < ",alpha,": ", signif, " (", round((signif/ngenes)*100,digits = 2),"%)"),
+    "  Of those:",
+    paste0("    with LFC < ", -LFC, ": ", down, " (", round((down/ngenes)*100,digits = 2),"%)"),
+    paste0("    with LFC > ", LFC, ": ", up, " (", round((up/ngenes)*100,digits = 2),"%)"))
+  writeLines(paste(results, collapse = "\n"))
+  return(paste(results, collapse = "\n"))
+}
+res_summary <- results_summary(res, alpha = 0.05, LFC = 1)
+```
+
+### Save significant results
+Extracting results based on adjusted p-value and LFC. this way we will get a filteres table with genes with LFC > 1 or LFC < -1 with an adjusted p-value of 0.05
+```{r}
+LFC <- 1
+adj_pvalue <- 0.05
+
+sig_res <- data.frame(res[res$padj < adj_pvalue & abs(res$log2FoldChange) > LFC,])
+#write.table(x = sig_res, "./significant_results.tsv", quote = F, col.names = T, row.names = T, sep = "\t")
+```
+
+# Visualizations
+
+## Plot counts
+It can be useful to examine the counts of reads for a single gene across the groups. A simple function for making this plot is plotCounts, which normalizes counts by the estimated size factors (or normalization factors if these were used) and adds a pseudocount of 1/2 to allow for log scale plotting. The counts are grouped by the variables in intgroup, where more than one variable can be specified. Here we specify the gene which had the smallest p value from the results table created above. You can select the gene to plot by rowname or by numeric ingroup.
+```{r, fig.height=5, fig.width=5}
+d <- plotCounts(dds, gene=which.min(res$padj), intgroup="group", 
+                returnData=TRUE)
+ggplot(d, aes(x=group, y=count, color = group)) + 
+  geom_point(position=position_jitter(w=0.1,h=0)) + 
+  scale_y_log10(breaks=c(25,100,400)) + theme_bw()
+```
+
+## Data transformations
+In order to test for differential expression, we operate on raw counts and use discrete distributions as described in the previous section on differential expression. However for other downstream analyses – e.g. for visualization or clustering – it might be useful to work with transformed versions of the count data. One makes use of the concept of variance stabilizing transformations (VST), and the other is the regularized logarithm or rlog, which incorporates a prior on the sample differences. Both transformations produce transformed data on the log2 scale which has been normalized with respect to library size or other normalization factors.
+```{r}
+vsd <- vst(dds) #Variance Stabilizing Transformation, vst is faster with larger number of samples
+rld <- rlog(dds) #Regularized 
+```
+
+## Samples comparisons 
+We can do some sanity checks of the samples. We can see how they correlate to each other in a heatmap or see their Principal Components with a PCA
+
+### Heatmap of the sample-to-sample distances
+This plot shows how far away are each sample from each other. The darker the blue, the closer they are.
+```{r}
+sampleDists <- dist(t(assay(vsd)))
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) <- paste(vsd$group, sep="-")
+colnames(sampleDistMatrix) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows=sampleDists,
+         clustering_distance_cols=sampleDists,
+         col=colors)
+```
+
+### Principal component plot of the samples
+PCA plot using the first two components
+```{r}
+pcaData <- plotPCA(vsd, intgroup=c("group"), returnData=TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+ggplot(pcaData, aes(PC1, PC2, color=group)) +
+  geom_point(size=3) +
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+  coord_fixed() + theme_bw()
+```
+
+## Count matrix heatmaps
+We can visualize different heatmaps depending on what we are interested on. We can see the top most expressed genes, the top most variable genes, and the DE genes.
+
+### Top most variable genes
+```{r}
+ntop <- 20
+select <- order(rowSds(counts(dds,normalized=TRUE)),
+                decreasing=TRUE)[1:ntop]
+df <- data.frame(row.names = rownames(colData(dds)),group = colData(dds)[,c("group")])
+pheatmap(assay(vsd)[select,], cluster_rows=T, show_rownames=FALSE, scale = "row",
+         cluster_cols=TRUE, annotation_col=df)
+```
+
+### Top expressed genes
+```{r}
+ntop <- 20
+select <- order(rowMeans(counts(dds,normalized=TRUE)),
+                decreasing=TRUE)[1:ntop]
+df <- data.frame(row.names = rownames(colData(dds)),group = colData(dds)[,c("group")])
+pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
+         cluster_cols=TRUE, annotation_col=df)
+```
+
+### Differentially expressed genes
+```{r}
+select <- rownames(sig_res)
+df <- data.frame(row.names = rownames(colData(dds)),group = colData(dds)[,c("group")])
+pheatmap(assay(vsd)[rownames(vsd) %in% select,], cluster_rows=TRUE, show_rownames=FALSE, scale = "row",
+         cluster_cols=TRUE, annotation_col=df)
+```
+
+## Fold change plots
+For fold change plots, it is useful to shrunk log2 fold changes, removing the noise associated with log2 fold changes from low count genes without requiring arbitrary filtering thresholds.
+```{r}
+resLFC <- lfcShrink(dds, coef="group_tumor_vs_non_tumor", type="apeglm")
+resLFC$padj[is.na(resLFC$padj)] <- 1
+```
+
+### MA plot
+```{r}
+alpha <- 0.05
+
+ggplot(data.frame(resLFC)) + theme_bw() + 
+  labs(title = "MA plot", subtitle = res_summary,
+       color = paste0("Adjusted p-value < ",alpha)) +
+  geom_point(aes(x = log10(baseMean), y = log2FoldChange, 
+                 color = factor((padj < alpha), levels = c("TRUE","FALSE"))), size = 1)
+```
+
+### Volcano plot
+```{r}
+alpha = 0.05
+LFC = 1
+ggplot(data.frame(resLFC)) + theme_bw() + 
+  labs(color ="Significant genes", title = "Volcano plot", subtitle = res_summary) + 
+  geom_hline(yintercept = -log10(alpha), linetype = "dashed") + 
+  geom_vline(xintercept = c(-LFC,LFC), linetype = "dashed") + 
+  geom_point(aes(x = log2FoldChange, y = -log10(padj),
+                 color = factor((padj < alpha & abs(log2FoldChange) > LFC), levels = c("TRUE","FALSE"))), size = 1)
+```
+
+# Functional analysis with gprofiler2
+gost enables to perform functional profiling of gene lists. The function performs statistical enrichment analysis to find over-representation of functions from Gene Ontology, biological pathways like KEGG and Reactome, human disease annotations, etc. This is done with the hypergeometric test followed by correction for multiple testing.
+
+## Single query
+A standard input of the gost function is a (named) list of gene identifiers. The list can consist of mixed types of identifiers (proteins, transcripts, microarray IDs, etc), SNP IDs, chromosomal intervals or functional term IDs.
+
+The result is a named list where “result” is a data.frame with the enrichment analysis results and “meta” containing a named list with all the metadata for the query.
+
+```{r}
+gostres <- gost(query = rownames(sig_res), organism = "hsapiens", ordered_query = FALSE, significant = FALSE,
+                measure_underrepresentation = FALSE, user_threshold = 0.05,
+                domain_scope = "annotated", numeric_ns = "", sources = NULL)
+
+head(gostres$result)
+```
+
+The result data.frame contains the following columns:
+```{r}
+names(gostres$meta)
+```
+
+### Visualization
+The enrichment results are visualized with a Manhattan-like-plot using the function gostplot and the previously found gost results gostres:
+
+```{r}
+#gostplot(gostres, capped = TRUE, interactive = TRUE)
+```
+
+The function publish_gostplot takes the static plot object as an input and enables to highlight a selection of interesting terms from the results with numbers and table of results. These can be set with parameter highlight_terms listing the term IDs in a vector or as a data.frame with column “term_id” such as a subset of the result data.frame.
+
+First we create the static plot
+```{r}
+p <- gostplot(gostres, capped = FALSE, interactive = FALSE)
+p
+```
+
+Then we make it in high quality. We can add highlighted terms if we want with the *highlight_terms* argument.
+```{r}
+pp <- publish_gostplot(p, highlight_terms = c("GO:0051239"),
+                       width = NA, height = NA, filename = NULL )
+```
+
+The gost results can also be visualized with a table. The publish_gosttable will create a nice-looking table with the result statistics for the highlight_terms from the result data.frame. The highlight_terms can be a vector of term IDs or a subset of the results.
+
+```{r, fig.height=5, fig.width=10}
+publish_gosttable(gostres, highlight_terms = gostres$result[c(1:10),"term_id"],
+                        use_colors = TRUE, 
+                        show_columns = c("source", "term_name", "term_size", "intersection_size"),
+                        filename = NULL) 
+```
+
+## Multiple queries
+The function gost also allows to perform enrichment on multiple input gene lists. Multiple queries are automatically detected if the input query is a list of vectors with gene identifiers and the results are combined into identical data.frame as in case of single query.
+```{r}
+multi_gostres1 <- gost(query = list("UP_genes" = rownames(sig_res %>% filter(log2FoldChange > 1)),
+                             "DOWN_genes" = rownames(sig_res %>% filter(log2FoldChange < -1))), 
+                       multi_query = FALSE)
+
+head(multi_gostres1$result, 5)
+```
+
+The column “query” in the result data.frame will now contain the corresponding name for the query. If no name is specified, then the query name is defined as the order of query with the prefix “query_.”
+Another option for multiple gene lists is setting the parameter multiquery = TRUE. Then the results from all of the input queries are grouped according to term IDs for better comparison.
+
+```{r}
+multi_gostres2 <- gost(query = list("UP_genes" = rownames(sig_res %>% filter(log2FoldChange > 1)),
+                             "DOWN_genes" = rownames(sig_res %>% filter(log2FoldChange < -1))), 
+                       multi_query = TRUE)
+
+head(multi_gostres2$result, 5)
+```
+
+### Visualization
+```{r}
+gostplot(multi_gostres2, capped = TRUE, interactive = FALSE)
+```
+
+```{r, fig.height=5, fig.width=10}
+publish_gosttable(multi_gostres2, 
+                         highlight_terms = multi_gostres1$result[c(1:10),"term_id"],
+                        use_colors = TRUE, 
+                        show_columns = c("source", "term_name", "term_size"),
+                        filename = NULL)
+```
+
+# Session info
+
+```{r session-info, cache = FALSE}
+devtools::session_info()
+```
