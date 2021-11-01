@@ -96,7 +96,7 @@ dds
 ```
 
 ## Pre-filtering
-We can reduce the computational resorces of the analysis by removing genes that are very hardly expressed.
+We can reduce the computational resources of the analysis by removing genes that are very hardly expressed.
 ```{r}
 keep <- rowSums(counts(dds)) >= 10
 dds <- dds[keep,]

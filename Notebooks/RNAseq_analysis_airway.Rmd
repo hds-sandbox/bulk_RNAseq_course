@@ -198,10 +198,15 @@ This plot shows how far away are each sample from each other. The darker the blu
 ```{r}
 sampleDists <- dist(t(assay(vsd)))
 sampleDistMatrix <- as.matrix(sampleDists)
-rownames(sampleDistMatrix) <- paste(vsd$dex, sep="-")
-colnames(sampleDistMatrix) <- NULL
+rownames(sampleDistMatrix) <- NULL
+colnames(sampleDistMatrix) <- make.unique(as.character(vsd$dex))
 colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
-pheatmap(sampleDistMatrix,
+anno_row <- data.frame(row.names = make.unique(as.character(vsd$dex)), treatment = vsd$dex)
+```
+
+
+```{r, fig.height=2, fig.width=2}
+pheatmap(sampleDistMatrix, annotation_col = anno_row,
          clustering_distance_rows=sampleDists,
          clustering_distance_cols=sampleDists,
          col=colors)
