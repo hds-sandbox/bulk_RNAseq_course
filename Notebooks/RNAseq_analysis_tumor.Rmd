@@ -1,4 +1,4 @@
----
+ ---
 title: "bulk RNAseq template"
 author: "Author"
 date: '`r Sys.Date()`'
@@ -38,8 +38,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
 
 # Introduction
 
-This is a bulk RNAseq analysis template using the DESEQ2 package
-
+This is a bulk RNAseq analysis of the data set ID SRP008496.
 # Load libraries
 ```{r}
 library(DESeq2)
@@ -50,7 +49,7 @@ library(gprofiler2)
 ```
 
 # Load data
-In order to procede with the analysis we need two dataframes:
+In order to proceed with the analysis we need two dataframes:
 - Count matrix dataframe with gene names as rows (and rownames) and samples as columns (and column names). 
 - Sample metadata dataframe with samples as rows (and rownames) and metadata variables as columns (and column names).
 
@@ -96,7 +95,7 @@ dds
 ```
 
 ## Pre-filtering
-We can reduce the computational resorces of the analysis by removing genes that are very hardly expressed.
+We can reduce the computational resources of the analysis by removing genes that are very hardly expressed.
 ```{r}
 keep <- rowSums(counts(dds)) >= 10
 dds <- dds[keep,]
