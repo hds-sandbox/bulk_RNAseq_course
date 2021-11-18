@@ -1,3 +1,3 @@
 ## Notes
 
-Folder containing textual notes for the course.
+This folder contains extra helping material for the workshop/slides.

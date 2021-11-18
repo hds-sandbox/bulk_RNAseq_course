@@ -1,0 +1,39 @@
+unnamed-chunk-1	library	T
+unnamed-chunk-2	data.frame	head	read.csv
+unnamed-chunk-3	head	read.csv
+unnamed-chunk-4	$	$<-	factor	paste	unique
+unnamed-chunk-5	$	$<-	relevel
+unnamed-chunk-6	~	coldata	cts	DESeqDataSetFromMatrix	rownames
+unnamed-chunk-7	>=	counts	rowSums
+unnamed-chunk-8	DESeq
+unnamed-chunk-9	dds	rlog	vst
+unnamed-chunk-10	$	as.matrix	assay	brewer.pal	colnames<-	colorRampPalette	dist	paste	pheatmap	rev	rownames<-	t	vsd
+unnamed-chunk-11	aes	attr	c	condition	coord_fixed	geom_point	ggplot	paste0	PC1	PC2	plotPCA	round	theme_bw	type	vsd	xlab	ylab
+unnamed-chunk-12	
+unnamed-chunk-13	
+unnamed-chunk-14	aes	c	condition	count	dds	geom_point	ggplot	plotCounts	position_jitter	scale_y_log10	theme_bw
+unnamed-chunk-15	data.frame	dds	head	results
+unnamed-chunk-16	$	mcols	res
+unnamed-chunk-17	c	data.frame	dds	head	results
+unnamed-chunk-18	data.frame	dds	head	results	resultsNames
+unnamed-chunk-19	[<-	$	$<-	is.na
+unnamed-chunk-20	&	<	>	$	c	nrow	paste	paste0	return	round	sum	T	writeLines
+unnamed-chunk-21	res	results_summary
+unnamed-chunk-22	&	<	>	$	abs	res
+unnamed-chunk-23	as.data.frame	assay	c	colData	counts	dds	order	pheatmap	rowSds	T	vsd
+unnamed-chunk-24	as.data.frame	assay	c	colData	counts	dds	order	pheatmap	rowMeans	vsd
+unnamed-chunk-25	as.data.frame	assay	c	colData	dds	pheatmap	rownames	sig_res	vsd
+unnamed-chunk-26	[<-	$	$<-	dds	is.na	lfcShrink
+unnamed-chunk-27	<	aes	baseMean	c	data.frame	factor	geom_point	ggplot	labs	log10	log2FoldChange	padj	paste0	res_summary	resLFC	theme_bw
+unnamed-chunk-28	&	<	>	abs	aes	c	data.frame	factor	geom_hline	geom_point	geom_vline	ggplot	labs	log10	log2FoldChange	padj	res_summary	resLFC	theme_bw
+unnamed-chunk-29	
+unnamed-chunk-30	
+unnamed-chunk-31	$	gost	head	rownames	sig_res
+unnamed-chunk-32	$	gostres	names
+unnamed-chunk-33	$	c	gost	head	list
+unnamed-chunk-34	$	c	gost	head	list
+unnamed-chunk-35	gostplot	gostres
+unnamed-chunk-36	gostplot	gostres
+unnamed-chunk-37	c	p	publish_gostplot
+session-info	::
+unnamed-chunk-38	$	c	gostres	publish_gosttable
