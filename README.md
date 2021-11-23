@@ -5,13 +5,14 @@ This workshop contains a basic tutorial on how to approach RNAseq experiments, s
 
 ## Syllabus:
 - Preprocessing of RNAseq reads (fastq). 
-	- Trimming and filtering
-	- Alignment
-	- Feature count
+	- Trimming and filtering (TrimGalore)
+	- Alignment (STAR/Bowtie2)
+	- Feature count (STAR/FeatureCounts)
+	- QC (FastQC and MultiQC)
 
-- Read normalization
-- Exploratory analysis
-- Differential Expression Analysis
+- Read normalization (DESeq2)
+- Exploratory analysis (DESeq2)
+- Differential Expression Analysis (DESeq2)
 - Functional Analysis (gprofiler2)
 
 ## Workshop requirements:
@@ -20,5 +21,5 @@ This workshop contains a basic tutorial on how to approach RNAseq experiments, s
 - Basic knowledge of data science and statistics such as PCA, clustering and statistical testing
 
 ## Acknowledgements:
-- Center for Health Data Science, University of Copehangen.
-- Hugo Tavares. Bioinformatics Training Facility, University of Cambridge.
+- [Center for Health Data Science](https://heads.ku.dk/), University of Copehangen.
+- [Hugo Tavares](https://bioinfotraining.bio.cam.ac.uk/about), Bioinformatics Training Facility, University of Cambridge.
