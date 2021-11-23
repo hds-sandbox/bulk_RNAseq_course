@@ -9,6 +9,14 @@ Create a Rmarkdown file and proceed with the analysis of the data. You can play 
 Finally, create an html report with the “Knit” functionality of Rstudio. This would create a report that can be easily presented to your colleages! It is also a great way to reproduce your results and save it for the future.
 
 Down below there are several questions dedicated to each dataset:
-DATASET XXXX
-DATASET XXXX
-DATASET XXXX
+## Airway dataset
+- 
+- 
+
+## SRP008496 dataset
+- 
+- 
+
+## SRP051765 dataset
+- 
+- 

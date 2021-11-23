@@ -1,3 +1,3 @@
-## Scripts
+# Scripts
 
-This folder contains scripts used in the course. You can organize all necessary subfolders to structure the material, for example if you need to have more programming languages or categories.
+This folder contains some helper scripts used in the course, but are not necessary to run it. Some of them are used to create figures for the slides or to prepare the datasets used on the exercises/examples.
