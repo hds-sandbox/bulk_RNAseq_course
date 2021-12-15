@@ -29,3 +29,4 @@ The aim of this repository is to run a comprehensive but introductory workshop o
 ## Acknowledgements:
 - [Center for Health Data Science](https://heads.ku.dk/), University of Copenhagen.
 - [Hugo Tavares](https://bioinfotraining.bio.cam.ac.uk/about), Bioinformatics Training Facility, University of Cambridge.
+- [Silvia Raineri](https://danstem.ku.dk/people/serup_staff/), Center for Stem Cell Biology (Danstem), University of Copenhagen.
