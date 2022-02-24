@@ -1,0 +1,28 @@
+site_name: 'Bulk RNAseq data analysis - an introductory course'
+nav:
+    - 'Course Introduction': index.md
+    - 'Data Explanation': data_explanation.md
+    - 'Installation': installation.md
+    - 'Preprocessing': preprocessing.md
+    - 'Exploratory Analysis': exploratory_analysis.md
+    - 'Differential Expression': DEA.md
+    - 'Functional Analysis': functional_analysis.md
+    
+docs_dir: develop
+site_dir: docs
+plugins:
+extra_css:
+    - extra.css
+theme: 
+    name: material
+    #logo: 'img/logo.png'
+markdown_extensions:
+  # - pymdownx.tabbed
+  # - pymdownx.superfences
+  # - admonition
+  # - pymdownx.details
+  # - attr_list
+  # - pymdownx.arithmatex:
+  #     generic: true
+  # - pymdownx.tasklist:
+  #     custom_checkbox: true
