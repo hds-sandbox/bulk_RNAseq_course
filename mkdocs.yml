@@ -6,6 +6,7 @@ nav:
     - 'Preprocessing': preprocessing.md
     - 'Exploratory Analysis': exploratory_analysis.md
     - 'Differential Expression': DEA.md
+    - 'Complex designs': contrast_designs.md
     - 'Functional Analysis': functional_analysis.md
     
 docs_dir: develop
