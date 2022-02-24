@@ -11,13 +11,14 @@ output:
   # To create PDF report, uncomment below
   #pdf_document:
   #  toc: yes
-  html_document:
-    number_sections: yes
-    theme: yeti
-    toc: yes
-    toc_float: yes
-    df_print: paged
-    dev: png
+  # html_document:
+  #   number_sections: yes
+  #   theme: yeti
+  #   toc: yes
+  #   toc_float: yes
+  #   df_print: paged
+  #   dev: png
+  md_document
 ---
 
 ```{r knitr, include = FALSE}
