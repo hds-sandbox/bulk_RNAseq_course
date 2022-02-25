@@ -158,7 +158,7 @@ and the DE genes.
     pheatmap(assay(vsd)[select,], cluster_rows=T, show_rownames=FALSE, scale = "row",
              cluster_cols=FALSE, annotation_col=df)
 
-<img src="./figures/DEA.Rmd/most_var_genes_heatmap-1.png" style="display: block; margin: auto;" />
+<img src="../DEA.Rmd/most_var_genes_heatmap-1.png" style="display: block; margin: auto;" />
 
 ### Top expressed genes
 
@@ -169,7 +169,7 @@ and the DE genes.
     pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
              cluster_cols=FALSE, annotation_col=df)
 
-<img src="./figures/DEA.Rmd/top_exp_genes_heatmap-1.png" style="display: block; margin: auto;" />
+<img src="../DEA.Rmd/top_exp_genes_heatmap-1.png" style="display: block; margin: auto;" />
 
 ### Differentially expressed genes
 
@@ -178,7 +178,7 @@ and the DE genes.
     pheatmap(assay(vsd)[rownames(vsd) %in% select,], cluster_rows=TRUE, show_rownames=FALSE, scale = "row",
              cluster_cols=FALSE, annotation_col=df)
 
-<img src="./figures/DEA.Rmd/DEA_heatmap-1.png" style="display: block; margin: auto;" />
+<img src="../DEA.Rmd/DEA_heatmap-1.png" style="display: block; margin: auto;" />
 
 ## Fold change plots
 
@@ -199,7 +199,7 @@ without requiring arbitrary filtering thresholds.
       geom_point(aes(x = log10(baseMean), y = log2FoldChange, 
                      color = factor((padj < alpha), levels = c("TRUE","FALSE"))), size = 1)
 
-<img src="./figures/DEA.Rmd/MA_plot-1.png" style="display: block; margin: auto;" />
+<img src="../DEA.Rmd/MA_plot-1.png" style="display: block; margin: auto;" />
 
 ### Volcano plot
 
@@ -212,7 +212,7 @@ without requiring arbitrary filtering thresholds.
       geom_point(aes(x = log2FoldChange, y = -log10(padj),
                      color = factor((padj < alpha & abs(log2FoldChange) > LFC), levels = c("TRUE","FALSE"))), size = 1)
 
-<img src="./figures/DEA.Rmd/volcano_plot-1.png" style="display: block; margin: auto;" />
+<img src="../DEA.Rmd/volcano_plot-1.png" style="display: block; margin: auto;" />
 
 ### Glimma plots
 

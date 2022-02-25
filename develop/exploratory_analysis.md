@@ -41,7 +41,7 @@ the blue, the closer they are.
              clustering_distance_cols=sampleDists,
              col=colors)
 
-<img src="./figures/exploratory_analysis.Rmd/sample_distances_heatmap-1.png" style="display: block; margin: auto;" />
+<img src="../exploratory_analysis.Rmd/sample_distances_heatmap-1.png" style="display: block; margin: auto;" />
 
 ### Principal component plot of the samples
 
@@ -55,7 +55,7 @@ PCA plot using the first two components
       ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
       coord_fixed() + theme_bw()
 
-<img src="./figures/exploratory_analysis.Rmd/PCA_plot-1.png" style="display: block; margin: auto;" />
+<img src="../exploratory_analysis.Rmd/PCA_plot-1.png" style="display: block; margin: auto;" />
 ### Glimma plots Interactive visualizations of the DESeq results using
 the **Glimma** package, which provides excellent options for MA, Volcano
 and dimensionality reduction (like a PCA) plots. Use the *groups*
@@ -87,7 +87,7 @@ can select the gene to plot by its name or by numeric index.
       geom_point(position=position_jitter(w=0.1,h=0)) + 
       scale_y_log10(breaks=c(25,100,400)) + theme_bw()
 
-<img src="./figures/exploratory_analysis.Rmd/plot_counts_example-1.png" style="display: block; margin: auto;" />
+<img src="../exploratory_analysis.Rmd/plot_counts_example-1.png" style="display: block; margin: auto;" />
 
 # Session info
 

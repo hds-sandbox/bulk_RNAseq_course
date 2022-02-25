@@ -1,6 +1,6 @@
 In this tutorial we show how to set treatment contrasts in **DESeq2**
 using the design or model matrix, explained on module [4. Differential
-Expression Analysis](../Slides/4_DEA.pptx). This is a general and
+Expression Analysis](../../Slides/4_DEA.pptx). This is a general and
 flexible way to define contrasts, and is often useful for more complex
 contrasts or when the design of the experiment is imbalanced
 (e.g. different number of replicates in each group). Although we focus
@@ -184,6 +184,8 @@ approach:
 
     plot(res1$log2FoldChange, res2$log2FoldChange)
 
+<img src="../contrast_design.Rmd/unnamed-chunk-12-1.png" style="display: block; margin: auto;" />
+
 ## Recoding the design (slide 6)
 
 Often, we can use different model matrices that essentially correspond
@@ -229,6 +231,8 @@ can see the result is the same:
 Again, the results are essentially the same:
 
     plot(res1$log2FoldChange, res3$log2FoldChange)
+
+<img src="../contrast_design.Rmd/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
 
 In theory there’s no difference between these two ways of defining our
 design. The design with an intercept is more common, but for the
@@ -401,11 +405,16 @@ above estimates the error within each of those groups.
 To check the difference one could compare the two approaches visually:
 
     # compare the log-fold-changes between the two approaches
-    plot(res1_A_B$log2FoldChange, res2_A_B$log2FoldChange)
+    plot(res1_A_B$log2FoldChange, res2_AB$log2FoldChange)
     abline(0, 1, col = "brown", lwd = 2)
+
+<img src="../contrast_design.Rmd/unnamed-chunk-29-1.png" style="display: block; margin: auto;" />
+
     # compare the errors between the two approaches
-    plot(res1_A_B$lfcSE, res2_A_B$lfcSE)
+    plot(res1_A_B$lfcSE, res2_AB$lfcSE)
     abline(0, 1, col = "brown", lwd = 2)
+
+<img src="../contrast_design.Rmd/unnamed-chunk-29-2.png" style="display: block; margin: auto;" />
 
 # Two factors with interaction (slide 9)
 

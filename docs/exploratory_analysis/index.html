@@ -466,7 +466,7 @@ pheatmap(sampleDistMatrix,
          clustering_distance_cols=sampleDists,
          col=colors)
 </code></pre>
-<p><img src="./figures/exploratory_analysis.Rmd/sample_distances_heatmap-1.png" style="display: block; margin: auto;" /></p>
+<p><img src="../exploratory_analysis.Rmd/sample_distances_heatmap-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="principal-component-plot-of-the-samples">Principal component plot of the samples</h3>
 <p>PCA plot using the first two components</p>
 <pre><code>pcaData &lt;- plotPCA(vsd, intgroup=c("condition", "type"), returnData=TRUE)
@@ -477,14 +477,14 @@ ggplot(pcaData, aes(PC1, PC2, color=condition, shape=type)) +
   ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
   coord_fixed() + theme_bw()
 </code></pre>
-<p><img src="./figures/exploratory_analysis.Rmd/PCA_plot-1.png" style="display: block; margin: auto;" /></p>
+<p><img src="../exploratory_analysis.Rmd/PCA_plot-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="glimma-plots-interactive-visualizations-of-the-deseq-results-using">Glimma plots Interactive visualizations of the DESeq results using</h3>
 <p>the <strong>Glimma</strong> package, which provides excellent options for MA, Volcano
 and dimensionality reduction (like a PCA) plots. Use the <em>groups</em>
 argument to provide the condition or factor of your experiment.
 Unfortunately, the interactive plots created here are not fully
 compatible when knitting this document. Feel free to explore them using
-this <a href="../mds-plot.html">link</a>!</p>
+this <a href="./mds-plot.html">link</a>!</p>
 <pre><code>glimma_plot &lt;- glimmaMDS(dds, groups = dds$condition)
 </code></pre>
 <p>Save your interactive plots using the <strong>htmlwidgets</strong> package,
@@ -505,7 +505,7 @@ ggplot(d, aes(x=condition, y=count, color = condition)) +
   geom_point(position=position_jitter(w=0.1,h=0)) + 
   scale_y_log10(breaks=c(25,100,400)) + theme_bw()
 </code></pre>
-<p><img src="./figures/exploratory_analysis.Rmd/plot_counts_example-1.png" style="display: block; margin: auto;" /></p>
+<p><img src="../exploratory_analysis.Rmd/plot_counts_example-1.png" style="display: block; margin: auto;" /></p>
 <h1 id="session-info">Session info</h1>
 <p>Finally, we create a <code>session_info()</code> table that will allow anyone to
 check what versions of R and packages are we using for reproducibility

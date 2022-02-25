@@ -350,7 +350,7 @@
 
 
 <p>In this tutorial we show how to set treatment contrasts in <strong>DESeq2</strong>
-using the design or model matrix, explained on module <a href="../Slides/4_DEA.pptx">4. Differential
+using the design or model matrix, explained on module <a href="../../Slides/4_DEA.pptx">4. Differential
 Expression Analysis</a>. This is a general and
 flexible way to define contrasts, and is often useful for more complex
 contrasts or when the design of the experiment is imbalanced
@@ -521,6 +521,7 @@ example by plotting the log-fold-changes between the first and second
 approach:</p>
 <pre><code>plot(res1$log2FoldChange, res2$log2FoldChange)
 </code></pre>
+<p><img src="../contrast_design.Rmd/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /></p>
 <h2 id="recoding-the-design-slide-6">Recoding the design (slide 6)</h2>
 <p>Often, we can use different model matrices that essentially correspond
 to the same design. For example, we could recode our design above by
@@ -562,6 +563,7 @@ res3 &lt;- results(dds, contrast = treat - control)
 <p>Again, the results are essentially the same:</p>
 <pre><code>plot(res1$log2FoldChange, res3$log2FoldChange)
 </code></pre>
+<p><img src="../contrast_design.Rmd/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /></p>
 <p>In theory there’s no difference between these two ways of defining our
 design. The design with an intercept is more common, but for the
 purposes of understanding what’s going on, it’s sometimes easier to look
@@ -716,12 +718,15 @@ which may result in inflated/deflated estimates. Instead, our approach
 above estimates the error within each of those groups.</p>
 <p>To check the difference one could compare the two approaches visually:</p>
 <pre><code># compare the log-fold-changes between the two approaches
-plot(res1_A_B$log2FoldChange, res2_A_B$log2FoldChange)
-abline(0, 1, col = "brown", lwd = 2)
-# compare the errors between the two approaches
-plot(res1_A_B$lfcSE, res2_A_B$lfcSE)
+plot(res1_A_B$log2FoldChange, res2_AB$log2FoldChange)
 abline(0, 1, col = "brown", lwd = 2)
 </code></pre>
+<p><img src="../contrast_design.Rmd/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /></p>
+<pre><code># compare the errors between the two approaches
+plot(res1_A_B$lfcSE, res2_AB$lfcSE)
+abline(0, 1, col = "brown", lwd = 2)
+</code></pre>
+<p><img src="../contrast_design.Rmd/unnamed-chunk-29-2.png" style="display: block; margin: auto;" /></p>
 <h1 id="two-factors-with-interaction-slide-9">Two factors with interaction (slide 9)</h1>
 <pre><code># simulate data
 dds &lt;- makeExampleDESeqDataSet(n = 1000, m = 12, betaSD = 2)

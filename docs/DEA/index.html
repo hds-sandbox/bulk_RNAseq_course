@@ -518,7 +518,7 @@ df &lt;- as.data.frame(colData(dds)[,c("condition","type")])
 pheatmap(assay(vsd)[select,], cluster_rows=T, show_rownames=FALSE, scale = "row",
          cluster_cols=FALSE, annotation_col=df)
 </code></pre>
-<p><img src="./figures/DEA.Rmd/most_var_genes_heatmap-1.png" style="display: block; margin: auto;" /></p>
+<p><img src="../DEA.Rmd/most_var_genes_heatmap-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="top-expressed-genes">Top expressed genes</h3>
 <pre><code>ntop &lt;- 20
 select &lt;- order(rowMeans(counts(dds,normalized=TRUE)),
@@ -527,14 +527,14 @@ df &lt;- as.data.frame(colData(dds)[,c("condition","type")])
 pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
          cluster_cols=FALSE, annotation_col=df)
 </code></pre>
-<p><img src="./figures/DEA.Rmd/top_exp_genes_heatmap-1.png" style="display: block; margin: auto;" /></p>
+<p><img src="../DEA.Rmd/top_exp_genes_heatmap-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="differentially-expressed-genes">Differentially expressed genes</h3>
 <pre><code>select &lt;- rownames(sig_res)
 df &lt;- as.data.frame(colData(dds)[,c("condition","type")])
 pheatmap(assay(vsd)[rownames(vsd) %in% select,], cluster_rows=TRUE, show_rownames=FALSE, scale = "row",
          cluster_cols=FALSE, annotation_col=df)
 </code></pre>
-<p><img src="./figures/DEA.Rmd/DEA_heatmap-1.png" style="display: block; margin: auto;" /></p>
+<p><img src="../DEA.Rmd/DEA_heatmap-1.png" style="display: block; margin: auto;" /></p>
 <h2 id="fold-change-plots">Fold change plots</h2>
 <p>For fold change plots, it is useful to shrunk log2 fold changes, which
 removes the noise associated with log2 fold changes from low count genes
@@ -551,7 +551,7 @@ ggplot(data.frame(resLFC)) + theme_bw() +
   geom_point(aes(x = log10(baseMean), y = log2FoldChange, 
                  color = factor((padj &lt; alpha), levels = c("TRUE","FALSE"))), size = 1)
 </code></pre>
-<p><img src="./figures/DEA.Rmd/MA_plot-1.png" style="display: block; margin: auto;" /></p>
+<p><img src="../DEA.Rmd/MA_plot-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="volcano-plot">Volcano plot</h3>
 <pre><code>alpha = 0.05
 LFC = 1
@@ -562,7 +562,7 @@ ggplot(data.frame(resLFC)) + theme_bw() +
   geom_point(aes(x = log2FoldChange, y = -log10(padj),
                  color = factor((padj &lt; alpha &amp; abs(log2FoldChange) &gt; LFC), levels = c("TRUE","FALSE"))), size = 1)
 </code></pre>
-<p><img src="./figures/DEA.Rmd/volcano_plot-1.png" style="display: block; margin: auto;" /></p>
+<p><img src="../DEA.Rmd/volcano_plot-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="glimma-plots">Glimma plots</h3>
 <p>We can visualize our results interactively using the <code>glimmaMA()</code> and
 <code>glimmaVolcano()</code> functions.</p>
