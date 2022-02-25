@@ -271,15 +271,15 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#glimma-plots-interactive-visualizations-of-the-deseq-results-using" class="md-nav__link">
-    Glimma plots Interactive visualizations of the DESeq results using
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#glimma-plots-interactive-visualizations-of-the-deseq-results-using" class="md-nav__link">
+    # Glimma plots Interactive visualizations of the DESeq results using
+  </a>
   
 </li>
       
@@ -398,15 +398,15 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#glimma-plots-interactive-visualizations-of-the-deseq-results-using" class="md-nav__link">
-    Glimma plots Interactive visualizations of the DESeq results using
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#glimma-plots-interactive-visualizations-of-the-deseq-results-using" class="md-nav__link">
+    # Glimma plots Interactive visualizations of the DESeq results using
+  </a>
   
 </li>
       
@@ -446,8 +446,8 @@ transformations (<strong>VST</strong>), and the regularized logarithm or <strong
 Both transformations produce transformed data on the log2 scale which
 has been normalized with respect to library size or other normalization
 factors.</p>
-<pre><code>vsd &lt;- vst(dds) #Variance Stabilizing Transformation, vst is faster with larger number of samples
-rld &lt;- rlog(dds) #Regularized
+<pre><code class="language-r">vsd &lt;- vst(dds) #Variance Stabilizing Transformation, vst is faster with larger number of samples
+rld &lt;- rlog(dds) #Regularized 
 </code></pre>
 <h2 id="samples-comparisons">Samples comparisons</h2>
 <p>We can do some sanity checks of the samples. We can see how they
@@ -456,11 +456,11 @@ with a PCA plot.</p>
 <h3 id="heatmap-of-the-sample-to-sample-distances">Heatmap of the sample-to-sample distances</h3>
 <p>This plot shows how far away are each sample from each other. The darker
 the blue, the closer they are.</p>
-<pre><code>sampleDists &lt;- dist(t(assay(vsd)))
+<pre><code class="language-r">sampleDists &lt;- dist(t(assay(vsd)))
 sampleDistMatrix &lt;- as.matrix(sampleDists)
-rownames(sampleDistMatrix) &lt;- paste(vsd$condition, vsd$type, sep="-")
+rownames(sampleDistMatrix) &lt;- paste(vsd$condition, vsd$type, sep=&quot;-&quot;)
 colnames(sampleDistMatrix) &lt;- NULL
-colors &lt;- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+colors &lt;- colorRampPalette( rev(brewer.pal(9, &quot;Blues&quot;)) )(255)
 pheatmap(sampleDistMatrix,
          clustering_distance_rows=sampleDists,
          clustering_distance_cols=sampleDists,
@@ -469,27 +469,27 @@ pheatmap(sampleDistMatrix,
 <p><img src="../exploratory_analysis.Rmd/sample_distances_heatmap-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="principal-component-plot-of-the-samples">Principal component plot of the samples</h3>
 <p>PCA plot using the first two components</p>
-<pre><code>pcaData &lt;- plotPCA(vsd, intgroup=c("condition", "type"), returnData=TRUE)
-percentVar &lt;- round(100 * attr(pcaData, "percentVar"))
+<pre><code class="language-r">pcaData &lt;- plotPCA(vsd, intgroup=c(&quot;condition&quot;, &quot;type&quot;), returnData=TRUE)
+percentVar &lt;- round(100 * attr(pcaData, &quot;percentVar&quot;))
 ggplot(pcaData, aes(PC1, PC2, color=condition, shape=type)) +
   geom_point(size=3) +
-  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
-  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+  xlab(paste0(&quot;PC1: &quot;,percentVar[1],&quot;% variance&quot;)) +
+  ylab(paste0(&quot;PC2: &quot;,percentVar[2],&quot;% variance&quot;)) + 
   coord_fixed() + theme_bw()
 </code></pre>
 <p><img src="../exploratory_analysis.Rmd/PCA_plot-1.png" style="display: block; margin: auto;" /></p>
-<h3 id="glimma-plots-interactive-visualizations-of-the-deseq-results-using">Glimma plots Interactive visualizations of the DESeq results using</h3>
+<h2 id="glimma-plots-interactive-visualizations-of-the-deseq-results-using"># Glimma plots Interactive visualizations of the DESeq results using</h2>
 <p>the <strong>Glimma</strong> package, which provides excellent options for MA, Volcano
 and dimensionality reduction (like a PCA) plots. Use the <em>groups</em>
 argument to provide the condition or factor of your experiment.
 Unfortunately, the interactive plots created here are not fully
 compatible when knitting this document. Feel free to explore them using
-this <a href="./mds-plot.html">link</a>!</p>
-<pre><code>glimma_plot &lt;- glimmaMDS(dds, groups = dds$condition)
+this <a href="../mds-plot.html">link</a>!</p>
+<pre><code class="language-r">glimma_plot &lt;- glimmaMDS(dds, groups = dds$condition)
 </code></pre>
 <p>Save your interactive plots using the <strong>htmlwidgets</strong> package,
 specifically, the <code>saveWidget()</code></p>
-<pre><code>htmlwidgets::saveWidget(glimma_plot, "mds-plot.html")
+<pre><code class="language-r">htmlwidgets::saveWidget(glimma_plot, &quot;mds-plot.html&quot;)
 </code></pre>
 <h2 id="plot-counts">Plot counts</h2>
 <p>It can be useful to examine the counts of reads for a single gene across
@@ -499,7 +499,7 @@ factors if these were used) and adds a pseudocount of 1/2 to allow for
 log scale plotting. The counts are grouped by the variables in
 <em>intgroup</em> argument, where more than one variable can be specified. You
 can select the gene to plot by its name or by numeric index.</p>
-<pre><code>d &lt;- plotCounts(dds, gene= 1, intgroup="condition", 
+<pre><code class="language-r">d &lt;- plotCounts(dds, gene= 1, intgroup=&quot;condition&quot;, 
                 returnData=TRUE)
 ggplot(d, aes(x=condition, y=count, color = condition)) + 
   geom_point(position=position_jitter(w=0.1,h=0)) + 
@@ -510,9 +510,9 @@ ggplot(d, aes(x=condition, y=count, color = condition)) +
 <p>Finally, we create a <code>session_info()</code> table that will allow anyone to
 check what versions of R and packages are we using for reproducibility
 purposes.</p>
-<pre><code>devtools::session_info()
-
-## ─ Session info ───────────────────────────────────────────────────────────────
+<pre><code class="language-r">devtools::session_info()
+</code></pre>
+<pre><code>## ─ Session info ───────────────────────────────────────────────────────────────
 ##  setting  value
 ##  version  R version 4.1.0 (2021-05-18)
 ##  os       macOS Big Sur 10.16

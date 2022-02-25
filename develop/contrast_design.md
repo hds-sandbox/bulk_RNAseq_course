@@ -18,13 +18,17 @@ vignette](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc
 
 # One factor, two levels (slide 5)
 
-    # simulate data
-    dds <- makeExampleDESeqDataSet(n = 1000, m = 6, betaSD = 2)
-    dds$condition <- factor(rep(c("control", "treat"), each = 3))
+``` r
+# simulate data
+dds <- makeExampleDESeqDataSet(n = 1000, m = 6, betaSD = 2)
+dds$condition <- factor(rep(c("control", "treat"), each = 3))
+```
 
 First we can look at our sample information:
 
-    colData(dds)
+``` r
+colData(dds)
+```
 
     ## DataFrame with 6 rows and 1 column
     ##         condition
@@ -39,12 +43,16 @@ First we can look at our sample information:
 Our factor of interest is `condition` and so we define our design and
 run the DESeq model fitting routine:
 
-    design(dds) <- ~ 1 + condition # or just `~ condition`
-    dds <- DESeq(dds) # equivalent to edgeR::glmFit()
+``` r
+design(dds) <- ~ 1 + condition # or just `~ condition`
+dds <- DESeq(dds) # equivalent to edgeR::glmFit()
+```
 
 Then check what coefficients DESeq estimated:
 
-    resultsNames(dds)
+``` r
+resultsNames(dds)
+```
 
     ## [1] "Intercept"                  "condition_treat_vs_control"
 
@@ -55,8 +63,10 @@ versus control).
 Using the more standard syntax, we can obtain the results for the effect
 of treat as such:
 
-    res1 <- results(dds, contrast = list("condition_treat_vs_control"))
-    res1
+``` r
+res1 <- results(dds, contrast = list("condition_treat_vs_control"))
+res1
+```
 
     ## log2 fold change (MLE): condition_treat_vs_control effect 
     ## Wald test p-value: condition_treat_vs_control effect 
@@ -93,7 +103,9 @@ worth understanding how DESeq is getting to these results by looking at
 the model’s matrix. DESeq defines the model matrix using base R
 functionality:
 
-    model.matrix(design(dds), colData(dds))
+``` r
+model.matrix(design(dds), colData(dds))
+```
 
     ##         (Intercept) conditiontreat
     ## sample1           1              0
@@ -135,9 +147,11 @@ this. For any contrast of interest, we can follow three steps:
 
 Let’s see this example in action:
 
-    # get the model matrix
-    mod_mat <- model.matrix(design(dds), colData(dds))
-    mod_mat
+``` r
+# get the model matrix
+mod_mat <- model.matrix(design(dds), colData(dds))
+mod_mat
+```
 
     ##         (Intercept) conditiontreat
     ## sample1           1              0
@@ -152,22 +166,28 @@ Let’s see this example in action:
     ## attr(,"contrasts")$condition
     ## [1] "contr.treatment"
 
-    # calculate the vector of coefficient weights in the treat
-    treat <- colMeans(mod_mat[dds$condition == "treat", ])
-    treat
+``` r
+# calculate the vector of coefficient weights in the treat
+treat <- colMeans(mod_mat[dds$condition == "treat", ])
+treat
+```
 
     ##    (Intercept) conditiontreat 
     ##              1              1
 
-    # calculate the vector of coefficient weights in the control
-    control <- colMeans(mod_mat[dds$condition == "control", ])
-    control
+``` r
+# calculate the vector of coefficient weights in the control
+control <- colMeans(mod_mat[dds$condition == "control", ])
+control
+```
 
     ##    (Intercept) conditiontreat 
     ##              1              0
 
-    # The contrast we are interested in is the difference between treat and control
-    treat - control
+``` r
+# The contrast we are interested in is the difference between treat and control
+treat - control
+```
 
     ##    (Intercept) conditiontreat 
     ##              0              1
@@ -175,14 +195,18 @@ Let’s see this example in action:
 That last step is where we define our contrast vector, and we can give
 this directly to the `results` function:
 
-    # get the results for this contrast
-    res2 <- results(dds, contrast = treat - control)
+``` r
+# get the results for this contrast
+res2 <- results(dds, contrast = treat - control)
+```
 
 This gives us exactly the same results as before, which we can check for
 example by plotting the log-fold-changes between the first and second
 approach:
 
-    plot(res1$log2FoldChange, res2$log2FoldChange)
+``` r
+plot(res1$log2FoldChange, res2$log2FoldChange)
+```
 
 <img src="../contrast_design.Rmd/unnamed-chunk-12-1.png" style="display: block; margin: auto;" />
 
@@ -192,9 +216,11 @@ Often, we can use different model matrices that essentially correspond
 to the same design. For example, we could recode our design above by
 removing the intercept:
 
-    design(dds) <- ~ 0 + condition
-    dds <- DESeq(dds)
-    resultsNames(dds)
+``` r
+design(dds) <- ~ 0 + condition
+dds <- DESeq(dds)
+resultsNames(dds)
+```
 
     ## [1] "conditioncontrol" "conditiontreat"
 
@@ -205,9 +231,11 @@ than the *difference* between treat and control).
 If we use the same contrast trick as before (using the model matrix), we
 can see the result is the same:
 
-    # get the model matrix
-    mod_mat <- model.matrix(design(dds), colData(dds))
-    mod_mat
+``` r
+# get the model matrix
+mod_mat <- model.matrix(design(dds), colData(dds))
+mod_mat
+```
 
     ##         conditioncontrol conditiontreat
     ## sample1                1              0
@@ -222,15 +250,19 @@ can see the result is the same:
     ## attr(,"contrasts")$condition
     ## [1] "contr.treatment"
 
-    # calculate weights for coefficients in each condition
-    treat <- colMeans(mod_mat[which(dds$condition == "treat"), ])
-    control <- colMeans(mod_mat[which(dds$condition == "control"), ])
-    # get the results for our contrast
-    res3 <- results(dds, contrast = treat - control)
+``` r
+# calculate weights for coefficients in each condition
+treat <- colMeans(mod_mat[which(dds$condition == "treat"), ])
+control <- colMeans(mod_mat[which(dds$condition == "control"), ])
+# get the results for our contrast
+res3 <- results(dds, contrast = treat - control)
+```
 
 Again, the results are essentially the same:
 
-    plot(res1$log2FoldChange, res3$log2FoldChange)
+``` r
+plot(res1$log2FoldChange, res3$log2FoldChange)
+```
 
 <img src="../contrast_design.Rmd/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
 
@@ -241,15 +273,19 @@ at models without intercept.
 
 # One factor, three levels (slide 7)
 
-    # simulate data
-    dds <- makeExampleDESeqDataSet(n = 1000, m = 9, betaSD = 2)
-    dds$condition <- NULL
-    dds$bloodtype <- factor(rep(c("bloodA", "bloodB", "bloodO"), each = 3))
-    dds$bloodtype <- relevel(dds$bloodtype, "bloodO")
+``` r
+# simulate data
+dds <- makeExampleDESeqDataSet(n = 1000, m = 9, betaSD = 2)
+dds$condition <- NULL
+dds$bloodtype <- factor(rep(c("bloodA", "bloodB", "bloodO"), each = 3))
+dds$bloodtype <- relevel(dds$bloodtype, "bloodO")
+```
 
 First we can look at our sample information:
 
-    colData(dds)
+``` r
+colData(dds)
+```
 
     ## DataFrame with 9 rows and 1 column
     ##         bloodtype
@@ -267,10 +303,12 @@ First we can look at our sample information:
 As in the previous example, we only have one factor of interest,
 `condition`, and so we define our design and run the DESeq as before:
 
-    design(dds) <- ~ 1 + bloodtype
-    dds <- DESeq(dds)
-    # check the coefficients estimated by DEseq
-    resultsNames(dds)
+``` r
+design(dds) <- ~ 1 + bloodtype
+dds <- DESeq(dds)
+# check the coefficients estimated by DEseq
+resultsNames(dds)
+```
 
     ## [1] "Intercept"                  "bloodtype_bloodA_vs_bloodO"
     ## [3] "bloodtype_bloodB_vs_bloodO"
@@ -278,31 +316,37 @@ As in the previous example, we only have one factor of interest,
 We see that now we have 3 coefficients:
 
 -   “Intercept” corresponds to bloodO bloodtype (our reference level)
--   “bloodtype\_bloodA\_vs\_bloodO” corresponds to the difference
-    between the reference level and bloodA
--   “bloodtype\_bloodB\_vs\_bloodO” corresponds to the difference
-    between the reference level and bloodB
+-   “bloodtype_bloodA_vs_bloodO” corresponds to the difference between
+    the reference level and bloodA
+-   “bloodtype_bloodB_vs_bloodO” corresponds to the difference between
+    the reference level and bloodB
 
 We could obtain the difference between bloodO and any of the two
 bloodtypes easily:
 
-    res1_bloodA_bloodO <- results(dds, contrast = list("bloodtype_bloodA_vs_bloodO"))
-    res1_bloodB_bloodO <- results(dds, contrast = list("bloodtype_bloodB_vs_bloodO"))
+``` r
+res1_bloodA_bloodO <- results(dds, contrast = list("bloodtype_bloodA_vs_bloodO"))
+res1_bloodB_bloodO <- results(dds, contrast = list("bloodtype_bloodB_vs_bloodO"))
+```
 
 For comparing bloodA vs bloodB, however, we need to compare two
 coefficients with each other to check whether they are themselves
 different (check the slide to see the illustration). This is how the
 standard DESeq syntax would be:
 
-    res1_bloodA_bloodB <- results(dds, contrast = list("bloodtype_bloodA_vs_bloodO", 
-                                                     "bloodtype_bloodB_vs_bloodO"))
+``` r
+res1_bloodA_bloodB <- results(dds, contrast = list("bloodtype_bloodA_vs_bloodO", 
+                                                 "bloodtype_bloodB_vs_bloodO"))
+```
 
 However, following our three steps detailed in the first section, we can
 define our comparisons from the design matrix:
 
-    # define the model matrix
-    mod_mat <- model.matrix(design(dds), colData(dds))
-    mod_mat
+``` r
+# define the model matrix
+mod_mat <- model.matrix(design(dds), colData(dds))
+mod_mat
+```
 
     ##         (Intercept) bloodtypebloodA bloodtypebloodB
     ## sample1           1               1               0
@@ -320,31 +364,37 @@ define our comparisons from the design matrix:
     ## attr(,"contrasts")$bloodtype
     ## [1] "contr.treatment"
 
-    # calculate coefficient vectors for each group
-    bloodA <- colMeans(mod_mat[dds$bloodtype == "bloodA", ])
-    bloodB <- colMeans(mod_mat[dds$bloodtype == "bloodB", ])
-    bloodO <- colMeans(mod_mat[dds$bloodtype == "bloodO", ])
+``` r
+# calculate coefficient vectors for each group
+bloodA <- colMeans(mod_mat[dds$bloodtype == "bloodA", ])
+bloodB <- colMeans(mod_mat[dds$bloodtype == "bloodB", ])
+bloodO <- colMeans(mod_mat[dds$bloodtype == "bloodO", ])
+```
 
 And we can now define any contrasts we want:
 
-    # obtain results for each pairwise contrast
-    res2_bloodA_bloodO <- results(dds, contrast = bloodA - bloodO)
-    res2_bloodB_bloodO <- results(dds, contrast = bloodB - bloodO)
-    res2_bloodA_bloodB <- results(dds, contrast = bloodA - bloodB)
-    # plot the results from the two approaches to check that they are identical
-    plot(res1_bloodA_bloodO$log2FoldChange, res2_bloodA_bloodO$log2FoldChange)
-    plot(res1_bloodB_bloodO$log2FoldChange, res2_bloodB_bloodO$log2FoldChange)
-    plot(res1_bloodA_bloodB$log2FoldChange, res2_bloodA_bloodB$log2FoldChange)
+``` r
+# obtain results for each pairwise contrast
+res2_bloodA_bloodO <- results(dds, contrast = bloodA - bloodO)
+res2_bloodB_bloodO <- results(dds, contrast = bloodB - bloodO)
+res2_bloodA_bloodB <- results(dds, contrast = bloodA - bloodB)
+# plot the results from the two approaches to check that they are identical
+plot(res1_bloodA_bloodO$log2FoldChange, res2_bloodA_bloodO$log2FoldChange)
+plot(res1_bloodB_bloodO$log2FoldChange, res2_bloodB_bloodO$log2FoldChange)
+plot(res1_bloodA_bloodB$log2FoldChange, res2_bloodA_bloodB$log2FoldChange)
+```
 
 ## A and B against O (slide 7)
 
 With this approach, we could even define a more unusual contrast, for
 example to find genes that differ between A and B against and O samples:
 
-    # define vector of coefficients for A_B samples
-    A_B <- colMeans(mod_mat[dds$bloodtype %in% c("bloodA", "bloodB"),])
-    # Our contrast of interest is
-    A_B - bloodO
+``` r
+# define vector of coefficients for A_B samples
+A_B <- colMeans(mod_mat[dds$bloodtype %in% c("bloodA", "bloodB"),])
+# Our contrast of interest is
+A_B - bloodO
+```
 
     ##     (Intercept) bloodtypebloodA bloodtypebloodB 
     ##             0.0             0.5             0.5
@@ -355,24 +405,30 @@ saying that we want to consider the average of bloodA and bloodB
 expression. In fact, we could have also defined our contrast vector like
 this:
 
-    # average of bloodA and bloodB minus bloodO
-    (bloodA + bloodB)/2 - bloodO
+``` r
+# average of bloodA and bloodB minus bloodO
+(bloodA + bloodB)/2 - bloodO
+```
 
     ##     (Intercept) bloodtypebloodA bloodtypebloodB 
     ##             0.0             0.5             0.5
 
 To obtain our results, we use the `results()` function as before:
 
-    # get the results between A_B and bloodA
-    res2_AB <- results(dds, contrast = A_B - bloodO)
+``` r
+# get the results between A_B and bloodA
+res2_AB <- results(dds, contrast = A_B - bloodO)
+```
 
 ## Extra: why not define a new group in our design matrix? (slide 8)
 
-For this last example (A\_B vs bloodO), we may have considered creating
-a new variable in our column data:
+For this last example (A_B vs bloodO), we may have considered creating a
+new variable in our column data:
 
-    dds$A_B <- factor(dds$bloodtype %in% c("bloodA", "bloodB"))
-    colData(dds)
+``` r
+dds$A_B <- factor(dds$bloodtype %in% c("bloodA", "bloodB"))
+colData(dds)
+```
 
     ## DataFrame with 9 rows and 3 columns
     ##         bloodtype sizeFactor      A_B
@@ -389,13 +445,17 @@ a new variable in our column data:
 
 and then re-run DESeq with a new design:
 
-    design(dds) <- ~ 1 + A_B
-    dds <- DESeq(dds)
-    resultsNames(dds)
+``` r
+design(dds) <- ~ 1 + A_B
+dds <- DESeq(dds)
+resultsNames(dds)
+```
 
     ## [1] "Intercept"         "A_B_TRUE_vs_FALSE"
 
-    res1_A_B <- results(dds, contrast = list("A_B_TRUE_vs_FALSE"))
+``` r
+res1_A_B <- results(dds, contrast = list("A_B_TRUE_vs_FALSE"))
+```
 
 However, in this model the gene dispersion is estimated together for
 bloodA and bloodB samples as if they were replicates of each other,
@@ -404,31 +464,39 @@ above estimates the error within each of those groups.
 
 To check the difference one could compare the two approaches visually:
 
-    # compare the log-fold-changes between the two approaches
-    plot(res1_A_B$log2FoldChange, res2_AB$log2FoldChange)
-    abline(0, 1, col = "brown", lwd = 2)
+``` r
+# compare the log-fold-changes between the two approaches
+plot(res1_A_B$log2FoldChange, res2_AB$log2FoldChange)
+abline(0, 1, col = "brown", lwd = 2)
+```
 
 <img src="../contrast_design.Rmd/unnamed-chunk-29-1.png" style="display: block; margin: auto;" />
 
-    # compare the errors between the two approaches
-    plot(res1_A_B$lfcSE, res2_AB$lfcSE)
-    abline(0, 1, col = "brown", lwd = 2)
+``` r
+# compare the errors between the two approaches
+plot(res1_A_B$lfcSE, res2_AB$lfcSE)
+abline(0, 1, col = "brown", lwd = 2)
+```
 
 <img src="../contrast_design.Rmd/unnamed-chunk-29-2.png" style="display: block; margin: auto;" />
 
 # Two factors with interaction (slide 9)
 
-    # simulate data
-    dds <- makeExampleDESeqDataSet(n = 1000, m = 12, betaSD = 2)
-    dds$bloodtype <- factor(rep(c("bloodO", "bloodA"), each = 6))
-    dds$bloodtype <- relevel(dds$bloodtype, "bloodO")
-    dds$condition <- factor(rep(c("treat", "control"), 6))
-    dds <- dds[, order(dds$bloodtype, dds$condition)]
-    colnames(dds) <- paste0("sample", 1:ncol(dds))
+``` r
+# simulate data
+dds <- makeExampleDESeqDataSet(n = 1000, m = 12, betaSD = 2)
+dds$bloodtype <- factor(rep(c("bloodO", "bloodA"), each = 6))
+dds$bloodtype <- relevel(dds$bloodtype, "bloodO")
+dds$condition <- factor(rep(c("treat", "control"), 6))
+dds <- dds[, order(dds$bloodtype, dds$condition)]
+colnames(dds) <- paste0("sample", 1:ncol(dds))
+```
 
 First let’s look at our sample information:
 
-    colData(dds)
+``` r
+colData(dds)
+```
 
     ## DataFrame with 12 rows and 2 columns
     ##          condition bloodtype
@@ -450,9 +518,11 @@ with an interaction (i.e. we assume that bloodA and bloodO samples may
 respond differently to treat/control). We define our design accordingly
 and fit the model:
 
-    design(dds) <- ~ 1 + bloodtype + condition + bloodtype:condition
-    dds <- DESeq(dds)
-    resultsNames(dds)
+``` r
+design(dds) <- ~ 1 + bloodtype + condition + bloodtype:condition
+dds <- DESeq(dds)
+resultsNames(dds)
+```
 
     ## [1] "Intercept"                      "bloodtype_bloodA_vs_bloodO"    
     ## [3] "condition_treat_vs_control"     "bloodtypebloodA.conditiontreat"
@@ -461,13 +531,15 @@ Because we have two factors and an interaction, the number of
 comparisons we can do is larger. Using our three-step approach from the
 model matrix, we do things exactly as we’ve been doing so far:
 
-    # get the model matrix
-    mod_mat <- model.matrix(design(dds), colData(dds))
-    # Define coefficient vectors for each condition
-    bloodO_control <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "control", ])
-    bloodO_treat <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "treat", ])
-    bloodA_control <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "control", ])
-    bloodA_treat <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "treat", ])
+``` r
+# get the model matrix
+mod_mat <- model.matrix(design(dds), colData(dds))
+# Define coefficient vectors for each condition
+bloodO_control <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "control", ])
+bloodO_treat <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "treat", ])
+bloodA_control <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "control", ])
+bloodA_treat <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "treat", ])
+```
 
 We are now ready to define any contrast of interest from these vectors
 (for completeness we show the equivalent syntax using the coefficient’s
@@ -475,37 +547,47 @@ names from DESeq).
 
 bloodA vs bloodO (in the control):
 
-    res1 <- results(dds, contrast = bloodA_control - bloodO_control)
-    # or equivalently
-    res2 <- results(dds, contrast = list("bloodtype_bloodA_vs_bloodO"))
+``` r
+res1 <- results(dds, contrast = bloodA_control - bloodO_control)
+# or equivalently
+res2 <- results(dds, contrast = list("bloodtype_bloodA_vs_bloodO"))
+```
 
 bloodA vs bloodO (in the treatment):
 
-    res1 <- results(dds, contrast = bloodO_treat - bloodA_treat)
-    # or equivalently
-    res2 <- results(dds, contrast = list(c("bloodtype_bloodA_vs_bloodO",
-                                           "bloodtypebloodA.conditiontreat")))
+``` r
+res1 <- results(dds, contrast = bloodO_treat - bloodA_treat)
+# or equivalently
+res2 <- results(dds, contrast = list(c("bloodtype_bloodA_vs_bloodO",
+                                       "bloodtypebloodA.conditiontreat")))
+```
 
 treat vs control (for bloodtypes O):
 
-    res1 <- results(dds, contrast = bloodO_treat - bloodO_control)
-    # or equivalently
-    res2 <- results(dds, contrast = list(c("condition_treat_vs_control")))
+``` r
+res1 <- results(dds, contrast = bloodO_treat - bloodO_control)
+# or equivalently
+res2 <- results(dds, contrast = list(c("condition_treat_vs_control")))
+```
 
 treat vs control (for bloodtypes A):
 
-    res1 <- results(dds, contrast = bloodA_treat - bloodA_control)
-    # or equivalently
-    res2 <- results(dds, contrast = list(c("condition_treat_vs_control", 
-                                           "bloodtypebloodA.conditiontreat")))
+``` r
+res1 <- results(dds, contrast = bloodA_treat - bloodA_control)
+# or equivalently
+res2 <- results(dds, contrast = list(c("condition_treat_vs_control", 
+                                       "bloodtypebloodA.conditiontreat")))
+```
 
 Interaction between bloodtype and condition (i.e. do bloodAs and bloodOs
 respond differently to the treatment?):
 
-    res1 <- results(dds, 
-                    contrast = (bloodA_treat - bloodA_control) - (bloodO_treat - bloodO_control))
-    # or equivalently
-    res2 <- results(dds, contrast = list("bloodtypebloodA.conditiontreat"))
+``` r
+res1 <- results(dds, 
+                contrast = (bloodA_treat - bloodA_control) - (bloodO_treat - bloodO_control))
+# or equivalently
+res2 <- results(dds, contrast = list("bloodtypebloodA.conditiontreat"))
+```
 
 In conclusion, although we can define these contrasts using DESeq
 coefficient names, it is somewhat more explicit (and perhaps intuitive?)
@@ -513,18 +595,22 @@ what it is we’re comparing using matrix-based contrasts.
 
 # Three factors, with nesting (slide 10)
 
-    # simulate data
-    dds <- makeExampleDESeqDataSet(n = 1000, m = 24, betaSD = 2)
-    dds$bloodtype <- factor(rep(c("bloodA", "bloodO"), each = 12))
-    dds$bloodtype <- relevel(dds$bloodtype, "bloodO")
-    dds$patient <- factor(rep(LETTERS[1:4], each = 6))
-    dds$condition <- factor(rep(c("treat", "control"), 12))
-    dds <- dds[, order(dds$bloodtype, dds$patient, dds$condition)]
-    colnames(dds) <- paste0("sample", 1:ncol(dds))
+``` r
+# simulate data
+dds <- makeExampleDESeqDataSet(n = 1000, m = 24, betaSD = 2)
+dds$bloodtype <- factor(rep(c("bloodA", "bloodO"), each = 12))
+dds$bloodtype <- relevel(dds$bloodtype, "bloodO")
+dds$patient <- factor(rep(LETTERS[1:4], each = 6))
+dds$condition <- factor(rep(c("treat", "control"), 12))
+dds <- dds[, order(dds$bloodtype, dds$patient, dds$condition)]
+colnames(dds) <- paste0("sample", 1:ncol(dds))
+```
 
 First let’s look at our sample information:
 
-    colData(dds)
+``` r
+colData(dds)
+```
 
     ## DataFrame with 24 rows and 3 columns
     ##          condition bloodtype  patient
@@ -549,9 +635,11 @@ Because of this, we will define our design without including
 “bloodtype”, although later we can compare groups of patient of the same
 bloodtype with each other.
 
-    design(dds) <- ~ 1 + patient + condition + patient:condition
-    dds <- DESeq(dds)
-    resultsNames(dds)
+``` r
+design(dds) <- ~ 1 + patient + condition + patient:condition
+dds <- DESeq(dds)
+resultsNames(dds)
+```
 
     ## [1] "Intercept"                  "patient_B_vs_A"            
     ## [3] "patient_C_vs_A"             "patient_D_vs_A"            
@@ -565,20 +653,24 @@ same way we have done so far!
 
 Again, let’s define our groups from the model matrix:
 
-    # get the model matrix
-    mod_mat <- model.matrix(design(dds), colData(dds))
-    # define coefficient vectors for each group
-    bloodO_control <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "control", ])
-    bloodA_control <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "control", ])
-    bloodO_treat <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "treat", ])
-    bloodA_treat <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "treat", ])
+``` r
+# get the model matrix
+mod_mat <- model.matrix(design(dds), colData(dds))
+# define coefficient vectors for each group
+bloodO_control <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "control", ])
+bloodA_control <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "control", ])
+bloodO_treat <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "treat", ])
+bloodA_treat <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "treat", ])
+```
 
 It’s worth looking at some of these vectors, to see that they are
 composed of weighted coefficients from different patient. For example,
 for “bloodO” patient, we have equal contribution from “patientC” and
 “patientD”:
 
-    bloodO_control
+``` r
+bloodO_control
+```
 
     ##             (Intercept)                patientB                patientC 
     ##                     1.0                     0.0                     0.5 
@@ -590,7 +682,9 @@ for “bloodO” patient, we have equal contribution from “patientC” and
 And so, when we define our contrasts, each patient will be correctly
 weighted:
 
-    bloodO_treat - bloodO_control
+``` r
+bloodO_treat - bloodO_control
+```
 
     ##             (Intercept)                patientB                patientC 
     ##                     0.0                     0.0                     0.0 
@@ -605,24 +699,28 @@ DESeq’s named coefficients).
 
 bloodA vs bloodO (in the control):
 
-    res1_bloodA_bloodO_control <- results(dds, contrast = bloodA_control - bloodO_control)
-    # or equivalently
-    res2_bloodA_bloodO_control <- results(dds, 
-                                     contrast = list(c("patient_B_vs_A"), # Blood type A
-                                                     c("patient_C_vs_A", # Blood type O
-                                                       "patient_D_vs_A"))) # Blood type O
+``` r
+res1_bloodA_bloodO_control <- results(dds, contrast = bloodA_control - bloodO_control)
+# or equivalently
+res2_bloodA_bloodO_control <- results(dds, 
+                                 contrast = list(c("patient_B_vs_A"), # Blood type A
+                                                 c("patient_C_vs_A", # Blood type O
+                                                   "patient_D_vs_A"))) # Blood type O
+```
 
 bloodA vs bloodO (in the treat):
 
-    res1_bloodO_bloodA_treat <- results(dds, contrast = bloodO_treat - bloodA_treat)
-    # or equivalently
-    res2_bloodO_bloodA_treat <- results(dds, 
-                               contrast = list(c("patient_B_vs_A", # Blood type A
-                                                 "patientB.conditiontreat"), # Interaction of patient B with treatment
-                                               c("patient_C_vs_A", # Blood type O
-                                                 "patient_D_vs_A", # Blood type O
-                                                 "patientC.conditiontreat", # Interaction of patient C with treatment
-                                                 "patientD.conditiontreat"))) # Interaction of patient B with treatment
+``` r
+res1_bloodO_bloodA_treat <- results(dds, contrast = bloodO_treat - bloodA_treat)
+# or equivalently
+res2_bloodO_bloodA_treat <- results(dds, 
+                           contrast = list(c("patient_B_vs_A", # Blood type A
+                                             "patientB.conditiontreat"), # Interaction of patient B with treatment
+                                           c("patient_C_vs_A", # Blood type O
+                                             "patient_D_vs_A", # Blood type O
+                                             "patientC.conditiontreat", # Interaction of patient C with treatment
+                                             "patientD.conditiontreat"))) # Interaction of patient B with treatment
+```
 
 And so on, for other contrasts of interest…
 
@@ -631,9 +729,11 @@ And so on, for other contrasts of interest…
 Let’s take our previous example, but drop one of the samples from the
 data, so that we only have 2 replicates for it.
 
-    dds <- dds[, -1] # drop one of the patient C samples
-    dds <- DESeq(dds)
-    resultsNames(dds)
+``` r
+dds <- dds[, -1] # drop one of the patient C samples
+dds <- DESeq(dds)
+resultsNames(dds)
+```
 
     ## [1] "Intercept"                  "patient_B_vs_A"            
     ## [3] "patient_C_vs_A"             "patient_D_vs_A"            
@@ -642,8 +742,10 @@ data, so that we only have 2 replicates for it.
 
 Define our model matrix and coefficient vectors:
 
-    mod_mat <- model.matrix(design(dds), colData(dds))
-    mod_mat
+``` r
+mod_mat <- model.matrix(design(dds), colData(dds))
+mod_mat
+```
 
     ##          (Intercept) patientB patientC patientD conditiontreat
     ## sample2            1        0        1        0              0
@@ -726,15 +828,19 @@ Define our model matrix and coefficient vectors:
     ## attr(,"contrasts")$condition
     ## [1] "contr.treatment"
 
-    # define coefficient vectors for each group
-    bloodO_control <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "control", ])
-    bloodA_control <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "control", ])
-    bloodO_treat <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "treat", ])
-    bloodA_treat <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "treat", ])
+``` r
+# define coefficient vectors for each group
+bloodO_control <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "control", ])
+bloodA_control <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "control", ])
+bloodO_treat <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "treat", ])
+bloodA_treat <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "treat", ])
+```
 
-Now let’s check what happens to the bloodO\_control group:
+Now let’s check what happens to the bloodO_control group:
 
-    bloodO_control
+``` r
+bloodO_control
+```
 
     ##             (Intercept)                patientB                patientC 
     ##                     1.0                     0.0                     0.4 
@@ -755,8 +861,10 @@ any of this, the weights come from our `colMeans()` call automatically.
 And now, any contrasts that we make will take these weights into
 account:
 
-    # bloodA vs bloodO (in the control)
-    bloodA_control - bloodO_control
+``` r
+# bloodA vs bloodO (in the control)
+bloodA_control - bloodO_control
+```
 
     ##             (Intercept)                patientB                patientC 
     ##                     0.0                     0.5                    -0.4 
@@ -765,8 +873,10 @@ account:
     ## patientC:conditiontreat patientD:conditiontreat 
     ##                     0.0                     0.0
 
-    # interaction
-    (bloodA_treat - bloodA_control) - (bloodO_treat - bloodO_control)
+``` r
+# interaction
+(bloodA_treat - bloodA_control) - (bloodO_treat - bloodO_control)
+```
 
     ##             (Intercept)                patientB                patientC 
     ##                     0.0                     0.0                    -0.1 

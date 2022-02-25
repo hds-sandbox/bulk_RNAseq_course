@@ -17,8 +17,10 @@ Both transformations produce transformed data on the log2 scale which
 has been normalized with respect to library size or other normalization
 factors.
 
-    vsd <- vst(dds) #Variance Stabilizing Transformation, vst is faster with larger number of samples
-    rld <- rlog(dds) #Regularized 
+``` r
+vsd <- vst(dds) #Variance Stabilizing Transformation, vst is faster with larger number of samples
+rld <- rlog(dds) #Regularized 
+```
 
 ## Samples comparisons
 
@@ -31,15 +33,17 @@ with a PCA plot.
 This plot shows how far away are each sample from each other. The darker
 the blue, the closer they are.
 
-    sampleDists <- dist(t(assay(vsd)))
-    sampleDistMatrix <- as.matrix(sampleDists)
-    rownames(sampleDistMatrix) <- paste(vsd$condition, vsd$type, sep="-")
-    colnames(sampleDistMatrix) <- NULL
-    colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
-    pheatmap(sampleDistMatrix,
-             clustering_distance_rows=sampleDists,
-             clustering_distance_cols=sampleDists,
-             col=colors)
+``` r
+sampleDists <- dist(t(assay(vsd)))
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) <- paste(vsd$condition, vsd$type, sep="-")
+colnames(sampleDistMatrix) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows=sampleDists,
+         clustering_distance_cols=sampleDists,
+         col=colors)
+```
 
 <img src="../exploratory_analysis.Rmd/sample_distances_heatmap-1.png" style="display: block; margin: auto;" />
 
@@ -47,16 +51,18 @@ the blue, the closer they are.
 
 PCA plot using the first two components
 
-    pcaData <- plotPCA(vsd, intgroup=c("condition", "type"), returnData=TRUE)
-    percentVar <- round(100 * attr(pcaData, "percentVar"))
-    ggplot(pcaData, aes(PC1, PC2, color=condition, shape=type)) +
-      geom_point(size=3) +
-      xlab(paste0("PC1: ",percentVar[1],"% variance")) +
-      ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
-      coord_fixed() + theme_bw()
+``` r
+pcaData <- plotPCA(vsd, intgroup=c("condition", "type"), returnData=TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+ggplot(pcaData, aes(PC1, PC2, color=condition, shape=type)) +
+  geom_point(size=3) +
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+  coord_fixed() + theme_bw()
+```
 
 <img src="../exploratory_analysis.Rmd/PCA_plot-1.png" style="display: block; margin: auto;" />
-### Glimma plots Interactive visualizations of the DESeq results using
+##\# Glimma plots Interactive visualizations of the DESeq results using
 the **Glimma** package, which provides excellent options for MA, Volcano
 and dimensionality reduction (like a PCA) plots. Use the *groups*
 argument to provide the condition or factor of your experiment.
@@ -64,12 +70,16 @@ Unfortunately, the interactive plots created here are not fully
 compatible when knitting this document. Feel free to explore them using
 this [link](./mds-plot.html)!
 
-    glimma_plot <- glimmaMDS(dds, groups = dds$condition)
+``` r
+glimma_plot <- glimmaMDS(dds, groups = dds$condition)
+```
 
 Save your interactive plots using the **htmlwidgets** package,
 specifically, the `saveWidget()`
 
-    htmlwidgets::saveWidget(glimma_plot, "mds-plot.html")
+``` r
+htmlwidgets::saveWidget(glimma_plot, "mds-plot.html")
+```
 
 ## Plot counts
 
@@ -81,11 +91,13 @@ log scale plotting. The counts are grouped by the variables in
 *intgroup* argument, where more than one variable can be specified. You
 can select the gene to plot by its name or by numeric index.
 
-    d <- plotCounts(dds, gene= 1, intgroup="condition", 
-                    returnData=TRUE)
-    ggplot(d, aes(x=condition, y=count, color = condition)) + 
-      geom_point(position=position_jitter(w=0.1,h=0)) + 
-      scale_y_log10(breaks=c(25,100,400)) + theme_bw()
+``` r
+d <- plotCounts(dds, gene= 1, intgroup="condition", 
+                returnData=TRUE)
+ggplot(d, aes(x=condition, y=count, color = condition)) + 
+  geom_point(position=position_jitter(w=0.1,h=0)) + 
+  scale_y_log10(breaks=c(25,100,400)) + theme_bw()
+```
 
 <img src="../exploratory_analysis.Rmd/plot_counts_example-1.png" style="display: block; margin: auto;" />
 
@@ -95,7 +107,9 @@ Finally, we create a `session_info()` table that will allow anyone to
 check what versions of R and packages are we using for reproducibility
 purposes.
 
-    devtools::session_info()
+``` r
+devtools::session_info()
+```
 
     ## ─ Session info ───────────────────────────────────────────────────────────────
     ##  setting  value

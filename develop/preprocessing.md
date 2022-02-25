@@ -13,12 +13,14 @@ NOVA2, on the transcriptome.
 
 # Load libraries
 
-    library(tidyverse, quietly = T)
-    library(DESeq2, quietly = T)
-    library(RColorBrewer, quietly = T)
-    library(pheatmap, quietly = T)
-    library(gprofiler2, quietly = T)
-    library(Glimma, quietly = T)
+``` r
+library(tidyverse, quietly = T)
+library(DESeq2, quietly = T)
+library(RColorBrewer, quietly = T)
+library(pheatmap, quietly = T)
+library(gprofiler2, quietly = T)
+library(Glimma, quietly = T)
+```
 
 # Load data
 
@@ -37,8 +39,10 @@ conditions, treatments, replicates, etc.
 The pasilla dataset contains a count matrix and the metadata, which is a
 good example to use as a template. The count matrix looks like this:
 
-    cts <- data.frame(read.csv(file = "../Data/example_data/pasilla_cts.tsv", sep="\t", row.names="flybase_id"))
-    head(cts)
+``` r
+cts <- data.frame(read.csv(file = "../Data/example_data/pasilla_cts.tsv", sep="\t", row.names="flybase_id"))
+head(cts)
+```
 
     ##             untreated1 untreated2 untreated3 untreated4 treated1 treated2
     ## FBgn0000003          0          0          0          0        0        0
@@ -57,8 +61,10 @@ good example to use as a template. The count matrix looks like this:
 
 While the sample metadata looks like this:
 
-    coldata <- read.csv(file = "../Data/example_data/pasilla_metadata.tsv", row.names=1, sep = "\t")
-    head(coldata)
+``` r
+coldata <- read.csv(file = "../Data/example_data/pasilla_metadata.tsv", row.names=1, sep = "\t")
+head(coldata)
+```
 
     ##            condition        type
     ## untreated1 untreated single-read
@@ -75,13 +81,17 @@ comparisons will be based on the alphabetical order of the levels. This
 is important since the first level of the metadata will be the reference
 sample/condition for the DE analysis.
 
-    coldata$condition <- factor(coldata$condition)
-    paste("The order of the conditions is:", paste(unique(coldata$condition), collapse=", "))
+``` r
+coldata$condition <- factor(coldata$condition)
+paste("The order of the conditions is:", paste(unique(coldata$condition), collapse=", "))
+```
 
     ## [1] "The order of the conditions is: untreated, treated"
 
-    coldata$type <- factor(coldata$type)
-    paste("The order of the types is:", paste(unique(coldata$type), collapse=", "))
+``` r
+coldata$type <- factor(coldata$type)
+paste("The order of the types is:", paste(unique(coldata$type), collapse=", "))
+```
 
     ## [1] "The order of the types is: single-read, paired-end"
 
@@ -91,18 +101,22 @@ If you want to change the order of the factor levels you can use one of
 these two. NOTE: this has to be done before running the `DESeq()`
 function.
 
-    #coldata$condition <- factor(coldata$condition, levels = c("untreated","treated"))
-    coldata$condition <- relevel(coldata$condition, ref = "untreated") #Specifies "untreated" as the reference level
+``` r
+#coldata$condition <- factor(coldata$condition, levels = c("untreated","treated"))
+coldata$condition <- relevel(coldata$condition, ref = "untreated") #Specifies "untreated" as the reference level
+```
 
 ## Create DESeq object
 
 We create the DESeq object from the count matrix and the metadata. We
 specify that the analysis will be based on the design column.
 
-    dds <- DESeqDataSetFromMatrix(countData = cts,
-                                  colData = coldata, rowData = rownames(cts),
-                                  design = ~ condition)
-    dds
+``` r
+dds <- DESeqDataSetFromMatrix(countData = cts,
+                              colData = coldata, rowData = rownames(cts),
+                              design = ~ condition)
+dds
+```
 
     ## class: DESeqDataSet 
     ## dim: 14599 7 
@@ -119,8 +133,10 @@ We can reduce the computational resources of the analysis by removing
 genes that are very hardly expressed. Additionally, you can collapse
 technical replicates using the function `collapseReplicates()`.
 
-    keep <- rowSums(counts(dds)) >= 10
-    dds <- dds[keep,]
+``` r
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+```
 
 ## Normalization
 
@@ -128,11 +144,15 @@ Finally the `DESeq()` function will normalize your read counts and
 estimate size factors per genes. This function is essential for the rest
 of the analysis.
 
-    dds <- DESeq(dds)
+``` r
+dds <- DESeq(dds)
+```
 
 # Session info
 
-    devtools::session_info()
+``` r
+devtools::session_info()
+```
 
     ## ─ Session info ───────────────────────────────────────────────────────────────
     ##  setting  value

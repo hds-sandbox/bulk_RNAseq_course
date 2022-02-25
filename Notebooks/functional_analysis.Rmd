@@ -18,8 +18,8 @@ output:
   #   toc_float: yes
   #   df_print: paged
   #   dev: png
-  md_document
-  
+  md_document:
+    variant: markdown_github  
 always_allow_html: true
 ---
 
