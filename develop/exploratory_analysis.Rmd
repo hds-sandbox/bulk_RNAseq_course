@@ -6,7 +6,7 @@ knit: (function(inputFile, encoding) {
       rmarkdown::render(inputFile,
                         encoding=encoding,
                         output_format='all',
-                        output_dir='./reports/')})
+                        output_dir='./')})
 output:
   # To create PDF report, uncomment below
   #pdf_document:
@@ -35,6 +35,16 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       fig.height     = 8,
                       message        = FALSE,
                       warning        = FALSE)
+```
+
+```{r include = FALSE}
+load(file = "./preprocessing.Rdata")
+library(tidyverse, quietly = T)
+library(DESeq2, quietly = T)
+library(RColorBrewer, quietly = T)
+library(pheatmap, quietly = T)
+library(gprofiler2, quietly = T)
+library(Glimma, quietly = T)
 ```
 
 # Exploratory analysis
@@ -80,12 +90,12 @@ ggplot(pcaData, aes(PC1, PC2, color=condition, shape=type)) +
 Interactive visualizations of the DESeq results using the **Glimma** package, which provides excellent options for MA, Volcano and dimensionality reduction (like a PCA) plots. Use the *groups* argument to provide the condition or factor of your experiment. Unfortunately, the interactive plots created here are not fully compatible when knitting this document. Feel free to explore them using this [link](./mds-plot.html)!
 
 ```{r}
-#glimmaMDS(dds, groups = dds$condition)
+glimma_plot <- glimmaMDS(dds, groups = dds$condition)
 ```
 
-Save your interactive plots using the **htmlwidgets** packages, specifically, the `saveWidget()` 
+Save your interactive plots using the **htmlwidgets** package, specifically, the `saveWidget()` 
 ```{r}
-#htmlwidgets::saveWidget(glimmaMDS(dds, groups = dds$condition), "mds-plot.html")
+htmlwidgets::saveWidget(glimma_plot, "mds-plot.html")
 ```
 
 ## Plot counts
@@ -97,6 +107,9 @@ d <- plotCounts(dds, gene= 1, intgroup="condition",
 ggplot(d, aes(x=condition, y=count, color = condition)) + 
   geom_point(position=position_jitter(w=0.1,h=0)) + 
   scale_y_log10(breaks=c(25,100,400)) + theme_bw()
+```
+```{r, include=FALSE, eval=FALSE}
+save.image("exploratory_analysis.Rdata")
 ```
 
 # Session info

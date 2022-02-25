@@ -6,7 +6,7 @@ knit: (function(inputFile, encoding) {
       rmarkdown::render(inputFile,
                         encoding=encoding,
                         output_format='all',
-                        output_dir='./reports/')})
+                        output_dir='.')})
 output:
   # To create PDF report, uncomment below
   #pdf_document:
@@ -19,6 +19,8 @@ output:
   #   df_print: paged
   #   dev: png
   md_document
+
+always_allow_html: true
 ---
 
 ```{r knitr, include = FALSE}
@@ -35,6 +37,16 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       fig.height     = 8,
                       message        = FALSE,
                       warning        = FALSE)
+```
+
+```{r include = FALSE}
+load(file = "./DEA.Rdata")
+library(tidyverse, quietly = T)
+library(DESeq2, quietly = T)
+library(RColorBrewer, quietly = T)
+library(pheatmap, quietly = T)
+library(gprofiler2, quietly = T)
+library(Glimma, quietly = T)
 ```
 
 # Functional analysis with gprofiler2

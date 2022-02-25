@@ -18,7 +18,7 @@ This workshop contains a basic tutorial on how to approach RNAseq experiments, s
 - Basic knowledge of data science and statistics such as PCA, clustering and statistical testing
 
 ## Intended use
-The aim of this repository is to run a comprehensive but introductory workshop on bulk-RNAseq bioinformatic analyses. Each of the modules of this workshop is accompanied by a powerpoint slideshow explaining the steps and the theory behind a typical bioinformatics analysis (ideally with a teacher). Many of the slides are annotated with extra information and/or point to original sources for extra reading material. The [example Rmarkdown](./Notebooks/slides/RNAseq_analysis_basics.Rmd) compiles modules 2-5 and can be used as a stand-alone template for a standard RNA-Seq analysis.
+The aim of this repository is to run a comprehensive but introductory workshop on bulk-RNAseq bioinformatic analyses. Each of the modules of this workshop is accompanied by a powerpoint slideshow explaining the steps and the theory behind a typical bioinformatics analysis (ideally with a teacher). Many of the slides are annotated with extra information and/or point to original sources for extra reading material. The [example Rmarkdown](../Notebooks/slides/RNAseq_analysis_basics.Rmd) compiles modules 2-5 and can be used as a stand-alone template for a standard RNA-Seq analysis.
 
 ## Acknowledgements:
 - [Center for Health Data Science](https://heads.ku.dk/), University of Copenhagen.

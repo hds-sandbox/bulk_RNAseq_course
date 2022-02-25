@@ -6,7 +6,7 @@ knit: (function(inputFile, encoding) {
       rmarkdown::render(inputFile,
                         encoding=encoding,
                         output_format='all',
-                        output_dir='./reports/')})
+                        output_dir='./')})
 output:
   # To create PDF report, uncomment below
   #pdf_document:
@@ -62,13 +62,13 @@ Ideally, the sample metadata will contain information about the conditions, trea
 
 The pasilla dataset contains a count matrix and the metadata, which is a good example to use as a template. The count matrix looks like this:
 ```{r}
-cts <- data.frame(read.csv(file = "../../data/example_data/pasilla_cts.tsv", sep="\t", row.names="flybase_id"))
+cts <- data.frame(read.csv(file = "../Data/example_data/pasilla_cts.tsv", sep="\t", row.names="flybase_id"))
 head(cts)
 ```
 
 While the sample metadata looks like this:
 ```{r}
-coldata <- read.csv(file = "../../data/example_data/pasilla_metadata.tsv", row.names=1, sep = "\t")
+coldata <- read.csv(file = "../Data/example_data/pasilla_metadata.tsv", row.names=1, sep = "\t")
 head(coldata)
 ```
 
@@ -109,6 +109,10 @@ Finally the `DESeq()` function will normalize your read counts and estimate size
 
 ```{r}
 dds <- DESeq(dds)
+```
+
+```{r, include=FALSE, eval=FALSE}
+save.image("preprocessing.Rdata")
 ```
 
 # Session info

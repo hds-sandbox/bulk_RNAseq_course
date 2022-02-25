@@ -6,7 +6,7 @@ knit: (function(inputFile, encoding) {
       rmarkdown::render(inputFile,
                         encoding=encoding,
                         output_format='all',
-                        output_dir='./reports/')})
+                        output_dir='./')})
 output:
   # To create PDF report, uncomment below
   #pdf_document:
@@ -35,6 +35,16 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       fig.height     = 8,
                       message        = FALSE,
                       warning        = FALSE)
+```
+
+```{r, include = FALSE}
+load(file = "./exploratory_analysis.Rdata")
+library(tidyverse, quietly = T)
+library(DESeq2, quietly = T)
+library(RColorBrewer, quietly = T)
+library(pheatmap, quietly = T)
+library(gprofiler2, quietly = T)
+library(Glimma, quietly = T)
 ```
 
 # Differential expression analysis
@@ -175,14 +185,18 @@ ggplot(data.frame(resLFC)) + theme_bw() +
 We can visualize our results interactively using the `glimmaMA()` and `glimmaVolcano()` functions.
 
 ```{r}
-#glimmaMA(dds, groups = dds$condition)
-#glimmaVolcano(dds, groups = dds$condition)
+glimma_MA <- glimmaMA(dds, groups = dds$condition)
+glimma_Volcano <- glimmaVolcano(dds, groups = dds$condition)
 ```
 
 Save your interactive plots using the `htmlwidgets::saveWidget()` function.
 ```{r}
-#htmlwidgets::saveWidget(glimmaMA(dds, groups = dds$condition), "ma-plot.html")
-#htmlwidgets::saveWidget(glimmaVolcano(dds, groups = dds$condition), "volcano-plot.html")
+htmlwidgets::saveWidget(glimmaMA(dds, groups = dds$condition), "ma-plot.html")
+htmlwidgets::saveWidget(glimmaVolcano(dds, groups = dds$condition), "volcano-plot.html")
+```
+
+```{r, include=FALSE, eval=FALSE}
+save.image("DEA.RData")
 ```
 
 # Session info
