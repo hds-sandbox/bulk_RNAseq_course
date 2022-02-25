@@ -18,17 +18,7 @@ theme:
     name: material
     #logo: 'img/logo.png'
 markdown_extensions:
+markdown_extensions:
   - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
+      use_pygments: true
   - pymdownx.superfences
-  # - pymdownx.tabbed
-  # - pymdownx.superfences
-  # - admonition
-  # - pymdownx.details
-  # - attr_list
-  # - pymdownx.arithmatex:
-  #     generic: true
-  # - pymdownx.tasklist:
-  #     custom_checkbox: true

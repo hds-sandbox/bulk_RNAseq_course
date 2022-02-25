@@ -315,12 +315,12 @@ dataset: an RNAseq experiment that studied the effect of RNAi knockdown
 of Pasilla, the Drosophila melanogaster ortholog of mammalian NOVA1 and
 NOVA2, on the transcriptome.</p>
 <h1 id="load-libraries">Load libraries</h1>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nf">library</span><span class="p">(</span><span class="n">DESeq2</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nf">library</span><span class="p">(</span><span class="n">RColorBrewer</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nf">library</span><span class="p">(</span><span class="n">pheatmap</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nf">library</span><span class="p">(</span><span class="n">gprofiler2</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nf">library</span><span class="p">(</span><span class="n">Glimma</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">DESeq2</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">RColorBrewer</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">pheatmap</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">gprofiler2</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">Glimma</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
 </code></pre></div>
 <h1 id="load-data">Load data</h1>
 <p>In order to proceed with the analysis we need two dataframes: - Count
@@ -334,8 +334,8 @@ genes as rows and gene metadata on columns.</p>
 conditions, treatments, replicates, etc.</p>
 <p>The pasilla dataset contains a count matrix and the metadata, which is a
 good example to use as a template. The count matrix looks like this:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">cts</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="nf">read.csv</span><span class="p">(</span><span class="n">file</span> <span class="o">=</span> <span class="s">&quot;../Data/example_data/pasilla_cts.tsv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;\t&quot;</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="s">&quot;flybase_id&quot;</span><span class="p">))</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nf">head</span><span class="p">(</span><span class="n">cts</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">cts</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="nf">read.csv</span><span class="p">(</span><span class="n">file</span> <span class="o">=</span> <span class="s">&quot;../Data/example_data/pasilla_cts.tsv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;\t&quot;</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="s">&quot;flybase_id&quot;</span><span class="p">))</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">cts</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##             untreated1 untreated2 untreated3 untreated4 treated1 treated2
 ## FBgn0000003          0          0          0          0        0        0
@@ -353,8 +353,8 @@ good example to use as a template. The count matrix looks like this:</p>
 ## FBgn0000018      308
 </code></pre></div>
 <p>While the sample metadata looks like this:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">coldata</span> <span class="o">&lt;-</span> <span class="nf">read.csv</span><span class="p">(</span><span class="n">file</span> <span class="o">=</span> <span class="s">&quot;../Data/example_data/pasilla_metadata.tsv&quot;</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;\t&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nf">head</span><span class="p">(</span><span class="n">coldata</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">coldata</span> <span class="o">&lt;-</span> <span class="nf">read.csv</span><span class="p">(</span><span class="n">file</span> <span class="o">=</span> <span class="s">&quot;../Data/example_data/pasilla_metadata.tsv&quot;</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;\t&quot;</span><span class="p">)</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">coldata</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##            condition        type
 ## untreated1 untreated single-read
@@ -370,13 +370,13 @@ to compare against (e.g. which level represents the control group), the
 comparisons will be based on the alphabetical order of the levels. This
 is important since the first level of the metadata will be the reference
 sample/condition for the DE analysis.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">coldata</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="n">coldata</span><span class="o">$</span><span class="n">condition</span><span class="p">)</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nf">paste</span><span class="p">(</span><span class="s">&quot;The order of the conditions is:&quot;</span><span class="p">,</span> <span class="nf">paste</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">coldata</span><span class="o">$</span><span class="n">condition</span><span class="p">),</span> <span class="n">collapse</span><span class="o">=</span><span class="s">&quot;, &quot;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">coldata</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="n">coldata</span><span class="o">$</span><span class="n">condition</span><span class="p">)</span>
+<span class="nf">paste</span><span class="p">(</span><span class="s">&quot;The order of the conditions is:&quot;</span><span class="p">,</span> <span class="nf">paste</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">coldata</span><span class="o">$</span><span class="n">condition</span><span class="p">),</span> <span class="n">collapse</span><span class="o">=</span><span class="s">&quot;, &quot;</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## [1] &quot;The order of the conditions is: untreated, treated&quot;
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">coldata</span><span class="o">$</span><span class="n">type</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="n">coldata</span><span class="o">$</span><span class="n">type</span><span class="p">)</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nf">paste</span><span class="p">(</span><span class="s">&quot;The order of the types is:&quot;</span><span class="p">,</span> <span class="nf">paste</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">coldata</span><span class="o">$</span><span class="n">type</span><span class="p">),</span> <span class="n">collapse</span><span class="o">=</span><span class="s">&quot;, &quot;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">coldata</span><span class="o">$</span><span class="n">type</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="n">coldata</span><span class="o">$</span><span class="n">type</span><span class="p">)</span>
+<span class="nf">paste</span><span class="p">(</span><span class="s">&quot;The order of the types is:&quot;</span><span class="p">,</span> <span class="nf">paste</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">coldata</span><span class="o">$</span><span class="n">type</span><span class="p">),</span> <span class="n">collapse</span><span class="o">=</span><span class="s">&quot;, &quot;</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## [1] &quot;The order of the types is: single-read, paired-end&quot;
 </code></pre></div>
@@ -384,16 +384,16 @@ sample/condition for the DE analysis.</p>
 <p>If you want to change the order of the factor levels you can use one of
 these two. NOTE: this has to be done before running the <code>DESeq()</code>
 function.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">#coldata$condition &lt;- factor(coldata$condition, levels = c(&quot;untreated&quot;,&quot;treated&quot;))</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">coldata</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">relevel</span><span class="p">(</span><span class="n">coldata</span><span class="o">$</span><span class="n">condition</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="s">&quot;untreated&quot;</span><span class="p">)</span> <span class="c1">#Specifies &quot;untreated&quot; as the reference level</span>
+<div class="highlight"><pre><span></span><code><span class="c1">#coldata$condition &lt;- factor(coldata$condition, levels = c(&quot;untreated&quot;,&quot;treated&quot;))</span>
+<span class="n">coldata</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">relevel</span><span class="p">(</span><span class="n">coldata</span><span class="o">$</span><span class="n">condition</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="s">&quot;untreated&quot;</span><span class="p">)</span> <span class="c1">#Specifies &quot;untreated&quot; as the reference level</span>
 </code></pre></div>
 <h2 id="create-deseq-object">Create DESeq object</h2>
 <p>We create the DESeq object from the count matrix and the metadata. We
 specify that the analysis will be based on the design column.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">countData</span> <span class="o">=</span> <span class="n">cts</span><span class="p">,</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>                              <span class="n">colData</span> <span class="o">=</span> <span class="n">coldata</span><span class="p">,</span> <span class="n">rowData</span> <span class="o">=</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">cts</span><span class="p">),</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>                              <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">condition</span><span class="p">)</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">dds</span>
+<div class="highlight"><pre><span></span><code><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">countData</span> <span class="o">=</span> <span class="n">cts</span><span class="p">,</span>
+                              <span class="n">colData</span> <span class="o">=</span> <span class="n">coldata</span><span class="p">,</span> <span class="n">rowData</span> <span class="o">=</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">cts</span><span class="p">),</span>
+                              <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">condition</span><span class="p">)</span>
+<span class="n">dds</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## class: DESeqDataSet 
 ## dim: 14599 7 
@@ -408,17 +408,17 @@ specify that the analysis will be based on the design column.</p>
 <p>We can reduce the computational resources of the analysis by removing
 genes that are very hardly expressed. Additionally, you can collapse
 technical replicates using the function <code>collapseReplicates()</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">keep</span> <span class="o">&lt;-</span> <span class="nf">rowSums</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="m">10</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="n">dds</span><span class="p">[</span><span class="n">keep</span><span class="p">,]</span>
+<div class="highlight"><pre><span></span><code><span class="n">keep</span> <span class="o">&lt;-</span> <span class="nf">rowSums</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="m">10</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="n">dds</span><span class="p">[</span><span class="n">keep</span><span class="p">,]</span>
 </code></pre></div>
 <h2 id="normalization">Normalization</h2>
 <p>Finally the <code>DESeq()</code> function will normalize your read counts and
 estimate size factors per genes. This function is essential for the rest
 of the analysis.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <h1 id="session-info">Session info</h1>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">devtools</span><span class="o">::</span><span class="nf">session_info</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">devtools</span><span class="o">::</span><span class="nf">session_info</span><span class="p">()</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## ─ Session info ───────────────────────────────────────────────────────────────
 ##  setting  value

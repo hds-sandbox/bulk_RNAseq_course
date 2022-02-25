@@ -366,12 +366,12 @@ created a DESeqDataSet object from their own data following the
 <a href="https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset">instructions in the
 vignette</a>.</p>
 <h1 id="one-factor-two-levels-slide-5">One factor, two levels (slide 5)</h1>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># simulate data</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">6</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="s">&quot;treat&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">3</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># simulate data</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">6</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="s">&quot;treat&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">3</span><span class="p">))</span>
 </code></pre></div>
 <p>First we can look at our sample information:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## DataFrame with 6 rows and 1 column
 ##         condition
@@ -385,11 +385,11 @@ vignette</a>.</p>
 </code></pre></div>
 <p>Our factor of interest is <code>condition</code> and so we define our design and
 run the DESeq model fitting routine:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">condition</span> <span class="c1"># or just `~ condition`</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="c1"># equivalent to edgeR::glmFit()</span>
+<div class="highlight"><pre><span></span><code><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">condition</span> <span class="c1"># or just `~ condition`</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="c1"># equivalent to edgeR::glmFit()</span>
 </code></pre></div>
 <p>Then check what coefficients DESeq estimated:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## [1] &quot;Intercept&quot;                  &quot;condition_treat_vs_control&quot;
 </code></pre></div>
@@ -398,8 +398,8 @@ coefficient for the effect of “treat” (i.e. differences between treat
 versus control).</p>
 <p>Using the more standard syntax, we can obtain the results for the effect
 of treat as such:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;condition_treat_vs_control&quot;</span><span class="p">))</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">res1</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;condition_treat_vs_control&quot;</span><span class="p">))</span>
+<span class="n">res1</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## log2 fold change (MLE): condition_treat_vs_control effect 
 ## Wald test p-value: condition_treat_vs_control effect 
@@ -435,7 +435,7 @@ of treat as such:</p>
 worth understanding how DESeq is getting to these results by looking at
 the model’s matrix. DESeq defines the model matrix using base R
 functionality:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##         (Intercept) conditiontreat
 ## sample1           1              0
@@ -474,9 +474,9 @@ this. For any contrast of interest, we can follow three steps:</p>
     comparison we’re interested in</li>
 </ul>
 <p>Let’s see this example in action:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># get the model matrix</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">mod_mat</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># get the model matrix</span>
+<span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
+<span class="n">mod_mat</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##         (Intercept) conditiontreat
 ## sample1           1              0
@@ -491,44 +491,44 @@ this. For any contrast of interest, we can follow three steps:</p>
 ## attr(,&quot;contrasts&quot;)$condition
 ## [1] &quot;contr.treatment&quot;
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># calculate the vector of coefficient weights in the treat</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">treat</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># calculate the vector of coefficient weights in the treat</span>
+<span class="n">treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">treat</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##    (Intercept) conditiontreat 
 ##              1              1
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># calculate the vector of coefficient weights in the control</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">control</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># calculate the vector of coefficient weights in the control</span>
+<span class="n">control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">control</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##    (Intercept) conditiontreat 
 ##              1              0
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># The contrast we are interested in is the difference between treat and control</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">treat</span> <span class="o">-</span> <span class="n">control</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># The contrast we are interested in is the difference between treat and control</span>
+<span class="n">treat</span> <span class="o">-</span> <span class="n">control</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##    (Intercept) conditiontreat 
 ##              0              1
 </code></pre></div>
 <p>That last step is where we define our contrast vector, and we can give
 this directly to the <code>results</code> function:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># get the results for this contrast</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">treat</span> <span class="o">-</span> <span class="n">control</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># get the results for this contrast</span>
+<span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">treat</span> <span class="o">-</span> <span class="n">control</span><span class="p">)</span>
 </code></pre></div>
 <p>This gives us exactly the same results as before, which we can check for
 example by plotting the log-fold-changes between the first and second
 approach:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nf">plot</span><span class="p">(</span><span class="n">res1</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">plot</span><span class="p">(</span><span class="n">res1</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
 </code></pre></div>
 <p><img src="../contrast_design.Rmd/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /></p>
 <h2 id="recoding-the-design-slide-6">Recoding the design (slide 6)</h2>
 <p>Often, we can use different model matrices that essentially correspond
 to the same design. For example, we could recode our design above by
 removing the intercept:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">0</span> <span class="o">+</span> <span class="n">condition</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">0</span> <span class="o">+</span> <span class="n">condition</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## [1] &quot;conditioncontrol&quot; &quot;conditiontreat&quot;
 </code></pre></div>
@@ -537,9 +537,9 @@ expression in control and the average expression in the treat (rather
 than the <em>difference</em> between treat and control).</p>
 <p>If we use the same contrast trick as before (using the model matrix), we
 can see the result is the same:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># get the model matrix</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">mod_mat</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># get the model matrix</span>
+<span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
+<span class="n">mod_mat</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##         conditioncontrol conditiontreat
 ## sample1                1              0
@@ -554,14 +554,14 @@ can see the result is the same:</p>
 ## attr(,&quot;contrasts&quot;)$condition
 ## [1] &quot;contr.treatment&quot;
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># calculate weights for coefficients in each condition</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">),</span> <span class="p">])</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="n">control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">),</span> <span class="p">])</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># get the results for our contrast</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="n">res3</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">treat</span> <span class="o">-</span> <span class="n">control</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># calculate weights for coefficients in each condition</span>
+<span class="n">treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">),</span> <span class="p">])</span>
+<span class="n">control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">),</span> <span class="p">])</span>
+<span class="c1"># get the results for our contrast</span>
+<span class="n">res3</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">treat</span> <span class="o">-</span> <span class="n">control</span><span class="p">)</span>
 </code></pre></div>
 <p>Again, the results are essentially the same:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nf">plot</span><span class="p">(</span><span class="n">res1</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res3</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">plot</span><span class="p">(</span><span class="n">res1</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res3</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
 </code></pre></div>
 <p><img src="../contrast_design.Rmd/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /></p>
 <p>In theory there’s no difference between these two ways of defining our
@@ -569,14 +569,14 @@ design. The design with an intercept is more common, but for the
 purposes of understanding what’s going on, it’s sometimes easier to look
 at models without intercept.</p>
 <h1 id="one-factor-three-levels-slide-7">One factor, three levels (slide 7)</h1>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># simulate data</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">9</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="kc">NULL</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="s">&quot;bloodB&quot;</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">3</span><span class="p">))</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">relevel</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># simulate data</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">9</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="kc">NULL</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="s">&quot;bloodB&quot;</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">3</span><span class="p">))</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">relevel</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>First we can look at our sample information:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## DataFrame with 9 rows and 1 column
 ##         bloodtype
@@ -593,10 +593,10 @@ at models without intercept.</p>
 </code></pre></div>
 <p>As in the previous example, we only have one factor of interest,
 <code>condition</code>, and so we define our design and run the DESeq as before:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">bloodtype</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># check the coefficients estimated by DEseq</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">bloodtype</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<span class="c1"># check the coefficients estimated by DEseq</span>
+<span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## [1] &quot;Intercept&quot;                  &quot;bloodtype_bloodA_vs_bloodO&quot;
 ## [3] &quot;bloodtype_bloodB_vs_bloodO&quot;
@@ -611,21 +611,21 @@ at models without intercept.</p>
 </ul>
 <p>We could obtain the difference between bloodO and any of the two
 bloodtypes easily:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">res1_bloodA_bloodO</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;bloodtype_bloodA_vs_bloodO&quot;</span><span class="p">))</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">res1_bloodB_bloodO</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;bloodtype_bloodB_vs_bloodO&quot;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1_bloodA_bloodO</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;bloodtype_bloodA_vs_bloodO&quot;</span><span class="p">))</span>
+<span class="n">res1_bloodB_bloodO</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;bloodtype_bloodB_vs_bloodO&quot;</span><span class="p">))</span>
 </code></pre></div>
 <p>For comparing bloodA vs bloodB, however, we need to compare two
 coefficients with each other to check whether they are themselves
 different (check the slide to see the illustration). This is how the
 standard DESeq syntax would be:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">res1_bloodA_bloodB</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;bloodtype_bloodA_vs_bloodO&quot;</span><span class="p">,</span> 
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>                                                 <span class="s">&quot;bloodtype_bloodB_vs_bloodO&quot;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1_bloodA_bloodB</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;bloodtype_bloodA_vs_bloodO&quot;</span><span class="p">,</span> 
+                                                 <span class="s">&quot;bloodtype_bloodB_vs_bloodO&quot;</span><span class="p">))</span>
 </code></pre></div>
 <p>However, following our three steps detailed in the first section, we can
 define our comparisons from the design matrix:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># define the model matrix</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="n">mod_mat</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># define the model matrix</span>
+<span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
+<span class="n">mod_mat</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##         (Intercept) bloodtypebloodA bloodtypebloodB
 ## sample1           1               1               0
@@ -643,28 +643,28 @@ define our comparisons from the design matrix:</p>
 ## attr(,&quot;contrasts&quot;)$bloodtype
 ## [1] &quot;contr.treatment&quot;
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># calculate coefficient vectors for each group</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="n">bloodA</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="n">bloodB</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodB&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="n">bloodO</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span><span class="p">,</span> <span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># calculate coefficient vectors for each group</span>
+<span class="n">bloodA</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodB</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodB&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodO</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span><span class="p">,</span> <span class="p">])</span>
 </code></pre></div>
 <p>And we can now define any contrasts we want:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># obtain results for each pairwise contrast</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">res2_bloodA_bloodO</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodA</span> <span class="o">-</span> <span class="n">bloodO</span><span class="p">)</span>
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="n">res2_bloodB_bloodO</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodB</span> <span class="o">-</span> <span class="n">bloodO</span><span class="p">)</span>
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="n">res2_bloodA_bloodB</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodA</span> <span class="o">-</span> <span class="n">bloodB</span><span class="p">)</span>
-<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="c1"># plot the results from the two approaches to check that they are identical</span>
-<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="nf">plot</span><span class="p">(</span><span class="n">res1_bloodA_bloodO</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2_bloodA_bloodO</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
-<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="nf">plot</span><span class="p">(</span><span class="n">res1_bloodB_bloodO</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2_bloodB_bloodO</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
-<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="nf">plot</span><span class="p">(</span><span class="n">res1_bloodA_bloodB</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2_bloodA_bloodB</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># obtain results for each pairwise contrast</span>
+<span class="n">res2_bloodA_bloodO</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodA</span> <span class="o">-</span> <span class="n">bloodO</span><span class="p">)</span>
+<span class="n">res2_bloodB_bloodO</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodB</span> <span class="o">-</span> <span class="n">bloodO</span><span class="p">)</span>
+<span class="n">res2_bloodA_bloodB</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodA</span> <span class="o">-</span> <span class="n">bloodB</span><span class="p">)</span>
+<span class="c1"># plot the results from the two approaches to check that they are identical</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">res1_bloodA_bloodO</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2_bloodA_bloodO</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">res1_bloodB_bloodO</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2_bloodB_bloodO</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">res1_bloodA_bloodB</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2_bloodA_bloodB</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="a-and-b-against-o-slide-7">A and B against O (slide 7)</h2>
 <p>With this approach, we could even define a more unusual contrast, for
 example to find genes that differ between A and B against and O samples:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># define vector of coefficients for A_B samples</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">A_B</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">%in%</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="s">&quot;bloodB&quot;</span><span class="p">),])</span>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="c1"># Our contrast of interest is</span>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="n">A_B</span> <span class="o">-</span> <span class="n">bloodO</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># define vector of coefficients for A_B samples</span>
+<span class="n">A_B</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">%in%</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="s">&quot;bloodB&quot;</span><span class="p">),])</span>
+<span class="c1"># Our contrast of interest is</span>
+<span class="n">A_B</span> <span class="o">-</span> <span class="n">bloodO</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##     (Intercept) bloodtypebloodA bloodtypebloodB 
 ##             0.0             0.5             0.5
@@ -674,21 +674,21 @@ each of <code>bloodtypebloodA</code> and <code>bloodtypebloodB</code>. This is e
 saying that we want to consider the average of bloodA and bloodB
 expression. In fact, we could have also defined our contrast vector like
 this:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># average of bloodA and bloodB minus bloodO</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="p">(</span><span class="n">bloodA</span> <span class="o">+</span> <span class="n">bloodB</span><span class="p">)</span><span class="o">/</span><span class="m">2</span> <span class="o">-</span> <span class="n">bloodO</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># average of bloodA and bloodB minus bloodO</span>
+<span class="p">(</span><span class="n">bloodA</span> <span class="o">+</span> <span class="n">bloodB</span><span class="p">)</span><span class="o">/</span><span class="m">2</span> <span class="o">-</span> <span class="n">bloodO</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##     (Intercept) bloodtypebloodA bloodtypebloodB 
 ##             0.0             0.5             0.5
 </code></pre></div>
 <p>To obtain our results, we use the <code>results()</code> function as before:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># get the results between A_B and bloodA</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="n">res2_AB</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">A_B</span> <span class="o">-</span> <span class="n">bloodO</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># get the results between A_B and bloodA</span>
+<span class="n">res2_AB</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">A_B</span> <span class="o">-</span> <span class="n">bloodO</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="extra-why-not-define-a-new-group-in-our-design-matrix-slide-8">Extra: why not define a new group in our design matrix? (slide 8)</h2>
 <p>For this last example (A_B vs bloodO), we may have considered creating a
 new variable in our column data:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">dds</span><span class="o">$</span><span class="n">A_B</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">%in%</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="s">&quot;bloodB&quot;</span><span class="p">))</span>
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">dds</span><span class="o">$</span><span class="n">A_B</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">%in%</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="s">&quot;bloodB&quot;</span><span class="p">))</span>
+<span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## DataFrame with 9 rows and 3 columns
 ##         bloodtype sizeFactor      A_B
@@ -704,40 +704,40 @@ new variable in our column data:</p>
 ## sample9    bloodO   1.140135    FALSE
 </code></pre></div>
 <p>and then re-run DESeq with a new design:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">A_B</span>
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
-<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">A_B</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## [1] &quot;Intercept&quot;         &quot;A_B_TRUE_vs_FALSE&quot;
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">res1_A_B</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;A_B_TRUE_vs_FALSE&quot;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1_A_B</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;A_B_TRUE_vs_FALSE&quot;</span><span class="p">))</span>
 </code></pre></div>
 <p>However, in this model the gene dispersion is estimated together for
 bloodA and bloodB samples as if they were replicates of each other,
 which may result in inflated/deflated estimates. Instead, our approach
 above estimates the error within each of those groups.</p>
 <p>To check the difference one could compare the two approaches visually:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># compare the log-fold-changes between the two approaches</span>
-<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="nf">plot</span><span class="p">(</span><span class="n">res1_A_B</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2_AB</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
-<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="nf">abline</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s">&quot;brown&quot;</span><span class="p">,</span> <span class="n">lwd</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># compare the log-fold-changes between the two approaches</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">res1_A_B</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2_AB</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
+<span class="nf">abline</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s">&quot;brown&quot;</span><span class="p">,</span> <span class="n">lwd</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 </code></pre></div>
 <p><img src="../contrast_design.Rmd/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># compare the errors between the two approaches</span>
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="nf">plot</span><span class="p">(</span><span class="n">res1_A_B</span><span class="o">$</span><span class="n">lfcSE</span><span class="p">,</span> <span class="n">res2_AB</span><span class="o">$</span><span class="n">lfcSE</span><span class="p">)</span>
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="nf">abline</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s">&quot;brown&quot;</span><span class="p">,</span> <span class="n">lwd</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># compare the errors between the two approaches</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">res1_A_B</span><span class="o">$</span><span class="n">lfcSE</span><span class="p">,</span> <span class="n">res2_AB</span><span class="o">$</span><span class="n">lfcSE</span><span class="p">)</span>
+<span class="nf">abline</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s">&quot;brown&quot;</span><span class="p">,</span> <span class="n">lwd</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 </code></pre></div>
 <p><img src="../contrast_design.Rmd/unnamed-chunk-29-2.png" style="display: block; margin: auto;" /></p>
 <h1 id="two-factors-with-interaction-slide-9">Two factors with interaction (slide 9)</h1>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># simulate data</span>
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">12</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
-<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodO&quot;</span><span class="p">,</span> <span class="s">&quot;bloodA&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">6</span><span class="p">))</span>
-<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">relevel</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">)</span>
-<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="s">&quot;control&quot;</span><span class="p">),</span> <span class="m">6</span><span class="p">))</span>
-<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="n">dds</span><span class="p">[,</span> <span class="nf">order</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span><span class="p">,</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span><span class="p">)]</span>
-<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="nf">colnames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;sample&quot;</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="nf">ncol</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># simulate data</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">12</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodO&quot;</span><span class="p">,</span> <span class="s">&quot;bloodA&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">6</span><span class="p">))</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">relevel</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">)</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="s">&quot;control&quot;</span><span class="p">),</span> <span class="m">6</span><span class="p">))</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="n">dds</span><span class="p">[,</span> <span class="nf">order</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span><span class="p">,</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span><span class="p">)]</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;sample&quot;</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="nf">ncol</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
 </code></pre></div>
 <p>First let’s look at our sample information:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## DataFrame with 12 rows and 2 columns
 ##          condition bloodtype
@@ -758,9 +758,9 @@ above estimates the error within each of those groups.</p>
 with an interaction (i.e. we assume that bloodA and bloodO samples may
 respond differently to treat/control). We define our design accordingly
 and fit the model:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">bloodtype</span> <span class="o">+</span> <span class="n">condition</span> <span class="o">+</span> <span class="n">bloodtype</span><span class="o">:</span><span class="n">condition</span>
-<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
-<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">bloodtype</span> <span class="o">+</span> <span class="n">condition</span> <span class="o">+</span> <span class="n">bloodtype</span><span class="o">:</span><span class="n">condition</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## [1] &quot;Intercept&quot;                      &quot;bloodtype_bloodA_vs_bloodO&quot;    
 ## [3] &quot;condition_treat_vs_control&quot;     &quot;bloodtypebloodA.conditiontreat&quot;
@@ -768,61 +768,61 @@ and fit the model:</p>
 <p>Because we have two factors and an interaction, the number of
 comparisons we can do is larger. Using our three-step approach from the
 model matrix, we do things exactly as we’ve been doing so far:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="c1"># get the model matrix</span>
-<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
-<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="c1"># Define coefficient vectors for each condition</span>
-<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="n">bloodO_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="n">bloodO_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="n">bloodA_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="n">bloodA_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># get the model matrix</span>
+<span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
+<span class="c1"># Define coefficient vectors for each condition</span>
+<span class="n">bloodO_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodO_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodA_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodA_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
 </code></pre></div>
 <p>We are now ready to define any contrast of interest from these vectors
 (for completeness we show the equivalent syntax using the coefficient’s
 names from DESeq).</p>
 <p>bloodA vs bloodO (in the control):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodA_control</span> <span class="o">-</span> <span class="n">bloodO_control</span><span class="p">)</span>
-<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="c1"># or equivalently</span>
-<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;bloodtype_bloodA_vs_bloodO&quot;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodA_control</span> <span class="o">-</span> <span class="n">bloodO_control</span><span class="p">)</span>
+<span class="c1"># or equivalently</span>
+<span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;bloodtype_bloodA_vs_bloodO&quot;</span><span class="p">))</span>
 </code></pre></div>
 <p>bloodA vs bloodO (in the treatment):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodA_treat</span><span class="p">)</span>
-<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="c1"># or equivalently</span>
-<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodtype_bloodA_vs_bloodO&quot;</span><span class="p">,</span>
-<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>                                       <span class="s">&quot;bloodtypebloodA.conditiontreat&quot;</span><span class="p">)))</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodA_treat</span><span class="p">)</span>
+<span class="c1"># or equivalently</span>
+<span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodtype_bloodA_vs_bloodO&quot;</span><span class="p">,</span>
+                                       <span class="s">&quot;bloodtypebloodA.conditiontreat&quot;</span><span class="p">)))</span>
 </code></pre></div>
 <p>treat vs control (for bloodtypes O):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodO_control</span><span class="p">)</span>
-<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="c1"># or equivalently</span>
-<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;condition_treat_vs_control&quot;</span><span class="p">)))</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodO_control</span><span class="p">)</span>
+<span class="c1"># or equivalently</span>
+<span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;condition_treat_vs_control&quot;</span><span class="p">)))</span>
 </code></pre></div>
 <p>treat vs control (for bloodtypes A):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodA_treat</span> <span class="o">-</span> <span class="n">bloodA_control</span><span class="p">)</span>
-<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="c1"># or equivalently</span>
-<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;condition_treat_vs_control&quot;</span><span class="p">,</span> 
-<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>                                       <span class="s">&quot;bloodtypebloodA.conditiontreat&quot;</span><span class="p">)))</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodA_treat</span> <span class="o">-</span> <span class="n">bloodA_control</span><span class="p">)</span>
+<span class="c1"># or equivalently</span>
+<span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;condition_treat_vs_control&quot;</span><span class="p">,</span> 
+                                       <span class="s">&quot;bloodtypebloodA.conditiontreat&quot;</span><span class="p">)))</span>
 </code></pre></div>
 <p>Interaction between bloodtype and condition (i.e. do bloodAs and bloodOs
 respond differently to the treatment?):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> 
-<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>                <span class="n">contrast</span> <span class="o">=</span> <span class="p">(</span><span class="n">bloodA_treat</span> <span class="o">-</span> <span class="n">bloodA_control</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodO_control</span><span class="p">))</span>
-<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="c1"># or equivalently</span>
-<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;bloodtypebloodA.conditiontreat&quot;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> 
+                <span class="n">contrast</span> <span class="o">=</span> <span class="p">(</span><span class="n">bloodA_treat</span> <span class="o">-</span> <span class="n">bloodA_control</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodO_control</span><span class="p">))</span>
+<span class="c1"># or equivalently</span>
+<span class="n">res2</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;bloodtypebloodA.conditiontreat&quot;</span><span class="p">))</span>
 </code></pre></div>
 <p>In conclusion, although we can define these contrasts using DESeq
 coefficient names, it is somewhat more explicit (and perhaps intuitive?)
 what it is we’re comparing using matrix-based contrasts.</p>
 <h1 id="three-factors-with-nesting-slide-10">Three factors, with nesting (slide 10)</h1>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="c1"># simulate data</span>
-<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">24</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
-<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">12</span><span class="p">))</span>
-<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">relevel</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">)</span>
-<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="n">dds</span><span class="o">$</span><span class="n">patient</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="kc">LETTERS</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">],</span> <span class="n">each</span> <span class="o">=</span> <span class="m">6</span><span class="p">))</span>
-<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="s">&quot;control&quot;</span><span class="p">),</span> <span class="m">12</span><span class="p">))</span>
-<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="n">dds</span><span class="p">[,</span> <span class="nf">order</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span><span class="p">,</span> <span class="n">dds</span><span class="o">$</span><span class="n">patient</span><span class="p">,</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span><span class="p">)]</span>
-<a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="nf">colnames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;sample&quot;</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="nf">ncol</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># simulate data</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">24</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">12</span><span class="p">))</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">relevel</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">)</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">patient</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="kc">LETTERS</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">],</span> <span class="n">each</span> <span class="o">=</span> <span class="m">6</span><span class="p">))</span>
+<span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="s">&quot;control&quot;</span><span class="p">),</span> <span class="m">12</span><span class="p">))</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="n">dds</span><span class="p">[,</span> <span class="nf">order</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span><span class="p">,</span> <span class="n">dds</span><span class="o">$</span><span class="n">patient</span><span class="p">,</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span><span class="p">)]</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;sample&quot;</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="nf">ncol</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
 </code></pre></div>
 <p>First let’s look at our sample information:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## DataFrame with 24 rows and 3 columns
 ##          condition bloodtype  patient
@@ -846,9 +846,9 @@ way to think about it is that bloodtype is redundant with patient).
 Because of this, we will define our design without including
 “bloodtype”, although later we can compare groups of patient of the same
 bloodtype with each other.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">patient</span> <span class="o">+</span> <span class="n">condition</span> <span class="o">+</span> <span class="n">patient</span><span class="o">:</span><span class="n">condition</span>
-<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
-<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">patient</span> <span class="o">+</span> <span class="n">condition</span> <span class="o">+</span> <span class="n">patient</span><span class="o">:</span><span class="n">condition</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## [1] &quot;Intercept&quot;                  &quot;patient_B_vs_A&quot;            
 ## [3] &quot;patient_C_vs_A&quot;             &quot;patient_D_vs_A&quot;            
@@ -860,19 +860,19 @@ same bloodtype using DESeq’s coefficient names (although still
 possible). But using the model matrix approach, we do it in exactly the
 same way we have done so far!</p>
 <p>Again, let’s define our groups from the model matrix:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="c1"># get the model matrix</span>
-<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
-<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="c1"># define coefficient vectors for each group</span>
-<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="n">bloodO_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="n">bloodA_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="n">bloodO_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a><span class="n">bloodA_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># get the model matrix</span>
+<span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
+<span class="c1"># define coefficient vectors for each group</span>
+<span class="n">bloodO_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodA_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodO_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodA_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
 </code></pre></div>
 <p>It’s worth looking at some of these vectors, to see that they are
 composed of weighted coefficients from different patient. For example,
 for “bloodO” patient, we have equal contribution from “patientC” and
 “patientD”:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="n">bloodO_control</span>
+<div class="highlight"><pre><span></span><code><span class="n">bloodO_control</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##             (Intercept)                patientB                patientC 
 ##                     1.0                     0.0                     0.5 
@@ -883,7 +883,7 @@ for “bloodO” patient, we have equal contribution from “patientC” and
 </code></pre></div>
 <p>And so, when we define our contrasts, each patient will be correctly
 weighted:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodO_control</span>
+<div class="highlight"><pre><span></span><code><span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodO_control</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##             (Intercept)                patientB                patientC 
 ##                     0.0                     0.0                     0.0 
@@ -896,31 +896,31 @@ weighted:</p>
 previous section (for completeness, we also give the contrasts using
 DESeq’s named coefficients).</p>
 <p>bloodA vs bloodO (in the control):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="n">res1_bloodA_bloodO_control</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodA_control</span> <span class="o">-</span> <span class="n">bloodO_control</span><span class="p">)</span>
-<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="c1"># or equivalently</span>
-<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="n">res2_bloodA_bloodO_control</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> 
-<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a>                                 <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;patient_B_vs_A&quot;</span><span class="p">),</span> <span class="c1"># Blood type A</span>
-<a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a>                                                 <span class="nf">c</span><span class="p">(</span><span class="s">&quot;patient_C_vs_A&quot;</span><span class="p">,</span> <span class="c1"># Blood type O</span>
-<a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a>                                                   <span class="s">&quot;patient_D_vs_A&quot;</span><span class="p">)))</span> <span class="c1"># Blood type O</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1_bloodA_bloodO_control</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodA_control</span> <span class="o">-</span> <span class="n">bloodO_control</span><span class="p">)</span>
+<span class="c1"># or equivalently</span>
+<span class="n">res2_bloodA_bloodO_control</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> 
+                                 <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;patient_B_vs_A&quot;</span><span class="p">),</span> <span class="c1"># Blood type A</span>
+                                                 <span class="nf">c</span><span class="p">(</span><span class="s">&quot;patient_C_vs_A&quot;</span><span class="p">,</span> <span class="c1"># Blood type O</span>
+                                                   <span class="s">&quot;patient_D_vs_A&quot;</span><span class="p">)))</span> <span class="c1"># Blood type O</span>
 </code></pre></div>
 <p>bloodA vs bloodO (in the treat):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="n">res1_bloodO_bloodA_treat</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodA_treat</span><span class="p">)</span>
-<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="c1"># or equivalently</span>
-<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="n">res2_bloodO_bloodA_treat</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> 
-<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>                           <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;patient_B_vs_A&quot;</span><span class="p">,</span> <span class="c1"># Blood type A</span>
-<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a>                                             <span class="s">&quot;patientB.conditiontreat&quot;</span><span class="p">),</span> <span class="c1"># Interaction of patient B with treatment</span>
-<a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a>                                           <span class="nf">c</span><span class="p">(</span><span class="s">&quot;patient_C_vs_A&quot;</span><span class="p">,</span> <span class="c1"># Blood type O</span>
-<a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a>                                             <span class="s">&quot;patient_D_vs_A&quot;</span><span class="p">,</span> <span class="c1"># Blood type O</span>
-<a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a>                                             <span class="s">&quot;patientC.conditiontreat&quot;</span><span class="p">,</span> <span class="c1"># Interaction of patient C with treatment</span>
-<a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a>                                             <span class="s">&quot;patientD.conditiontreat&quot;</span><span class="p">)))</span> <span class="c1"># Interaction of patient B with treatment</span>
+<div class="highlight"><pre><span></span><code><span class="n">res1_bloodO_bloodA_treat</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodA_treat</span><span class="p">)</span>
+<span class="c1"># or equivalently</span>
+<span class="n">res2_bloodO_bloodA_treat</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> 
+                           <span class="n">contrast</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;patient_B_vs_A&quot;</span><span class="p">,</span> <span class="c1"># Blood type A</span>
+                                             <span class="s">&quot;patientB.conditiontreat&quot;</span><span class="p">),</span> <span class="c1"># Interaction of patient B with treatment</span>
+                                           <span class="nf">c</span><span class="p">(</span><span class="s">&quot;patient_C_vs_A&quot;</span><span class="p">,</span> <span class="c1"># Blood type O</span>
+                                             <span class="s">&quot;patient_D_vs_A&quot;</span><span class="p">,</span> <span class="c1"># Blood type O</span>
+                                             <span class="s">&quot;patientC.conditiontreat&quot;</span><span class="p">,</span> <span class="c1"># Interaction of patient C with treatment</span>
+                                             <span class="s">&quot;patientD.conditiontreat&quot;</span><span class="p">)))</span> <span class="c1"># Interaction of patient B with treatment</span>
 </code></pre></div>
 <p>And so on, for other contrasts of interest…</p>
 <h2 id="extra-imbalanced-design">Extra: imbalanced design</h2>
 <p>Let’s take our previous example, but drop one of the samples from the
 data, so that we only have 2 replicates for it.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="n">dds</span><span class="p">[,</span> <span class="m">-1</span><span class="p">]</span> <span class="c1"># drop one of the patient C samples</span>
-<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
-<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">dds</span> <span class="o">&lt;-</span> <span class="n">dds</span><span class="p">[,</span> <span class="m">-1</span><span class="p">]</span> <span class="c1"># drop one of the patient C samples</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## [1] &quot;Intercept&quot;                  &quot;patient_B_vs_A&quot;            
 ## [3] &quot;patient_C_vs_A&quot;             &quot;patient_D_vs_A&quot;            
@@ -928,8 +928,8 @@ data, so that we only have 2 replicates for it.</p>
 ## [7] &quot;patientC.conditiontreat&quot;    &quot;patientD.conditiontreat&quot;
 </code></pre></div>
 <p>Define our model matrix and coefficient vectors:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
-<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="n">mod_mat</span>
+<div class="highlight"><pre><span></span><code><span class="n">mod_mat</span> <span class="o">&lt;-</span> <span class="nf">model.matrix</span><span class="p">(</span><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">),</span> <span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
+<span class="n">mod_mat</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##          (Intercept) patientB patientC patientD conditiontreat
 ## sample2            1        0        1        0              0
@@ -1012,14 +1012,14 @@ data, so that we only have 2 replicates for it.</p>
 ## attr(,&quot;contrasts&quot;)$condition
 ## [1] &quot;contr.treatment&quot;
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="c1"># define coefficient vectors for each group</span>
-<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="n">bloodO_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a><span class="n">bloodA_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="n">bloodO_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
-<a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a><span class="n">bloodA_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># define coefficient vectors for each group</span>
+<span class="n">bloodO_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodA_control</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodO_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodO&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
+<span class="n">bloodA_treat</span> <span class="o">&lt;-</span> <span class="nf">colMeans</span><span class="p">(</span><span class="n">mod_mat</span><span class="p">[</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">==</span> <span class="s">&quot;bloodA&quot;</span> <span class="o">&amp;</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">==</span> <span class="s">&quot;treat&quot;</span><span class="p">,</span> <span class="p">])</span>
 </code></pre></div>
 <p>Now let’s check what happens to the bloodO_control group:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="n">bloodO_control</span>
+<div class="highlight"><pre><span></span><code><span class="n">bloodO_control</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##             (Intercept)                patientB                patientC 
 ##                     1.0                     0.0                     0.4 
@@ -1038,8 +1038,8 @@ as 0.4 x patientC + 0.6 x patientD.</p>
 any of this, the weights come from our <code>colMeans()</code> call automatically.
 And now, any contrasts that we make will take these weights into
 account:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="c1"># bloodA vs bloodO (in the control)</span>
-<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="n">bloodA_control</span> <span class="o">-</span> <span class="n">bloodO_control</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># bloodA vs bloodO (in the control)</span>
+<span class="n">bloodA_control</span> <span class="o">-</span> <span class="n">bloodO_control</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##             (Intercept)                patientB                patientC 
 ##                     0.0                     0.5                    -0.4 
@@ -1048,8 +1048,8 @@ account:</p>
 ## patientC:conditiontreat patientD:conditiontreat 
 ##                     0.0                     0.0
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="c1"># interaction</span>
-<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="p">(</span><span class="n">bloodA_treat</span> <span class="o">-</span> <span class="n">bloodA_control</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodO_control</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># interaction</span>
+<span class="p">(</span><span class="n">bloodA_treat</span> <span class="o">-</span> <span class="n">bloodA_control</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">bloodO_treat</span> <span class="o">-</span> <span class="n">bloodO_control</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>##             (Intercept)                patientB                patientC 
 ##                     0.0                     0.0                    -0.1 
