@@ -380,10 +380,10 @@
 and use discrete distributions After checking that our samples are well
 correlated within conditions, we can proceed to test for Differantially
 Expressed Genes using the <em>results()</em> function.</p>
-<pre><code class="language-r">res &lt;- results(dds)
-head(data.frame(res))
-</code></pre>
-<pre><code>##                baseMean log2FoldChange     lfcSE        stat     pvalue
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nf">head</span><span class="p">(</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>##                baseMean log2FoldChange     lfcSE        stat     pvalue
 ## FBgn0000008   95.144292    0.002276441 0.2237287  0.01017501 0.99188166
 ## FBgn0000014    1.056523   -0.495120386 2.1431858 -0.23102075 0.81729868
 ## FBgn0000017 4352.553569   -0.239918944 0.1263369 -1.89904085 0.05755911
@@ -397,18 +397,18 @@ head(data.frame(res))
 ## FBgn0000018 0.8268337
 ## FBgn0000024 0.9435011
 ## FBgn0000032 0.8542018
-</code></pre>
+</code></pre></div>
 <p>Information about the results columns can be retrieved using the
 following snippet:</p>
-<pre><code class="language-r">mcols(res)$description
-</code></pre>
-<pre><code>## [1] "mean of normalized counts for all samples"             
-## [2] "log2 fold change (MLE): condition treated vs untreated"
-## [3] "standard error: condition treated vs untreated"        
-## [4] "Wald statistic: condition treated vs untreated"        
-## [5] "Wald test p-value: condition treated vs untreated"     
-## [6] "BH adjusted p-values"
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nf">mcols</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">$</span><span class="n">description</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>## [1] &quot;mean of normalized counts for all samples&quot;             
+## [2] &quot;log2 fold change (MLE): condition treated vs untreated&quot;
+## [3] &quot;standard error: condition treated vs untreated&quot;        
+## [4] &quot;Wald statistic: condition treated vs untreated&quot;        
+## [5] &quot;Wald test p-value: condition treated vs untreated&quot;     
+## [6] &quot;BH adjusted p-values&quot;
+</code></pre></div>
 <p>In this example, we only have two conditions: “untreated” and “treated”,
 so there is no need to specify which comparison we would like to make.
 If your experiment contains more than two conditions, there are
@@ -416,10 +416,10 @@ different ways of specifying which comparison you would like to make.</p>
 <p>First, the “contrast” argument will take a vector that specifies the
 metadata and the order of the comparison. In this case, you can swap the
 order of the condition levels.</p>
-<pre><code class="language-r">res &lt;- results(dds, contrast=c(&quot;condition&quot;,&quot;untreated&quot;,&quot;treated&quot;))
-head(data.frame(res))
-</code></pre>
-<pre><code>##                baseMean log2FoldChange     lfcSE        stat     pvalue
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;condition&quot;</span><span class="p">,</span><span class="s">&quot;untreated&quot;</span><span class="p">,</span><span class="s">&quot;treated&quot;</span><span class="p">))</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nf">head</span><span class="p">(</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>##                baseMean log2FoldChange     lfcSE        stat     pvalue
 ## FBgn0000008   95.144292   -0.002276441 0.2237287 -0.01017501 0.99188166
 ## FBgn0000014    1.056523    0.495120386 2.1431858  0.23102075 0.81729868
 ## FBgn0000017 4352.553569    0.239918944 0.1263369  1.89904085 0.05755911
@@ -433,18 +433,18 @@ head(data.frame(res))
 ## FBgn0000018 0.8268337
 ## FBgn0000024 0.9435011
 ## FBgn0000032 0.8542018
-</code></pre>
+</code></pre></div>
 <p>Second, “name” argument will use the results of the <em>resultsNames()</em>
 function. This function creates possible combinations of conditions, but
 always using the reference condition for the comparison.</p>
-<pre><code class="language-r">resultsNames(dds)
-</code></pre>
-<pre><code>## [1] "Intercept"                      "condition_treated_vs_untreated"
-</code></pre>
-<pre><code class="language-r">res &lt;- results(dds, name=&quot;condition_treated_vs_untreated&quot;)
-head(data.frame(res))
-</code></pre>
-<pre><code>##                baseMean log2FoldChange     lfcSE        stat     pvalue
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>## [1] &quot;Intercept&quot;                      &quot;condition_treated_vs_untreated&quot;
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;condition_treated_vs_untreated&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nf">head</span><span class="p">(</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>##                baseMean log2FoldChange     lfcSE        stat     pvalue
 ## FBgn0000008   95.144292    0.002276441 0.2237287  0.01017501 0.99188166
 ## FBgn0000014    1.056523   -0.495120386 2.1431858 -0.23102075 0.81729868
 ## FBgn0000017 4352.553569   -0.239918944 0.1263369 -1.89904085 0.05755911
@@ -458,7 +458,7 @@ head(data.frame(res))
 ## FBgn0000018 0.8268337
 ## FBgn0000024 0.9435011
 ## FBgn0000032 0.8542018
-</code></pre>
+</code></pre></div>
 <p>The notebook <em>contrast_design.Rmd</em> contains information about how to
 understand and define contrasts using model matrices, which might be a
 more intuitive way of comparing samples or conditions.</p>
@@ -469,118 +469,118 @@ adjusted p-value thresholds.</p>
 <p>There is a chance that the adjusted p-value is NA. If you will work on
 this results, it might be helpful to change all NA to an adjusted
 p-value of 1.</p>
-<pre><code class="language-r">res$padj[is.na(res$padj)] &lt;- 1
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">res</span><span class="o">$</span><span class="n">padj</span><span class="p">[</span><span class="nf">is.na</span><span class="p">(</span><span class="n">res</span><span class="o">$</span><span class="n">padj</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="m">1</span>
+</code></pre></div>
 <p>We can have a quick look of the adjusted p-value results by using the
 following custom function:</p>
-<pre><code class="language-r">results_summary &lt;- function(x, alpha = 0.05, LFC = 1) {
-  ngenes &lt;- nrow(x)
-  signif &lt;- sum(x$padj &lt; alpha, na.rm = T)
-  up &lt;- sum(x$padj &lt; alpha &amp; x$log2FoldChange &gt; LFC, na.rm = T)
-  down &lt;- sum(x$padj &lt; alpha &amp; x$log2FoldChange &lt; -LFC, na.rm = T)
-  results &lt;- c(paste0(&quot;Number of genes: &quot;, ngenes),
-    paste0(&quot;Number of genes with adjusted p-value &lt; &quot;,alpha,&quot;: &quot;, signif, &quot; (&quot;, round((signif/ngenes)*100,digits = 2),&quot;%)&quot;),
-    &quot;  Of those:&quot;,
-    paste0(&quot;    with LFC &lt; &quot;, -LFC, &quot;: &quot;, down, &quot; (&quot;, round((down/ngenes)*100,digits = 2),&quot;%)&quot;),
-    paste0(&quot;    with LFC &gt; &quot;, LFC, &quot;: &quot;, up, &quot; (&quot;, round((up/ngenes)*100,digits = 2),&quot;%)&quot;))
-  writeLines(paste(results, collapse = &quot;\n&quot;))
-  return(paste(results, collapse = &quot;\n&quot;))
-}
-</code></pre>
-<pre><code class="language-r">res_summary &lt;- results_summary(res, alpha = 0.05, LFC = 1)
-</code></pre>
-<pre><code>## Number of genes: 9921
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">results_summary</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="m">0.05</span><span class="p">,</span> <span class="n">LFC</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  <span class="n">ngenes</span> <span class="o">&lt;-</span> <span class="nf">nrow</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  <span class="n">signif</span> <span class="o">&lt;-</span> <span class="nf">sum</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">padj</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">na.rm</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  <span class="n">up</span> <span class="o">&lt;-</span> <span class="nf">sum</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">padj</span> <span class="o">&lt;</span> <span class="n">alpha</span> <span class="o">&amp;</span> <span class="n">x</span><span class="o">$</span><span class="n">log2FoldChange</span> <span class="o">&gt;</span> <span class="n">LFC</span><span class="p">,</span> <span class="n">na.rm</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  <span class="n">down</span> <span class="o">&lt;-</span> <span class="nf">sum</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">padj</span> <span class="o">&lt;</span> <span class="n">alpha</span> <span class="o">&amp;</span> <span class="n">x</span><span class="o">$</span><span class="n">log2FoldChange</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">LFC</span><span class="p">,</span> <span class="n">na.rm</span> <span class="o">=</span> <span class="bp">T</span><span class="p">)</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  <span class="n">results</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Number of genes: &quot;</span><span class="p">,</span> <span class="n">ngenes</span><span class="p">),</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Number of genes with adjusted p-value &lt; &quot;</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="s">&quot;: &quot;</span><span class="p">,</span> <span class="n">signif</span><span class="p">,</span> <span class="s">&quot; (&quot;</span><span class="p">,</span> <span class="nf">round</span><span class="p">((</span><span class="n">signif</span><span class="o">/</span><span class="n">ngenes</span><span class="p">)</span><span class="o">*</span><span class="m">100</span><span class="p">,</span><span class="n">digits</span> <span class="o">=</span> <span class="m">2</span><span class="p">),</span><span class="s">&quot;%)&quot;</span><span class="p">),</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="s">&quot;  Of those:&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;    with LFC &lt; &quot;</span><span class="p">,</span> <span class="o">-</span><span class="n">LFC</span><span class="p">,</span> <span class="s">&quot;: &quot;</span><span class="p">,</span> <span class="n">down</span><span class="p">,</span> <span class="s">&quot; (&quot;</span><span class="p">,</span> <span class="nf">round</span><span class="p">((</span><span class="n">down</span><span class="o">/</span><span class="n">ngenes</span><span class="p">)</span><span class="o">*</span><span class="m">100</span><span class="p">,</span><span class="n">digits</span> <span class="o">=</span> <span class="m">2</span><span class="p">),</span><span class="s">&quot;%)&quot;</span><span class="p">),</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;    with LFC &gt; &quot;</span><span class="p">,</span> <span class="n">LFC</span><span class="p">,</span> <span class="s">&quot;: &quot;</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="s">&quot; (&quot;</span><span class="p">,</span> <span class="nf">round</span><span class="p">((</span><span class="n">up</span><span class="o">/</span><span class="n">ngenes</span><span class="p">)</span><span class="o">*</span><span class="m">100</span><span class="p">,</span><span class="n">digits</span> <span class="o">=</span> <span class="m">2</span><span class="p">),</span><span class="s">&quot;%)&quot;</span><span class="p">))</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>  <span class="nf">writeLines</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">collapse</span> <span class="o">=</span> <span class="s">&quot;\n&quot;</span><span class="p">))</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>  <span class="nf">return</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">collapse</span> <span class="o">=</span> <span class="s">&quot;\n&quot;</span><span class="p">))</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">res_summary</span> <span class="o">&lt;-</span> <span class="nf">results_summary</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="m">0.05</span><span class="p">,</span> <span class="n">LFC</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>## Number of genes: 9921
 ## Number of genes with adjusted p-value &lt; 0.05: 841 (8.48%)
 ##   Of those:
 ##     with LFC &lt; -1: 107 (1.08%)
 ##     with LFC &gt; 1: 115 (1.16%)
-</code></pre>
+</code></pre></div>
 <h3 id="save-significant-results">Save significant results</h3>
 <p>Extracting results based on adjusted p-value and LFC. this way we will
 get a filteres table with genes with LFC > 1 or LFC \&lt; -1 with an
 adjusted p-value of 0.05</p>
-<pre><code class="language-r">LFC &lt;- 1
-adj_pvalue &lt;- 0.05
-
-sig_res &lt;- res[res$padj &lt; adj_pvalue &amp; abs(res$log2FoldChange) &gt; LFC,]
-#write.table(x = sig_res, &quot;./significant_results.tsv&quot;, quote = F, col.names = T, row.names = T, sep = &quot;\t&quot;)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">LFC</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">adj_pvalue</span> <span class="o">&lt;-</span> <span class="m">0.05</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">sig_res</span> <span class="o">&lt;-</span> <span class="n">res</span><span class="p">[</span><span class="n">res</span><span class="o">$</span><span class="n">padj</span> <span class="o">&lt;</span> <span class="n">adj_pvalue</span> <span class="o">&amp;</span> <span class="nf">abs</span><span class="p">(</span><span class="n">res</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">LFC</span><span class="p">,]</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1">#write.table(x = sig_res, &quot;./significant_results.tsv&quot;, quote = F, col.names = T, row.names = T, sep = &quot;\t&quot;)</span>
+</code></pre></div>
 <h1 id="dea-visualizations">DEA visualizations</h1>
 <h2 id="count-matrix-heatmaps">Count matrix heatmaps</h2>
 <p>We can visualize different heatmaps depending on what we are interested
 on. We can see the top most expressed genes, the top most variable genes
 and the DE genes.</p>
 <h3 id="top-most-variable-genes">Top most variable genes</h3>
-<pre><code class="language-r">ntop &lt;- 20
-select &lt;- order(rowSds(counts(dds,normalized=TRUE)),
-                decreasing=TRUE)[1:ntop]
-df &lt;- as.data.frame(colData(dds)[,c(&quot;condition&quot;,&quot;type&quot;)])
-pheatmap(assay(vsd)[select,], cluster_rows=T, show_rownames=FALSE, scale = &quot;row&quot;,
-         cluster_cols=FALSE, annotation_col=df)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">ntop</span> <span class="o">&lt;-</span> <span class="m">20</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">select</span> <span class="o">&lt;-</span> <span class="nf">order</span><span class="p">(</span><span class="nf">rowSds</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span><span class="n">normalized</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)),</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>                <span class="n">decreasing</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="n">ntop</span><span class="p">]</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">df</span> <span class="o">&lt;-</span> <span class="nf">as.data.frame</span><span class="p">(</span><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)[,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;condition&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">)])</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nf">pheatmap</span><span class="p">(</span><span class="nf">assay</span><span class="p">(</span><span class="n">vsd</span><span class="p">)[</span><span class="n">select</span><span class="p">,],</span> <span class="n">cluster_rows</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">show_rownames</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="s">&quot;row&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>         <span class="n">cluster_cols</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> <span class="n">annotation_col</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
+</code></pre></div>
 <p><img src="../DEA.Rmd/most_var_genes_heatmap-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="top-expressed-genes">Top expressed genes</h3>
-<pre><code class="language-r">ntop &lt;- 20
-select &lt;- order(rowMeans(counts(dds,normalized=TRUE)),
-                decreasing=TRUE)[1:ntop]
-df &lt;- as.data.frame(colData(dds)[,c(&quot;condition&quot;,&quot;type&quot;)])
-pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
-         cluster_cols=FALSE, annotation_col=df)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">ntop</span> <span class="o">&lt;-</span> <span class="m">20</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">select</span> <span class="o">&lt;-</span> <span class="nf">order</span><span class="p">(</span><span class="nf">rowMeans</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span><span class="n">normalized</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)),</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>                <span class="n">decreasing</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="n">ntop</span><span class="p">]</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">df</span> <span class="o">&lt;-</span> <span class="nf">as.data.frame</span><span class="p">(</span><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)[,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;condition&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">)])</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="nf">pheatmap</span><span class="p">(</span><span class="nf">assay</span><span class="p">(</span><span class="n">vsd</span><span class="p">)[</span><span class="n">select</span><span class="p">,],</span> <span class="n">cluster_rows</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> <span class="n">show_rownames</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>         <span class="n">cluster_cols</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> <span class="n">annotation_col</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
+</code></pre></div>
 <p><img src="../DEA.Rmd/top_exp_genes_heatmap-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="differentially-expressed-genes">Differentially expressed genes</h3>
-<pre><code class="language-r">select &lt;- rownames(sig_res)
-df &lt;- as.data.frame(colData(dds)[,c(&quot;condition&quot;,&quot;type&quot;)])
-pheatmap(assay(vsd)[rownames(vsd) %in% select,], cluster_rows=TRUE, show_rownames=FALSE, scale = &quot;row&quot;,
-         cluster_cols=FALSE, annotation_col=df)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">select</span> <span class="o">&lt;-</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">sig_res</span><span class="p">)</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">df</span> <span class="o">&lt;-</span> <span class="nf">as.data.frame</span><span class="p">(</span><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)[,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;condition&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">)])</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nf">pheatmap</span><span class="p">(</span><span class="nf">assay</span><span class="p">(</span><span class="n">vsd</span><span class="p">)[</span><span class="nf">rownames</span><span class="p">(</span><span class="n">vsd</span><span class="p">)</span> <span class="o">%in%</span> <span class="n">select</span><span class="p">,],</span> <span class="n">cluster_rows</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> <span class="n">show_rownames</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="s">&quot;row&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>         <span class="n">cluster_cols</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> <span class="n">annotation_col</span><span class="o">=</span><span class="n">df</span><span class="p">)</span>
+</code></pre></div>
 <p><img src="../DEA.Rmd/DEA_heatmap-1.png" style="display: block; margin: auto;" /></p>
 <h2 id="fold-change-plots">Fold change plots</h2>
 <p>For fold change plots, it is useful to shrunk log2 fold changes, which
 removes the noise associated with log2 fold changes from low count genes
 without requiring arbitrary filtering thresholds.</p>
-<pre><code class="language-r">resLFC &lt;- lfcShrink(dds, coef=&quot;condition_treated_vs_untreated&quot;, type=&quot;apeglm&quot;)
-resLFC$padj[is.na(resLFC$padj)] &lt;- 1
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">resLFC</span> <span class="o">&lt;-</span> <span class="nf">lfcShrink</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">coef</span><span class="o">=</span><span class="s">&quot;condition_treated_vs_untreated&quot;</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;apeglm&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">resLFC</span><span class="o">$</span><span class="n">padj</span><span class="p">[</span><span class="nf">is.na</span><span class="p">(</span><span class="n">resLFC</span><span class="o">$</span><span class="n">padj</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="m">1</span>
+</code></pre></div>
 <h3 id="ma-plot">MA plot</h3>
-<pre><code class="language-r">alpha &lt;- 0.05
-
-ggplot(data.frame(resLFC)) + theme_bw() + 
-  labs(title = &quot;MA plot&quot;, subtitle = res_summary,
-       color = paste0(&quot;Adjusted p-value &lt; &quot;,alpha)) +
-  geom_point(aes(x = log10(baseMean), y = log2FoldChange, 
-                 color = factor((padj &lt; alpha), levels = c(&quot;TRUE&quot;,&quot;FALSE&quot;))), size = 1)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">alpha</span> <span class="o">&lt;-</span> <span class="m">0.05</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nf">ggplot</span><span class="p">(</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">resLFC</span><span class="p">))</span> <span class="o">+</span> <span class="nf">theme_bw</span><span class="p">()</span> <span class="o">+</span> 
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;MA plot&quot;</span><span class="p">,</span> <span class="n">subtitle</span> <span class="o">=</span> <span class="n">res_summary</span><span class="p">,</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>       <span class="n">color</span> <span class="o">=</span> <span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Adjusted p-value &lt; &quot;</span><span class="p">,</span><span class="n">alpha</span><span class="p">))</span> <span class="o">+</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>  <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="nf">log10</span><span class="p">(</span><span class="n">baseMean</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> 
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>                 <span class="n">color</span> <span class="o">=</span> <span class="nf">factor</span><span class="p">((</span><span class="n">padj</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">),</span> <span class="n">levels</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;TRUE&quot;</span><span class="p">,</span><span class="s">&quot;FALSE&quot;</span><span class="p">))),</span> <span class="n">size</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+</code></pre></div>
 <p><img src="../DEA.Rmd/MA_plot-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="volcano-plot">Volcano plot</h3>
-<pre><code class="language-r">alpha = 0.05
-LFC = 1
-ggplot(data.frame(resLFC)) + theme_bw() + 
-  labs(color =&quot;Significant genes&quot;, title = &quot;Volcano plot&quot;, subtitle = res_summary) + 
-  geom_hline(yintercept = -log10(alpha), linetype = &quot;dashed&quot;) + 
-  geom_vline(xintercept = c(-LFC,LFC), linetype = &quot;dashed&quot;) + 
-  geom_point(aes(x = log2FoldChange, y = -log10(padj),
-                 color = factor((padj &lt; alpha &amp; abs(log2FoldChange) &gt; LFC), levels = c(&quot;TRUE&quot;,&quot;FALSE&quot;))), size = 1)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">alpha</span> <span class="o">=</span> <span class="m">0.05</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">LFC</span> <span class="o">=</span> <span class="m">1</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nf">ggplot</span><span class="p">(</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">resLFC</span><span class="p">))</span> <span class="o">+</span> <span class="nf">theme_bw</span><span class="p">()</span> <span class="o">+</span> 
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>  <span class="nf">labs</span><span class="p">(</span><span class="n">color</span> <span class="o">=</span><span class="s">&quot;Significant genes&quot;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Volcano plot&quot;</span><span class="p">,</span> <span class="n">subtitle</span> <span class="o">=</span> <span class="n">res_summary</span><span class="p">)</span> <span class="o">+</span> 
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>  <span class="nf">geom_hline</span><span class="p">(</span><span class="n">yintercept</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">linetype</span> <span class="o">=</span> <span class="s">&quot;dashed&quot;</span><span class="p">)</span> <span class="o">+</span> 
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>  <span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="o">-</span><span class="n">LFC</span><span class="p">,</span><span class="n">LFC</span><span class="p">),</span> <span class="n">linetype</span> <span class="o">=</span> <span class="s">&quot;dashed&quot;</span><span class="p">)</span> <span class="o">+</span> 
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>  <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">),</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>                 <span class="n">color</span> <span class="o">=</span> <span class="nf">factor</span><span class="p">((</span><span class="n">padj</span> <span class="o">&lt;</span> <span class="n">alpha</span> <span class="o">&amp;</span> <span class="nf">abs</span><span class="p">(</span><span class="n">log2FoldChange</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">LFC</span><span class="p">),</span> <span class="n">levels</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;TRUE&quot;</span><span class="p">,</span><span class="s">&quot;FALSE&quot;</span><span class="p">))),</span> <span class="n">size</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+</code></pre></div>
 <p><img src="../DEA.Rmd/volcano_plot-1.png" style="display: block; margin: auto;" /></p>
 <h3 id="glimma-plots">Glimma plots</h3>
 <p>We can visualize our results interactively using the <code>glimmaMA()</code> and
 <code>glimmaVolcano()</code> functions.</p>
-<pre><code class="language-r">glimma_MA &lt;- glimmaMA(dds, groups = dds$condition)
-glimma_Volcano &lt;- glimmaVolcano(dds, groups = dds$condition)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">glimma_MA</span> <span class="o">&lt;-</span> <span class="nf">glimmaMA</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span><span class="p">)</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">glimma_Volcano</span> <span class="o">&lt;-</span> <span class="nf">glimmaVolcano</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span><span class="p">)</span>
+</code></pre></div>
 <p>Save your interactive plots using the <code>htmlwidgets::saveWidget()</code>
 function.</p>
-<pre><code class="language-r">htmlwidgets::saveWidget(glimmaMA(dds, groups = dds$condition), &quot;ma-plot.html&quot;)
-htmlwidgets::saveWidget(glimmaVolcano(dds, groups = dds$condition), &quot;volcano-plot.html&quot;)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">htmlwidgets</span><span class="o">::</span><span class="nf">saveWidget</span><span class="p">(</span><span class="nf">glimmaMA</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span><span class="p">),</span> <span class="s">&quot;ma-plot.html&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">htmlwidgets</span><span class="o">::</span><span class="nf">saveWidget</span><span class="p">(</span><span class="nf">glimmaVolcano</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">dds</span><span class="o">$</span><span class="n">condition</span><span class="p">),</span> <span class="s">&quot;volcano-plot.html&quot;</span><span class="p">)</span>
+</code></pre></div>
 <h1 id="session-info">Session info</h1>
 <p>Finally, we create a <code>session_info()</code> table that will allow anyone to
 check what versions of R and packages are we using for reproducibility
 purposes.</p>
-<pre><code class="language-r">devtools::session_info()
-</code></pre>
-<pre><code>## ─ Session info ───────────────────────────────────────────────────────────────
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">devtools</span><span class="o">::</span><span class="nf">session_info</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>## ─ Session info ───────────────────────────────────────────────────────────────
 ##  setting  value
 ##  version  R version 4.1.0 (2021-05-18)
 ##  os       macOS Big Sur 10.16
@@ -729,7 +729,7 @@ purposes.</p>
 ##  [1] /Library/Frameworks/R.framework/Versions/4.1/Resources/library
 ## 
 ## ──────────────────────────────────────────────────────────────────────────────
-</code></pre>
+</code></pre></div>
 
               
             </article>
