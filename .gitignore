@@ -41,3 +41,4 @@ vignettes/*.pdf
 # Other
 .gitignore
 *.DS_Store
+**/tmp
