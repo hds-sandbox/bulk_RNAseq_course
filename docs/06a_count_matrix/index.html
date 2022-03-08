@@ -1,0 +1,853 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
+    
+    
+      
+        <title>Count matrix - Bulk RNAseq data analysis - an introductory course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2d9f7617.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-rnaseq-count-matrix" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Bulk RNAseq data analysis - an introductory course" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Bulk RNAseq data analysis - an introductory course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Count matrix
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Bulk RNAseq data analysis - an introductory course" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Bulk RNAseq data analysis - an introductory course
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Course Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_setup/" class="md-nav__link">
+        Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_experimental_planning/" class="md-nav__link">
+        Experimental planning
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_data_explanation/" class="md-nav__link">
+        Data Explanation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_preprocessing/" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          RNAseq counts
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="RNAseq counts" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          RNAseq counts
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Count matrix
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Count matrix
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06b_count_normalization/" class="md-nav__link">
+        Normalization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_exploratory_analysis/" class="md-nav__link">
+        Exploratory Analysis
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Differential Expression
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Differential Expression" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Differential Expression
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08a_contrast_design/" class="md-nav__link">
+        Design formula
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08b_DEA/" class="md-nav__link">
+        DESeq2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08c_hypothesis_testing/" class="md-nav__link">
+        Hypothesis testing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08d_DEA_visualization/" class="md-nav__link">
+        Visualization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          Functional Analysis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Functional Analysis" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Functional Analysis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09a_FA_genomic_annotation/" class="md-nav__link">
+        Gene annotation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09b_FA_overrepresentation/" class="md-nav__link">
+        Over represetation analysis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09c_FA_GSEA/" class="md-nav__link">
+        Class scoring
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_summarized_workflow/" class="md-nav__link">
+        Summarized workflow
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="the-rnaseq-count-matrix">The RNAseq count matrix</h1>
+<p>Approximate time: 20 minutes</p>
+<h2 id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li>Describe how to set up an RNA-seq project in R </li>
+<li>Describe the RNA-seq and the differential gene expression analysis workflow</li>
+<li>Explain why negative binomial distribution is used to model RNA-seq count data</li>
+</ul>
+<h1 id="differential-gene-expression-dge-analysis-overview">Differential gene expression (DGE) analysis overview</h1>
+<p>The goal of RNA-seq is often to perform differential expression testing to determine which genes are expressed at different levels between conditions. These genes can offer biological insight into the processes affected by the condition(s) of interest. </p>
+<p>To determine the expression levels of genes, our RNA-seq workflow followed the steps detailed in the image below. All steps were performed on the command line (Linux/Unix) through the generation of the read counts per gene. The differential expression analysis and any downstream functional analysis are generally performed in R using R packages specifically designed for the complex statistical analyses required to determine whether genes are differentially expressed.</p>
+<p align="center">
+<img src="../img/06a_count_matrix/rnaseq_full_workflow.png" width="400">
+</p>
+
+<p>In the next few lessons, we will walk you through an <strong>end-to-end gene-level RNA-seq differential expression workflow</strong> using various R packages. We will start with the count matrix, perform exploratory data analysis for quality assessment and to explore the relationship between samples, perform differential expression analysis, and visually explore the results prior to performing downstream functional analysis.</p>
+<h1 id="setting-up">Setting up</h1>
+<p>Before we get into the details of the analysis, let's get started by opening up RStudio and setting up a new project for this analysis. </p>
+<ol>
+<li>Go to the <code>File</code> menu and select <code>New Project</code>.</li>
+<li>In the <code>New Project</code> window, choose <code>New Directory</code>. Then, choose <code>Empty Project</code>. Name your new directory <code>DEanalysis</code> and then "Create the project as subdirectory of:" the Desktop (or location of your choice).</li>
+<li>The new project should automatically open in RStudio. </li>
+</ol>
+<p>To check whether or not you are in the correct working directory, use <code>getwd()</code>. The path <code>Desktop/DEanalysis</code> should be returned to you in the console. Within your working directory use the <code>New folder</code> button in the bottom right panel to create three new directories: <code>data</code>, <code>meta</code> and <code>results</code>. Remember the key to a good analysis is keeping organized from the start!</p>
+<p>Go to the <code>File</code> menu and select <code>New File</code>, then select <code>R Script</code>. This should open up a script editor in the top left hand corner. This is where we will be typing and saving all commands required for this analysis. In the script editor type in header lines:</p>
+<div class="highlight"><pre><span></span><code>## Gene-level differential expression analysis using DESeq2
+</code></pre></div>
+<p>Now save the file as <code>de_script.R</code>. When finished your working directory should now look similar to this:</p>
+<p align="center">
+<img src="../img/06a_count_matrix/settingup.png">
+</p>
+
+<h3 id="loading-libraries">Loading libraries</h3>
+<p>For this analysis we will be using several R packages, some which have been installed from CRAN and others from Bioconductor. To use these packages (and the functions contained within them), we need to <strong>load the libraries.</strong> Add the following to your script and don't forget to comment liberally!</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## Setup</span>
+<span class="c1">### Bioconductor and CRAN libraries used</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">RColorBrewer</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">DESeq2</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">pheatmap</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">DEGreport</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="loading-data">Loading data</h3>
+<p>To load the data into our current environment, we will be using the <code>read.table</code> function. We need to provide the path to each file and also specify arguments to let R know that we have a header (<code>header = T</code>) and the first column is our row names (<code>row.names =1</code>). By default the function expects tab-delimited files, which is what we have.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## Load in data</span>
+<span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;Data/Mov10_full_counts.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">)</span> 
+
+<span class="n">meta</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;Data/Mov10_full_meta.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</code></pre></div>
+<p>Use <code>class()</code> to inspect our data and make sure we are working with data frames:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">### Check classes of the data we just brought in</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">meta</span><span class="p">)</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="viewing-data">Viewing data</h3>
+<p>Make sure your datasets contain the expected samples / information before proceeding to perfom any type of analysis. </p>
+<div class="highlight"><pre><span></span><code><span class="nf">View</span><span class="p">(</span><span class="n">meta</span><span class="p">)</span>
+<span class="nf">View</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<h3 id="using-the-abundance-estimates-from-salmon-as-input-to-deseq2">Using the abundance estimates from Salmon as input to DESeq2</h3>
+<p>The counts used in these lessons were generated using the standard approach for RNA-seq analysis, where samples were aligned to the genome using a splice-aware aligner followed by counting. If you are using lightweight algorithms such as Salmon, Sailfish or Kallisto to generate abundance estimates, you can also use DESeq2 to perform gene-level differential expression analysis. These transcript abundance estimates, often referred to as ‘pseudocounts’, can be converted for use with DESeq2 but the setup is slightly more involved. If you are interested in knowing more about using Salmon pseudocounts for DESeq2, there are <a href="https://hbctraining.github.io/DGE_workshop_salmon/lessons/01_DGE_setup_and_overview.html">materials linked here</a>. </p>
+</blockquote>
+<h2 id="differential-gene-expression-analysis-overview">Differential gene expression analysis overview</h2>
+<p>So what does this count data actually represent? The count data used for differential expression analysis represents the number of sequence reads that originated from a particular gene. The higher the number of counts, the more reads associated with that gene, and the assumption that there was a higher level of expression of that gene in the sample. </p>
+<p align="center">
+<img src="../img/06a_count_matrix/deseq_counts_overview.png" width="600">
+</p>
+
+<p>With differential expression analysis, we are looking for genes that change in expression between two or more groups (defined in the metadata)
+- case vs. control
+- correlation of expression with some variable or clinical outcome</p>
+<p><strong>Why does it not work to identify differentially expressed gene by ranking the genes by how different they are between the two groups (based on fold change values)?</strong></p>
+<p align="center">
+<img src="../img/06a_count_matrix/foldchange_heatmap.png" width="200">
+</p>
+
+<p>More often than not, there is much more going on with your data than what you are anticipating. Genes that vary in expression level between samples is a consequence of not only the experimental variables of interest but also due to extraneous sources. The goal of differential expression analysis to determine the relative role of these effects, and to separate the “interesting” from the “uninteresting”.</p>
+<p align="center">
+<img src="../img/06a_count_matrix/de_variation.png" width="500">
+</p>
+
+<p>The "uninteresting" presents as sources of variation in your data, and so even though the mean expression levels between sample groups may appear to be quite different, it is possible that the difference is not actually significant. This is illustrated for 'GeneA' expression between 'untreated' and 'treated' groups in the figure below. The mean expression level of geneA for the 'treated' group is twice as large as for the 'untreated' group, but the variation between replicates indicates that this may not be a significant difference. <strong>We need to take into account the variation in the data (and where it might be coming from) when determining whether genes are differentially expressed.</strong></p>
+<p align="center">
+<img src="../img/06a_count_matrix/de_norm_counts_var.png" width="400">
+</p>
+
+<p>The goal of differential expression analysis is to determine, for each gene, whether the differences in expression (counts) <strong>between groups</strong> is significant given the amount of variation observed <strong>within groups</strong> (replicates). To test for significance, we need an appropriate statistical model that accurately performs normalization (to account for differences in sequencing depth, etc.) and variance modeling (to account for few numbers of replicates and large dynamic expression range).</p>
+<h3 id="rna-seq-count-distribution">RNA-seq count distribution</h3>
+<p>To determine the appropriate statistical model, we need information about the distribution of counts. To get an idea about how RNA-seq counts are distributed, let's plot the counts for a single sample, 'Mov10_oe_1':</p>
+<div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">geom_histogram</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">Mov10_oe_1</span><span class="p">),</span> <span class="n">stat</span> <span class="o">=</span> <span class="s">&quot;bin&quot;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="m">200</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Raw expression counts&quot;</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Number of genes&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p align="center">
+<img src="../img/06a_count_matrix/deseq_counts_distribution.png" width="400">
+</p>
+
+<p>If we zoom in close to zero, we can see a large number of genes with counts of zero:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span>
+   <span class="nf">geom_histogram</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">Mov10_oe_1</span><span class="p">),</span> <span class="n">stat</span> <span class="o">=</span> <span class="s">&quot;bin&quot;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="m">200</span><span class="p">)</span> <span class="o">+</span> 
+   <span class="nf">xlim</span><span class="p">(</span><span class="m">-5</span><span class="p">,</span> <span class="m">500</span><span class="p">)</span>  <span class="o">+</span>
+   <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Raw expression counts&quot;</span><span class="p">)</span> <span class="o">+</span>
+   <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Number of genes&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p align="center">
+<img src="../img/06a_count_matrix/deseq_counts_distribution_zoomed.png" width="400">
+</p>
+
+<p>These images illustrate some common features of RNA-seq count data, including a <strong>low number of counts associated with a large proportion of genes</strong>, and a long right tail due to the <strong>lack of any upper limit for expression</strong>. Unlike microarray data, which has a dynamic range maximum limited due to when the probes max out, there is no limit of maximum expression for RNA-seq data. Due to the differences in these technologies, the statistical models used to fit the data are different between the two methods. </p>
+<blockquote>
+<p><strong>NOTE:</strong> The log intensities of the microarray data approximate a normal distribution. However, due to the different properties of the of RNA-seq count data, such as integer counts instead of continuous measurements and non-normally distributed data, the normal distribution does not accurately model RNA-seq counts [<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3541212/">1</a>].</p>
+</blockquote>
+<h3 id="modeling-count-data">Modeling count data</h3>
+<p>Count data is often modeled using the <strong>binomial distribution</strong>, which can give you the <strong>probability of getting a number of heads upon tossing a coin a number of times</strong>. However, not all count data can be fit with the binomial distribution. The binomial is based on discrete events and used in situations when you have a certain number of cases.</p>
+<p>When <strong>the number of cases is very large (i.e. people who buy lottery tickets), but the probability of an event is very small (probability of winning)</strong>, the <strong>Poisson distribution</strong> is used to model these types of count data. The Poisson is similar to the binomial, but is based on continuous events. <a href="https://youtu.be/fxtB8c3u6l8">Details provided by Rafael Irizarry in the EdX class.</a></p>
+<p><strong>With RNA-Seq data, a very large number of RNAs are represented and the probability of pulling out a particular transcript is very small</strong>. Thus, it would be an appropriate situation to use the Poisson distribution. However, a unique property of this distribution is that the mean == variance. Realistically, with RNA-Seq data there is always some biological variation present across the replicates (within a sample class). Genes with larger average expression levels will tend to have larger observed variances across replicates. </p>
+<p>If the proportions of mRNA stayed exactly constant between the biological replicates for each sample class, we could expect Poisson distribution (where mean == variance). <a href="https://youtu.be/HK7WKsL3c2w">A nice description of this concept is presented by Rafael Irizarry in the EdX class</a>. But this doesn't happen in practice, and so the Poisson distribution is only  considered appropriate for a single biological sample. </p>
+<p>The model that fits best, given this type of variability between replicates, is the Negative Binomial (NB) model. Essentially, <strong>the NB model is a good approximation for data where the mean &lt; variance</strong>, as is the case with RNA-Seq count data.</p>
+<p align="center">
+<img src="../img/06a_count_matrix/deseq_nb.png" width="400">
+</p>
+
+<blockquote>
+<p><strong>NOTE:</strong> </p>
+<ul>
+<li><strong>Biological replicates</strong> represent multiple samples (i.e. RNA from different mice) representing the same sample class</li>
+<li><strong>Technical replicates</strong> represent the same sample (i.e. RNA from the same mouse) but with technical steps replicated</li>
+<li>Usually biological variance is much greater than technical variance, so we do not need to account for technical variance to identify biological differences in expression</li>
+<li><strong>Don't spend money on technical replicates - biological replicates are much more useful</strong></li>
+</ul>
+<p><strong>NOTE:</strong>
+If you are using <strong>cell lines</strong> and are unsure whether or not you have prepared biological or technical replicates, take a look at <a href="https://web.archive.org/web/20170807192514/http://www.labstats.net:80/articles/cell_culture_n.html">this link</a>. This is a useful resource in helping you determine how best to set up your <em>in-vitro</em> experiment.</p>
+</blockquote>
+<h4 id="how-do-i-know-if-my-data-should-be-modeled-using-the-poisson-distribution-or-negative-binomial-distribution">How do I know if my data should be modeled using the Poisson distribution or Negative Binomial distribution?</h4>
+<p>If it's count data, it should fit the negative binomial, as discussed previously. However, it can be helpful to plot the <em>mean versus the variance</em> of your data. <em>Remember for the Poisson model, mean = variance, but for NB, mean &lt; variance.</em></p>
+<p>Run the following code to plot the <em>mean versus variance</em> for the 'Mov10 overexpression' replicates:</p>
+<div class="highlight"><pre><span></span><code><span class="n">mean_counts</span> <span class="o">&lt;-</span> <span class="nf">apply</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span> <span class="m">3</span><span class="o">:</span><span class="m">5</span><span class="p">],</span> <span class="m">1</span><span class="p">,</span> <span class="n">mean</span><span class="p">)</span>
+<span class="n">variance_counts</span> <span class="o">&lt;-</span> <span class="nf">apply</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span> <span class="m">3</span><span class="o">:</span><span class="m">5</span><span class="p">],</span> <span class="m">1</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">variance_counts</span><span class="p">)</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">+</span>
+        <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">variance_counts</span><span class="p">))</span> <span class="o">+</span> 
+        <span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">))</span> <span class="o">+</span>
+        <span class="nf">scale_y_log10</span><span class="p">()</span> <span class="o">+</span>
+        <span class="nf">scale_x_log10</span><span class="p">()</span>
+</code></pre></div>
+<p align="center">
+<img src="../img/06a_count_matrix/deseq_mean_vs_variance.png" width="600">
+</p>
+
+<p>Note that in the above figure, the variance across replicates tends to be greater than the mean (red line), especially for genes with large mean expression levels. <em>This is a good indication that our data do not fit the Poisson distribution and we need to account for this increase in variance using the Negative Binomial model (i.e. Poisson will underestimate variability leading to an increase in false positive DE genes).</em></p>
+<h3 id="improving-mean-estimates-ie-reducing-variance-with-biological-replicates">Improving mean estimates (i.e. reducing variance) with biological replicates</h3>
+<p>The variance or scatter tends to reduce as we increase the number of biological replicates (<em>the distribution will approach the Poisson distribution with increasing numbers of replicates</em>), since standard deviations of averages are smaller than standard deviations of individual observations. <strong>The value of additional replicates is that as you add more data (replicates), you get increasingly precise estimates of group means, and ultimately greater confidence in the ability to distinguish differences between sample classes (i.e. more DE genes).</strong></p>
+<p>The figure below illustrates the relationship between sequencing depth and number of replicates on the number of differentially expressed genes identified [<a href="https://academic.oup.com/bioinformatics/article/30/3/301/228651/RNA-seq-differential-expression-studies-more">1</a>]. Note that an <strong>increase in the number of replicates tends to return more DE genes than increasing the sequencing depth</strong>. Therefore, generally more replicates are better than higher sequencing depth, with the caveat that higher depth is required for detection of lowly expressed DE genes and for performing isoform-level differential expression. Generally, the minimum sequencing depth recommended is 20-30 million reads per sample, but we have seen good RNA-seq experiments with 10 million reads if there are a good number of replicates.</p>
+<p align="center">
+<img src="../img/06a_count_matrix/de_replicates_img.png" width="500">
+</p>
+
+<h3 id="differential-expression-analysis-workflow">Differential expression analysis workflow</h3>
+<p>To model counts appropriately when performing a differential expression analysis, there are a number of software packages that have been developed for differential expression analysis of RNA-seq data. Even as new methods are continuously being developed a few  tools are generally recommended as best practice, e.g. <strong><a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2</a></strong> and <strong><a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html">EdgeR</a></strong>. Both these tools use the negative binomial model, employ similar methods, and typically, yield similar results. They are pretty stringent, and have a good balance between sensitivity and specificity (reducing both false positives and false negatives).</p>
+<p><strong><a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29">Limma-Voom</a></strong> is another set of tools often used together for DE analysis, but this method may be less sensitive for small sample sizes. This method is recommended when the number of biological replicates per group grows large (&gt; 20). </p>
+<p>Many studies describing comparisons between these methods show that while there is some agreement, there is also much variability between tools. <strong>Additionally, there is no one method that performs optimally under all conditions (<a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-91">Soneson and Dleorenzi, 2013</a>).</strong></p>
+<p align="center">
+<img src="../img/06a_count_matrix/deg_methods1.png">
+</p>
+
+<p align="center">
+<img src="../img/06a_count_matrix/deg_methods2.png">
+</p>
+
+<p><strong>We will be using <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">DESeq2</a> for the DE analysis, and the analysis steps with DESeq2 are shown in the flowchart below in green</strong>. DESeq2 first normalizes the count data to account for differences in library sizes and RNA composition between samples. Then, we will use the normalized counts to make some plots for QC at the gene and sample level. The final step is to use the appropriate functions from the DESeq2 package to perform the differential expression analysis. </p>
+<p align="center">
+<img src="../img/06a_count_matrix/deseq_workflow_full_2018.png" width="500">
+</p>
+
+<p>We will go in-depth into each of these steps in the following lessons, but additional details and helpful suggestions regarding DESeq2 can be found in the <a href="http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2 vignette</a>. As you go through this workflow and questions arise, you can reference the vignette from within RStudio:</p>
+<div class="highlight"><pre><span></span><code>vignette(&quot;DESeq2&quot;)
+</code></pre></div>
+<p>This is very convenient, as it provides a wealth of information at your fingertips! Be sure to use this as you need during the workshop.</p>
+<hr />
+<p><em>This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../05_preprocessing/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Preprocessing" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Preprocessing
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../06b_count_normalization/" class="md-footer__link md-footer__link--next" aria-label="Next: Normalization" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Normalization
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.467223ff.min.js"></script>
+      
+    
+  </body>
+</html>

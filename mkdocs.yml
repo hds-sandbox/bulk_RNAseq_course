@@ -1,13 +1,24 @@
 site_name: 'Bulk RNAseq data analysis - an introductory course'
 nav:
     - 'Course Introduction': index.md
-    #- 'Data Explanation': data_explanation.md
-    #- 'Installation': installation.md
-    - 'Preprocessing': preprocessing.md
-    - 'Exploratory Analysis': exploratory_analysis.md
-    - 'Differential Expression': DEA.md
-    - 'Complex designs': contrast_design.md
-    - 'Functional Analysis': functional_analysis.md
+    - 'Setup': 02_setup.md
+    - 'Experimental planning': 03_experimental_planning.md
+    - 'Data Explanation': 04_data_explanation.md
+    - 'Preprocessing': 05_preprocessing.md
+    - 'RNAseq counts':
+        - 'Count matrix': 06a_count_matrix.md
+        - 'Normalization': 06b_count_normalization.md
+    - 'Exploratory Analysis': 07_exploratory_analysis.md
+    - 'Differential Expression': 
+        - 'Design formula': 08a_contrast_design.md
+        - 'DESeq2': 08b_DEA.md
+        - 'Hypothesis testing': 08c_hypothesis_testing.md
+        - 'Visualization': 08d_DEA_visualization.md
+    - 'Functional Analysis': 
+        - 'Gene annotation': 09a_FA_genomic_annotation.md
+        - 'Over represetation analysis': 09b_FA_overrepresentation.md
+        - 'Class scoring': 09c_FA_GSEA.md
+    - 'Summarized workflow': 10_summarized_workflow.md
     
 docs_dir: develop
 site_dir: docs

@@ -1,0 +1,1080 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
+    
+    
+      
+        <title>Visualization - Bulk RNAseq data analysis - an introductory course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2d9f7617.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#log-fold-shrinkage-and-dea-visualizations" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Bulk RNAseq data analysis - an introductory course" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Bulk RNAseq data analysis - an introductory course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Visualization
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Bulk RNAseq data analysis - an introductory course" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Bulk RNAseq data analysis - an introductory course
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Course Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_setup/" class="md-nav__link">
+        Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_experimental_planning/" class="md-nav__link">
+        Experimental planning
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_data_explanation/" class="md-nav__link">
+        Data Explanation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_preprocessing/" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          RNAseq counts
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="RNAseq counts" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          RNAseq counts
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06a_count_matrix/" class="md-nav__link">
+        Count matrix
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06b_count_normalization/" class="md-nav__link">
+        Normalization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_exploratory_analysis/" class="md-nav__link">
+        Exploratory Analysis
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Differential Expression
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Differential Expression" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Differential Expression
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08a_contrast_design/" class="md-nav__link">
+        Design formula
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08b_DEA/" class="md-nav__link">
+        DESeq2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08c_hypothesis_testing/" class="md-nav__link">
+        Hypothesis testing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Visualization
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Visualization
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more-accurate-lfc-estimates" class="md-nav__link">
+    More accurate LFC estimates
+  </a>
+  
+    <nav class="md-nav" aria-label="More accurate LFC estimates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contrast-vs-coef" class="md-nav__link">
+    contrast vs coef
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-know-what-to-value-to-provide-to-the-coef-argument" class="md-nav__link">
+    How do I know what to value to provide to the coef argument?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualizing-the-results" class="md-nav__link">
+    Visualizing the results
+  </a>
+  
+    <nav class="md-nav" aria-label="Visualizing the results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ma-plot" class="md-nav__link">
+    MA plot
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-visualizations" class="md-nav__link">
+    Advanced visualizations
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced visualizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plotting-significant-de-genes" class="md-nav__link">
+    Plotting significant DE genes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heatmap" class="md-nav__link">
+    Heatmap
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volcano-plot" class="md-nav__link">
+    Volcano plot
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          Functional Analysis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Functional Analysis" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Functional Analysis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09a_FA_genomic_annotation/" class="md-nav__link">
+        Gene annotation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09b_FA_overrepresentation/" class="md-nav__link">
+        Over represetation analysis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09c_FA_GSEA/" class="md-nav__link">
+        Class scoring
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_summarized_workflow/" class="md-nav__link">
+        Summarized workflow
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more-accurate-lfc-estimates" class="md-nav__link">
+    More accurate LFC estimates
+  </a>
+  
+    <nav class="md-nav" aria-label="More accurate LFC estimates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contrast-vs-coef" class="md-nav__link">
+    contrast vs coef
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-know-what-to-value-to-provide-to-the-coef-argument" class="md-nav__link">
+    How do I know what to value to provide to the coef argument?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualizing-the-results" class="md-nav__link">
+    Visualizing the results
+  </a>
+  
+    <nav class="md-nav" aria-label="Visualizing the results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ma-plot" class="md-nav__link">
+    MA plot
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-visualizations" class="md-nav__link">
+    Advanced visualizations
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced visualizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plotting-significant-de-genes" class="md-nav__link">
+    Plotting significant DE genes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heatmap" class="md-nav__link">
+    Heatmap
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volcano-plot" class="md-nav__link">
+    Volcano plot
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="log-fold-shrinkage-and-dea-visualizations">Log Fold Shrinkage and DEA visualizations"</h1>
+<p>Approximate time: 75 minutes</p>
+<h2 id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li>Explain log fold change shrinkage</li>
+<li>Setup results data for application of visualization techniques</li>
+<li>Describe different data visualization useful for exploring results from a DGE analysis</li>
+<li>Create a volcano plot and MA plot to evaluate relationship among DGE statistics</li>
+<li>Create a heatmap to illustrate expression changes of differentially expressed genes</li>
+</ul>
+<h2 id="more-accurate-lfc-estimates">More accurate LFC estimates</h2>
+<p>In the previous lessons, we learned about how to generate a table with Differentially Expressed genes</p>
+<p><div class="highlight"><pre><span></span><code><span class="c1">## DO NOT RUN</span>
+<span class="c1"># res_tableOE &lt;- results(dds, contrast=contrast_oe, alpha = 0.05)</span>
+
+<span class="c1"># head(res_tableOE)</span>
+</code></pre></div>
+The problem with these fold change estimates is that they not entirely accurate as they do not account for the large dispersion we observe with low read counts. To address this, the <strong>log2 fold changes need to be adjusted</strong>. </p>
+<p>To generate more accurate log2 foldchange (LFC) estimates, DESeq2 allows for the <strong>shrinkage of the LFC estimates toward zero</strong> when the information for a gene is low, which could include:</p>
+<ul>
+<li>Low counts</li>
+<li>High dispersion values</li>
+</ul>
+<p>LFC shrinkage uses <strong>information from all genes</strong> to generate more accurate estimates. Specifically, the distribution of LFC estimates for all genes is used (as a prior) to shrink the LFC estimates of genes with little information or high dispersion toward more likely (lower) LFC estimates. </p>
+<p align="center">
+<img src="../img/08d_DEA_visualization/deseq2_shrunken_lfc.png" width="500">
+</p>
+
+<p><em>Illustration taken from the <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">DESeq2 paper</a>.</em></p>
+<p>In the figure above, we have an example using two genes green gene and purple gene. For each gene the expression values are plotted for each sample in the two different mouse strains (C57BL/6J and DBA/2J). Both genes have the same mean values for the two sample groups, but the green gene has little variation within group while the purple gene has high levels of variation. For the green gene with low within group variation, the <strong>unshrunken LFC estimate</strong> (vertex of the green <strong>solid line</strong>) is very similar to the shrunken LFC estimate (vertex of the green dotted line). However, LFC estimates for the purple gene are quite different due to the high dispersion. So even though two genes can have similar normalized count values, they can have differing degrees of LFC shrinkage. Notice the <strong>LFC estimates are shrunken toward the prior (black solid line)</strong>.</p>
+<p><strong>Shrinking the log2 fold changes will not change the total number of genes that are identified as significantly differentially expressed.</strong> The shrinkage of fold change is to help with downstream assessment of results. For example, if you wanted to subset your significant genes based on fold change for further evaluation, you may want to use shruken values. Additionally, for functional analysis tools such as GSEA which require fold change values as input you would want to provide shrunken values.</p>
+<p>To generate the shrunken log2 fold change estimates, you have to run an additional step on your results object (that we will create below) with the function <code>lfcShrink()</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## Save the unshrunken results to compare</span>
+<span class="n">res_tableOE_unshrunken</span> <span class="o">&lt;-</span> <span class="n">res_tableOE</span>
+
+<span class="c1"># Apply fold change shrinkage</span>
+<span class="n">res_tableOE</span> <span class="o">&lt;-</span> <span class="nf">lfcShrink</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">coef</span><span class="o">=</span><span class="s">&quot;sampletype_MOV10_overexpression_vs_control&quot;</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;apeglm&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Depending on the version of DESeq2 you are using the default <strong>method for shrinkage estimation</strong> will differ. The defaults can be changed by adding the argument <code>type</code> in the <code>lfcShrink()</code> function as we have above. For most recent versions of DESeq2, <code>type="normal"</code> is the default and was the only method in earlier versions. It has been shown that in most situations there are alternative methods that have <a href="https://bioconductor.org/packages/devel/bioc/vignettes/apeglm/inst/doc/apeglm.html">less bias than the 'normal` method</a>, and therefore <strong>we chose to use apeglm</strong>. </p>
+<blockquote>
+<p>For more information on shrinkage, the DESeq2 vignette has an <a href="http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#extended-section-on-shrinkage-estimators">Extended section on shrinkage estimators</a> that is quite useful.</p>
+<h4 id="contrast-vs-coef"><code>contrast</code> vs <code>coef</code></h4>
+<p>When using the alternative methods, rather than using the <code>contrast</code> argument you will be required to specify <code>coef</code>. Using contrast forms an expanded model matrix, treating all factor levels equally, and averages over all distances between all pairs of factor levels to estimate the prior. Using coef, means looking only at that column of the model matrix (so usually that would be one level against the reference level) and estimates the prior for that coefficient from the distribution of those MLE of coefficients. When using coef, the shrinkage depends on which level is chosen as reference.</p>
+<h4 id="how-do-i-know-what-to-value-to-provide-to-the-coef-argument">How do I know what to value to provide to the <code>coef</code> argument?</h4>
+<p>The value you provide here needs to match identically to what is stored in the column header of the coefficients table. To see what values you have to work with you can use <code>resultsNames(dds)</code>.</p>
+</blockquote>
+<h2 id="visualizing-the-results">Visualizing the results</h2>
+<h3 id="ma-plot">MA plot</h3>
+<p>A plot that can be useful to exploring our results is the MA plot. The MA plot shows the <strong>mean of the normalized counts versus the log2 foldchanges for all genes tested</strong>. The genes that are significantly DE are colored to be easily identified. This is also a great way to illustrate the effect of LFC shrinkage. The DESeq2 package offers a simple function to generate an MA plot. </p>
+<p><strong>Let's start with the unshrunken results:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># MA plot using unshrunken fold changes</span>
+<span class="nf">plotMA</span><span class="p">(</span><span class="n">res_tableOE_unshrunken</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+</code></pre></div>
+<p><strong>And now the shrunken results:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># MA plot using shrunken fold changes</span>
+<span class="nf">plotMA</span><span class="p">(</span><span class="n">res_tableOE</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+</code></pre></div>
+<p>On the left you have the unshrunken fold change values plotted and you can see the abundance of scatter for the the lowly expressed genes. That is, many of the low expressors exhibit very high fold changes. After shrinkage, we see the fold changes are much smaller estimates.</p>
+<p float="left">
+  <img src="../img/08d_DEA_visualization/maplot_unshrunken.png" width="400">
+  <img src="../img/08d_DEA_visualization/MA_plot.png" width="400">
+</p>
+
+<p>In addition to the comparison described above, this plot allows us to evaluate the magnitude of fold changes and how they are distributed relative to mean expression. Generally, we would expect to see significant genes across the full range of expression levels. </p>
+<h2 id="advanced-visualizations">Advanced visualizations</h2>
+<p>When we are working with large amounts of data it can be useful to display that information graphically to gain more insight. During this lesson, we will get you started with some basic and more advanced plots commonly used when exploring differential gene expression data, however, many of these plots can be helpful in visualizing other types of data as well.</p>
+<p>We will be working with three different data objects we have already created in earlier lessons:</p>
+<ul>
+<li>Metadata for our samples (a dataframe): <code>meta</code></li>
+<li>Normalized expression data for every gene in each of our samples (a matrix): <code>normalized_counts</code></li>
+<li>Tibble versions of the DESeq2 results we generated in the last lesson: <code>res_tableOE_tb</code> and <code>res_tableKD_tb</code></li>
+</ul>
+<p>First, let's create a metadata tibble from the data frame (don't lose the row names!)</p>
+<div class="highlight"><pre><span></span><code><span class="n">mov10_meta</span> <span class="o">&lt;-</span> <span class="n">meta</span> <span class="o">%&gt;%</span> 
+              <span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;samplename&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+              <span class="nf">as_tibble</span><span class="p">()</span>
+</code></pre></div>
+<p>Next, let's bring in a column with gene symbols to the <code>normalized_counts</code> object, so we can use them to label our plots. Ensembl IDs are great for many things, but the gene symbols are much more recognizable to us, as biologists. </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># DESeq2 creates a matrix when you use the counts() function</span>
+<span class="c1">## First convert normalized_counts to a data frame and transfer the row names to a new column called &quot;gene&quot;</span>
+<span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+                     <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span>
+                     <span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">)</span> 
+
+<span class="c1"># Next, merge together (ensembl IDs) the normalized counts data frame with a subset of the annotations in the tx2gene data frame (only the columns for ensembl gene IDs and gene symbols)</span>
+<span class="n">grch38annot</span> <span class="o">&lt;-</span> <span class="n">tx2gene</span> <span class="o">%&gt;%</span> 
+               <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">ensgene</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+               <span class="n">dplyr</span><span class="o">::</span><span class="nf">distinct</span><span class="p">()</span>
+
+<span class="c1">## This will bring in a column of gene symbols</span>
+<span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="nf">merge</span><span class="p">(</span><span class="n">normalized_counts</span><span class="p">,</span> <span class="n">grch38annot</span><span class="p">,</span> <span class="n">by.x</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">,</span> <span class="n">by.y</span><span class="o">=</span><span class="s">&quot;ensgene&quot;</span><span class="p">)</span>
+
+<span class="c1"># Now create a tibble for the normalized counts</span>
+<span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="n">normalized_counts</span> <span class="o">%&gt;%</span>
+                     <span class="nf">as_tibble</span><span class="p">()</span>
+
+<span class="n">normalized_counts</span> 
+</code></pre></div>
+<blockquote>
+<p><strong>NOTE:</strong> A possible alternative to the above:</p>
+<div class="highlight"><pre><span></span><code><span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+                     <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span>
+                     <span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+                     <span class="nf">as_tibble</span><span class="p">()</span> <span class="o">%&gt;%</span>
+                     <span class="nf">left_join</span><span class="p">(</span><span class="n">grch38annot</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;gene&quot;</span> <span class="o">=</span> <span class="s">&quot;ensgene&quot;</span><span class="p">))</span>
+</code></pre></div>
+</blockquote>
+<h3 id="plotting-significant-de-genes">Plotting significant DE genes</h3>
+<p>One way to visualize results would be to simply plot the expression data for a handful of genes. We could do that by picking out specific genes of interest or selecting a range of genes.</p>
+<p><strong>Using DESeq2 <code>plotCounts()</code> to plot expression of a single gene</strong></p>
+<p>To pick out a specific gene of interest to plot, for example MOV10, we can use the <code>plotCounts()</code> from DESeq2. <code>plotCounts()</code> requires that the gene specified matches the original input to DESeq2, which in our case was Ensembl IDs.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Find the Ensembl ID of MOV10</span>
+<span class="n">grch38annot</span><span class="p">[</span><span class="n">grch38annot</span><span class="o">$</span><span class="n">symbol</span> <span class="o">==</span> <span class="s">&quot;MOV10&quot;</span><span class="p">,</span> <span class="s">&quot;ensgene&quot;</span><span class="p">]</span>
+
+<span class="c1"># Plot expression for single gene</span>
+<span class="nf">plotCounts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">gene</span><span class="o">=</span><span class="s">&quot;ENSG00000155363&quot;</span><span class="p">,</span> <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">)</span> 
+</code></pre></div>
+<p align="center">
+<img src="../img/08d_DEA_visualization/topgen_plot.png" width="600">
+</p>
+
+<blockquote>
+<p>This DESeq2 function only allows for plotting the counts of a single gene at a time, and is not flexible regarding the appearance.</p>
+</blockquote>
+<p><strong>Using ggplot2 to plot expression of a single gene</strong></p>
+<p>If you wish to change the appearance of this plot, we can save the output of <code>plotCounts()</code> to a variable specifying the <code>returnData=TRUE</code> argument, then use <code>ggplot()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Save plotcounts to a data frame object</span>
+<span class="n">d</span> <span class="o">&lt;-</span> <span class="nf">plotCounts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">gene</span><span class="o">=</span><span class="s">&quot;ENSG00000155363&quot;</span><span class="p">,</span> <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">,</span> <span class="n">returnData</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="c1"># What is the data output of plotCounts()?</span>
+<span class="n">d</span> <span class="o">%&gt;%</span> <span class="nf">View</span><span class="p">()</span>
+
+<span class="c1"># Plot the MOV10 normalized counts, using the samplenames (rownames(d) as labels)</span>
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">sampletype</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">count</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">sampletype</span><span class="p">))</span> <span class="o">+</span> 
+    <span class="nf">geom_point</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="nf">position_jitter</span><span class="p">(</span><span class="n">w</span> <span class="o">=</span> <span class="m">0.1</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="m">0</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">d</span><span class="p">)))</span> <span class="o">+</span> 
+    <span class="nf">theme_bw</span><span class="p">()</span> <span class="o">+</span>
+    <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;MOV10&quot;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">theme</span><span class="p">(</span><span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">hjust</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">))</span>
+</code></pre></div>
+<blockquote>
+<p>Note that in the plot below (code above), we are using <code>geom_text_repel()</code> from the <code>ggrepel</code> package to label our individual points on the plot.</p>
+</blockquote>
+<p float="left">
+<img src="../img/08d_DEA_visualization/plotCounts_ggrepel.png" width="700">
+</p>
+
+<h3 id="heatmap">Heatmap</h3>
+<p>In addition to plotting subsets, we could also extract the normalized values of <em>all</em> the significant genes and plot a heatmap of their expression using <code>pheatmap()</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">### Extract normalized expression for significant genes from the OE and control samples (2:4 and 7:9)</span>
+<span class="n">norm_OEsig</span> <span class="o">&lt;-</span> <span class="n">normalized_counts</span><span class="p">[,</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">,</span><span class="m">7</span><span class="o">:</span><span class="m">9</span><span class="p">)]</span> <span class="o">%&gt;%</span> 
+              <span class="nf">filter</span><span class="p">(</span><span class="n">gene</span> <span class="o">%in%</span> <span class="n">sigOE</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>  
+</code></pre></div>
+<p>Now let's draw the heatmap using <code>pheatmap</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">### Set a color palette</span>
+<span class="n">heat_colors</span> <span class="o">&lt;-</span> <span class="nf">brewer.pal</span><span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="s">&quot;YlOrRd&quot;</span><span class="p">)</span>
+
+<span class="c1">### Run pheatmap using the metadata data frame for the annotation</span>
+<span class="nf">pheatmap</span><span class="p">(</span><span class="n">norm_OEsig</span><span class="p">[</span><span class="m">2</span><span class="o">:</span><span class="m">7</span><span class="p">],</span> 
+    <span class="n">color</span> <span class="o">=</span> <span class="n">heat_colors</span><span class="p">,</span> 
+    <span class="n">cluster_rows</span> <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> 
+    <span class="n">show_rownames</span> <span class="o">=</span> <span class="bp">F</span><span class="p">,</span>
+    <span class="n">annotation</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> 
+    <span class="n">border_color</span> <span class="o">=</span> <span class="kc">NA</span><span class="p">,</span> 
+    <span class="n">fontsize</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span> 
+    <span class="n">scale</span> <span class="o">=</span> <span class="s">&quot;row&quot;</span><span class="p">,</span> 
+    <span class="n">fontsize_row</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span> 
+    <span class="n">height</span> <span class="o">=</span> <span class="m">20</span><span class="p">)</span>
+</code></pre></div>
+<p float="left">
+<img src="../img/08d_DEA_visualization/pheatmap_aug2020.png" width="600">   
+</p>
+
+<blockquote>
+<p><em>NOTE:</em> There are several additional arguments we have included in the function for aesthetics. One important one is <code>scale="row"</code>, in which Z-scores are plotted, rather than the actual normalized count value. </p>
+<p>Z-scores are computed on a gene-by-gene basis by subtracting the mean and then dividing by the standard deviation. The Z-scores are computed <strong>after the clustering</strong>, so that it only affects the graphical aesthetics and the color visualization is improved.</p>
+</blockquote>
+<h3 id="volcano-plot">Volcano plot</h3>
+<p>The above plot would be great to look at the expression levels of a good number of genes, but for more of a global view there are other plots we can draw. A commonly used one is a volcano plot; in which you have the log transformed adjusted p-values plotted on the y-axis and log2 fold change values on the x-axis. </p>
+<p>To generate a volcano plot, we first need to have a column in our results data indicating whether or not the gene is considered differentially expressed based on p-adjusted values and we will include a log2fold change here.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## Obtain logical vector where TRUE values denote padj values &lt; 0.05 and fold change &gt; 1.5 in either direction</span>
+
+<span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="n">res_tableOE_tb</span> <span class="o">%&gt;%</span> 
+                  <span class="nf">mutate</span><span class="p">(</span><span class="n">threshold_OE</span> <span class="o">=</span> <span class="n">padj</span> <span class="o">&lt;</span> <span class="m">0.05</span> <span class="o">&amp;</span> <span class="nf">abs</span><span class="p">(</span><span class="n">log2FoldChange</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="m">0.58</span><span class="p">)</span>
+</code></pre></div>
+<p>Now we can start plotting. The <code>geom_point</code> object is most applicable, as this is essentially a scatter plot:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## Volcano plot</span>
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">),</span> <span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Mov10 overexpression&quot;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;log2 fold change&quot;</span><span class="p">)</span> <span class="o">+</span> 
+    <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;-log10 adjusted p-value&quot;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="c1">#scale_y_continuous(limits = c(0,50)) +</span>
+    <span class="nf">theme</span><span class="p">(</span><span class="n">legend.position</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">,</span>
+          <span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.5</span><span class="p">),</span> <span class="n">hjust</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">),</span>
+          <span class="n">axis.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.25</span><span class="p">)))</span>  
+</code></pre></div>
+<p float="left">
+<img src="../img/08d_DEA_visualization/volcano_plot_1.png" width="500"> 
+</p>
+
+<p>This is a great way to get an overall picture of what is going on, but what if we also wanted to know where the top 10 genes (lowest padj) in our DE list are located on this plot? We could label those dots with the gene name on the Volcano plot using <code>geom_text_repel()</code>.</p>
+<p>First, we need to order the res_tableOE tibble by <code>padj</code>, and add an additional column to it, to include on those gene names we want to use to label the plot.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## Add all the gene symbols as a column from the grch38 table using bind_cols()</span>
+<span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="nf">bind_cols</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">grch38annot</span><span class="o">$</span><span class="n">symbol</span><span class="p">[</span><span class="nf">match</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">gene</span><span class="p">,</span> <span class="n">grch38annot</span><span class="o">$</span><span class="n">ensgene</span><span class="p">)])</span>
+
+<span class="c1">## Create an empty column to indicate which genes to label</span>
+<span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="n">res_tableOE_tb</span> <span class="o">%&gt;%</span> <span class="nf">mutate</span><span class="p">(</span><span class="n">genelabels</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1">## Sort by padj values </span>
+<span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="n">res_tableOE_tb</span> <span class="o">%&gt;%</span> <span class="nf">arrange</span><span class="p">(</span><span class="n">padj</span><span class="p">)</span>
+
+<span class="c1">## Populate the genelabels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes</span>
+<span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">genelabels</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="nf">as.character</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">symbol</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">])</span>
+
+<span class="nf">View</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">)</span>
+</code></pre></div>
+<p>Next, we plot it as before with an additional layer for <code>geom_text_repel()</code> wherein we can specify the column of gene labels we just created. </p>
+<div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">)))</span> <span class="o">+</span>
+    <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="n">genelabels</span><span class="p">))</span> <span class="o">+</span>
+    <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Mov10 overexpression&quot;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;log2 fold change&quot;</span><span class="p">)</span> <span class="o">+</span> 
+    <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;-log10 adjusted p-value&quot;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">theme</span><span class="p">(</span><span class="n">legend.position</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">,</span>
+          <span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.5</span><span class="p">),</span> <span class="n">hjust</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">),</span>
+          <span class="n">axis.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.25</span><span class="p">)))</span> 
+</code></pre></div>
+<p float="left">
+<img src="../img/08d_DEA_visualization/volcano_plot_2.png" width="500"> 
+</p>
+
+<hr />
+<blockquote>
+<p><em><strong>NOTE:</strong> If using the DESeq2 tool for differential expression analysis, the package 'DEGreport' can use the DESeq2 results output to make the top20 genes and the volcano plots generated above by writing a few lines of simple code. While you can customize the plots above, you may be interested in using the easier code. Below are examples of the code to create these plots:</em></p>
+<div class="highlight"><pre><span></span><code><span class="n">DEGreport</span><span class="o">::</span><span class="nf">degPlot</span><span class="p">(</span><span class="n">dds</span> <span class="o">=</span> <span class="n">dds</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> <span class="n">xs</span> <span class="o">=</span> <span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="n">group</span> <span class="o">=</span> <span class="s">&quot;condition&quot;</span><span class="p">)</span> <span class="c1"># dds object is output from DESeq2</span>
+
+<span class="n">DEGreport</span><span class="o">::</span><span class="nf">degVolcano</span><span class="p">(</span>
+    <span class="nf">data.frame</span><span class="p">(</span><span class="n">res</span><span class="p">[,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;log2FoldChange&quot;</span><span class="p">,</span><span class="s">&quot;padj&quot;</span><span class="p">)]),</span> <span class="c1"># table - 2 columns</span>
+    <span class="n">plot_text</span> <span class="o">=</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;log2FoldChange&quot;</span><span class="p">,</span><span class="s">&quot;padj&quot;</span><span class="p">,</span><span class="s">&quot;id&quot;</span><span class="p">)]))</span> <span class="c1"># table to add names</span>
+    
+<span class="c1"># Available in the newer version for R 3.4</span>
+<span class="n">DEGreport</span><span class="o">::</span><span class="nf">degPlotWide</span><span class="p">(</span><span class="n">dds</span> <span class="o">=</span> <span class="n">dds</span><span class="p">,</span> <span class="n">genes</span> <span class="o">=</span> <span class="nf">row.names</span><span class="p">(</span><span class="n">res</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">],</span> <span class="n">group</span> <span class="o">=</span> <span class="s">&quot;condition&quot;</span><span class="p">)</span>
+</code></pre></div>
+</blockquote>
+<hr />
+<p><em>This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
+<p><em>Materials and hands-on activities were adapted from <a href="http://www.bioconductor.org/help/workflows/rnaseqGene/#de">RNA-seq workflow</a> on the Bioconductor website</em></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../08c_hypothesis_testing/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Hypothesis testing" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Hypothesis testing
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../09a_FA_genomic_annotation/" class="md-footer__link md-footer__link--next" aria-label="Next: Gene annotation" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Gene annotation
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.467223ff.min.js"></script>
+      
+    
+  </body>
+</html>

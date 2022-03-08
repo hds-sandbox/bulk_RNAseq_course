@@ -1,0 +1,950 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
+    
+    
+      
+        <title>Experimental planning - Bulk RNAseq data analysis - an introductory course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2d9f7617.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#experimental-design-considerations" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Bulk RNAseq data analysis - an introductory course" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Bulk RNAseq data analysis - an introductory course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Experimental planning
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Bulk RNAseq data analysis - an introductory course" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Bulk RNAseq data analysis - an introductory course
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Course Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_setup/" class="md-nav__link">
+        Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Experimental planning
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Experimental planning
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experimental-planning-considerations" class="md-nav__link">
+    Experimental planning considerations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replicates" class="md-nav__link">
+    Replicates
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#confounding" class="md-nav__link">
+    Confounding
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#batch-effects" class="md-nav__link">
+    Batch effects
+  </a>
+  
+    <nav class="md-nav" aria-label="Batch effects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-know-whether-you-have-batches" class="md-nav__link">
+    How to know whether you have batches?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices-regarding-batches" class="md-nav__link">
+    Best practices regarding batches:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_data_explanation/" class="md-nav__link">
+        Data Explanation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_preprocessing/" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          RNAseq counts
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="RNAseq counts" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          RNAseq counts
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06a_count_matrix/" class="md-nav__link">
+        Count matrix
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06b_count_normalization/" class="md-nav__link">
+        Normalization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_exploratory_analysis/" class="md-nav__link">
+        Exploratory Analysis
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Differential Expression
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Differential Expression" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Differential Expression
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08a_contrast_design/" class="md-nav__link">
+        Design formula
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08b_DEA/" class="md-nav__link">
+        DESeq2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08c_hypothesis_testing/" class="md-nav__link">
+        Hypothesis testing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08d_DEA_visualization/" class="md-nav__link">
+        Visualization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          Functional Analysis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Functional Analysis" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Functional Analysis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09a_FA_genomic_annotation/" class="md-nav__link">
+        Gene annotation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09b_FA_overrepresentation/" class="md-nav__link">
+        Over represetation analysis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09c_FA_GSEA/" class="md-nav__link">
+        Class scoring
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_summarized_workflow/" class="md-nav__link">
+        Summarized workflow
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experimental-planning-considerations" class="md-nav__link">
+    Experimental planning considerations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replicates" class="md-nav__link">
+    Replicates
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#confounding" class="md-nav__link">
+    Confounding
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#batch-effects" class="md-nav__link">
+    Batch effects
+  </a>
+  
+    <nav class="md-nav" aria-label="Batch effects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-know-whether-you-have-batches" class="md-nav__link">
+    How to know whether you have batches?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices-regarding-batches" class="md-nav__link">
+    Best practices regarding batches:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="experimental-design-considerations">Experimental design considerations</h1>
+<p>Approximate time: 30 minutes</p>
+<h2 id="learning-objectives">Learning Objectives:</h2>
+<ul>
+<li>Describe the importance of replicates for RNA-seq differential expression experiments</li>
+<li>Explain the relationship between the number of biological replicates, sequencing depth and the differentially expressed genes identified</li>
+<li>Demonstrate how to design an RNA-seq experiment that avoids confounding and batch effects</li>
+</ul>
+<h2 id="experimental-planning-considerations">Experimental planning considerations</h2>
+<p>Understanding the steps in the experimental process of RNA extraction and preparation of RNA-Seq libraries is helpful for designing an RNA-Seq experiment, but there are special considerations that should be highlighted that can greatly affect the quality of a differential expression analysis. </p>
+<p>These important considerations include:</p>
+<ol>
+<li>Number and type of <strong>replicates</strong></li>
+<li>Avoiding <strong>confounding</strong></li>
+<li>Addressing <strong>batch effects</strong></li>
+</ol>
+<p>We will go over each of these considerations in detail, discussing best practice and optimal design.</p>
+<h2 id="replicates">Replicates</h2>
+<p>Experimental replicates can be performed as <strong>technical replicates</strong> or <strong>biological replicates</strong>. </p>
+<p align="center">
+<img src="../img/03_experimental_planning/replicates.png" width="500">
+</p>
+
+<p><em>Image credit: <a href="https://dx.doi.org/10.15252%2Fembj.201592958">Klaus B., EMBO J (2015) <strong>34</strong>: 2727-2730</a></em></p>
+<ul>
+<li>
+<p><strong>Technical replicates:</strong> use the same biological sample to repeat the technical or experimental steps in order to accurately measure technical variation and remove it during analysis. </p>
+</li>
+<li>
+<p><strong>Biological replicates</strong> use different biological samples of the same condition to measure the biological variation between samples.</p>
+</li>
+</ul>
+<p>In the days of microarrays, technical replicates were considered a necessity; however, with the current RNA-Seq technologies, technical variation is much lower than biological variation and <strong>technical replicates are unnecessary</strong>.</p>
+<p>In contrast, <strong>biological replicates are absolutely essential</strong> for differential expression analysis. For mice or rats, it might be easy to determine what constitutes a different biological sample, but it's a bit <strong>more difficult to determine for cell lines</strong>. <a href="http://paasp.net/accurate-design-of-in-vitro-experiments-why-does-it-matter/">This article</a> gives some great recommendations for cell line replicates.</p>
+<p>For differential expression analysis, the more biological replicates, the better the estimates of biological variation and the more precise our estimates of the mean expression levels. This leads to more accurate modeling of our data and identification of more differentially expressed genes.</p>
+<p align="center">
+<img src="../img/03_experimental_planning/de_replicates_img2.png" width="500">
+</p>
+
+<p><em>Image credit: <a href="https://doi.org/10.1093/bioinformatics/btt688">Liu, Y., et al., Bioinformatics (2014) <strong>30</strong>(3): 301–304</a></em></p>
+<p>As the figure above illustrates, <strong>biological replicates are of greater importance than sequencing depth</strong>, which is the total number of reads sequenced per sample. The figure shows the relationship between sequencing depth and number of replicates on the number of differentially expressed genes identified [<a href="https://academic.oup.com/bioinformatics/article/30/3/301/228651/RNA-seq-differential-expression-studies-more">1</a>]. Note that an <strong>increase in the number of replicates tends to return more DE genes than increasing the sequencing depth</strong>. Therefore, generally more replicates are better than higher sequencing depth, with the caveat that higher depth is required for detection of lowly expressed DE genes and for performing isoform-level differential expression. </p>
+<blockquote>
+<p><strong>Sample pooling:</strong> Try to avoid pooling of individuals/experiments, if possible; however, if absolutely necessary, then each pooled set of samples would count as a <strong>single replicate</strong>. To ensure similar amounts of variation between replicates, you would want to pool the <strong>same number of individuals</strong> for each pooled set of samples. </p>
+<p><em>For example, if you need at least 3 individuals to get enough material for your <code>control</code> replicate and at least 5 individuals to get enough material for your <code>treatment</code> replicate, you would pool 5 individuals for the <code>control</code> and 5 individuals for the <code>treatment</code> conditions. You would also make sure that the individuals that are pooled in both conditions are similar in sex, age, etc.</em></p>
+</blockquote>
+<p>Replicates are almost always preferred to greater sequencing depth for bulk RNA-Seq. However, <strong>guidelines depend on the experiment performed and the desired analysis</strong>. Below we list some general guidelines for replicates and sequencing depth to help with experimental planning:</p>
+<ul>
+<li>
+<p><strong>General gene-level differential expression:</strong></p>
+</li>
+<li>
+<p>ENCODE guidelines suggest 30 million SE reads per sample (stranded).</p>
+</li>
+<li>
+<p>15 million reads per sample is often sufficient, if there are a good number of replicates (&gt;3). </p>
+</li>
+<li>
+<p>Spend money on more biological replicates, if possible.</p>
+</li>
+<li>
+<p>Generally recommended to have read length &gt;= 50 bp</p>
+</li>
+<li>
+<p><strong>Gene-level differential expression with detection of lowly-expressed genes:</strong></p>
+</li>
+<li>
+<p>Similarly benefits from replicates more than sequencing depth.</p>
+</li>
+<li>
+<p>Sequence deeper with at least 30-60 million reads depending on level of expression (start with 30 million with a good number of replicates). </p>
+</li>
+<li>
+<p>Generally recommended to have read length &gt;= 50 bp</p>
+</li>
+<li>
+<p><strong>Isoform-level differential expression:</strong></p>
+</li>
+<li>
+<p>Of known isoforms, suggested to have a depth of at least 30 million reads per sample and paired-end reads.</p>
+</li>
+<li>
+<p>Of novel isoforms should have more depth (&gt; 60 million reads per sample).</p>
+</li>
+<li>
+<p>Choose biological replicates over paired/deeper sequencing.</p>
+</li>
+<li>
+<p>Generally recommended to have read length &gt;= 50 bp, but longer is better as the reads will be more likely to cross exon junctions</p>
+</li>
+<li>
+<p>Perform careful QC of RNA quality. Be careful to use high quality preparation methods and restrict analysis to high quality RIN # samples.  </p>
+</li>
+<li>
+<p><strong>Other types of RNA analyses (intron retention, small RNA-Seq, etc.):</strong> </p>
+</li>
+<li>
+<p>Different recommendations depending on the analysis.</p>
+</li>
+<li>
+<p>Almost always more biological replicates are better!</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>NOTE:</strong> The factor used to estimate the depth of sequencing for genomes is "coverage" - how many times do the number of nucleotides sequenced "cover" the genome. This metric is not exact for genomes (whole genome sequencing), but it is good enough and is used extensively. However, the metric <strong>does not work for transcriptomes</strong> because even though you may know what % of the genome has trancriptional activity, the expression of the genes is highly variable.</p>
+</blockquote>
+<h2 id="confounding">Confounding</h2>
+<p>A confounded RNA-Seq experiment is one where you <strong>cannot distinguish the separate effects of two different sources of variation</strong> in the data. </p>
+<p>For example, we know that sex has large effects on gene expression, and if all of our <em>control</em> mice were female and all of the <em>treatment</em> mice were male, then our treatment effect would be confounded by sex. <strong>We could not differentiate the effect of treatment from the effect of sex.</strong></p>
+<p align="center">
+<img src="../img/03_experimental_planning/confounded_design.png" width="500">  
+</p>
+
+<p><strong>To AVOID confounding:</strong></p>
+<ul>
+<li>
+<p>Ensure animals in each condition are all the <strong>same sex, age, litter, and batch</strong>, if possible.</p>
+</li>
+<li>
+<p>If not possible, then ensure to split the animals equally between conditions</p>
+</li>
+</ul>
+<p align="center">
+<img src="../img/03_experimental_planning/non_confounded_design.png" width="400">
+</p>
+
+<h2 id="batch-effects">Batch effects</h2>
+<p>Batch effects are a significant issue for RNA-Seq analyses, since you can see significant differences in expression due solely to the batch effect. </p>
+<p align="center">
+<img src="../img/03_experimental_planning/batch_effect_pca.png" width="600">
+</p>
+
+<p><em>Image credit: <a href="https://www.biorxiv.org/content/early/2015/08/25/025528">Hicks SC, et al., bioRxiv (2015)</a></em></p>
+<p>To explore the issues generated by poor batch study design, they are highlighted nicely in <a href="https://f1000research.com/articles/4-121/v1">this paper</a>.</p>
+<h3 id="how-to-know-whether-you-have-batches">How to know whether you have batches?</h3>
+<ul>
+<li>
+<p>Were all RNA isolations performed on the same day?</p>
+</li>
+<li>
+<p>Were all library preparations performed on the same day?</p>
+</li>
+<li>
+<p>Did the same person perform the RNA isolation/library preparation for all samples?</p>
+</li>
+<li>
+<p>Did you use the same reagents for all samples?</p>
+</li>
+<li>
+<p>Did you perform the RNA isolation/library preparation in the same location?</p>
+</li>
+</ul>
+<p>If <em>any</em> of the answers is <strong>‘No’</strong>, then you have batches.</p>
+<h3 id="best-practices-regarding-batches">Best practices regarding batches:</h3>
+<ul>
+<li>
+<p>Design the experiment in a way to <strong>avoid batches</strong>, if possible.</p>
+</li>
+<li>
+<p>If unable to avoid batches:</p>
+</li>
+<li>
+<p><strong>Do NOT confound</strong> your experiment by batch:</p>
+<p><p align="center">
+<img src="../img/03_experimental_planning/confounded_batch.png" width="300">
+</p></p>
+<p><em>Image credit: <a href="https://www.biorxiv.org/content/early/2015/08/25/025528">Hicks SC, et al., bioRxiv (2015)</a></em></p>
+</li>
+<li>
+<p><strong>DO</strong> split replicates of the different sample groups across batches. The more replicates the better (definitely more than 2).</p>
+<p><p align="center">
+<img src="../img/03_experimental_planning/batch_effect.png" width="300">
+</p></p>
+<p><em>Image credit: <a href="https://www.biorxiv.org/content/early/2015/08/25/025528">Hicks SC, et al., bioRxiv (2015)</a></em></p>
+</li>
+<li>
+<p><strong>DO</strong> include batch information in your <strong>experimental metadata</strong>. During the analysis, we can regress out the variation due to batch if not confounded so it doesn’t affect our results if we have that information.</p>
+<p><p align="center">
+<img src="../img/03_experimental_planning/metadata_batch.png" width="300">
+</p></p>
+</li>
+</ul>
+<blockquote>
+<p><strong>NOTE:</strong> <em>The sample preparation of cell line "biological" replicates "should be performed as independently as possible" (as batches), "meaning that cell culture media should be prepared freshly for each experiment, different frozen cell stocks and growth factor batches, etc. should be used [<a href="http://paasp.net/accurate-design-of-in-vitro-experiments-why-does-it-matter/">2</a>]." However, preparation across all conditions should be performed at the same time.</em></p>
+</blockquote>
+<hr />
+<p><em>This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../02_setup/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Setup" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Setup
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../04_data_explanation/" class="md-footer__link md-footer__link--next" aria-label="Next: Data Explanation" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Data Explanation
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.467223ff.min.js"></script>
+      
+    
+  </body>
+</html>
