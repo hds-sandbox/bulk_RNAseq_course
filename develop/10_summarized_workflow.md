@@ -1,4 +1,4 @@
-# Summary of DGE workflow"
+# Summary of DGE workflow
 
 Approximate time: 15 minutes
 
