@@ -709,7 +709,7 @@
 <h2 id="replicates">Replicates</h2>
 <p>Experimental replicates can be performed as <strong>technical replicates</strong> or <strong>biological replicates</strong>. </p>
 <p align="center">
-<img src="../img/03_experimental_planning/replicates.png" width="500">
+<img src="./img/03_experimental_planning/replicates.png" width="500">
 </p>
 
 <p><em>Image credit: <a href="https://dx.doi.org/10.15252%2Fembj.201592958">Klaus B., EMBO J (2015) <strong>34</strong>: 2727-2730</a></em></p>
@@ -725,7 +725,7 @@
 <p>In contrast, <strong>biological replicates are absolutely essential</strong> for differential expression analysis. For mice or rats, it might be easy to determine what constitutes a different biological sample, but it's a bit <strong>more difficult to determine for cell lines</strong>. <a href="http://paasp.net/accurate-design-of-in-vitro-experiments-why-does-it-matter/">This article</a> gives some great recommendations for cell line replicates.</p>
 <p>For differential expression analysis, the more biological replicates, the better the estimates of biological variation and the more precise our estimates of the mean expression levels. This leads to more accurate modeling of our data and identification of more differentially expressed genes.</p>
 <p align="center">
-<img src="../img/03_experimental_planning/de_replicates_img2.png" width="500">
+<img src="./img/03_experimental_planning/de_replicates_img2.png" width="500">
 </p>
 
 <p><em>Image credit: <a href="https://doi.org/10.1093/bioinformatics/btt688">Liu, Y., et al., Bioinformatics (2014) <strong>30</strong>(3): 301–304</a></em></p>
@@ -798,7 +798,7 @@
 <p>A confounded RNA-Seq experiment is one where you <strong>cannot distinguish the separate effects of two different sources of variation</strong> in the data. </p>
 <p>For example, we know that sex has large effects on gene expression, and if all of our <em>control</em> mice were female and all of the <em>treatment</em> mice were male, then our treatment effect would be confounded by sex. <strong>We could not differentiate the effect of treatment from the effect of sex.</strong></p>
 <p align="center">
-<img src="../img/03_experimental_planning/confounded_design.png" width="500">  
+<img src="./img/03_experimental_planning/confounded_design.png" width="500">  
 </p>
 
 <p><strong>To AVOID confounding:</strong></p>
@@ -811,13 +811,13 @@
 </li>
 </ul>
 <p align="center">
-<img src="../img/03_experimental_planning/non_confounded_design.png" width="400">
+<img src="./img/03_experimental_planning/non_confounded_design.png" width="400">
 </p>
 
 <h2 id="batch-effects">Batch effects</h2>
 <p>Batch effects are a significant issue for RNA-Seq analyses, since you can see significant differences in expression due solely to the batch effect. </p>
 <p align="center">
-<img src="../img/03_experimental_planning/batch_effect_pca.png" width="600">
+<img src="./img/03_experimental_planning/batch_effect_pca.png" width="600">
 </p>
 
 <p><em>Image credit: <a href="https://www.biorxiv.org/content/early/2015/08/25/025528">Hicks SC, et al., bioRxiv (2015)</a></em></p>
@@ -852,21 +852,21 @@
 <li>
 <p><strong>Do NOT confound</strong> your experiment by batch:</p>
 <p><p align="center">
-<img src="../img/03_experimental_planning/confounded_batch.png" width="300">
+<img src="./img/03_experimental_planning/confounded_batch.png" width="300">
 </p></p>
 <p><em>Image credit: <a href="https://www.biorxiv.org/content/early/2015/08/25/025528">Hicks SC, et al., bioRxiv (2015)</a></em></p>
 </li>
 <li>
 <p><strong>DO</strong> split replicates of the different sample groups across batches. The more replicates the better (definitely more than 2).</p>
 <p><p align="center">
-<img src="../img/03_experimental_planning/batch_effect.png" width="300">
+<img src="./img/03_experimental_planning/batch_effect.png" width="300">
 </p></p>
 <p><em>Image credit: <a href="https://www.biorxiv.org/content/early/2015/08/25/025528">Hicks SC, et al., bioRxiv (2015)</a></em></p>
 </li>
 <li>
 <p><strong>DO</strong> include batch information in your <strong>experimental metadata</strong>. During the analysis, we can regress out the variation due to batch if not confounded so it doesn’t affect our results if we have that information.</p>
 <p><p align="center">
-<img src="../img/03_experimental_planning/metadata_batch.png" width="300">
+<img src="./img/03_experimental_planning/metadata_batch.png" width="300">
 </p></p>
 </li>
 </ul>

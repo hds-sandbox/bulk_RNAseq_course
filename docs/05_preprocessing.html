@@ -754,7 +754,7 @@
 <p>To perform Differential Gene Expression analysis, we need to start with a matrix of counts representing the levels of gene expression. It is important to understand how the count matrix is generated, before diving into the statistical analysis. </p>
 <p>In this lesson we will briefly discuss the RNA-processing pipeline for bulk RNA-seq, and the <strong>different steps we take to go from raw sequencing reads to a gene expression count matrix</strong>. </p>
 <p align="center">
-<img src="../img/05_preprocessing/workflow-salmon-DGE-alt2.png" width="600" >
+<img src="./img/05_preprocessing/workflow-salmon-DGE-alt2.png" width="600" >
 </p>
 
 <h3 id="1-rna-extraction-and-library-preparation">1. RNA Extraction and library preparation</h3>
@@ -772,14 +772,14 @@
 of the second cDNA strand (for details see Levin et al. (2010)). Once double-stranded cDNA fragments are generated, sequence adapters are ligated to the ends. (Size selection can be performed here instead of at the RNA-level.)</p>
 <p><strong>d. PCR amplification.</strong> If the amount of starting material is low and/or to increase the number of cDNA molecules to an amount sufficient for sequencing, libraries are usually PCR amplified. Run as few amplication cycles as possible to avoid PCR artefacts.  </p>
 <p align="center">
-<img src="../img/05_preprocessing/library_prep.png" >
+<img src="./img/05_preprocessing/library_prep.png" >
 </p>
 
 <p><em>Image source: <a href="https://pubmed.ncbi.nlm.nih.gov/22910383/">Zeng and Mortavi, 2012</a></em></p>
 <h3 id="2-sequencing-illumina">2. Sequencing (Illumina)</h3>
 <p>Sequencing of the cDNA libraries will generate <strong>reads</strong>. Reads correspond to the nucleotide sequences of the ends of each of the cDNA fragements in the library. You will have the choice of sequencing either a single end of the cDNA fragments (single-end reads) or both ends of the fragments (paired-end reads).</p>
 <p align="center">
-<img src="../img/05_preprocessing/paired_end_reads.png" width="500">
+<img src="./img/05_preprocessing/paired_end_reads.png" width="500">
 </p>
 
 <ul>
@@ -804,7 +804,7 @@ of the second cDNA strand (for details see Levin et al. (2010)). Once double-str
 <li><strong>Number of sequencing cycles = Length of reads</strong></li>
 </ul>
 <p align="center">
-<img src="../img/05_preprocessing/illumina_sequencing_process.png" width="600">
+<img src="./img/05_preprocessing/illumina_sequencing_process.png" width="600">
 </p>
 
 <h3 id="3-quality-control-of-raw-sequencing-data-fastqc">3. Quality control of raw sequencing data (FastQC)</h3>
@@ -857,7 +857,7 @@ CACTTGTAAGGGCAGGCCCCCTTCACCCTCCCGCTCCTGGGGGANNNNNNNNNNANNNCGAGGCCCTGGGGTAGAGGGNN
 <p>Each of the tools in the list above work slightly differently from one another. However, common to all of them is that <strong>they avoid base-to-base genomic alignment of the reads</strong>. Genomic alignment is a step performed by older splice-aware alignment tools such as <a href="https://academic.oup.com/bioinformatics/article/29/1/15/272537">STAR</a> and <a href="https://daehwankimlab.github.io/hisat2/">HISAT2</a>. In comparison to these tools, the lightweight alignment tools not only provide quantification estimates <strong>faster</strong> (typically more than 20 times faster), but also prove <strong>improvements in accuracy</strong> [<a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0734-x">1</a>]. </p>
 <p><strong>We will use the expression estimates, often referred to as 'pseudocounts', obtained from <a href="https://combine-lab.github.io/salmon/">Salmon</a></strong> as the starting point for the differential gene expression analysis.</p>
 <p align="center">
-<img src="../img/05_preprocessing/salmon.png" width="600">
+<img src="./img/05_preprocessing/salmon.png" width="600">
 </p>
 
 <h3 id="5-quality-control-of-aligned-sequence-reads-starqualimap">5. Quality control of aligned sequence reads (STAR/Qualimap)</h3>
@@ -873,13 +873,13 @@ CACTTGTAAGGGCAGGCCCCCTTCACCCTCCCGCTCCTGGGGGANNNNNNNNNNANNNCGAGGCCCTGGGGTAGAGGGNN
 <p>Manually tracking these metrics and browsing through multiple HTML reports (FastQC, Qualimap) and log files (Salmon, STAR) for each samples is tedious and prone to errors. <strong><a href="https://multiqc.info/">MultiQC</a> is a tool which aggregates results from several tools and generates a single HTML report</strong> with plots to visualize and compare various QC metrics between the samples. Assessment of the QC metrics may result in the removal of samples before proceeding to the next step, if necessary.</p>
 <p>Once the QC has been performed on all the samples, we are ready to get started with Differential Gene Expression analysis with <a href="http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a>!</p>
 <p align="center">
-<img src="../img/05_preprocessing/deseq_counts_overview.png" width="600">
+<img src="./img/05_preprocessing/deseq_counts_overview.png" width="600">
 </p>
 
 <h2 id="automating-your-workflow-nf-core-pipelines">Automating your workflow: nf-core pipelines</h2>
 <p>The <a href="https://nf-co.re/">nf-core project</a> is a community effort to collect a curated set of analysis pipelines built using [Nextflow] (https://www.nextflow.io/), an incredibly powerful and flexible workflow language. This means that all the tools and steps used in your RNAseq workflow can be automated and easily reproduced by other researchers if necessary. In addition, if you use any of the nf-core pipelines, you will be sure that all the necessary tools are available to you in any computer platform (Cloud computing, HPC or your personal computer).</p>
 <p align="center">
-<img src="../img/05_preprocessing/nf-core_RNAseq.png" width="600">
+<img src="./img/05_preprocessing/nf-core_RNAseq.png" width="600">
 </p>
 
 <p>The <a href="https://nf-co.re/rnaseq">RNAseq pipeline</a> enables using many different tools, such as STAR, RSEM, HISAT2 or Salmon, and allows quantification of gene/isoform counts and provides extensive quality control checks at each step of the workflow. We encourage your to take a look at the pipeline and its documentation if you need to preprocess your RNAseq reads from stratch.</p>

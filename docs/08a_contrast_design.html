@@ -687,14 +687,14 @@
 <h2 id="differential-expression-analysis-with-deseq2">Differential expression analysis with DESeq2</h2>
 <p>The final step in the differential expression analysis workflow is <strong>fitting the raw counts to the NB model and performing the statistical test</strong> for differentially expressed genes. In this step we essentially want to determine whether the mean expression levels of different sample groups are significantly different.</p>
 <p align="center">
-<img src="../img/08a_contrast_design/de_theory.png" width="600">
+<img src="./img/08a_contrast_design/de_theory.png" width="600">
 </p>
 
 <p><em>Image credit:  Paul  Pavlidis,  UBC</em></p>
 <p>The <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">DESeq2 paper</a> was published in 2014, but the package is continually updated and available for use in R through Bioconductor. It builds on good ideas for dispersion estimation and use of Generalized Linear Models from the <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4005660/">DSS</a> and <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2796818/">edgeR</a> methods. </p>
 <p>Differential expression analysis with DESeq2 involves multiple steps as displayed in the flowchart below in blue. Briefly, DESeq2 will model the raw counts, using normalization factors (size factors) to account for differences in library depth. Then, it will estimate the gene-wise dispersions and shrink these estimates to generate more accurate estimates of dispersion to model the counts. Finally, DESeq2 will fit the negative binomial model and perform hypothesis testing using the Wald test or Likelihood Ratio Test.</p>
 <p align="center">
-<img src="../img/08a_contrast_design/deseq_workflow1.png" width="500">
+<img src="./img/08a_contrast_design/deseq_workflow1.png" width="500">
 </p>
 
 <blockquote>
@@ -707,7 +707,7 @@
 <p>A design formula tells the statistical software the known sources of variation to control for, as well as, the factor of interest to test for during differential expression testing. For example, if you know that sex is a significant source of variation in your data, then <code>sex</code> should be included in your model. <strong>The design formula should have all of the factors in your metadata that account for major sources of variation in your data. The last factor entered in the formula should be the condition of interest.</strong></p>
 <p>For example, suppose you have the following metadata:</p>
 <p align="center">
-<img src="../img/08a_contrast_design/meta_example.png" width="300">
+<img src="./img/08a_contrast_design/meta_example.png" width="300">
 </p>
 
 <p>If you want to examine the expression differences between treatments, and you know that major sources of variation include <code>bloodtype</code> and <code>patient</code>, then your design formula would be:</p>
@@ -849,7 +849,7 @@ versus control).</p>
 <div class="highlight"><pre><span></span><code><span class="nf">plot</span><span class="p">(</span><span class="n">res1</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
 </code></pre></div>
 <p align="center">
-<img src="../img/08a_contrast_design/contrast_res1.png">
+<img src="./img/08a_contrast_design/contrast_res1.png">
 </p>
 
 <h2 id="recoding-the-design-slide-6">Recoding the design (slide 6)</h2>
@@ -889,7 +889,7 @@ versus control).</p>
 <div class="highlight"><pre><span></span><code><span class="nf">plot</span><span class="p">(</span><span class="n">res1</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res3</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
 </code></pre></div>
 <p align="center">
-<img src="../img/08a_contrast_design/contrast_res2.png" style="display: block; margin: auto;" />
+<img src="./img/08a_contrast_design/contrast_res2.png" style="display: block; margin: auto;" />
 </p>
 
 <p>In theory there’s no difference between these two ways of defining our design. The design with an intercept is more common, but for the purposes of understanding what’s going on, it’s sometimes easier to look at models without intercept.</p>
@@ -1030,7 +1030,7 @@ versus control).</p>
 <span class="nf">abline</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s">&quot;brown&quot;</span><span class="p">,</span> <span class="n">lwd</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 </code></pre></div>
 <p align="center">
-<img src="../img/08a_contrast_design/contrast_res3.png" style="display: block; margin: auto;" />
+<img src="./img/08a_contrast_design/contrast_res3.png" style="display: block; margin: auto;" />
 </p>
 
 <div class="highlight"><pre><span></span><code><span class="c1"># compare the errors between the two approaches</span>
@@ -1038,7 +1038,7 @@ versus control).</p>
 <span class="nf">abline</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s">&quot;brown&quot;</span><span class="p">,</span> <span class="n">lwd</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 </code></pre></div>
 <p align="center">
-<img src="../img/08a_contrast_design/contrast_res4.png" style="display: block; margin: auto;" />
+<img src="./img/08a_contrast_design/contrast_res4.png" style="display: block; margin: auto;" />
 </p>
 
 <h2 id="two-factors-with-interaction-slide-9">Two factors with interaction (slide 9)</h2>

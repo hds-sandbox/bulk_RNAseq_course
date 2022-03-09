@@ -782,7 +782,7 @@ The problem with these fold change estimates is that they not entirely accurate 
 </ul>
 <p>LFC shrinkage uses <strong>information from all genes</strong> to generate more accurate estimates. Specifically, the distribution of LFC estimates for all genes is used (as a prior) to shrink the LFC estimates of genes with little information or high dispersion toward more likely (lower) LFC estimates. </p>
 <p align="center">
-<img src="../img/08d_DEA_visualization/deseq2_shrunken_lfc.png" width="500">
+<img src="./img/08d_DEA_visualization/deseq2_shrunken_lfc.png" width="500">
 </p>
 
 <p><em>Illustration taken from the <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">DESeq2 paper</a>.</em></p>
@@ -816,8 +816,8 @@ The problem with these fold change estimates is that they not entirely accurate 
 </code></pre></div>
 <p>On the left you have the unshrunken fold change values plotted and you can see the abundance of scatter for the the lowly expressed genes. That is, many of the low expressors exhibit very high fold changes. After shrinkage, we see the fold changes are much smaller estimates.</p>
 <p float="left">
-  <img src="../img/08d_DEA_visualization/maplot_unshrunken.png" width="400">
-  <img src="../img/08d_DEA_visualization/MA_plot.png" width="400">
+  <img src="./img/08d_DEA_visualization/maplot_unshrunken.png" width="400">
+  <img src="./img/08d_DEA_visualization/MA_plot.png" width="400">
 </p>
 
 <p>In addition to the comparison described above, this plot allows us to evaluate the magnitude of fold changes and how they are distributed relative to mean expression. Generally, we would expect to see significant genes across the full range of expression levels. </p>
@@ -875,7 +875,7 @@ The problem with these fold change estimates is that they not entirely accurate 
 <span class="nf">plotCounts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">gene</span><span class="o">=</span><span class="s">&quot;ENSG00000155363&quot;</span><span class="p">,</span> <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">)</span> 
 </code></pre></div>
 <p align="center">
-<img src="../img/08d_DEA_visualization/topgen_plot.png" width="600">
+<img src="./img/08d_DEA_visualization/topgen_plot.png" width="600">
 </p>
 
 <blockquote>
@@ -901,7 +901,7 @@ The problem with these fold change estimates is that they not entirely accurate 
 <p>Note that in the plot below (code above), we are using <code>geom_text_repel()</code> from the <code>ggrepel</code> package to label our individual points on the plot.</p>
 </blockquote>
 <p float="left">
-<img src="../img/08d_DEA_visualization/plotCounts_ggrepel.png" width="700">
+<img src="./img/08d_DEA_visualization/plotCounts_ggrepel.png" width="700">
 </p>
 
 <h3 id="heatmap">Heatmap</h3>
@@ -927,7 +927,7 @@ The problem with these fold change estimates is that they not entirely accurate 
     <span class="n">height</span> <span class="o">=</span> <span class="m">20</span><span class="p">)</span>
 </code></pre></div>
 <p float="left">
-<img src="../img/08d_DEA_visualization/pheatmap_aug2020.png" width="600">   
+<img src="./img/08d_DEA_visualization/pheatmap_aug2020.png" width="600">   
 </p>
 
 <blockquote>
@@ -955,7 +955,7 @@ The problem with these fold change estimates is that they not entirely accurate 
           <span class="n">axis.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.25</span><span class="p">)))</span>  
 </code></pre></div>
 <p float="left">
-<img src="../img/08d_DEA_visualization/volcano_plot_1.png" width="500"> 
+<img src="./img/08d_DEA_visualization/volcano_plot_1.png" width="500"> 
 </p>
 
 <p>This is a great way to get an overall picture of what is going on, but what if we also wanted to know where the top 10 genes (lowest padj) in our DE list are located on this plot? We could label those dots with the gene name on the Volcano plot using <code>geom_text_repel()</code>.</p>
@@ -986,7 +986,7 @@ The problem with these fold change estimates is that they not entirely accurate 
           <span class="n">axis.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.25</span><span class="p">)))</span> 
 </code></pre></div>
 <p float="left">
-<img src="../img/08d_DEA_visualization/volcano_plot_2.png" width="500"> 
+<img src="./img/08d_DEA_visualization/volcano_plot_2.png" width="500"> 
 </p>
 
 <hr />

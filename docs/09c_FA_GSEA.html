@@ -607,13 +607,13 @@
 <h1 id="functional-analysis">Functional analysis</h1>
 <p>Over-representation analysis is only a single type of functional analysis method that is available for teasing apart the biological processes important to your condition of interest. Other types of analyses can be equally important or informative, including functional class scoring methods. </p>
 <p align="center"> 
-<img src="../img/09c_FA_GSEA/pathway_analysis.png" width="600">
+<img src="./img/09c_FA_GSEA/pathway_analysis.png" width="600">
 </p>
 
 <h2 id="functional-class-scoring_1">Functional class scoring</h2>
 <p>Functional class scoring (FCS) tools, such as <a href="https://www.pnas.org/content/102/43/15545">GSEA</a>, most often use the gene-level statistics or log2 fold changes for all genes from the differential expression results, then look to see whether gene sets for particular biological pathways are enriched among the large positive or negative fold changes. </p>
 <p align="center"> 
-<img src="../img/09c_FA_GSEA/gsea_theory.png" width="600">
+<img src="./img/09c_FA_GSEA/gsea_theory.png" width="600">
 </p>
 
 <p>The hypothesis of FCS methods is that although large changes in individual genes can have significant effects on pathways (and will be detected via ORA methods), weaker but coordinated changes in sets of functionally related genes (i.e., pathways) can also have significant effects.  Thus, rather than setting an arbitrary threshold to identify 'significant genes', <strong>all genes are considered</strong> in the analysis. The gene-level statistics from the dataset are aggregated to generate a single pathway-level statistic and statistical significance of each pathway is reported. This type of analysis can be particularly helpful if the differential expression analysis only outputs a small list of significant DE genes. </p>
@@ -644,7 +644,7 @@
 <h4 id="theory-of-gsea">Theory of GSEA</h4>
 <p>Now we are ready to perform GSEA. The details regarding GSEA can be found in the <a href="https://www.pnas.org/content/102/43/15545">PNAS paper</a> by Subramanian et al. We will describe briefly the steps outlined in the paper below:</p>
 <p align="center"> 
-<img src="../img/09c_FA_GSEA/gsea_overview.png" width="600">
+<img src="./img/09c_FA_GSEA/gsea_overview.png" width="600">
 </p>
 
 <p><em><strong>Image credit:</strong> <a href="https://www.pnas.org/content/102/43/15545">Subramanian et al. Proceedings of the National Academy of Sciences Oct 2005, 102 (43) 15545-15550; DOI: 10.1073/pnas.0506580102</a></em></p>
@@ -686,7 +686,7 @@
 <span class="nf">gseaplot</span><span class="p">(</span><span class="n">gseaKEGG</span><span class="p">,</span> <span class="n">geneSetID</span> <span class="o">=</span> <span class="s">&#39;hsa03040&#39;</span><span class="p">)</span>
 </code></pre></div>
 <p align="center"> 
-<img src="../img/09c_FA_GSEA/gsea_kegg_hsa03040.png" width="600">
+<img src="./img/09c_FA_GSEA/gsea_kegg_hsa03040.png" width="600">
 </p>
 
 <p>In this plot, the lines in plot represent the genes in the gene set 'hsa03040', and where they occur among the log2 fold changes. The largest positive log2 fold changes are on the left-hand side of the plot, while the largest negative log2 fold changes are on the right. The top plot shows the magnitude of the log2 fold changes for each gene, while the bottom plot shows the running sum, with the enrichment score peaking at the red dotted line (which is among the negative log2 fold changes).</p>
@@ -704,7 +704,7 @@
 <p><strong>NOTE:</strong> If the below error message occurs: <code>Error in detach("package:dplyr", unload = T) : invalid 'name' argument</code>, that means the dplyr package is not currently loaded. Ignore the message and continue to run pathview command.</p>
 </blockquote>
 <p align="center"> 
-<img src="../img/09c_FA_GSEA/hsa03040.pathview.png" width="800">
+<img src="./img/09c_FA_GSEA/hsa03040.pathview.png" width="800">
 </p>
 
 <blockquote>
@@ -751,7 +751,7 @@
 </code></pre></div>
 <h2 id="pathway-topology-tools">Pathway topology tools</h2>
 <p align="center"> 
-<img src="../img/09c_FA_GSEA/pathway_analysis.png" width="600">
+<img src="./img/09c_FA_GSEA/pathway_analysis.png" width="600">
 </p>
 
 <p>The last main type of functional analysis technique is pathway topology analysis. Pathway topology analysis often takes into account gene interaction information along with the fold changes and adjusted p-values from differential expression analysis to identify dysregulated pathways. Depending on the tool, pathway topology tools explore how genes interact with each other (e.g. activation, inhibition, phosphorylation, ubiquitination, etc.) to determine the pathway-level statistics. Pathway topology-based methods utilize the number and type of interactions between gene product (our DE genes) and other gene products to infer gene function or pathway association. </p>
