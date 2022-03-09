@@ -14,7 +14,7 @@ Approximate time: 80 minutes
 The next step in the DESeq2 workflow is QC, which includes sample-level and gene-level steps to perform QC checks on the count data to help us ensure that the samples/replicates look good. 
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/deseq_workflow_qc_2018.png" width="400">
+<img src="./img/07_exploratory_analysis/deseq_workflow_qc_2018.png" width="400">
 </p>
 
 ## Sample-level QC
@@ -28,13 +28,13 @@ A useful initial step in an RNA-seq analysis is often to assess overall similari
 To explore the similarity of our samples, we will be performing sample-level QC using Principal Component Analysis (PCA) and hierarchical clustering methods. These methods/tools allow us to check **how well similar the replicates are to each other** (clustering) and **to make sure that the experimental condition is the major source of variation** in the data. Sample-level QC can also help identify any samples behaving like outliers; we can further explore any potential outliers to determine whether they need to be removed prior to DE analysis. 
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/sample_qc.png" width="700">
+<img src="./img/07_exploratory_analysis/sample_qc.png" width="700">
 </p>
 
 These unsupervised clustering methods are run using **log2 transformed normalized counts**. The log2 transformation **improves the distances/clustering for visualization**. Instead of using an ordinary log2 transform, we will be using **regularized log transform** (rlog), to avoid any bias from the abundance of low-count genes; Note1 below explains this in more detail.
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/rlog_transformation_new.png" width="650">
+<img src="./img/07_exploratory_analysis/rlog_transformation_new.png" width="650">
 </p>
 
 *Image adapted from "[Beginner's guide to using the DESeq2 package](https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf)" by Love, Anders and Huber, 2014*
@@ -58,31 +58,31 @@ To better understand how it works, **please go through [this YouTube video from 
 We have an example dataset and a few associated PCA plots below to get a feel for how to interpret them. The metadata for the experiment is displayed below. The main condition of interest is `treatment`.
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/example_metadata.png" width="600">
+<img src="./img/07_exploratory_analysis/example_metadata.png" width="600">
 </p>
 
 When visualizing on PC1 and PC2, we don't see the samples separate by `treatment`, so we decide to explore other sources of variation present in the data. We hope that we have included all possible known sources of variation in our metadata table, and we can use these factors to color the PCA plot. 
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/example_PCA_treatmentPC1.png" width="600">
+<img src="./img/07_exploratory_analysis/example_PCA_treatmentPC1.png" width="600">
 </p>
 
 We start with the factor `cage`, but the `cage` factor does not seem to explain the variation on PC1 or PC2.
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/example_PCA_cage.png" width="600">
+<img src="./img/07_exploratory_analysis/example_PCA_cage.png" width="600">
 </p>
 
 Then, we color by the `sex` factor, which appears to separate samples on PC2. This is good information to take note of, as we can use it downstream to account for the variation due to sex in the model and regress it out.
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/example_PCA_sex.png" width="600">
+<img src="./img/07_exploratory_analysis/example_PCA_sex.png" width="600">
 </p>
 
 Next we explore the `strain` factor and find that it explains the variation on PC1. 
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/example_PCA_strain.png" width="600">
+<img src="./img/07_exploratory_analysis/example_PCA_strain.png" width="600">
 </p>
 
 It's great that we have been able to identify the sources of variation for both PC1 and PC2. By accounting for it in our model, we should be able to detect more genes differentially expressed due to `treatment`.
@@ -92,7 +92,7 @@ Worrisome about this plot is that we see two samples that do not cluster with th
 Still we haven't found if `treatment` is a major source of variation after `strain` and `sex`. So, we explore PC3 and PC4 to see if `treatment` is driving the variation represented by either of these PCs.
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/example_PCA_treatmentPC3.png" width="600">
+<img src="./img/07_exploratory_analysis/example_PCA_treatmentPC3.png" width="600">
 </p>
   
 We find that the samples separate by `treatment` on PC3, and are optimistic about our DE analysis since our condition of interest, `treatment`, is separating on PC3 and we can regress out the variation driving PC1 and PC2.
@@ -108,7 +108,7 @@ The hierarchical tree along the axes indicates which samples are more similar to
 **In the plot below, we would be quite concerned about 'Wt_3' and 'KO_3' samples not clustering with the other replicates. We would want to explore the PCA to see if we see the same clustering of samples.**
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/heatmap_example.png" width="500">
+<img src="./img/07_exploratory_analysis/heatmap_example.png" width="500">
 </p>
 
 ***
@@ -148,7 +148,7 @@ plotPCA(rld, intgroup="sampletype")
 ```
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/PCA_500.png" width="650">
+<img src="./img/07_exploratory_analysis/PCA_500.png" width="650">
 </p>
 
 ***
@@ -220,7 +220,7 @@ pheatmap(rld_cor, annotation = meta)
 When you plot using `pheatmap()` the hierarchical clustering information is used to place similar samples together and this information is represented by the tree structure along the axes. The `annotation` argument accepts a dataframe as input, in our case it is the `meta` data frame. 
 
 <p align="center">
-<img src="../img/07_exploratory_analysis/pheatmap_salmon.png" width="650">
+<img src="./img/07_exploratory_analysis/pheatmap_salmon.png" width="650">
 </p>
 
 Overall, we observe pretty high correlations across the board ( > 0.999) suggesting no outlying sample(s). Also, similar to the PCA plot you see the samples clustering together by sample group. Together, these plots suggest to us that the data are of good quality and we have the green light to proceed to differential expression analysis.

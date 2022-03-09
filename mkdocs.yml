@@ -20,6 +20,7 @@ nav:
         - 'Class scoring': 09c_FA_GSEA.md
     - 'Summarized workflow': 10_summarized_workflow.md
     
+use_directory_urls: false
 docs_dir: develop
 site_dir: docs
 plugins:

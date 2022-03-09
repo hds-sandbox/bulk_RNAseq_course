@@ -30,7 +30,7 @@ To generate more accurate log2 foldchange (LFC) estimates, DESeq2 allows for the
 LFC shrinkage uses **information from all genes** to generate more accurate estimates. Specifically, the distribution of LFC estimates for all genes is used (as a prior) to shrink the LFC estimates of genes with little information or high dispersion toward more likely (lower) LFC estimates. 
 
 <p align="center">
-<img src="../img/08d_DEA_visualization/deseq2_shrunken_lfc.png" width="500">
+<img src="./img/08d_DEA_visualization/deseq2_shrunken_lfc.png" width="500">
 </p>
 
 *Illustration taken from the [DESeq2 paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8).*
@@ -83,8 +83,8 @@ plotMA(res_tableOE, ylim=c(-2,2))
 On the left you have the unshrunken fold change values plotted and you can see the abundance of scatter for the the lowly expressed genes. That is, many of the low expressors exhibit very high fold changes. After shrinkage, we see the fold changes are much smaller estimates.
 
 <p float="left">
-  <img src="../img/08d_DEA_visualization/maplot_unshrunken.png" width="400">
-  <img src="../img/08d_DEA_visualization/MA_plot.png" width="400">
+  <img src="./img/08d_DEA_visualization/maplot_unshrunken.png" width="400">
+  <img src="./img/08d_DEA_visualization/MA_plot.png" width="400">
 </p>
 
 
@@ -160,7 +160,7 @@ plotCounts(dds, gene="ENSG00000155363", intgroup="sampletype")
 ```
 
 <p align="center">
-<img src="../img/08d_DEA_visualization/topgen_plot.png" width="600">
+<img src="./img/08d_DEA_visualization/topgen_plot.png" width="600">
 </p>
 
 > This DESeq2 function only allows for plotting the counts of a single gene at a time, and is not flexible regarding the appearance.
@@ -188,7 +188,7 @@ ggplot(d, aes(x = sampletype, y = count, color = sampletype)) +
 > Note that in the plot below (code above), we are using `geom_text_repel()` from the `ggrepel` package to label our individual points on the plot.
 
 <p float="left">
-<img src="../img/08d_DEA_visualization/plotCounts_ggrepel.png" width="700">
+<img src="./img/08d_DEA_visualization/plotCounts_ggrepel.png" width="700">
 </p>
 
 ### Heatmap
@@ -221,7 +221,7 @@ pheatmap(norm_OEsig[2:7],
 ```
          
 <p float="left">
-<img src="../img/08d_DEA_visualization/pheatmap_aug2020.png" width="600">   
+<img src="./img/08d_DEA_visualization/pheatmap_aug2020.png" width="600">   
 </p>
 
 > *NOTE:* There are several additional arguments we have included in the function for aesthetics. One important one is `scale="row"`, in which Z-scores are plotted, rather than the actual normalized count value. 
@@ -257,7 +257,7 @@ ggplot(res_tableOE_tb) +
 ```
 
 <p float="left">
-<img src="../img/08d_DEA_visualization/volcano_plot_1.png" width="500"> 
+<img src="./img/08d_DEA_visualization/volcano_plot_1.png" width="500"> 
 </p>
 
 This is a great way to get an overall picture of what is going on, but what if we also wanted to know where the top 10 genes (lowest padj) in our DE list are located on this plot? We could label those dots with the gene name on the Volcano plot using `geom_text_repel()`.
@@ -295,7 +295,7 @@ ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
 ```
 
 <p float="left">
-<img src="../img/08d_DEA_visualization/volcano_plot_2.png" width="500"> 
+<img src="./img/08d_DEA_visualization/volcano_plot_2.png" width="500"> 
 </p>
 
 ***

@@ -13,7 +13,7 @@
     
     
       
-        <title>Bulk RNAseq data analysis - an introductory course</title>
+        <title>Data Explanation - Bulk RNAseq data analysis - an introductory course</title>
       
     
     
@@ -61,7 +61,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#bulk-rnaseq-workshop" class="md-skip">
+        <a href="#introduction-to-the-dataset" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Course Introduction
+              Data Explanation
             
           </span>
         </div>
@@ -178,80 +178,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Course Introduction
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="index.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
         Course Introduction
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#goals" class="md-nav__link">
-    Goals
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#syllabus" class="md-nav__link">
-    Syllabus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workshop-requirements" class="md-nav__link">
-    Workshop requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#intended-use" class="md-nav__link">
-    Intended use
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#acknowledgements" class="md-nav__link">
-    Acknowledgements
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -292,11 +223,59 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="04_data_explanation.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Data Explanation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="04_data_explanation.html" class="md-nav__link md-nav__link--active">
         Data Explanation
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-of-the-dataset" class="md-nav__link">
+    Review of the dataset
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -601,36 +580,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#goals" class="md-nav__link">
-    Goals
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#syllabus" class="md-nav__link">
-    Syllabus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workshop-requirements" class="md-nav__link">
-    Workshop requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#intended-use" class="md-nav__link">
-    Intended use
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#acknowledgements" class="md-nav__link">
-    Acknowledgements
+  <a href="#review-of-the-dataset" class="md-nav__link">
+    Review of the dataset
   </a>
   
 </li>
@@ -649,43 +607,36 @@
                 
 
 
-<h1 id="bulk-rnaseq-workshop">Bulk RNAseq workshop</h1>
-<p>Repository for bulk RNAseq course of the Danish Health Data Science Sandbox project.</p>
-<p>This workshop contains a basic tutorial on how to approach RNAseq data, starting from your count. Thus, the workshop does not include any information about laboratory protocols, library preparation or any wet-lab related procedures. This workshop is based on the materials developed by members of the teaching team at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, a collection of modified tutorials from the <a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a> and <a href="https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html">gProfiler2</a> R language vignettes.</p>
-<h2 id="goals">Goals</h2>
-<p>By the end of this workshop, you should be able to analyse your own bulk RNAseq count matrix:
-  - Normalize your data.
-  - Explore your samples with PCAs and heatmaps.
-  - Perform Differential Expression Analysis.
-  - Annotate your results.</p>
-<h2 id="syllabus">Syllabus</h2>
-<ol>
-<li>Introduction to bulk-RNASeq</li>
-<li>Setup</li>
-<li>Experimental planning</li>
-<li>Intro to the data</li>
-<li>Preprocessing overview</li>
-<li>RNAseq data (DESeq2)</li>
-<li>Exploratory analysis (DESeq2)</li>
-<li>Differential Expression Analysis (DESeq2)</li>
-<li>Functional Analysis (gprofiler2)</li>
-<li>Summarized workflow</li>
-</ol>
-<h2 id="workshop-requirements">Workshop requirements</h2>
+<h1 id="introduction-to-the-dataset">Introduction to the dataset</h1>
+<p>Approximate time: 15 minutes</p>
+<h2 id="learning-objectives">Learning Objectives</h2>
 <ul>
-<li>Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop <a href="https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022">R basics</a></li>
-<li>Basic knowledge of RNAseq technology</li>
-<li>Basic knowledge of data science and statistics such as PCA, clustering and statistical testing</li>
+<li>Explain the experiment and its objectives</li>
 </ul>
-<h2 id="intended-use">Intended use</h2>
-<p>The aim of this repository is to run a comprehensive but introductory workshop on bulk-RNAseq bioinformatic analyses. Each of the modules of this workshop is accompanied by a powerpoint slideshow explaining the steps and the theory behind a typical bioinformatics analysis (ideally with a teacher). Many of the slides are annotated with extra information and/or point to original sources for extra reading material.</p>
-<h2 id="acknowledgements">Acknowledgements</h2>
-<ul>
-<li><a href="https://heads.ku.dk/">Center for Health Data Science</a>, University of Copenhagen.</li>
-<li><a href="https://bioinfotraining.bio.cam.ac.uk/about">Hugo Tavares</a>, Bioinformatics Training Facility, University of Cambridge.</li>
-<li><a href="https://danstem.ku.dk/people/serup_staff/">Silvia Raineri</a>, Center for Stem Cell Medicine (reNew), University of Copenhagen.</li>
-<li><a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, check out their <a href="https://github.com/hbctraining/DGE_workshop_salmon_online">github repo</a></li>
-</ul>
+<h2 id="review-of-the-dataset">Review of the dataset</h2>
+<p>We will be using the full count matrix from the RNA-Seq dataset that is part of a larger study described in <a href="http://www.ncbi.nlm.nih.gov/pubmed/25464849">Kenny PJ et al, Cell Rep 2014</a>. </p>
+<p>The RNA-Seq was performed on HEK293F cells that were either transfected with a MOV10 transgene, or siRNA to knock down Mov10 expression, or non-specific (irrelevant) siRNA. This resulted in 3 conditions <strong>Mov10 oe</strong> (over expression), <strong>Mov10 kd</strong> (knock down) and <strong>Irrelevant kd</strong>, respectively. The number of replicates is as shown below. </p>
+<p>Using these data, we will evaluate transcriptional patterns associated with perturbation of MOV10 expression. Please note that the irrelevant siRNA will be treated as our control condition.</p>
+<p align="center">
+<img src="../img/04_data_explanation/dataset.png" width="400">
+</p>
+
+<p><strong><em>What is the purpose of these datasets? What does Mov10 do?</em></strong></p>
+<p>The authors are investigating interactions between various genes involved in Fragile X syndrome, a disease in which there is aberrant production of the FMRP protein. </p>
+<blockquote>
+<p><strong>FMRP</strong> is “most commonly found in the brain, is essential for normal cognitive development and female reproductive function. Mutations of this gene can lead to fragile X syndrome, mental retardation, premature ovarian failure, autism, Parkinson's disease, developmental delays and other cognitive deficits.” - from <a href="https://en.wikipedia.org/wiki/FMR1">wikipedia</a></p>
+<p><strong>MOV10</strong>, is a putative RNA helicase that is also associated with <strong>FMRP</strong> in the context of the microRNA pathway. </p>
+</blockquote>
+<p><strong>The hypothesis <a href="http://www.ncbi.nlm.nih.gov/pubmed/25464849">the paper</a> is testing is that FMRP and MOV10 associate and regulate the translation of a subset of RNAs.</strong></p>
+<p align="center">
+<img src="../img/04_data_explanation/mov10-model.png" width="400">
+</p>
+
+<p><strong>Our questions:</strong>
+* What patterns of expression can we identify with the loss or gain of MOV10? 
+* Are there any genes shared between the two conditions?</p>
+<hr />
+<p><em>This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
 
               
             </article>
@@ -698,15 +649,30 @@
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
+        
+        <a href="03_experimental_planning.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Experimental planning" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Experimental planning
+            </div>
+          </div>
+        </a>
+      
       
         
-        <a href="02_setup.html" class="md-footer__link md-footer__link--next" aria-label="Next: Setup" rel="next">
+        <a href="05_preprocessing.html" class="md-footer__link md-footer__link--next" aria-label="Next: Preprocessing" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Setup
+              Preprocessing
             </div>
           </div>
           <div class="md-footer__button md-icon">

@@ -13,7 +13,7 @@
     
     
       
-        <title>Bulk RNAseq data analysis - an introductory course</title>
+        <title>Setup - Bulk RNAseq data analysis - an introductory course</title>
       
     
     
@@ -61,7 +61,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#bulk-rnaseq-workshop" class="md-skip">
+        <a href="#setup-for-teaching-in-ucloud" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Course Introduction
+              Setup
             
           </span>
         </div>
@@ -178,6 +178,21 @@
 
   
   
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Course Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
     
   
   
@@ -190,12 +205,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Course Introduction
+          Setup
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="index.html" class="md-nav__link md-nav__link--active">
-        Course Introduction
+      <a href="02_setup.html" class="md-nav__link md-nav__link--active">
+        Setup
       </a>
       
         
@@ -214,36 +229,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#goals" class="md-nav__link">
-    Goals
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#syllabus" class="md-nav__link">
-    Syllabus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workshop-requirements" class="md-nav__link">
-    Workshop requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#intended-use" class="md-nav__link">
-    Intended use
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#acknowledgements" class="md-nav__link">
-    Acknowledgements
+  <a href="#for-ucloud-users" class="md-nav__link">
+    For Ucloud users
   </a>
   
 </li>
@@ -252,21 +239,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="02_setup.html" class="md-nav__link">
-        Setup
-      </a>
     </li>
   
 
@@ -601,36 +573,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#goals" class="md-nav__link">
-    Goals
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#syllabus" class="md-nav__link">
-    Syllabus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workshop-requirements" class="md-nav__link">
-    Workshop requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#intended-use" class="md-nav__link">
-    Intended use
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#acknowledgements" class="md-nav__link">
-    Acknowledgements
+  <a href="#for-ucloud-users" class="md-nav__link">
+    For Ucloud users
   </a>
   
 </li>
@@ -649,43 +593,41 @@
                 
 
 
-<h1 id="bulk-rnaseq-workshop">Bulk RNAseq workshop</h1>
-<p>Repository for bulk RNAseq course of the Danish Health Data Science Sandbox project.</p>
-<p>This workshop contains a basic tutorial on how to approach RNAseq data, starting from your count. Thus, the workshop does not include any information about laboratory protocols, library preparation or any wet-lab related procedures. This workshop is based on the materials developed by members of the teaching team at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, a collection of modified tutorials from the <a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a> and <a href="https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html">gProfiler2</a> R language vignettes.</p>
-<h2 id="goals">Goals</h2>
-<p>By the end of this workshop, you should be able to analyse your own bulk RNAseq count matrix:
-  - Normalize your data.
-  - Explore your samples with PCAs and heatmaps.
-  - Perform Differential Expression Analysis.
-  - Annotate your results.</p>
-<h2 id="syllabus">Syllabus</h2>
-<ol>
-<li>Introduction to bulk-RNASeq</li>
-<li>Setup</li>
-<li>Experimental planning</li>
-<li>Intro to the data</li>
-<li>Preprocessing overview</li>
-<li>RNAseq data (DESeq2)</li>
-<li>Exploratory analysis (DESeq2)</li>
-<li>Differential Expression Analysis (DESeq2)</li>
-<li>Functional Analysis (gprofiler2)</li>
-<li>Summarized workflow</li>
-</ol>
-<h2 id="workshop-requirements">Workshop requirements</h2>
+<h1 id="setup-for-teaching-in-ucloud">Setup for teaching in uCloud</h1>
+<p>In what follows you have the setup guide for the possible hardware where you are running the course material.</p>
+<h2 id="for-ucloud-users">For Ucloud users</h2>
+<p>Access to <a href="https://cloud.sdu.dk">Ucloud</a> with your account and choose the project <code>Health data science sandbox</code> where you have been invited.</p>
+<p><img alt="" src="img/02_setup/chooseProject.png" /></p>
+<p>Click on <code>Apps</code> on the left-side menu, and look for the application <code>Rstudio v4.1.2</code>.</p>
+<p><img alt="" src="img/02_setup/chooseRstudio.png" /></p>
+<p>Once the app is chosen, click on <code>Run application</code> on the right-hand side of the screen. You will be met with a series of possible parameters to choose. You have to assign:</p>
 <ul>
-<li>Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop <a href="https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022">R basics</a></li>
-<li>Basic knowledge of RNAseq technology</li>
-<li>Basic knowledge of data science and statistics such as PCA, clustering and statistical testing</li>
+<li>job name: simply any name given to the app execution</li>
+<li>hours: how long you are using the app. You can choose as many hours as the course session lasts. Or just a couple of hours to do some exercises. You can always add extra time while using the app, or run it again with the same settings (they will be saved under the name you chose as <code>job name</code>)</li>
+<li>
+<p>Machine type: it is sufficient to choose a machine with 4 vCPUs.
+<img alt="" src="img/02_setup/chooseCPU.png" /></p>
+</li>
+<li>
+<p>Dependencies: commands that will run automatically when starting the app. Choose the same file as in the picture (<code>projects/sandbox_bulkRNAseq_testAndFeedback/bulkRNAseq_course/Scripts/Ucloud_setup.sh</code>), it will get all the necessary files and folders.</p>
+</li>
+<li>
+<p>Select folders to use: makes specific folders usable by the app. Choose the same folder as in the picture (<code>projects/sandbox_bulkRNAseq_testAndFeedback</code>), it contains the data.</p>
+</li>
 </ul>
-<h2 id="intended-use">Intended use</h2>
-<p>The aim of this repository is to run a comprehensive but introductory workshop on bulk-RNAseq bioinformatic analyses. Each of the modules of this workshop is accompanied by a powerpoint slideshow explaining the steps and the theory behind a typical bioinformatics analysis (ideally with a teacher). Many of the slides are annotated with extra information and/or point to original sources for extra reading material.</p>
-<h2 id="acknowledgements">Acknowledgements</h2>
-<ul>
-<li><a href="https://heads.ku.dk/">Center for Health Data Science</a>, University of Copenhagen.</li>
-<li><a href="https://bioinfotraining.bio.cam.ac.uk/about">Hugo Tavares</a>, Bioinformatics Training Facility, University of Cambridge.</li>
-<li><a href="https://danstem.ku.dk/people/serup_staff/">Silvia Raineri</a>, Center for Stem Cell Medicine (reNew), University of Copenhagen.</li>
-<li><a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, check out their <a href="https://github.com/hbctraining/DGE_workshop_salmon_online">github repo</a></li>
-</ul>
+<p><img alt="" src="img/02_setup/chooseOptional.png" /></p>
+<p>You are ready to run the app by clicking on the button on the right column of the screen (<code>submit</code>).</p>
+<p><img alt="" src="img/02_setup/submit.png" /></p>
+<p>Now, wait some time until the screen will look like in the figure below. It usually takes a few minutes for everything to be ready and installed. You can always come back to this screen from the left menu <code>Runs</code> on uCloud, so that you can add extra time or stop the app if you will not use it.</p>
+<p><img alt="" src="img/02_setup/startapp.png" /></p>
+<p>Now, click on <code>open interface</code> on the top right-hand side of the screen. You will start Rstudio through your browser!</p>
+<p><strong>Important note</strong> First of all, run the following command. It will load all the necessary packages to run the course. Answer "yes" to the prompt <code>Do you want to proceed? [y/N]: Y</code></p>
+<div class="highlight"><pre><span></span><code><span class="n">renv</span><span class="o">::</span><span class="nf">activate</span><span class="p">(</span><span class="s">&quot;/work/sandbox_bulkRNAseq_testAndFeedback/envs/&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="" src="img/02_setup/activateEnv.png" /></p>
+<p>On the lower right side of Rstudio, where you see the file explorer, access the folder <code>introduction_bulkRNAseq_analysis</code>. Here you will find the notebooks containing the code to run. Just open them (in order from the first one) and run the code you want - the first command always takes a couple of minutes to allow the machine creating some configuration files in background. You can explore beforehand all the jupyter notebooks already compiled on this webpage.</p>
+<p><strong>Important</strong>: when you are done, go on <code>Runs</code> in uCloud, and choose your app if it is still running. Then you will be able to stop it from using resources. Your material will be saved in a volume with your username, that you should be able to see under the menu <code>Files</code>.
+<img alt="" src="img/02_setup/stop.png" /></p>
 
               
             </article>
@@ -698,15 +640,30 @@
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
+        
+        <a href="index.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Course Introduction" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Course Introduction
+            </div>
+          </div>
+        </a>
+      
       
         
-        <a href="02_setup.html" class="md-footer__link md-footer__link--next" aria-label="Next: Setup" rel="next">
+        <a href="03_experimental_planning.html" class="md-footer__link md-footer__link--next" aria-label="Next: Experimental planning" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Setup
+              Experimental planning
             </div>
           </div>
           <div class="md-footer__button md-icon">

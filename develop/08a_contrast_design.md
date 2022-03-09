@@ -12,7 +12,7 @@ Approximate time: 40 minutes
 The final step in the differential expression analysis workflow is **fitting the raw counts to the NB model and performing the statistical test** for differentially expressed genes. In this step we essentially want to determine whether the mean expression levels of different sample groups are significantly different.
 
 <p align="center">
-<img src="../img/08a_contrast_design/de_theory.png" width="600">
+<img src="./img/08a_contrast_design/de_theory.png" width="600">
 </p>
   
 *Image credit:  Paul  Pavlidis,  UBC*
@@ -23,7 +23,7 @@ The [DESeq2 paper](https://genomebiology.biomedcentral.com/articles/10.1186/s130
 Differential expression analysis with DESeq2 involves multiple steps as displayed in the flowchart below in blue. Briefly, DESeq2 will model the raw counts, using normalization factors (size factors) to account for differences in library depth. Then, it will estimate the gene-wise dispersions and shrink these estimates to generate more accurate estimates of dispersion to model the counts. Finally, DESeq2 will fit the negative binomial model and perform hypothesis testing using the Wald test or Likelihood Ratio Test.
 
 <p align="center">
-<img src="../img/08a_contrast_design/deseq_workflow1.png" width="500">
+<img src="./img/08a_contrast_design/deseq_workflow1.png" width="500">
 </p>
   
 > **NOTE:** DESeq2 is actively maintained by the developers and continuously being updated. As such, it is important that you note the version you are working with. Recently, there have been some rather **big changes implemented** that impact the output. To find out more detail about the specific **modifications made to methods described in the original 2014 paper**, take a look at [this section in the DESeq2 vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#methods-changes-since-the-2014-deseq2-paper). 
@@ -40,7 +40,7 @@ A design formula tells the statistical software the known sources of variation t
 For example, suppose you have the following metadata:
 
 <p align="center">
-<img src="../img/08a_contrast_design/meta_example.png" width="300">
+<img src="./img/08a_contrast_design/meta_example.png" width="300">
 </p>
   
 If you want to examine the expression differences between treatments, and you know that major sources of variation include `bloodtype` and `patient`, then your design formula would be:
@@ -222,7 +222,7 @@ This gives us exactly the same results as before, which we can check for example
 plot(res1$log2FoldChange, res2$log2FoldChange)
 ```
 <p align="center">
-<img src="../img/08a_contrast_design/contrast_res1.png">
+<img src="./img/08a_contrast_design/contrast_res1.png">
 </p>
 
 ## Recoding the design (slide 6)
@@ -274,7 +274,7 @@ Again, the results are essentially the same:
 plot(res1$log2FoldChange, res3$log2FoldChange)
 ```
 <p align="center">
-<img src="../img/08a_contrast_design/contrast_res2.png" style="display: block; margin: auto;" />
+<img src="./img/08a_contrast_design/contrast_res2.png" style="display: block; margin: auto;" />
 </p>
 
 In theory there’s no difference between these two ways of defining our design. The design with an intercept is more common, but for the purposes of understanding what’s going on, it’s sometimes easier to look at models without intercept.
@@ -462,7 +462,7 @@ abline(0, 1, col = "brown", lwd = 2)
 ```
 
 <p align="center">
-<img src="../img/08a_contrast_design/contrast_res3.png" style="display: block; margin: auto;" />
+<img src="./img/08a_contrast_design/contrast_res3.png" style="display: block; margin: auto;" />
 </p>
 
 ``` r
@@ -472,7 +472,7 @@ abline(0, 1, col = "brown", lwd = 2)
 ```
 
 <p align="center">
-<img src="../img/08a_contrast_design/contrast_res4.png" style="display: block; margin: auto;" />
+<img src="./img/08a_contrast_design/contrast_res4.png" style="display: block; margin: auto;" />
 </p>
 
 ## Two factors with interaction (slide 9)

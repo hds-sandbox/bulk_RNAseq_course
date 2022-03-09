@@ -1,0 +1,943 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
+    
+    
+      
+        <title>Gene annotation - Bulk RNAseq data analysis - an introductory course</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.2d9f7617.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#genomic-annotations-for-functional-analyses" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Bulk RNAseq data analysis - an introductory course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Gene annotation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Bulk RNAseq data analysis - an introductory course
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Course Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02_setup.html" class="md-nav__link">
+        Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03_experimental_planning.html" class="md-nav__link">
+        Experimental planning
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04_data_explanation.html" class="md-nav__link">
+        Data Explanation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05_preprocessing.html" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          RNAseq counts
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="RNAseq counts" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          RNAseq counts
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06a_count_matrix.html" class="md-nav__link">
+        Count matrix
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06b_count_normalization.html" class="md-nav__link">
+        Normalization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="07_exploratory_analysis.html" class="md-nav__link">
+        Exploratory Analysis
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Differential Expression
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Differential Expression" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Differential Expression
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08a_contrast_design.html" class="md-nav__link">
+        Design formula
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08b_DEA.html" class="md-nav__link">
+        DESeq2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08c_hypothesis_testing.html" class="md-nav__link">
+        Hypothesis testing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08d_DEA_visualization.html" class="md-nav__link">
+        Visualization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          Functional Analysis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Functional Analysis" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Functional Analysis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Gene annotation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="09a_FA_genomic_annotation.html" class="md-nav__link md-nav__link--active">
+        Gene annotation
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09b_FA_overrepresentation.html" class="md-nav__link">
+        Over represetation analysis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09c_FA_GSEA.html" class="md-nav__link">
+        Class scoring
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10_summarized_workflow.html" class="md-nav__link">
+        Summarized workflow
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="genomic-annotations-for-functional-analyses">Genomic annotations for functional analyses</h1>
+<p>Approximate time: 30 minutes</p>
+<h2 id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li>Discuss the available genomic annotation databases and the different types if information stored</li>
+<li>Compare and contrast the tools available for accessing genomic annotation databases </li>
+<li>Apply various R packages for retrieval of genomic annotations</li>
+</ul>
+<h1 id="genomic-annotations">Genomic annotations</h1>
+<p>The analysis of next-generation sequencing results requires associating genes, transcripts, proteins, etc. with functional or regulatory information. To perform functional analysis on gene lists, we often need to obtain gene identifiers that are compatible with the tools we wish to use and this is not always trivial. Here, we discuss <strong>ways in which you can obtain gene annotation information and some of the advantages and disadvantages of each method</strong>.</p>
+<h2 id="databases">Databases</h2>
+<p>We retrieve information on the processes, pathways, etc. (for which a gene is involved in) from the necessary database where the information is stored. The database you choose will be dependent on what type of information you are trying to obtain. Examples of databases that are often queried, include:</p>
+<p><strong>General databases</strong> </p>
+<p>Offer comprehensive information on genome features, feature coordinates, homology, variant information, phenotypes, protein domain/family information, associated biological processes/pathways, associated microRNAs, etc.:</p>
+<ul>
+<li><strong>Ensembl</strong> (use Ensembl gene IDs)</li>
+<li><strong>NCBI</strong> (use Entrez gene IDs)</li>
+<li><strong>UCSC</strong> </li>
+<li><strong>EMBL-EBI</strong></li>
+</ul>
+<p><strong>Annotation-specific databases</strong></p>
+<p>Provide annotations related to a specific topic:</p>
+<ul>
+<li><strong>Gene Ontology (GO):</strong> database of gene ontology biological processes, cellular components and molecular functions - based on Ensembl or Entrez gene IDs or official gene symbols</li>
+<li><strong>KEGG:</strong> database of biological pathways - based on Entrez gene IDs</li>
+<li><strong>MSigDB:</strong> database of gene sets</li>
+<li><strong>Reactome:</strong> database of biological pathways</li>
+<li><strong>Human Phenotype Ontology:</strong> database of genes associated with human disease</li>
+<li><strong>CORUM:</strong> database of protein complexes for human, mouse, rat</li>
+<li><strong>...</strong></li>
+</ul>
+<p>This is by no means an exhaustive list, there are many other databases available that are not listed here.</p>
+<h2 id="genome-builds">Genome builds</h2>
+<p>Before you begin your search through any of these databases, you should know which <strong>build of the genome</strong> was used to generate your gene list and make sure you use the <strong>same build for the annotations</strong> during functional analysis. When a new genome build is acquired, the names and/or coordinate location of genomic features (gene, transcript, exon, etc.) may change. Therefore, the annotations regarding genome features (gene, transcript, exon, etc.) is genome-build specific  and we need to make sure that our annotations are obtained from the appropriate resource. </p>
+<p>For example, if we used the GRCh38 build of the human genome to quantify gene expression used for differential expression analysis, then we should use the <strong>same GRCh38 build</strong> of the genome to convert between gene IDs and to identify annotations for each of the genes. </p>
+<h2 id="tools-for-accessing-databases">Tools for accessing databases</h2>
+<p>Within R, there are many popular packages used for gene/transcript-level annotation. These packages provide tools that take the list of genes you provide and retrieve information for each gene using one or more of the databases listed above.</p>
+<h3 id="annotation-tools-for-accessingquerying-annotations-from-a-specific-databases">Annotation tools: for accessing/querying annotations from a specific databases</h3>
+<table>
+<thead>
+<tr>
+<th align="center">Tool</th>
+<th align="left">Description</th>
+<th align="left">Pros</th>
+<th align="center">Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong><a href="https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf">org.Xx.eg.db</a></strong></td>
+<td align="left">Query gene feature information for the organism of interest</td>
+<td align="left">gene ID conversion, biotype and coordinate information</td>
+<td align="center">only latest genome build available</td>
+</tr>
+<tr>
+<td align="center"><strong><a href="http://bioconductor.org/packages/devel/bioc/vignettes/ensembldb/inst/doc/ensembldb.html">EnsDb.Xx.vxx</a></strong></td>
+<td align="left">Transcript and gene-level information directly fetched from Ensembl API (similar to TxDb, but with filtering ability and versioned by Ensembl release)</td>
+<td align="left">easy functions to extract features, direct filtering</td>
+<td align="center">Not the most up-to-date annotations, more difficult to use than some packages</td>
+</tr>
+<tr>
+<td align="center"><strong><a href="https://bioconductor.org/packages/release/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.pdf">TxDb.Xx.UCSC.hgxx.knownGene</a></strong></td>
+<td align="left">UCSC database for transcript and gene-level information or can create own <em>TxDb</em> from an SQLite database file using the <em>GenomicFeatures</em> package</td>
+<td align="left">feature information, easy functions to extract features</td>
+<td align="center">only available current and recent genome builds - can create your own, less up-to-date with annotations than Ensembl</td>
+</tr>
+<tr>
+<td align="center"><strong><a href="https://github.com/stephenturner/annotables">annotables</a></strong></td>
+<td align="left">Gene-level feature information immediately available for the human and model organisms</td>
+<td align="left">super quick and easy gene ID conversion, biotype and coordinate information</td>
+<td align="center">static resource, not updated regularly</td>
+</tr>
+<tr>
+<td align="center"><strong><a href="https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/biomaRt.html">biomaRt</a></strong></td>
+<td align="left">An R package version of the Ensembl <a href="http://www.ensembl.org/biomart/martview/70dbbbe3f1c5389418b5ea1e02d89af3">BioMart online tool</a></td>
+<td align="left">all Ensembl database information available, all organisms on Ensembl, wealth of information</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="interface-tools-for-accessingquerying-annotations-from-multiple-different-annotation-sources">Interface tools: for accessing/querying annotations from multiple different annotation sources</h3>
+<ul>
+<li><strong>AnnotationDbi:</strong> queries the <em>OrgDb</em>, <em>TxDb</em>, <em>Go.db</em>, <em>EnsDb</em>, and <em>BioMart</em> annotations.  </li>
+<li><strong>AnnotationHub:</strong> queries large collection of whole genome resources, including ENSEMBL, UCSC, ENCODE, Broad Institute, KEGG, NIH Pathway Interaction Database, etc.</li>
+</ul>
+<blockquote>
+<p><strong>NOTE:</strong> These are both packages that can be used to create the <code>tx2gene</code> files we had you download at the beginning of this workshop.</p>
+</blockquote>
+<h2 id="annotationdbi">AnnotationDbi</h2>
+<p>AnnotationDbi is an R package that provides an interface for connecting and querying various annotation databases using SQLite data storage. The AnnotationDbi packages can query the <em>OrgDb</em>, <em>TxDb</em>, <em>EnsDb</em>, <em>Go.db</em>, and <em>BioMart</em> annotations. There is helpful <a href="https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf">documentation</a> available to reference when extracting data from any of these databases.</p>
+<h2 id="annotationhub">AnnotationHub</h2>
+<p>AnnotationHub is a wonderful resource for accessing genomic data or querying large collection of whole genome resources, including ENSEMBL, UCSC, ENCODE, Broad Institute, KEGG, NIH Pathway Interaction Database, etc. All of this information is stored and easily accessible by directly connecting to the database.</p>
+<p>To get started with AnnotationHub, we first load the library and connect to the database:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Load libraries</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">AnnotationHub</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">ensembldb</span><span class="p">)</span>
+
+<span class="c1"># Connect to AnnotationHub</span>
+<span class="n">ah</span> <span class="o">&lt;-</span> <span class="nf">AnnotationHub</span><span class="p">()</span>
+</code></pre></div>
+<blockquote>
+<h4 id="what-is-a-cache">What is a cache?</h4>
+<p>A cache is used in R to store data or a copy of the data so that future requests can be served faster without having to re-run a lengthy computation.</p>
+<p>The <code>AnnotationHub()</code> command creates a client that manages a local cache of the database, helping with quick and reproducible access. When encountering question <code>AnnotationHub does not exist, create directory?</code>, you can anwser either <code>yes</code> (create a permanent location to store cache) or <code>no</code> (create a temporary location to store cache). <code>hubCache(ah)</code> gets the file system location of the local AnnotationHub cache. <code>hubUrl(ah)</code> gets the URL for the online hub. </p>
+</blockquote>
+<p>To see the types of information stored inside our database, we can just type the name of the object:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Explore the AnnotationHub object</span>
+<span class="n">ah</span>
+</code></pre></div>
+<p>Using the output, you can get an idea of the information that you can query within the AnnotationHub object:</p>
+<div class="highlight"><pre><span></span><code>AnnotationHub with 47240 records
+# snapshotDate(): 2019-10-29 
+# $dataprovider: BroadInstitute, Ensembl, UCSC, ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/, H...
+# $species: Homo sapiens, Mus musculus, Drosophila melanogaster, Bos taurus, Pan troglod...
+# $rdataclass: GRanges, BigWigFile, TwoBitFile, Rle, OrgDb, EnsDb, ChainFile, TxDb, Inpa...
+# additional mcols(): taxonomyid, genome, description, coordinate_1_based,
+#   maintainer, rdatadateadded, preparerclass, tags, rdatapath, sourceurl,
+#   sourcetype 
+# retrieve records with, e.g., &#39;object[[&quot;AH5012&quot;]]&#39; 
+
+            title                                                                   
+  AH5012  | Chromosome Band                                                         
+  AH5013  | STS Markers                                                             
+  AH5014  | FISH Clones                                                             
+  AH5015  | Recomb Rate                                                             
+  AH5016  | ENCODE Pilot                                                            
+  ...       ...                                                                     
+  AH78364 | Xiphophorus_maculatus.X_maculatus-5.0-male.ncrna.2bit                   
+  AH78365 | Zonotrichia_albicollis.Zonotrichia_albicollis-1.0.1.cdna.all.2bit       
+  AH78366 | Zonotrichia_albicollis.Zonotrichia_albicollis-1.0.1.dna_rm.toplevel.2bit
+  AH78367 | Zonotrichia_albicollis.Zonotrichia_albicollis-1.0.1.dna_sm.toplevel.2bit
+  AH78368 | Zonotrichia_albicollis.Zonotrichia_albicollis-1.0.1.ncrna.2bit    
+  ```
+
+Notice the note on retrieving records with `object[[AH2]]` - this will be how we can **extract a single record** from the AnnotationHub object.
+
+If you would like to see more information about any of the classes of data you can extract that information as well. For example, if you wanted to **determine all species information available**, you could explore that within the AnnotationHub object:
+
+```r
+# Explore all species information available
+unique(ah$species) %&gt;% View()
+</code></pre></div>
+<p>In addition to species information, there is also additional information about the type of Data Objects and the Data Providers:
+<div class="highlight"><pre><span></span><code><span class="c1"># Explore the types of Data Objects available</span>
+<span class="nf">unique</span><span class="p">(</span><span class="n">ah</span><span class="o">$</span><span class="n">rdataclass</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">View</span><span class="p">()</span>
+
+<span class="c1"># Explore the Data Providers</span>
+<span class="nf">unique</span><span class="p">(</span><span class="n">ah</span><span class="o">$</span><span class="n">dataprovider</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">View</span><span class="p">()</span>
+</code></pre></div></p>
+<p>Now that we know the types of information available from AnnotationHub we can query it for the information we want using the <code>query()</code> function. Let's say we would like to <strong>return the Ensembl <code>EnsDb</code> information for Human</strong>. To return the records available, we need to use the terms as they are output from the <code>ah</code> object to extract the desired data.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Query AnnotationHub</span>
+<span class="n">human_ens</span> <span class="o">&lt;-</span> <span class="nf">query</span><span class="p">(</span><span class="n">ah</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;Homo sapiens&quot;</span><span class="p">,</span> <span class="s">&quot;EnsDb&quot;</span><span class="p">))</span>
+</code></pre></div>
+<p>The query retrieves all <strong>hits for the <code>EnsDb</code> objects</strong>, and you will see that they are listed by the release number. The most current release for GRCh38 is Ensembl98 and AnnotationHub offers that as an option to use. However, if you look at options for older releases, for Homo sapiens it only go back as far as Ensembl 87. This is fine if you are using GRCh38, however if you were using an older genome build like hg19/GRCh37, you would need to load the <code>EnsDb</code> package if available for that release or you might need to build your own with <code>ensembldb</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">human_ens</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>AnnotationHub with 13 records
+# snapshotDate(): 2019-10-29 
+# $dataprovider: Ensembl
+# $species: Homo sapiens
+# $rdataclass: EnsDb
+# additional mcols(): taxonomyid, genome, description, coordinate_1_based,
+#   maintainer, rdatadateadded, preparerclass, tags, rdatapath, sourceurl,
+#   sourcetype 
+# retrieve records with, e.g., &#39;object[[&quot;AH53211&quot;]]&#39; 
+
+            title                            
+  AH53211 | Ensembl 87 EnsDb for Homo Sapiens
+  AH53715 | Ensembl 88 EnsDb for Homo Sapiens
+  AH56681 | Ensembl 89 EnsDb for Homo Sapiens
+  AH57757 | Ensembl 90 EnsDb for Homo Sapiens
+  AH60773 | Ensembl 91 EnsDb for Homo Sapiens
+  ...       ...                              
+  AH67950 | Ensembl 95 EnsDb for Homo sapiens
+  AH69187 | Ensembl 96 EnsDb for Homo sapiens
+  AH73881 | Ensembl 97 EnsDb for Homo sapiens
+  AH73986 | Ensembl 79 EnsDb for Homo sapiens
+  AH75011 | Ensembl 98 EnsDb for Homo sapiens
+  ````
+
+In our case, we are looking for the latest Ensembl release so that the annotations are the most up-to-date. To extract this information from AnnotationHub, we can use the AnnotationHub ID to **subset the object**:
+
+```r
+# Extract annotations of interest
+human_ens &lt;- human_ens[[&quot;AH75011&quot;]]
+</code></pre></div>
+<p>Now we can use <code>ensembldb</code> functions to extract the information at the gene, transcript, or exon levels. We are interested in the gene-level annotations, so we can extract that information as follows:</p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Extract gene-level information</span>
+<span class="nf">genes</span><span class="p">(</span><span class="n">human_ens</span><span class="p">,</span> <span class="n">return.type</span> <span class="o">=</span> <span class="s">&quot;data.frame&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">View</span><span class="p">()</span>
+</code></pre></div>
+But note that it is just as easy to get the transcript- or exon-level information:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Extract transcript-level information</span>
+<span class="nf">transcripts</span><span class="p">(</span><span class="n">human_ens</span><span class="p">,</span> <span class="n">return.type</span> <span class="o">=</span> <span class="s">&quot;data.frame&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">View</span><span class="p">()</span>
+
+<span class="c1"># Extract exon-level information</span>
+<span class="nf">exons</span><span class="p">(</span><span class="n">human_ens</span><span class="p">,</span> <span class="n">return.type</span> <span class="o">=</span> <span class="s">&quot;data.frame&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">View</span><span class="p">()</span>
+</code></pre></div>
+<p>To <strong>obtain an annotation data frame</strong> using AnnotationHub, we'll use the <code>genes()</code> function, but only keep selected columns and filter out rows to keep those corresponding to our gene identifiers in our results file:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Create a gene-level dataframe </span>
+<span class="n">annotations_ahb</span> <span class="o">&lt;-</span> <span class="nf">genes</span><span class="p">(</span><span class="n">human_ens</span><span class="p">,</span> <span class="n">return.type</span> <span class="o">=</span> <span class="s">&quot;data.frame&quot;</span><span class="p">)</span>  <span class="o">%&gt;%</span>
+  <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_id</span><span class="p">,</span> <span class="n">gene_name</span><span class="p">,</span> <span class="n">entrezid</span><span class="p">,</span> <span class="n">gene_biotype</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">gene_id</span> <span class="o">%in%</span> <span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>
+</code></pre></div>
+<p>This dataframe looks like it should be fine as it is, but we look a little closer we will notice that the column containing Entrez identifiers is a list, and in fact there are many Ensembl identifiers that map to more than one Entrez identifier!</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Wait a second, we don&#39;t have one-to-one mappings!</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">annotations_ahb</span><span class="o">$</span><span class="n">entrezid</span><span class="p">)</span>
+<span class="nf">which</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="n">annotations_ahb</span><span class="o">$</span><span class="n">entrezid</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">1</span><span class="p">)</span>
+</code></pre></div>
+<p>So what do we do here? And why do we have this problem? An answer from the <a href="https://www.biostars.org/p/16505/">Ensembl Help Desk</a> is that this occurs when we cannot choose a perfect match; ie when we have two good matches, but one does not appear to match with a better percentage than the other. In that case, we assign both matches. What we will do is choose to <strong>keep the first identifier for these multiple mapping cases</strong>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">annotations_ahb</span><span class="o">$</span><span class="n">entrezid</span> <span class="o">&lt;-</span> <span class="nf">map</span><span class="p">(</span><span class="n">annotations_ahb</span><span class="o">$</span><span class="n">entrezid</span><span class="p">,</span><span class="m">1</span><span class="p">)</span> <span class="o">%&gt;%</span>  <span class="nf">unlist</span><span class="p">()</span>
+</code></pre></div>
+<blockquote>
+<p><strong>NOTE:</strong> Not all databases handle multiple mappings in the same way. For example, if we used the OrgDb instead of the EnsDb:</p>
+<p><div class="highlight"><pre><span></span><code>human_orgdb &lt;- query(ah, c(&quot;Homo sapiens&quot;, &quot;OrgDb&quot;))
+human_orgdb &lt;- human_ens[[&quot;AH75742&quot;]]
+annotations_orgdb &lt;- select(human_orgdb, res_tableOE_tb$gene, c(&quot;SYMBOL&quot;, &quot;GENENAME&quot;, &quot;ENTREZID&quot;), &quot;ENSEMBL&quot;)
+</code></pre></div>
+We would find that multiple mapping entries would be automatically reduced to one-to-one. We would also find that more than half of the input genes do not return any annotations. This is because the OrgDb family of database are primarily based on mapping using Entrez Gene identifiers. Since our data is based on Ensembl mappings, using the OrgDb would result in a loss of information.</p>
+</blockquote>
+<p>Let's take a look and see how many of our Ensembl identifiers have an associated gene symbol, and how many of them are unique:
+<div class="highlight"><pre><span></span><code><span class="nf">which</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">annotations_ahb</span><span class="o">$</span><span class="n">gene_name</span><span class="p">))</span> <span class="o">%&gt;%</span> <span class="nf">length</span><span class="p">()</span>
+
+<span class="nf">which</span><span class="p">(</span><span class="nf">duplicated</span><span class="p">(</span><span class="n">annotations_ahb</span><span class="o">$</span><span class="n">gene_name</span><span class="p">))</span> <span class="o">%&gt;%</span> <span class="nf">length</span><span class="p">()</span>
+</code></pre></div></p>
+<p>Let's identify the non-duplicated genes and only keep the ones that are not duplicated:
+<div class="highlight"><pre><span></span><code><span class="c1"># Determine the indices for the non-duplicated genes</span>
+<span class="n">non_duplicates_idx</span> <span class="o">&lt;-</span> <span class="nf">which</span><span class="p">(</span><span class="nf">duplicated</span><span class="p">(</span><span class="n">annotations_ahb</span><span class="o">$</span><span class="n">gene_name</span><span class="p">)</span> <span class="o">==</span> <span class="kc">FALSE</span><span class="p">)</span>
+
+<span class="c1"># How many rows does annotations_ahb have?</span>
+<span class="n">annotations_ahb</span> <span class="o">%&gt;%</span> <span class="nf">nrow</span><span class="p">()</span>
+
+<span class="c1"># Return only the non-duplicated genes using indices</span>
+<span class="n">annotations_ahb</span> <span class="o">&lt;-</span> <span class="n">annotations_ahb</span><span class="p">[</span><span class="n">non_duplicates_idx</span><span class="p">,</span> <span class="p">]</span>
+
+<span class="c1"># How many rows are we left with after removing?</span>
+<span class="n">annotations_ahb</span> <span class="o">%&gt;%</span> <span class="nf">nrow</span><span class="p">()</span>
+</code></pre></div></p>
+<p>Finally, it would be good to know <strong>what proportion of the Ensembl identifiers map to an Entrez identifier</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Determine how many of the Entrez column entries are NA</span>
+<span class="nf">which</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">annotations_ahb</span><span class="o">$</span><span class="n">entrezid</span><span class="p">))</span> <span class="o">%&gt;%</span>  <span class="nf">length</span><span class="p">()</span>
+</code></pre></div>
+<p>That's more than half of our genes! If we plan on using Entrez ID results for downstream analysis, we should definitely keep this in mind. If you look at some of the Ensembl IDs from our query that returned NA, these map to pseudogenes (i.e <a href="https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000265439;r=6:44209766-44210063;t=ENST00000580735">ENSG00000265439</a>) or non-coding RNAs (i.e. <a href="http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000265425;r=18:68427030-68436918;t=ENST00000577835">ENSG00000265425</a>). The discrepancy (which we can expect to observe) between databases is due to the fact that each implements its own different computational approaches for generating the gene builds.</p>
+<h3 id="using-annotationhub-to-create-our-tx2gene-file">Using AnnotationHub to create our tx2gene file</h3>
+<p>To create our <code>tx2gene</code> file, we would need to use a combination of the methods above and merge two dataframes together. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## DO NOT RUN THIS CODE</span>
+
+<span class="c1"># Create a transcript dataframe</span>
+ <span class="n">txdb</span> <span class="o">&lt;-</span> <span class="nf">transcripts</span><span class="p">(</span><span class="n">human_ens</span><span class="p">,</span> <span class="n">return.type</span> <span class="o">=</span> <span class="s">&quot;data.frame&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+   <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">tx_id</span><span class="p">,</span> <span class="n">gene_id</span><span class="p">)</span>
+ <span class="n">txdb</span> <span class="o">&lt;-</span> <span class="n">txdb</span><span class="p">[</span><span class="nf">grep</span><span class="p">(</span><span class="s">&quot;ENST&quot;</span><span class="p">,</span> <span class="n">txdb</span><span class="o">$</span><span class="n">tx_id</span><span class="p">),]</span>
+
+ <span class="c1"># Create a gene-level dataframe</span>
+ <span class="n">genedb</span> <span class="o">&lt;-</span> <span class="nf">genes</span><span class="p">(</span><span class="n">human_ens</span><span class="p">,</span> <span class="n">return.type</span> <span class="o">=</span> <span class="s">&quot;data.frame&quot;</span><span class="p">)</span>  <span class="o">%&gt;%</span>
+   <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_id</span><span class="p">,</span> <span class="n">gene_name</span><span class="p">)</span>
+
+ <span class="c1"># Merge the two dataframes together</span>
+ <span class="n">annotations</span> <span class="o">&lt;-</span> <span class="nf">inner_join</span><span class="p">(</span><span class="n">txdb</span><span class="p">,</span> <span class="n">genedb</span><span class="p">)</span>
+</code></pre></div>
+<p>In this lesson our focus has been using annotation packages to extract information mainly just for gene ID conversion for the different tools that we use downstream. Many of the annotation packages we have presented have much more information than what we need for functional analysis and we have only just scratched the surface here. It's good to know the capabilities of the tools we use, so we encourage you to spend some time exploring these packages to become more familiar with them.</p>
+<blockquote>
+<p><strong>NOTE:</strong> The <em>annotables</em> package is a super easy annotation package to use. It is not updated frequently, so it's not great for getting the most up-to-date information for the current builds and does not have information for other organisms than human and mouse, but is a quick way to get annotation information. </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Install package</span>
+<span class="n">BiocManager</span><span class="o">::</span><span class="nf">install</span><span class="p">(</span><span class="s">&quot;annotables&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load library</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">annotables</span><span class="p">)</span>
+
+<span class="c1"># Access previous build of annotations</span>
+<span class="n">grch38</span>
+</code></pre></div>
+</blockquote>
+<hr />
+<p><em>This lesson was originally developed by members of the teaching team (Mary Piper) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="08d_DEA_visualization.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Visualization" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Visualization
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="09b_FA_overrepresentation.html" class="md-footer__link md-footer__link--next" aria-label="Next: Over represetation analysis" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Over represetation analysis
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    
+    
+      <script src="assets/javascripts/bundle.467223ff.min.js"></script>
+      
+    
+  </body>
+</html>

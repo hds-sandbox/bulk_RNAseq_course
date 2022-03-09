@@ -1,0 +1,994 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
+    
+    
+      
+        <title>Exploratory Analysis - Bulk RNAseq data analysis - an introductory course</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.2d9f7617.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#exploratory-analysis-of-bulk-rnaseq" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Bulk RNAseq data analysis - an introductory course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Exploratory Analysis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Bulk RNAseq data analysis - an introductory course
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Course Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02_setup.html" class="md-nav__link">
+        Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03_experimental_planning.html" class="md-nav__link">
+        Experimental planning
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04_data_explanation.html" class="md-nav__link">
+        Data Explanation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05_preprocessing.html" class="md-nav__link">
+        Preprocessing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          RNAseq counts
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="RNAseq counts" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          RNAseq counts
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06a_count_matrix.html" class="md-nav__link">
+        Count matrix
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06b_count_normalization.html" class="md-nav__link">
+        Normalization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Exploratory Analysis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="07_exploratory_analysis.html" class="md-nav__link md-nav__link--active">
+        Exploratory Analysis
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quality-control" class="md-nav__link">
+    Quality Control
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-level-qc" class="md-nav__link">
+    Sample-level QC
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#principal-component-analysis-pca" class="md-nav__link">
+    Principal Component Analysis (PCA)
+  </a>
+  
+    <nav class="md-nav" aria-label="Principal Component Analysis (PCA)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interpreting-pca-plots" class="md-nav__link">
+    Interpreting PCA plots
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hierarchical-clustering-heatmap" class="md-nav__link">
+    Hierarchical Clustering Heatmap
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mov10-quality-assessment-and-exploratory-analysis-using-deseq2" class="md-nav__link">
+    Mov10 quality assessment and exploratory analysis using DESeq2
+  </a>
+  
+    <nav class="md-nav" aria-label="Mov10 quality assessment and exploratory analysis using DESeq2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transform-normalized-counts-for-the-mov10-dataset" class="md-nav__link">
+    Transform normalized counts for the MOV10 dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#principal-component-analysis-pca-for-the-mov10-dataset" class="md-nav__link">
+    Principal component analysis (PCA) for the MOV10 dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hierarchical-clustering-for-the-mov10-dataset" class="md-nav__link">
+    Hierarchical Clustering for the MOV10 dataset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Differential Expression
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Differential Expression" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Differential Expression
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08a_contrast_design.html" class="md-nav__link">
+        Design formula
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08b_DEA.html" class="md-nav__link">
+        DESeq2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08c_hypothesis_testing.html" class="md-nav__link">
+        Hypothesis testing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08d_DEA_visualization.html" class="md-nav__link">
+        Visualization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          Functional Analysis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Functional Analysis" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Functional Analysis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09a_FA_genomic_annotation.html" class="md-nav__link">
+        Gene annotation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09b_FA_overrepresentation.html" class="md-nav__link">
+        Over represetation analysis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09c_FA_GSEA.html" class="md-nav__link">
+        Class scoring
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10_summarized_workflow.html" class="md-nav__link">
+        Summarized workflow
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quality-control" class="md-nav__link">
+    Quality Control
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-level-qc" class="md-nav__link">
+    Sample-level QC
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#principal-component-analysis-pca" class="md-nav__link">
+    Principal Component Analysis (PCA)
+  </a>
+  
+    <nav class="md-nav" aria-label="Principal Component Analysis (PCA)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interpreting-pca-plots" class="md-nav__link">
+    Interpreting PCA plots
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hierarchical-clustering-heatmap" class="md-nav__link">
+    Hierarchical Clustering Heatmap
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mov10-quality-assessment-and-exploratory-analysis-using-deseq2" class="md-nav__link">
+    Mov10 quality assessment and exploratory analysis using DESeq2
+  </a>
+  
+    <nav class="md-nav" aria-label="Mov10 quality assessment and exploratory analysis using DESeq2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transform-normalized-counts-for-the-mov10-dataset" class="md-nav__link">
+    Transform normalized counts for the MOV10 dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#principal-component-analysis-pca-for-the-mov10-dataset" class="md-nav__link">
+    Principal component analysis (PCA) for the MOV10 dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hierarchical-clustering-for-the-mov10-dataset" class="md-nav__link">
+    Hierarchical Clustering for the MOV10 dataset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="exploratory-analysis-of-bulk-rnaseq">Exploratory analysis of bulk RNAseq</h1>
+<p>Approximate time: 80 minutes</p>
+<h2 id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li>Recognize the importance of methods for count data transformation</li>
+<li>Describe the PCA (principal component analysis) technique</li>
+<li>Interpret different examples of PCA plots</li>
+<li>Evaluate sample quality using PCA and hierarchical clustering </li>
+</ul>
+<h2 id="quality-control">Quality Control</h2>
+<p>The next step in the DESeq2 workflow is QC, which includes sample-level and gene-level steps to perform QC checks on the count data to help us ensure that the samples/replicates look good. </p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/deseq_workflow_qc_2018.png" width="400">
+</p>
+
+<h2 id="sample-level-qc">Sample-level QC</h2>
+<p>A useful initial step in an RNA-seq analysis is often to assess overall similarity between samples: </p>
+<ul>
+<li>Which samples are similar to each other, which are different? </li>
+<li>Does this fit to the expectation from the experiment’s design? </li>
+<li>What are the major sources of variation in the dataset?</li>
+</ul>
+<p>To explore the similarity of our samples, we will be performing sample-level QC using Principal Component Analysis (PCA) and hierarchical clustering methods. These methods/tools allow us to check <strong>how well similar the replicates are to each other</strong> (clustering) and <strong>to make sure that the experimental condition is the major source of variation</strong> in the data. Sample-level QC can also help identify any samples behaving like outliers; we can further explore any potential outliers to determine whether they need to be removed prior to DE analysis. </p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/sample_qc.png" width="700">
+</p>
+
+<p>These unsupervised clustering methods are run using <strong>log2 transformed normalized counts</strong>. The log2 transformation <strong>improves the distances/clustering for visualization</strong>. Instead of using an ordinary log2 transform, we will be using <strong>regularized log transform</strong> (rlog), to avoid any bias from the abundance of low-count genes; Note1 below explains this in more detail.</p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/rlog_transformation_new.png" width="650">
+</p>
+
+<p><em>Image adapted from "<a href="https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf">Beginner's guide to using the DESeq2 package</a>" by Love, Anders and Huber, 2014</em></p>
+<blockquote>
+<p><strong>NOTE1:</strong> <em>"Many common statistical methods for exploratory analysis of multidimensional data, especially methods for clustering and ordination (e. g., principal-component analysis and the like), work best for (at least approximately) homoskedastic data; this means that the variance of an observable quantity (i.e., here, the expression strength of a gene) does not depend on the mean. In RNA-Seq data, however, variance grows with the mean. For example, if one performs PCA directly on a matrix of normalized read counts, the result typically depends only on the few most strongly expressed genes because they show the largest absolute differences between samples. A simple and often used strategy to avoid this is to take the logarithm of the normalized count values plus a small pseudocount; however, now the genes with low counts tend to dominate the results because, due to the strong Poisson noise inherent to small count values, they show the strongest relative differences between samples.</em></p>
+<p><em>As a solution, DESeq2 offers the regularized-logarithm transformation, or rlog for short. For genes with high counts, the rlog transformation differs not much from an ordinary log2 transformation. For genes with lower counts, however, the values are shrunken towards the genes’ averages across all samples. Using an empirical Bayesian prior in the form of a ridge penality, this is done such that the rlog-transformed data are approximately homoskedastic."</em> - From the "Beginner's guide to using the DESeq2 package" by Love, Anders and Huber, 2014 (the <a href="http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2 vignette</a> is the updated version of this doc).</p>
+<p><strong>NOTE2:</strong> The <a href="http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2 vignette</a> suggests large datasets (100s of samples) to use the variance-stabilizing transformation (vst) instead of rlog for transformation of the counts, since the rlog function might take too long to run and the <code>vst()</code> function is faster with similar properties to rlog.</p>
+</blockquote>
+<h2 id="principal-component-analysis-pca">Principal Component Analysis (PCA)</h2>
+<p>Principal Component Analysis (PCA) is a technique used to emphasize variation and bring out strong patterns in a dataset (dimensionality reduction). This is a very important technique used in the QC and analysis of both bulk and single-cell RNAseq data. </p>
+<p>To better understand how it works, <strong>please go through <a href="https://www.youtube.com/watch?v=_UVHneBUBW0">this YouTube video from StatQuest</a> that explains PCA</strong>. After you have gone through the video, please proceed with the interpretation section below.</p>
+<h3 id="interpreting-pca-plots">Interpreting PCA plots</h3>
+<p><strong>Essentially, if two samples have similar levels of expression for the genes that contribute significantly to the variation represented by a given PC (Principal Component), they will be plotted close together on the axis that represents that PC.</strong> Therefore, we would expect that biological replicates to have similar scores (because our expectation is that the same genes are changing) and cluster together. This is easiest to understand by visualizing some example PCA plots.</p>
+<p>We have an example dataset and a few associated PCA plots below to get a feel for how to interpret them. The metadata for the experiment is displayed below. The main condition of interest is <code>treatment</code>.</p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/example_metadata.png" width="600">
+</p>
+
+<p>When visualizing on PC1 and PC2, we don't see the samples separate by <code>treatment</code>, so we decide to explore other sources of variation present in the data. We hope that we have included all possible known sources of variation in our metadata table, and we can use these factors to color the PCA plot. </p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/example_PCA_treatmentPC1.png" width="600">
+</p>
+
+<p>We start with the factor <code>cage</code>, but the <code>cage</code> factor does not seem to explain the variation on PC1 or PC2.</p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/example_PCA_cage.png" width="600">
+</p>
+
+<p>Then, we color by the <code>sex</code> factor, which appears to separate samples on PC2. This is good information to take note of, as we can use it downstream to account for the variation due to sex in the model and regress it out.</p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/example_PCA_sex.png" width="600">
+</p>
+
+<p>Next we explore the <code>strain</code> factor and find that it explains the variation on PC1. </p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/example_PCA_strain.png" width="600">
+</p>
+
+<p>It's great that we have been able to identify the sources of variation for both PC1 and PC2. By accounting for it in our model, we should be able to detect more genes differentially expressed due to <code>treatment</code>.</p>
+<p>Worrisome about this plot is that we see two samples that do not cluster with the correct strain. This would indicate a likely <strong>sample swap</strong> and should be investigated to determine whether these samples are indeed the labeled strains. If we found there was a switch, we could swap the samples in the metadata. However, if we think they are labeled correctly or are unsure, we could just remove the samples from the dataset.</p>
+<p>Still we haven't found if <code>treatment</code> is a major source of variation after <code>strain</code> and <code>sex</code>. So, we explore PC3 and PC4 to see if <code>treatment</code> is driving the variation represented by either of these PCs.</p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/example_PCA_treatmentPC3.png" width="600">
+</p>
+
+<p>We find that the samples separate by <code>treatment</code> on PC3, and are optimistic about our DE analysis since our condition of interest, <code>treatment</code>, is separating on PC3 and we can regress out the variation driving PC1 and PC2.</p>
+<p>Depending on how much variation is explained by the first few principal components, you <strong>may want to explore more (i.e consider more components and plot pairwise combinations)</strong>. Even if your samples do not separate clearly by the experimental variable, you may still get biologically relevant results from the DE analysis. If you are expecting very small effect sizes, then it's possible the signal is drowned out by extraneous sources of variation. In situations <strong>where you can identify those sources, it is important to account for these in your model</strong>, as it provides more power to the tool for detecting DE genes.  </p>
+<h2 id="hierarchical-clustering-heatmap">Hierarchical Clustering Heatmap</h2>
+<p>Similar to PCA, hierarchical clustering is another, complementary, method for identifying strong patterns in a dataset and potential outliers. The heatmap displays <strong>the correlation of gene expression for all pairwise combinations of samples</strong> in the dataset. Since the majority of genes are not differentially expressed, samples generally have high correlations with each other (values higher than 0.80). Samples below 0.80 may indicate an outlier in your data and/or sample contamination.  </p>
+<p>The hierarchical tree along the axes indicates which samples are more similar to each other, i.e. cluster together. The color blocks at the top indicate substructure in the data, and you would expect to see your replicates cluster together as a block for each sample group. Our expectation would be that the samples cluster together similar to the groupings we've observed in the PCA plot. </p>
+<p><strong>In the plot below, we would be quite concerned about 'Wt_3' and 'KO_3' samples not clustering with the other replicates. We would want to explore the PCA to see if we see the same clustering of samples.</strong></p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/heatmap_example.png" width="500">
+</p>
+
+<hr />
+<h2 id="mov10-quality-assessment-and-exploratory-analysis-using-deseq2">Mov10 quality assessment and exploratory analysis using DESeq2</h2>
+<p>Now that we have a good understanding of the QC steps normally employed for RNA-seq, let's implement them for the Mov10 dataset we are going to be working with.</p>
+<h3 id="transform-normalized-counts-for-the-mov10-dataset">Transform normalized counts for the MOV10 dataset</h3>
+<p><strong>To improve the distances/clustering for the PCA and heirarchical clustering visualization methods</strong>, we need to moderate the variance across the mean by applying the rlog transformation to the normalized counts. </p>
+<blockquote>
+<p>The rlog transformation of the normalized counts is only necessary for these visualization methods during this quality assessment. We will not be using these tranformed counts for determining differential expression.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="c1">### Transform counts for data visualization</span>
+<span class="n">rld</span> <span class="o">&lt;-</span> <span class="nf">rlog</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">blind</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</code></pre></div>
+<p>The <code>blind=TRUE</code> argument is to make sure that the <code>rlog()</code> function does not take our sample groups into account - i.e. does the transformation in an unbiased manner. When performing quality assessment, it is important to include this option. The <a href="http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#blind-dispersion-estimation">DESeq2 vignette</a> has more details about this.</p>
+<p>The <code>rlog()</code> function returns a <code>DESeqTransform</code> object, another type of DESeq-specific object. The reason you don't just get a matrix of transformed values is because all of the parameters (i.e. size factors) that went into computing the rlog transform are stored in that object. We use this object to plot the PCA and heirarchical clustering figures for quality assessment.</p>
+<blockquote>
+<p><strong>NOTE:</strong> The <code>rlog()</code> funtion can be a bit slow when you have e.g. &gt; 20 samples. In these situations the <code>vst()</code> function is much faster and performs a similar transformation appropriate for use with <code>plotPCA()</code>. It's typically just a few seconds with <code>vst()</code> due to optimizations and the nature of the transformation.</p>
+</blockquote>
+<h3 id="principal-component-analysis-pca-for-the-mov10-dataset">Principal component analysis (PCA) for the MOV10 dataset</h3>
+<p>We are now ready for the QC steps, let's start with PCA!</p>
+<p>DESeq2 has a built-in function for generating PCA plots using <code>ggplot2</code> under the hood. This is great because it saves us having to type out lines of code and having to fiddle with the different ggplot2 layers. In addition, it takes the <code>rlog</code> object as an input directly, hence saving us the trouble of extracting the relevant information from it.</p>
+<p>The function <code>plotPCA()</code> requires two arguments as input: a <code>DESeqTransform</code> object and the "intgroup" (interesting group), i.e. the name of the column in our metadata that has information about the experimental sample groups. </p>
+<div class="highlight"><pre><span></span><code><span class="c1">### Plot PCA </span>
+<span class="nf">plotPCA</span><span class="p">(</span><span class="n">rld</span><span class="p">,</span> <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p align="center">
+<img src="../img/07_exploratory_analysis/PCA_500.png" width="650">
+</p>
+
+<hr />
+<p>Exercise:</p>
+<ol>
+<li>What does the above plot tell you about the similarity of samples?</li>
+<li>Does it fit the expectation from the experimental design?</li>
+<li>What do you think the %variance information (in the axes titles) tell you about the data in the context of the PCA?</li>
+</ol>
+<hr />
+<p>By default <code>plotPCA()</code> uses the <em>top 500 most variable genes</em>. You can change this by adding the <code>ntop=</code> argument and specifying how many of the genes you want the function to consider.</p>
+<blockquote>
+<p><strong>NOTE:</strong> The <code>plotPCA()</code> function will only return the values for PC1 and PC2. If you would like to explore the additional PCs in your data or if you would like to identify genes that contribute most to the PCs, you can use the <code>prcomp()</code> function. For example, to plot any of the PCs we could run the following code:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Input is a matrix of log transformed values</span>
+<span class="n">rld</span> <span class="o">&lt;-</span> <span class="nf">rlog</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">blind</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span>
+<span class="n">rld_mat</span> <span class="o">&lt;-</span> <span class="nf">assay</span><span class="p">(</span><span class="n">rld</span><span class="p">)</span>
+<span class="n">pca</span> <span class="o">&lt;-</span> <span class="nf">prcomp</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">rld_mat</span><span class="p">))</span>
+
+<span class="c1"># Create data frame with metadata and PC3 and PC4 values for input to ggplot</span>
+<span class="n">df</span> <span class="o">&lt;-</span> <span class="nf">cbind</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="n">pca</span><span class="o">$</span><span class="n">x</span><span class="p">)</span>
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">+</span> <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">PC3</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">PC4</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">sampletype</span><span class="p">))</span>
+</code></pre></div>
+<p><a href="http://www.sthda.com/english/wiki/principal-component-analysis-in-r-prcomp-vs-princomp-r-software-and-data-mining">Resources</a> are available to learn how to do more complex inquiries using the PCs.</p>
+</blockquote>
+<h3 id="hierarchical-clustering-for-the-mov10-dataset">Hierarchical Clustering for the MOV10 dataset</h3>
+<p>There is no built-in function in DESeq2 for plotting the heatmap for diplaying the pairwise correlation between all the samples and the hierarchical clustering information; we will use the <code>pheatmap()</code> function from the <code>pheatmap</code> package. This function cannot use the <code>DESeqTransform</code> object as input, but requires a matrix or dataframe. So, the first thing to do is retrieve that information from the <code>rld</code> object using a function called <code>assay()</code> (from the <code>SummarizedExperiment</code> package) that converts the data in a <code>DESeqTransform</code> object to a simple 2-dimensional data structure (a matrix in this case).</p>
+<div class="highlight"><pre><span></span><code><span class="c1">### Extract the rlog matrix from the object</span>
+<span class="n">rld_mat</span> <span class="o">&lt;-</span> <span class="nf">assay</span><span class="p">(</span><span class="n">rld</span><span class="p">)</span>    
+
+<span class="c1">## &quot;assay()&quot; is part of the &quot;SummarizedExperiment&quot; package which is a DESeq2 dependency and is loaded with the DESeq2 library</span>
+</code></pre></div>
+<p>Next, we need to compute the pairwise correlation values for all the samples. We can do this using the <code>cor()</code> function:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">### Compute pairwise correlation values</span>
+<span class="n">rld_cor</span> <span class="o">&lt;-</span> <span class="nf">cor</span><span class="p">(</span><span class="n">rld_mat</span><span class="p">)</span>    <span class="c1">## cor() is a base R function</span>
+</code></pre></div>
+<p>Let's take a look at the column and row names of the correlation matrix. </p>
+<div class="highlight"><pre><span></span><code>## check the output of cor(), make note of the row names and column names
+head(rld_cor)
+
+head(meta)
+</code></pre></div>
+<p>You will notice that they match the names we have given our samples in the metadata data frame we started with. It is important that these match, so we can use the <code>annotation</code> argument below to plot a color block across the top. This block enables easy visualization of the hierarchical clustering.</p>
+<p>Let's plot the heatmap!</p>
+<div class="highlight"><pre><span></span><code><span class="c1">### Load pheatmap package</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">pheatmap</span><span class="p">)</span>
+
+<span class="c1">### Plot heatmap using the correlation matrix and the metadata object</span>
+<span class="nf">pheatmap</span><span class="p">(</span><span class="n">rld_cor</span><span class="p">,</span> <span class="n">annotation</span> <span class="o">=</span> <span class="n">meta</span><span class="p">)</span>
+</code></pre></div>
+<p>When you plot using <code>pheatmap()</code> the hierarchical clustering information is used to place similar samples together and this information is represented by the tree structure along the axes. The <code>annotation</code> argument accepts a dataframe as input, in our case it is the <code>meta</code> data frame. </p>
+<p align="center">
+<img src="../img/07_exploratory_analysis/pheatmap_salmon.png" width="650">
+</p>
+
+<p>Overall, we observe pretty high correlations across the board ( &gt; 0.999) suggesting no outlying sample(s). Also, similar to the PCA plot you see the samples clustering together by sample group. Together, these plots suggest to us that the data are of good quality and we have the green light to proceed to differential expression analysis.</p>
+<blockquote>
+<p>NOTE: The <code>pheatmap</code> function has a number of different arguments that we can alter from default values to enhance the aesthetics of the plot. If you are curious and want to explore more, try running the code below. <em>How does your plot change?</em> Take a look through the help pages (<code>?pheatmap</code>) and identify what each of the added arguments is contributing to the plot.</p>
+<p><div class="highlight"><pre><span></span><code><span class="n">heat.colors</span> <span class="o">&lt;-</span> <span class="n">RColorBrewer</span><span class="o">::</span><span class="nf">brewer.pal</span><span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="s">&quot;Blues&quot;</span><span class="p">)</span>
+<span class="nf">pheatmap</span><span class="p">(</span><span class="n">rld_cor</span><span class="p">,</span> <span class="n">annotation</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">heat.colors</span><span class="p">,</span> <span class="n">border_color</span><span class="o">=</span><span class="kc">NA</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span> 
+          <span class="n">fontsize_row</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="m">20</span><span class="p">)</span>
+</code></pre></div>
+Curious about all of the available <a href="http://www.r-graph-gallery.com/38-rcolorbrewers-palettes/">color palettes offered by the RColorBrewer package</a>? Try typing in your console <code>display.brewer.all()</code> and see what happens!
+</p>
+</blockquote>
+<hr />
+<p><em>This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="06b_count_normalization.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Normalization" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Normalization
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="08a_contrast_design.html" class="md-footer__link md-footer__link--next" aria-label="Next: Design formula" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Design formula
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    
+    
+      <script src="assets/javascripts/bundle.467223ff.min.js"></script>
+      
+    
+  </body>
+</html>

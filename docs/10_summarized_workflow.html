@@ -13,7 +13,7 @@
     
     
       
-        <title>Bulk RNAseq data analysis - an introductory course</title>
+        <title>Summarized workflow - Bulk RNAseq data analysis - an introductory course</title>
       
     
     
@@ -61,7 +61,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#bulk-rnaseq-workshop" class="md-skip">
+        <a href="#summary-of-dge-workflow" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Course Introduction
+              Summarized workflow
             
           </span>
         </div>
@@ -178,80 +178,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Course Introduction
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="index.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
         Course Introduction
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#goals" class="md-nav__link">
-    Goals
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#syllabus" class="md-nav__link">
-    Syllabus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workshop-requirements" class="md-nav__link">
-    Workshop requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#intended-use" class="md-nav__link">
-    Intended use
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#acknowledgements" class="md-nav__link">
-    Acknowledgements
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -565,11 +496,59 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="10_summarized_workflow.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Summarized workflow
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="10_summarized_workflow.html" class="md-nav__link md-nav__link--active">
         Summarized workflow
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-of-differential-expression-analysis-workflow" class="md-nav__link">
+    Summary of differential expression analysis workflow
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -601,36 +580,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#goals" class="md-nav__link">
-    Goals
+  <a href="#learning-objectives" class="md-nav__link">
+    Learning Objectives
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#syllabus" class="md-nav__link">
-    Syllabus
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workshop-requirements" class="md-nav__link">
-    Workshop requirements
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#intended-use" class="md-nav__link">
-    Intended use
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#acknowledgements" class="md-nav__link">
-    Acknowledgements
+  <a href="#summary-of-differential-expression-analysis-workflow" class="md-nav__link">
+    Summary of differential expression analysis workflow
   </a>
   
 </li>
@@ -649,43 +607,117 @@
                 
 
 
-<h1 id="bulk-rnaseq-workshop">Bulk RNAseq workshop</h1>
-<p>Repository for bulk RNAseq course of the Danish Health Data Science Sandbox project.</p>
-<p>This workshop contains a basic tutorial on how to approach RNAseq data, starting from your count. Thus, the workshop does not include any information about laboratory protocols, library preparation or any wet-lab related procedures. This workshop is based on the materials developed by members of the teaching team at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, a collection of modified tutorials from the <a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a> and <a href="https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html">gProfiler2</a> R language vignettes.</p>
-<h2 id="goals">Goals</h2>
-<p>By the end of this workshop, you should be able to analyse your own bulk RNAseq count matrix:
-  - Normalize your data.
-  - Explore your samples with PCAs and heatmaps.
-  - Perform Differential Expression Analysis.
-  - Annotate your results.</p>
-<h2 id="syllabus">Syllabus</h2>
+<h1 id="summary-of-dge-workflow">Summary of DGE workflow</h1>
+<p>Approximate time: 15 minutes</p>
+<h2 id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li>Identify the R commands needed to run a complete differential expression analysis using DESeq2</li>
+</ul>
+<h2 id="summary-of-differential-expression-analysis-workflow">Summary of differential expression analysis workflow</h2>
+<p>We have detailed the various steps in a differential expression analysis workflow, providing theory with example code. To provide a more succinct reference for the code needed to run a DGE analysis, we have summarized the steps in an analysis below:</p>
 <ol>
-<li>Introduction to bulk-RNASeq</li>
-<li>Setup</li>
-<li>Experimental planning</li>
-<li>Intro to the data</li>
-<li>Preprocessing overview</li>
-<li>RNAseq data (DESeq2)</li>
-<li>Exploratory analysis (DESeq2)</li>
-<li>Differential Expression Analysis (DESeq2)</li>
-<li>Functional Analysis (gprofiler2)</li>
-<li>Summarized workflow</li>
+<li>
+<p>Obtaining gene-level counts from your preprocessing</p>
+<p>```r
+data &lt;- read.table("data/Mov10_full_counts.txt", header=T, row.names=1) </p>
+</li>
 </ol>
-<h2 id="workshop-requirements">Workshop requirements</h2>
-<ul>
-<li>Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop <a href="https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022">R basics</a></li>
-<li>Basic knowledge of RNAseq technology</li>
-<li>Basic knowledge of data science and statistics such as PCA, clustering and statistical testing</li>
-</ul>
-<h2 id="intended-use">Intended use</h2>
-<p>The aim of this repository is to run a comprehensive but introductory workshop on bulk-RNAseq bioinformatic analyses. Each of the modules of this workshop is accompanied by a powerpoint slideshow explaining the steps and the theory behind a typical bioinformatics analysis (ideally with a teacher). Many of the slides are annotated with extra information and/or point to original sources for extra reading material.</p>
-<h2 id="acknowledgements">Acknowledgements</h2>
-<ul>
-<li><a href="https://heads.ku.dk/">Center for Health Data Science</a>, University of Copenhagen.</li>
-<li><a href="https://bioinfotraining.bio.cam.ac.uk/about">Hugo Tavares</a>, Bioinformatics Training Facility, University of Cambridge.</li>
-<li><a href="https://danstem.ku.dk/people/serup_staff/">Silvia Raineri</a>, Center for Stem Cell Medicine (reNew), University of Copenhagen.</li>
-<li><a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, check out their <a href="https://github.com/hbctraining/DGE_workshop_salmon_online">github repo</a></li>
-</ul>
+<p>meta &lt;- read.table("meta/Mov10_full_meta.txt", header=T, row.names=1)
+    ```</p>
+<ol>
+<li>
+<p>Creating the dds object:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Check that the row names of the metadata equal the column names of the **raw counts** data</span>
+<span class="nf">all</span><span class="p">(</span><span class="nf">colnames</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">counts</span><span class="p">)</span> <span class="o">==</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">metadata</span><span class="p">))</span>
+
+<span class="c1"># Create DESeq2Dataset object</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromTximport</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> 
+                <span class="n">colData</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">,</span> 
+                <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">condition</span><span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Exploratory data analysis (PCA &amp; hierarchical clustering) - identifying outliers and sources of variation in the data:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Transform counts for data visualization</span>
+<span class="n">rld</span> <span class="o">&lt;-</span> <span class="nf">rlog</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> 
+        <span class="n">blind</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="c1"># Plot PCA </span>
+<span class="nf">plotPCA</span><span class="p">(</span><span class="n">rld</span><span class="p">,</span> 
+    <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;condition&quot;</span><span class="p">)</span>
+
+<span class="c1"># Extract the rlog matrix from the object and compute pairwise correlation values</span>
+<span class="n">rld_mat</span> <span class="o">&lt;-</span> <span class="nf">assay</span><span class="p">(</span><span class="n">rld</span><span class="p">)</span>
+<span class="n">rld_cor</span> <span class="o">&lt;-</span> <span class="nf">cor</span><span class="p">(</span><span class="n">rld_mat</span><span class="p">)</span>
+
+<span class="c1"># Plot heatmap</span>
+<span class="nf">pheatmap</span><span class="p">(</span><span class="n">rld_cor</span><span class="p">,</span> 
+     <span class="n">annotation</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Run DESeq2:</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># **Optional step** - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using &quot;dds &lt;- DESeqDataSetFromMatrix(data, colData = metadata, design = ~ covaraite + condition)&quot;</span>
+
+<span class="c1"># Run DESeq2 differential expression analysis</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+
+    <span class="c1"># **Optional step** - Output normalized counts to save as a file to access outside RStudio using &quot;normalized_counts &lt;- counts(dds, normalized=TRUE)&quot;</span>
+</code></pre></div>
+</li>
+<li>
+<p>Check the fit of the dispersion estimates:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Plot dispersion estimates</span>
+<span class="nf">plotDispEsts</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Create contrasts to perform Wald testing on the shrunken log2 foldchanges between specific conditions:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Specify contrast for comparison of interest</span>
+<span class="n">contrast</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;condition&quot;</span><span class="p">,</span> <span class="s">&quot;level_to_compare&quot;</span><span class="p">,</span> <span class="s">&quot;base_level&quot;</span><span class="p">)</span>
+
+<span class="c1"># Output results of Wald test for contrast</span>
+<span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> 
+           <span class="n">contrast</span> <span class="o">=</span> <span class="n">contrast</span><span class="p">,</span> 
+           <span class="n">alpha</span> <span class="o">=</span> <span class="m">0.05</span><span class="p">)</span>
+
+<span class="c1"># Shrink the log2 fold changes to be more accurate</span>
+<span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">lfcShrink</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> 
+         <span class="n">contrast</span> <span class="o">=</span> <span class="n">contrast</span><span class="p">,</span> 
+         <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;normal&quot;</span><span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Output significant results:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Set thresholds</span>
+<span class="n">padj.cutoff</span> <span class="o">&lt;</span> <span class="o">-</span> <span class="m">0.05</span>
+
+<span class="c1"># Turn the results object into a tibble for use with tidyverse functions</span>
+<span class="n">res_tbl</span> <span class="o">&lt;-</span> <span class="n">res</span> <span class="o">%&gt;%</span>
+              <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span>
+              <span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+              <span class="nf">as_tibble</span><span class="p">()</span>
+
+<span class="c1"># Subset the significant results</span>
+<span class="n">sig_res</span> <span class="o">&lt;-</span> <span class="nf">filter</span><span class="p">(</span><span class="n">res_tbl</span><span class="p">,</span> 
+          <span class="n">padj</span> <span class="o">&lt;</span> <span class="n">padj.cutoff</span><span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Visualize results: volcano plots, heatmaps, normalized counts plots of top genes, etc.</p>
+</li>
+<li>
+<p>Perform analysis to extract functional significance of results: GO or KEGG enrichment, GSEA, etc.</p>
+</li>
+<li>
+<p>Make sure to output the versions of all tools used in the DE analysis:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">sessionInfo</span><span class="p">()</span>
+</code></pre></div>
+<p>For better reproducibility, it can help to create <strong>RMarkdown reports</strong>, which save all code, results, and visualizations as nicely formatted html reports. We have available an <a href="https://www.dropbox.com/s/xp7l0b46rvwmbya/workshop-example.html?dl=1">example html report</a> for perusal. To create these reports we have <a href="https://hbctraining.github.io/Training-modules/Rmarkdown/">additional materials</a> available.</p>
+</li>
+</ol>
+<hr />
+<p><em>This lesson was originally developed by members of the teaching team (Mary Piper) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
 
               
             </article>
@@ -698,21 +730,21 @@
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-      
         
-        <a href="02_setup.html" class="md-footer__link md-footer__link--next" aria-label="Next: Setup" rel="next">
+        <a href="09c_FA_GSEA.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Class scoring" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
-                Next
+                Previous
               </span>
-              Setup
+              Class scoring
             </div>
           </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
         </a>
+      
       
     </nav>
   

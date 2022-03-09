@@ -14,7 +14,7 @@ To perform Differential Gene Expression analysis, we need to start with a matrix
 In this lesson we will briefly discuss the RNA-processing pipeline for bulk RNA-seq, and the **different steps we take to go from raw sequencing reads to a gene expression count matrix**. 
 
 <p align="center">
-<img src="../img/05_preprocessing/workflow-salmon-DGE-alt2.png" width="600" >
+<img src="./img/05_preprocessing/workflow-salmon-DGE-alt2.png" width="600" >
 </p>
 
 ### 1. RNA Extraction and library preparation
@@ -37,7 +37,7 @@ of the second cDNA strand (for details see Levin et al. (2010)). Once double-str
 **d. PCR amplification.** If the amount of starting material is low and/or to increase the number of cDNA molecules to an amount sufficient for sequencing, libraries are usually PCR amplified. Run as few amplication cycles as possible to avoid PCR artefacts.  
 
 <p align="center">
-<img src="../img/05_preprocessing/library_prep.png" >
+<img src="./img/05_preprocessing/library_prep.png" >
 </p>
 
 *Image source: [Zeng and Mortavi, 2012](https://pubmed.ncbi.nlm.nih.gov/22910383/)*
@@ -47,7 +47,7 @@ of the second cDNA strand (for details see Levin et al. (2010)). Once double-str
 Sequencing of the cDNA libraries will generate **reads**. Reads correspond to the nucleotide sequences of the ends of each of the cDNA fragements in the library. You will have the choice of sequencing either a single end of the cDNA fragments (single-end reads) or both ends of the fragments (paired-end reads).
 
 <p align="center">
-<img src="../img/05_preprocessing/paired_end_reads.png" width="500">
+<img src="./img/05_preprocessing/paired_end_reads.png" width="500">
 </p>
 
 - SE - Single end dataset => Only Read1
@@ -75,7 +75,7 @@ _**Sequencing:**_ The sequencing of the fragment ends is based on fluorophore la
 * **Number of sequencing cycles = Length of reads**
 
 <p align="center">
-<img src="../img/05_preprocessing/illumina_sequencing_process.png" width="600">
+<img src="./img/05_preprocessing/illumina_sequencing_process.png" width="600">
 </p>
 
 ### 3. Quality control of raw sequencing data (FastQC)
@@ -121,7 +121,7 @@ Each of the tools in the list above work slightly differently from one another. 
 **We will use the expression estimates, often referred to as 'pseudocounts', obtained from [Salmon](https://combine-lab.github.io/salmon/)** as the starting point for the differential gene expression analysis.
 
 <p align="center">
-<img src="../img/05_preprocessing/salmon.png" width="600">
+<img src="./img/05_preprocessing/salmon.png" width="600">
 </p>
 
 ### 5. Quality control of aligned sequence reads (STAR/Qualimap)
@@ -143,7 +143,7 @@ Manually tracking these metrics and browsing through multiple HTML reports (Fast
 Once the QC has been performed on all the samples, we are ready to get started with Differential Gene Expression analysis with [DESeq2](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)!
 
 <p align="center">
-<img src="../img/05_preprocessing/deseq_counts_overview.png" width="600">
+<img src="./img/05_preprocessing/deseq_counts_overview.png" width="600">
 </p>
 
 ## Automating your workflow: nf-core pipelines
@@ -151,7 +151,7 @@ Once the QC has been performed on all the samples, we are ready to get started w
 The [nf-core project](https://nf-co.re/) is a community effort to collect a curated set of analysis pipelines built using [Nextflow] (https://www.nextflow.io/), an incredibly powerful and flexible workflow language. This means that all the tools and steps used in your RNAseq workflow can be automated and easily reproduced by other researchers if necessary. In addition, if you use any of the nf-core pipelines, you will be sure that all the necessary tools are available to you in any computer platform (Cloud computing, HPC or your personal computer).
 
 <p align="center">
-<img src="../img/05_preprocessing/nf-core_RNAseq.png" width="600">
+<img src="./img/05_preprocessing/nf-core_RNAseq.png" width="600">
 </p>
 
 The [RNAseq pipeline](https://nf-co.re/rnaseq) enables using many different tools, such as STAR, RSEM, HISAT2 or Salmon, and allows quantification of gene/isoform counts and provides extensive quality control checks at each step of the workflow. We encourage your to take a look at the pipeline and its documentation if you need to preprocess your RNAseq reads from stratch.
