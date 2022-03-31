@@ -2,7 +2,7 @@
 
 Repository for bulk RNAseq course of the Danish Health Data Science Sandbox project.
 
-This workshop contains a basic tutorial on how to approach RNAseq data, starting from your count. Thus, the workshop does not include any information about laboratory protocols, library preparation or any wet-lab related procedures. This workshop is based on the materials developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), a collection of modified tutorials from the [DESeq2](https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) and [gProfiler2](https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html) R language vignettes.
+This workshop contains a basic tutorial on how to approach RNAseq data, starting from your count. Thus, the workshop does not include any information about laboratory protocols, library preparation or any wet-lab related procedures. This workshop is based on the materials developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), a collection of modified tutorials from the [DESeq2](https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) and R language vignettes.
 
 ## Goals
 
@@ -19,10 +19,10 @@ By the end of this workshop, you should be able to analyse your own bulk RNAseq 
 3. Experimental planning
 4. Intro to the data
 5. Preprocessing overview
-6. RNAseq data (DESeq2)
-7. Exploratory analysis (DESeq2)
-8. Differential Expression Analysis (DESeq2)
-9. Functional Analysis (gprofiler2)
+6. RNAseq data
+7. Exploratory analysis
+8. Differential Expression Analysis
+9. Functional Analysis
 10. Summarized workflow
 
 ## Workshop requirements

@@ -63,7 +63,7 @@ To generate more accurate log2 foldchange (LFC) estimates, DESeq2 allows for the
 LFC shrinkage uses **information from all genes** to generate more accurate estimates. Specifically, the distribution of LFC estimates for all genes is used (as a prior) to shrink the LFC estimates of genes with little information or high dispersion toward more likely (lower) LFC estimates. 
 
 ```{r, echo = FALSE, eval = TRUE}
-knitr::include_graphics("../img/08d_DEA_visualization/deseq2_shrunken_lfc.png")
+knitr::include_graphics("./img/08d_DEA_visualization/deseq2_shrunken_lfc.png")
 ```
 
 *Illustration taken from the [DESeq2 paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8).*
@@ -116,8 +116,8 @@ plotMA(res_tableOE, ylim=c(-2,2))
 On the left you have the unshrunken fold change values plotted and you can see the abundance of scatter for the the lowly expressed genes. That is, many of the low expressors exhibit very high fold changes. After shrinkage, we see the fold changes are much smaller estimates.
 
 ```{r, echo = FALSE, eval = TRUE, fig.align='left'}
-knitr::include_graphics("../img/08d_DEA_visualization/maplot_unshrunken.png")
-knitr::include_graphics("../img/08d_DEA_visualization/MA_plot.png")
+knitr::include_graphics("./img/08d_DEA_visualization/maplot_unshrunken.png")
+knitr::include_graphics("./img/08d_DEA_visualization/MA_plot.png")
 ```
 
 In addition to the comparison described above, this plot allows us to evaluate the magnitude of fold changes and how they are distributed relative to mean expression. Generally, we would expect to see significant genes across the full range of expression levels. 
@@ -191,7 +191,7 @@ plotCounts(dds, gene="ENSG00000155363", intgroup="sampletype")
 ```
 
 ```{r, echo = FALSE, eval = TRUE}
-knitr::include_graphics("../img/08d_DEA_visualization/topgen_plot.png")
+knitr::include_graphics("./img/08d_DEA_visualization/topgen_plot.png")
 ```
 
 > This DESeq2 function only allows for plotting the counts of a single gene at a time, and is not flexible regarding the appearance.
@@ -219,7 +219,7 @@ theme(plot.title = element_text(hjust = 0.5))
 > Note that in the plot below (code above), we are using `geom_text_repel()` from the `ggrepel` package to label our individual points on the plot.
 
 ```{r}
-knitr::include_graphics("../img/08d_DEA_visualization/plotCounts_ggrepel.png")
+knitr::include_graphics("./img/08d_DEA_visualization/plotCounts_ggrepel.png")
 ```
 
 ### Heatmap
@@ -252,7 +252,7 @@ pheatmap(norm_OEsig[2:7],
 ```
 
 ```{r, echo = FALSE, eval = TRUE, fig.align='left'}
-knitr::include_graphics("../img/08d_DEA_visualization/pheatmap_aug2020.png")   
+knitr::include_graphics("./img/08d_DEA_visualization/pheatmap_aug2020.png")   
 ```
 
 > *NOTE:* There are several additional arguments we have included in the function for aesthetics. One important one is `scale="row"`, in which Z-scores are plotted, rather than the actual normalized count value. 
@@ -288,7 +288,7 @@ axis.title = element_text(size = rel(1.25)))
 ```
 
 ```{r, echo = FALSE, eval = TRUE, fig.align='left'}
-knitr::include_graphics("../img/08d_DEA_visualization/volcano_plot_1.png") 
+knitr::include_graphics("./img/08d_DEA_visualization/volcano_plot_1.png") 
 ```
 
 This is a great way to get an overall picture of what is going on, but what if we also wanted to know where the top 10 genes (lowest padj) in our DE list are located on this plot? We could label those dots with the gene name on the Volcano plot using `geom_text_repel()`.
@@ -326,7 +326,7 @@ ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
 ```
 
 ```{r, echo = FALSE, eval = TRUE, fig.align='left'}
-knitr::include_graphics("../img/08d_DEA_visualization/volcano_plot_2.png") 
+knitr::include_graphics("./img/08d_DEA_visualization/volcano_plot_2.png") 
 ```
 
 ***

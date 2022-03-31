@@ -53,7 +53,7 @@ The output of RNA-seq differential expression analysis is a list of significant 
 Generally for any differential expression analysis, it is useful to interpret the resulting gene lists using freely available web- and R-based tools.  While tools for functional analysis span a wide variety of techniques, they can loosely be categorized into three main types: over-representation analysis, functional class scoring, and pathway topology [[1](https://github.com/hbctraining/In-depth-NGS-Data-Analysis-Course/raw/master/resources/pathway_tools.pdf)]. 
 
 ```{r, echo = FALSE, eval = TRUE}
-knitr::include_graphics("../img/09b_FA_overrepresentation/pathway_analysis.png")
+knitr::include_graphics("./img/09b_FA_overrepresentation/pathway_analysis.png")
 ```
 
 The goal of functional analysis is provide biological insight, so it's necessary to analyze our results in the context of our experimental hypothesis: **FMRP and MOV10 associate and regulate the translation of a subset of RNAs**. Therefore, based on the authors' hypothesis, we may expect the enrichment of processes/pathways related to **translation, splicing, and the regulation of mRNAs**, which we would need to validate experimentally.
@@ -69,11 +69,11 @@ These databases typically **categorize genes into groups (gene sets)** based on 
 To determine whether any categories are over-represented, you can determine the probability of having the observed proportion of genes associated with a specific category in your gene list based on the proportion of genes associated with the same category in the background set (gene categorizations for the appropriate organism). 
 
 ```{r, echo = FALSE, eval = TRUE}
-knitr::include_graphics("../img/09b_FA_overrepresentation/go_proportions.png")
+knitr::include_graphics("./img/09b_FA_overrepresentation/go_proportions.png")
 ```
   
 ```{r, echo = FALSE, eval = TRUE}  
-knitr::include_graphics("../img/09b_FA_overrepresentation/go_proportions_table3.png")
+knitr::include_graphics("./img/09b_FA_overrepresentation/go_proportions_table3.png")
 ```
   
 The statistical test that will determine whether something is actually over-represented is the *Hypergeometric test*.
@@ -85,7 +85,7 @@ Using the example of the first functional category above, hypergeometric distrib
 The calculation of probability of k successes follows the formula:
 
 ```{r, echo = FALSE, eval = TRUE}  
-knitr::include_graphics("../img/09b_FA_overrepresentation/hypergeo.png")
+knitr::include_graphics("./img/09b_FA_overrepresentation/hypergeo.png")
 ```
 
 This test will result in an adjusted p-value (after multiple test correction) for each category tested.
@@ -118,7 +118,7 @@ The GO ontologies were developed to describe and query biological knowledge with
 
 Some genes with less information may only be associated with general 'parent' terms or no terms at all, while other genes with a lot of information be associated with many terms.
 
-![Nature Reviews Cancer 7, 23-34 (January 2007)](../img/09b_FA_overrepresentation/go_heirarchy.jpg)
+![Nature Reviews Cancer 7, 23-34 (January 2007)](./img/09b_FA_overrepresentation/go_heirarchy.jpg)
 
 [Tips for working with GO terms](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003343)
 
@@ -178,7 +178,7 @@ ego <- enrichGO(gene = sigOE_genes,
                 readable = TRUE)
 ```
 
->**NOTE:** The different organisms with annotation databases available to use with for the `OrgDb` argument can be found [here](../img/09b_FA_overrepresentation/orgdb_annotation_databases.png).
+>**NOTE:** The different organisms with annotation databases available to use with for the `OrgDb` argument can be found [here](./img/09b_FA_overrepresentation/orgdb_annotation_databases.png).
 >
 > Also, the `keyType` argument may be coded as `keytype` in different versions of clusterProfiler.
 >
@@ -192,7 +192,7 @@ write.csv(cluster_summary, "results/clusterProfiler_Mov10oe.csv")
 ```
 
 ```{r, echo = FALSE, eval = TRUE}  
-knitr::include_graphics("../img/09b_FA_overrepresentation/cluster_summary.png")
+knitr::include_graphics("./img/09b_FA_overrepresentation/cluster_summary.png")
 ```             
 
 > **NOTE:** Instead of saving just the results summary from the `ego` object, it might also be beneficial to save the object itself. The `save()` function enables you to save it as a `.rda` file, e.g. `save(ego, file="results/ego.rda")`. 
@@ -234,7 +234,7 @@ dotplot(ego, showCategory=50)
 - `PDF size` to `8 x 14` to give a figure of appropriate size for the text labels
 
 ```{r, echo = FALSE, eval = TRUE} 
-knitr::include_graphics("../img/09b_FA_overrepresentation/mov10oe_dotplot.png")
+knitr::include_graphics("./img/09b_FA_overrepresentation/mov10oe_dotplot.png")
 ``` 
   
 The next plot is the **enrichment GO plot**, which shows the relationship between the top 50 most significantly enriched GO terms (padj.), by grouping similar terms together. Before creating the plot, we will need to obtain the similarity between terms using the `pairwise_termsim()` function ([instructions for emapplot](https://rdrr.io/github/GuangchuangYu/enrichplot/man/emapplot.html)). In the enrichment plot, the color represents the p-values relative to the other displayed terms (brighter red is more significant), and the size of the terms represents the number of genes that are significant from our list.
@@ -250,7 +250,7 @@ emapplot(ego, showCategory = 50)
 **To save the figure,** click on the `Export` button in the RStudio `Plots` tab and `Save as PDF...`. In the pop-up window, change the `PDF size` to `12 x 14` to give a figure of appropriate size for the text labels.
 
 ```{r, echo = FALSE, eval = TRUE} 
-knitr::include_graphics("../img/09b_FA_overrepresentation/emapplot.png")
+knitr::include_graphics("./img/09b_FA_overrepresentation/emapplot.png")
 ``` 
   
 Finally, the **category netplot** shows the relationships between the genes associated with the top five most significant GO terms and the fold changes of the significant genes associated with these terms (color). The size of the GO terms reflects the pvalues of the terms, with the more significant terms being larger. This plot is particularly useful for hypothesis generation in identifying genes that may be important to several of the most affected processes. 
@@ -284,7 +284,7 @@ cnetplot(ego,
 **Again, to save the figure,** click on the `Export` button in the RStudio `Plots` tab and `Save as PDF...`. Change the `PDF size` to `12 x 14` to give a figure of appropriate size for the text labels.
 
 ```{r, echo = FALSE, eval = TRUE} 
-knitr::include_graphics("../img/09b_FA_overrepresentation/cnetplot1.png")
+knitr::include_graphics("./img/09b_FA_overrepresentation/cnetplot1.png")
 ``` 
   
 If you are interested in significant processes that are **not** among the top five, you can subset your `ego` dataset to only display these processes:
@@ -304,7 +304,7 @@ cnetplot(ego2,
 ```
 
 ```{r, echo = FALSE, eval = TRUE} 
-knitr::include_graphics("../img/09b_FA_overrepresentation/cnetplot-2.png")
+knitr::include_graphics("./img/09b_FA_overrepresentation/cnetplot-2.png")
 ``` 
   
 ***

@@ -61,7 +61,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#log-fold-shrinkage-and-dea-visualizations" class="md-skip">
+        <a href="#learning-objectives" class="md-skip">
           Skip to content
         </a>
       
@@ -408,8 +408,6 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
-        
-      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           Visualization
@@ -425,8 +423,6 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-  
-    
   
   
     <label class="md-nav__title" for="__toc">
@@ -646,8 +642,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -757,56 +751,115 @@
                 
 
 
-<h1 id="log-fold-shrinkage-and-dea-visualizations">Log Fold Shrinkage and DEA visualizations</h1>
+  <h1>Visualization</h1>
+
 <p>Approximate time: 75 minutes</p>
 <h2 id="learning-objectives">Learning Objectives</h2>
 <ul>
 <li>Explain log fold change shrinkage</li>
 <li>Setup results data for application of visualization techniques</li>
-<li>Describe different data visualization useful for exploring results from a DGE analysis</li>
-<li>Create a volcano plot and MA plot to evaluate relationship among DGE statistics</li>
-<li>Create a heatmap to illustrate expression changes of differentially expressed genes</li>
+<li>Describe different data visualization useful for exploring results
+    from a DGE analysis</li>
+<li>Create a volcano plot and MA plot to evaluate relationship among DGE
+    statistics</li>
+<li>Create a heatmap to illustrate expression changes of differentially
+    expressed genes</li>
 </ul>
 <h2 id="more-accurate-lfc-estimates">More accurate LFC estimates</h2>
-<p>In the previous lessons, we learned about how to generate a table with Differentially Expressed genes</p>
-<p><div class="highlight"><pre><span></span><code><span class="c1">## DO NOT RUN</span>
+<p>In the previous lessons, we learned about how to generate a table with
+Differentially Expressed genes</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## DO NOT RUN</span>
 <span class="c1"># res_tableOE &lt;- results(dds, contrast=contrast_oe, alpha = 0.05)</span>
 
 <span class="c1"># head(res_tableOE)</span>
 </code></pre></div>
-The problem with these fold change estimates is that they not entirely accurate as they do not account for the large dispersion we observe with low read counts. To address this, the <strong>log2 fold changes need to be adjusted</strong>. </p>
-<p>To generate more accurate log2 foldchange (LFC) estimates, DESeq2 allows for the <strong>shrinkage of the LFC estimates toward zero</strong> when the information for a gene is low, which could include:</p>
+<p>The problem with these fold change estimates is that they not entirely
+accurate as they do not account for the large dispersion we observe with
+low read counts. To address this, the <strong>log2 fold changes need to be
+adjusted</strong>.</p>
+<p>To generate more accurate log2 foldchange (LFC) estimates, DESeq2 allows
+for the <strong>shrinkage of the LFC estimates toward zero</strong> when the
+information for a gene is low, which could include:</p>
 <ul>
 <li>Low counts</li>
 <li>High dispersion values</li>
 </ul>
-<p>LFC shrinkage uses <strong>information from all genes</strong> to generate more accurate estimates. Specifically, the distribution of LFC estimates for all genes is used (as a prior) to shrink the LFC estimates of genes with little information or high dispersion toward more likely (lower) LFC estimates. </p>
-<p align="center">
-<img src="./img/08d_DEA_visualization/deseq2_shrunken_lfc.png" width="500">
-</p>
-
-<p><em>Illustration taken from the <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">DESeq2 paper</a>.</em></p>
-<p>In the figure above, we have an example using two genes green gene and purple gene. For each gene the expression values are plotted for each sample in the two different mouse strains (C57BL/6J and DBA/2J). Both genes have the same mean values for the two sample groups, but the green gene has little variation within group while the purple gene has high levels of variation. For the green gene with low within group variation, the <strong>unshrunken LFC estimate</strong> (vertex of the green <strong>solid line</strong>) is very similar to the shrunken LFC estimate (vertex of the green dotted line). However, LFC estimates for the purple gene are quite different due to the high dispersion. So even though two genes can have similar normalized count values, they can have differing degrees of LFC shrinkage. Notice the <strong>LFC estimates are shrunken toward the prior (black solid line)</strong>.</p>
-<p><strong>Shrinking the log2 fold changes will not change the total number of genes that are identified as significantly differentially expressed.</strong> The shrinkage of fold change is to help with downstream assessment of results. For example, if you wanted to subset your significant genes based on fold change for further evaluation, you may want to use shruken values. Additionally, for functional analysis tools such as GSEA which require fold change values as input you would want to provide shrunken values.</p>
-<p>To generate the shrunken log2 fold change estimates, you have to run an additional step on your results object (that we will create below) with the function <code>lfcShrink()</code>.</p>
+<p>LFC shrinkage uses <strong>information from all genes</strong> to generate more
+accurate estimates. Specifically, the distribution of LFC estimates for
+all genes is used (as a prior) to shrink the LFC estimates of genes with
+little information or high dispersion toward more likely (lower) LFC
+estimates.</p>
+<p><img src="./img/08d_DEA_visualization/deseq2_shrunken_lfc.png" style="display: block; margin: auto;" /></p>
+<p><em>Illustration taken from the <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">DESeq2
+paper</a>.</em></p>
+<p>In the figure above, we have an example using two genes green gene and
+purple gene. For each gene the expression values are plotted for each
+sample in the two different mouse strains (C57BL/6J and DBA/2J). Both
+genes have the same mean values for the two sample groups, but the green
+gene has little variation within group while the purple gene has high
+levels of variation. For the green gene with low within group variation,
+the <strong>unshrunken LFC estimate</strong> (vertex of the green <strong>solid line</strong>) is
+very similar to the shrunken LFC estimate (vertex of the green dotted
+line). However, LFC estimates for the purple gene are quite different
+due to the high dispersion. So even though two genes can have similar
+normalized count values, they can have differing degrees of LFC
+shrinkage. Notice the <strong>LFC estimates are shrunken toward the prior
+(black solid line)</strong>.</p>
+<p><strong>Shrinking the log2 fold changes will not change the total number of
+genes that are identified as significantly differentially expressed.</strong>
+The shrinkage of fold change is to help with downstream assessment of
+results. For example, if you wanted to subset your significant genes
+based on fold change for further evaluation, you may want to use shruken
+values. Additionally, for functional analysis tools such as GSEA which
+require fold change values as input you would want to provide shrunken
+values.</p>
+<p>To generate the shrunken log2 fold change estimates, you have to run an
+additional step on your results object (that we will create below) with
+the function <code>lfcShrink()</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Save the unshrunken results to compare</span>
 <span class="n">res_tableOE_unshrunken</span> <span class="o">&lt;-</span> <span class="n">res_tableOE</span>
 
 <span class="c1"># Apply fold change shrinkage</span>
 <span class="n">res_tableOE</span> <span class="o">&lt;-</span> <span class="nf">lfcShrink</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">coef</span><span class="o">=</span><span class="s">&quot;sampletype_MOV10_overexpression_vs_control&quot;</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;apeglm&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p>Depending on the version of DESeq2 you are using the default <strong>method for shrinkage estimation</strong> will differ. The defaults can be changed by adding the argument <code>type</code> in the <code>lfcShrink()</code> function as we have above. For most recent versions of DESeq2, <code>type="normal"</code> is the default and was the only method in earlier versions. It has been shown that in most situations there are alternative methods that have <a href="https://bioconductor.org/packages/devel/bioc/vignettes/apeglm/inst/doc/apeglm.html">less bias than the 'normal` method</a>, and therefore <strong>we chose to use apeglm</strong>. </p>
+<p>Depending on the version of DESeq2 you are using the default <strong>method
+for shrinkage estimation</strong> will differ. The defaults can be changed by
+adding the argument <code>type</code> in the <code>lfcShrink()</code> function as we have
+above. For most recent versions of DESeq2, <code>type="normal"</code> is the
+default and was the only method in earlier versions. It has been shown
+that in most situations there are alternative methods that have <a href="https://bioconductor.org/packages/devel/bioc/vignettes/apeglm/inst/doc/apeglm.html">less
+bias than the ’normal`
+method</a>,
+and therefore <strong>we chose to use apeglm</strong>.</p>
 <blockquote>
-<p>For more information on shrinkage, the DESeq2 vignette has an <a href="http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#extended-section-on-shrinkage-estimators">Extended section on shrinkage estimators</a> that is quite useful.</p>
+<p>For more information on shrinkage, the DESeq2 vignette has an
+<a href="http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#extended-section-on-shrinkage-estimators">Extended section on shrinkage
+estimators</a>
+that is quite useful.</p>
 <h4 id="contrast-vs-coef"><code>contrast</code> vs <code>coef</code></h4>
-<p>When using the alternative methods, rather than using the <code>contrast</code> argument you will be required to specify <code>coef</code>. Using contrast forms an expanded model matrix, treating all factor levels equally, and averages over all distances between all pairs of factor levels to estimate the prior. Using coef, means looking only at that column of the model matrix (so usually that would be one level against the reference level) and estimates the prior for that coefficient from the distribution of those MLE of coefficients. When using coef, the shrinkage depends on which level is chosen as reference.</p>
+<p>When using the alternative methods, rather than using the <code>contrast</code>
+argument you will be required to specify <code>coef</code>. Using contrast forms
+an expanded model matrix, treating all factor levels equally, and
+averages over all distances between all pairs of factor levels to
+estimate the prior. Using coef, means looking only at that column of
+the model matrix (so usually that would be one level against the
+reference level) and estimates the prior for that coefficient from the
+distribution of those MLE of coefficients. When using coef, the
+shrinkage depends on which level is chosen as reference.</p>
 <h4 id="how-do-i-know-what-to-value-to-provide-to-the-coef-argument">How do I know what to value to provide to the <code>coef</code> argument?</h4>
-<p>The value you provide here needs to match identically to what is stored in the column header of the coefficients table. To see what values you have to work with you can use <code>resultsNames(dds)</code>.</p>
+<p>The value you provide here needs to match identically to what is
+stored in the column header of the coefficients table. To see what
+values you have to work with you can use <code>resultsNames(dds)</code>.</p>
 </blockquote>
 <h2 id="visualizing-the-results">Visualizing the results</h2>
 <h3 id="ma-plot">MA plot</h3>
-<p>A plot that can be useful to exploring our results is the MA plot. The MA plot shows the <strong>mean of the normalized counts versus the log2 foldchanges for all genes tested</strong>. The genes that are significantly DE are colored to be easily identified. This is also a great way to illustrate the effect of LFC shrinkage. The DESeq2 package offers a simple function to generate an MA plot. </p>
-<p><strong>Let's start with the unshrunken results:</strong></p>
+<p>A plot that can be useful to exploring our results is the MA plot. The
+MA plot shows the <strong>mean of the normalized counts versus the log2
+foldchanges for all genes tested</strong>. The genes that are significantly DE
+are colored to be easily identified. This is also a great way to
+illustrate the effect of LFC shrinkage. The DESeq2 package offers a
+simple function to generate an MA plot.</p>
+<p><strong>Let’s start with the unshrunken results:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># MA plot using unshrunken fold changes</span>
 <span class="nf">plotMA</span><span class="p">(</span><span class="n">res_tableOE_unshrunken</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
 </code></pre></div>
@@ -814,44 +867,58 @@ The problem with these fold change estimates is that they not entirely accurate 
 <div class="highlight"><pre><span></span><code><span class="c1"># MA plot using shrunken fold changes</span>
 <span class="nf">plotMA</span><span class="p">(</span><span class="n">res_tableOE</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
 </code></pre></div>
-<p>On the left you have the unshrunken fold change values plotted and you can see the abundance of scatter for the the lowly expressed genes. That is, many of the low expressors exhibit very high fold changes. After shrinkage, we see the fold changes are much smaller estimates.</p>
-<p float="left">
-  <img src="./img/08d_DEA_visualization/maplot_unshrunken.png" width="400">
-  <img src="./img/08d_DEA_visualization/MA_plot.png" width="400">
-</p>
-
-<p>In addition to the comparison described above, this plot allows us to evaluate the magnitude of fold changes and how they are distributed relative to mean expression. Generally, we would expect to see significant genes across the full range of expression levels. </p>
+<p>On the left you have the unshrunken fold change values plotted and you
+can see the abundance of scatter for the the lowly expressed genes. That
+is, many of the low expressors exhibit very high fold changes. After
+shrinkage, we see the fold changes are much smaller estimates.</p>
+<p><img src="./img/08d_DEA_visualization/maplot_unshrunken.png" style="display: block; margin: auto auto auto 0;" /><img src="./img/08d_DEA_visualization/MA_plot.png" style="display: block; margin: auto auto auto 0;" /></p>
+<p>In addition to the comparison described above, this plot allows us to
+evaluate the magnitude of fold changes and how they are distributed
+relative to mean expression. Generally, we would expect to see
+significant genes across the full range of expression levels.</p>
 <h2 id="advanced-visualizations">Advanced visualizations</h2>
-<p>When we are working with large amounts of data it can be useful to display that information graphically to gain more insight. During this lesson, we will get you started with some basic and more advanced plots commonly used when exploring differential gene expression data, however, many of these plots can be helpful in visualizing other types of data as well.</p>
-<p>We will be working with three different data objects we have already created in earlier lessons:</p>
+<p>When we are working with large amounts of data it can be useful to
+display that information graphically to gain more insight. During this
+lesson, we will get you started with some basic and more advanced plots
+commonly used when exploring differential gene expression data, however,
+many of these plots can be helpful in visualizing other types of data as
+well.</p>
+<p>We will be working with three different data objects we have already
+created in earlier lessons:</p>
 <ul>
 <li>Metadata for our samples (a dataframe): <code>meta</code></li>
-<li>Normalized expression data for every gene in each of our samples (a matrix): <code>normalized_counts</code></li>
-<li>Tibble versions of the DESeq2 results we generated in the last lesson: <code>res_tableOE_tb</code> and <code>res_tableKD_tb</code></li>
+<li>Normalized expression data for every gene in each of our samples (a
+    matrix): <code>normalized_counts</code></li>
+<li>Tibble versions of the DESeq2 results we generated in the last
+    lesson: <code>res_tableOE_tb</code> and <code>res_tableKD_tb</code></li>
 </ul>
-<p>First, let's create a metadata tibble from the data frame (don't lose the row names!)</p>
+<p>First, let’s create a metadata tibble from the data frame (don’t lose
+the row names!)</p>
 <div class="highlight"><pre><span></span><code><span class="n">mov10_meta</span> <span class="o">&lt;-</span> <span class="n">meta</span> <span class="o">%&gt;%</span> 
-              <span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;samplename&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-              <span class="nf">as_tibble</span><span class="p">()</span>
+<span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;samplename&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+<span class="nf">as_tibble</span><span class="p">()</span>
 </code></pre></div>
-<p>Next, let's bring in a column with gene symbols to the <code>normalized_counts</code> object, so we can use them to label our plots. Ensembl IDs are great for many things, but the gene symbols are much more recognizable to us, as biologists. </p>
+<p>Next, let’s bring in a column with gene symbols to the
+<code>normalized_counts</code> object, so we can use them to label our plots.
+Ensembl IDs are great for many things, but the gene symbols are much
+more recognizable to us, as biologists.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># DESeq2 creates a matrix when you use the counts() function</span>
 <span class="c1">## First convert normalized_counts to a data frame and transfer the row names to a new column called &quot;gene&quot;</span>
 <span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-                     <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span>
-                     <span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">)</span> 
+<span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span>
+<span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">)</span> 
 
 <span class="c1"># Next, merge together (ensembl IDs) the normalized counts data frame with a subset of the annotations in the tx2gene data frame (only the columns for ensembl gene IDs and gene symbols)</span>
 <span class="n">grch38annot</span> <span class="o">&lt;-</span> <span class="n">tx2gene</span> <span class="o">%&gt;%</span> 
-               <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">ensgene</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-               <span class="n">dplyr</span><span class="o">::</span><span class="nf">distinct</span><span class="p">()</span>
+<span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">ensgene</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+<span class="n">dplyr</span><span class="o">::</span><span class="nf">distinct</span><span class="p">()</span>
 
 <span class="c1">## This will bring in a column of gene symbols</span>
 <span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="nf">merge</span><span class="p">(</span><span class="n">normalized_counts</span><span class="p">,</span> <span class="n">grch38annot</span><span class="p">,</span> <span class="n">by.x</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">,</span> <span class="n">by.y</span><span class="o">=</span><span class="s">&quot;ensgene&quot;</span><span class="p">)</span>
 
 <span class="c1"># Now create a tibble for the normalized counts</span>
 <span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="n">normalized_counts</span> <span class="o">%&gt;%</span>
-                     <span class="nf">as_tibble</span><span class="p">()</span>
+<span class="nf">as_tibble</span><span class="p">()</span>
 
 <span class="n">normalized_counts</span> 
 </code></pre></div>
@@ -865,24 +932,29 @@ The problem with these fold change estimates is that they not entirely accurate 
 </code></pre></div>
 </blockquote>
 <h3 id="plotting-significant-de-genes">Plotting significant DE genes</h3>
-<p>One way to visualize results would be to simply plot the expression data for a handful of genes. We could do that by picking out specific genes of interest or selecting a range of genes.</p>
+<p>One way to visualize results would be to simply plot the expression data
+for a handful of genes. We could do that by picking out specific genes
+of interest or selecting a range of genes.</p>
 <p><strong>Using DESeq2 <code>plotCounts()</code> to plot expression of a single gene</strong></p>
-<p>To pick out a specific gene of interest to plot, for example MOV10, we can use the <code>plotCounts()</code> from DESeq2. <code>plotCounts()</code> requires that the gene specified matches the original input to DESeq2, which in our case was Ensembl IDs.</p>
+<p>To pick out a specific gene of interest to plot, for example MOV10, we
+can use the <code>plotCounts()</code> from DESeq2. <code>plotCounts()</code> requires that the
+gene specified matches the original input to DESeq2, which in our case
+was Ensembl IDs.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Find the Ensembl ID of MOV10</span>
 <span class="n">grch38annot</span><span class="p">[</span><span class="n">grch38annot</span><span class="o">$</span><span class="n">symbol</span> <span class="o">==</span> <span class="s">&quot;MOV10&quot;</span><span class="p">,</span> <span class="s">&quot;ensgene&quot;</span><span class="p">]</span>
 
 <span class="c1"># Plot expression for single gene</span>
 <span class="nf">plotCounts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">gene</span><span class="o">=</span><span class="s">&quot;ENSG00000155363&quot;</span><span class="p">,</span> <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">)</span> 
 </code></pre></div>
-<p align="center">
-<img src="./img/08d_DEA_visualization/topgen_plot.png" width="600">
-</p>
-
+<p><img src="./img/08d_DEA_visualization/topgen_plot.png" style="display: block; margin: auto;" /></p>
 <blockquote>
-<p>This DESeq2 function only allows for plotting the counts of a single gene at a time, and is not flexible regarding the appearance.</p>
+<p>This DESeq2 function only allows for plotting the counts of a single
+gene at a time, and is not flexible regarding the appearance.</p>
 </blockquote>
 <p><strong>Using ggplot2 to plot expression of a single gene</strong></p>
-<p>If you wish to change the appearance of this plot, we can save the output of <code>plotCounts()</code> to a variable specifying the <code>returnData=TRUE</code> argument, then use <code>ggplot()</code>:</p>
+<p>If you wish to change the appearance of this plot, we can save the
+output of <code>plotCounts()</code> to a variable specifying the <code>returnData=TRUE</code>
+argument, then use <code>ggplot()</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Save plotcounts to a data frame object</span>
 <span class="n">d</span> <span class="o">&lt;-</span> <span class="nf">plotCounts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">gene</span><span class="o">=</span><span class="s">&quot;ENSG00000155363&quot;</span><span class="p">,</span> <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">,</span> <span class="n">returnData</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 
@@ -891,75 +963,89 @@ The problem with these fold change estimates is that they not entirely accurate 
 
 <span class="c1"># Plot the MOV10 normalized counts, using the samplenames (rownames(d) as labels)</span>
 <span class="nf">ggplot</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">sampletype</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">count</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">sampletype</span><span class="p">))</span> <span class="o">+</span> 
-    <span class="nf">geom_point</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="nf">position_jitter</span><span class="p">(</span><span class="n">w</span> <span class="o">=</span> <span class="m">0.1</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="m">0</span><span class="p">))</span> <span class="o">+</span>
-    <span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">d</span><span class="p">)))</span> <span class="o">+</span> 
-    <span class="nf">theme_bw</span><span class="p">()</span> <span class="o">+</span>
-    <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;MOV10&quot;</span><span class="p">)</span> <span class="o">+</span>
-    <span class="nf">theme</span><span class="p">(</span><span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">hjust</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">))</span>
+<span class="nf">geom_point</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="nf">position_jitter</span><span class="p">(</span><span class="n">w</span> <span class="o">=</span> <span class="m">0.1</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="m">0</span><span class="p">))</span> <span class="o">+</span>
+<span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">d</span><span class="p">)))</span> <span class="o">+</span> 
+<span class="nf">theme_bw</span><span class="p">()</span> <span class="o">+</span>
+<span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;MOV10&quot;</span><span class="p">)</span> <span class="o">+</span>
+<span class="nf">theme</span><span class="p">(</span><span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">hjust</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">))</span>
 </code></pre></div>
 <blockquote>
-<p>Note that in the plot below (code above), we are using <code>geom_text_repel()</code> from the <code>ggrepel</code> package to label our individual points on the plot.</p>
+<p>Note that in the plot below (code above), we are using
+<code>geom_text_repel()</code> from the <code>ggrepel</code> package to label our individual
+points on the plot.</p>
 </blockquote>
-<p float="left">
-<img src="./img/08d_DEA_visualization/plotCounts_ggrepel.png" width="700">
-</p>
-
+<div class="highlight"><pre><span></span><code><span class="n">knitr</span><span class="o">::</span><span class="nf">include_graphics</span><span class="p">(</span><span class="s">&quot;./img/08d_DEA_visualization/plotCounts_ggrepel.png&quot;</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="heatmap">Heatmap</h3>
-<p>In addition to plotting subsets, we could also extract the normalized values of <em>all</em> the significant genes and plot a heatmap of their expression using <code>pheatmap()</code>.</p>
+<p>In addition to plotting subsets, we could also extract the normalized
+values of <em>all</em> the significant genes and plot a heatmap of their
+expression using <code>pheatmap()</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">### Extract normalized expression for significant genes from the OE and control samples (2:4 and 7:9)</span>
 <span class="n">norm_OEsig</span> <span class="o">&lt;-</span> <span class="n">normalized_counts</span><span class="p">[,</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">,</span><span class="m">7</span><span class="o">:</span><span class="m">9</span><span class="p">)]</span> <span class="o">%&gt;%</span> 
-              <span class="nf">filter</span><span class="p">(</span><span class="n">gene</span> <span class="o">%in%</span> <span class="n">sigOE</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>  
+  <span class="nf">filter</span><span class="p">(</span><span class="n">gene</span> <span class="o">%in%</span> <span class="n">sigOE</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>  
 </code></pre></div>
-<p>Now let's draw the heatmap using <code>pheatmap</code>:</p>
+<p>Now let’s draw the heatmap using <code>pheatmap</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">### Set a color palette</span>
 <span class="n">heat_colors</span> <span class="o">&lt;-</span> <span class="nf">brewer.pal</span><span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="s">&quot;YlOrRd&quot;</span><span class="p">)</span>
 
 <span class="c1">### Run pheatmap using the metadata data frame for the annotation</span>
 <span class="nf">pheatmap</span><span class="p">(</span><span class="n">norm_OEsig</span><span class="p">[</span><span class="m">2</span><span class="o">:</span><span class="m">7</span><span class="p">],</span> 
-    <span class="n">color</span> <span class="o">=</span> <span class="n">heat_colors</span><span class="p">,</span> 
-    <span class="n">cluster_rows</span> <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> 
-    <span class="n">show_rownames</span> <span class="o">=</span> <span class="bp">F</span><span class="p">,</span>
-    <span class="n">annotation</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> 
-    <span class="n">border_color</span> <span class="o">=</span> <span class="kc">NA</span><span class="p">,</span> 
-    <span class="n">fontsize</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span> 
-    <span class="n">scale</span> <span class="o">=</span> <span class="s">&quot;row&quot;</span><span class="p">,</span> 
-    <span class="n">fontsize_row</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span> 
-    <span class="n">height</span> <span class="o">=</span> <span class="m">20</span><span class="p">)</span>
+         <span class="n">color</span> <span class="o">=</span> <span class="n">heat_colors</span><span class="p">,</span> 
+         <span class="n">cluster_rows</span> <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> 
+         <span class="n">show_rownames</span> <span class="o">=</span> <span class="bp">F</span><span class="p">,</span>
+         <span class="n">annotation</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> 
+         <span class="n">border_color</span> <span class="o">=</span> <span class="kc">NA</span><span class="p">,</span> 
+         <span class="n">fontsize</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span> 
+         <span class="n">scale</span> <span class="o">=</span> <span class="s">&quot;row&quot;</span><span class="p">,</span> 
+         <span class="n">fontsize_row</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span> 
+         <span class="n">height</span> <span class="o">=</span> <span class="m">20</span><span class="p">)</span>
 </code></pre></div>
-<p float="left">
-<img src="./img/08d_DEA_visualization/pheatmap_aug2020.png" width="600">   
-</p>
-
+<p><img src="./img/08d_DEA_visualization/pheatmap_aug2020.png" style="display: block; margin: auto auto auto 0;" /></p>
 <blockquote>
-<p><em>NOTE:</em> There are several additional arguments we have included in the function for aesthetics. One important one is <code>scale="row"</code>, in which Z-scores are plotted, rather than the actual normalized count value. </p>
-<p>Z-scores are computed on a gene-by-gene basis by subtracting the mean and then dividing by the standard deviation. The Z-scores are computed <strong>after the clustering</strong>, so that it only affects the graphical aesthetics and the color visualization is improved.</p>
+<p><em>NOTE:</em> There are several additional arguments we have included in the
+function for aesthetics. One important one is <code>scale="row"</code>, in which
+Z-scores are plotted, rather than the actual normalized count value.</p>
+<p>Z-scores are computed on a gene-by-gene basis by subtracting the mean
+and then dividing by the standard deviation. The Z-scores are computed
+<strong>after the clustering</strong>, so that it only affects the graphical
+aesthetics and the color visualization is improved.</p>
 </blockquote>
 <h3 id="volcano-plot">Volcano plot</h3>
-<p>The above plot would be great to look at the expression levels of a good number of genes, but for more of a global view there are other plots we can draw. A commonly used one is a volcano plot; in which you have the log transformed adjusted p-values plotted on the y-axis and log2 fold change values on the x-axis. </p>
-<p>To generate a volcano plot, we first need to have a column in our results data indicating whether or not the gene is considered differentially expressed based on p-adjusted values and we will include a log2fold change here.</p>
+<p>The above plot would be great to look at the expression levels of a good
+number of genes, but for more of a global view there are other plots we
+can draw. A commonly used one is a volcano plot; in which you have the
+log transformed adjusted p-values plotted on the y-axis and log2 fold
+change values on the x-axis.</p>
+<p>To generate a volcano plot, we first need to have a column in our
+results data indicating whether or not the gene is considered
+differentially expressed based on p-adjusted values and we will include
+a log2fold change here.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Obtain logical vector where TRUE values denote padj values &lt; 0.05 and fold change &gt; 1.5 in either direction</span>
 
 <span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="n">res_tableOE_tb</span> <span class="o">%&gt;%</span> 
-                  <span class="nf">mutate</span><span class="p">(</span><span class="n">threshold_OE</span> <span class="o">=</span> <span class="n">padj</span> <span class="o">&lt;</span> <span class="m">0.05</span> <span class="o">&amp;</span> <span class="nf">abs</span><span class="p">(</span><span class="n">log2FoldChange</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="m">0.58</span><span class="p">)</span>
+<span class="nf">mutate</span><span class="p">(</span><span class="n">threshold_OE</span> <span class="o">=</span> <span class="n">padj</span> <span class="o">&lt;</span> <span class="m">0.05</span> <span class="o">&amp;</span> <span class="nf">abs</span><span class="p">(</span><span class="n">log2FoldChange</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="m">0.58</span><span class="p">)</span>
 </code></pre></div>
-<p>Now we can start plotting. The <code>geom_point</code> object is most applicable, as this is essentially a scatter plot:</p>
+<p>Now we can start plotting. The <code>geom_point</code> object is most applicable,
+as this is essentially a scatter plot:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Volcano plot</span>
 <span class="nf">ggplot</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">)</span> <span class="o">+</span>
-    <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">),</span> <span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
-    <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Mov10 overexpression&quot;</span><span class="p">)</span> <span class="o">+</span>
-    <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;log2 fold change&quot;</span><span class="p">)</span> <span class="o">+</span> 
-    <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;-log10 adjusted p-value&quot;</span><span class="p">)</span> <span class="o">+</span>
-    <span class="c1">#scale_y_continuous(limits = c(0,50)) +</span>
-    <span class="nf">theme</span><span class="p">(</span><span class="n">legend.position</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">,</span>
-          <span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.5</span><span class="p">),</span> <span class="n">hjust</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">),</span>
-          <span class="n">axis.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.25</span><span class="p">)))</span>  
+<span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">),</span> <span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
+<span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Mov10 overexpression&quot;</span><span class="p">)</span> <span class="o">+</span>
+<span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;log2 fold change&quot;</span><span class="p">)</span> <span class="o">+</span> 
+<span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;-log10 adjusted p-value&quot;</span><span class="p">)</span> <span class="o">+</span>
+<span class="c1">#scale_y_continuous(limits = c(0,50)) +</span>
+<span class="nf">theme</span><span class="p">(</span><span class="n">legend.position</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">,</span>
+<span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.5</span><span class="p">),</span> <span class="n">hjust</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">),</span>
+<span class="n">axis.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.25</span><span class="p">)))</span>  
 </code></pre></div>
-<p float="left">
-<img src="./img/08d_DEA_visualization/volcano_plot_1.png" width="500"> 
-</p>
-
-<p>This is a great way to get an overall picture of what is going on, but what if we also wanted to know where the top 10 genes (lowest padj) in our DE list are located on this plot? We could label those dots with the gene name on the Volcano plot using <code>geom_text_repel()</code>.</p>
-<p>First, we need to order the res_tableOE tibble by <code>padj</code>, and add an additional column to it, to include on those gene names we want to use to label the plot.</p>
+<p><img src="./img/08d_DEA_visualization/volcano_plot_1.png" style="display: block; margin: auto auto auto 0;" /></p>
+<p>This is a great way to get an overall picture of what is going on, but
+what if we also wanted to know where the top 10 genes (lowest padj) in
+our DE list are located on this plot? We could label those dots with the
+gene name on the Volcano plot using <code>geom_text_repel()</code>.</p>
+<p>First, we need to order the res_tableOE tibble by <code>padj</code>, and add an
+additional column to it, to include on those gene names we want to use
+to label the plot.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Add all the gene symbols as a column from the grch38 table using bind_cols()</span>
 <span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="nf">bind_cols</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">grch38annot</span><span class="o">$</span><span class="n">symbol</span><span class="p">[</span><span class="nf">match</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">gene</span><span class="p">,</span> <span class="n">grch38annot</span><span class="o">$</span><span class="n">ensgene</span><span class="p">)])</span>
 
@@ -974,24 +1060,28 @@ The problem with these fold change estimates is that they not entirely accurate 
 
 <span class="nf">View</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">)</span>
 </code></pre></div>
-<p>Next, we plot it as before with an additional layer for <code>geom_text_repel()</code> wherein we can specify the column of gene labels we just created. </p>
+<p>Next, we plot it as before with an additional layer for
+<code>geom_text_repel()</code> wherein we can specify the column of gene labels we
+just created.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">)))</span> <span class="o">+</span>
-    <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
-    <span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="n">genelabels</span><span class="p">))</span> <span class="o">+</span>
-    <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Mov10 overexpression&quot;</span><span class="p">)</span> <span class="o">+</span>
-    <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;log2 fold change&quot;</span><span class="p">)</span> <span class="o">+</span> 
-    <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;-log10 adjusted p-value&quot;</span><span class="p">)</span> <span class="o">+</span>
-    <span class="nf">theme</span><span class="p">(</span><span class="n">legend.position</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">,</span>
-          <span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.5</span><span class="p">),</span> <span class="n">hjust</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">),</span>
-          <span class="n">axis.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.25</span><span class="p">)))</span> 
+  <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
+  <span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="n">genelabels</span><span class="p">))</span> <span class="o">+</span>
+  <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Mov10 overexpression&quot;</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;log2 fold change&quot;</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;-log10 adjusted p-value&quot;</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">theme</span><span class="p">(</span><span class="n">legend.position</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">,</span>
+        <span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.5</span><span class="p">),</span> <span class="n">hjust</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">),</span>
+        <span class="n">axis.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nf">rel</span><span class="p">(</span><span class="m">1.25</span><span class="p">)))</span> 
 </code></pre></div>
-<p float="left">
-<img src="./img/08d_DEA_visualization/volcano_plot_2.png" width="500"> 
-</p>
-
+<p><img src="./img/08d_DEA_visualization/volcano_plot_2.png" style="display: block; margin: auto auto auto 0;" /></p>
 <hr />
 <blockquote>
-<p><em><strong>NOTE:</strong> If using the DESeq2 tool for differential expression analysis, the package 'DEGreport' can use the DESeq2 results output to make the top20 genes and the volcano plots generated above by writing a few lines of simple code. While you can customize the plots above, you may be interested in using the easier code. Below are examples of the code to create these plots:</em></p>
+<p><em><strong>NOTE:</strong> If using the DESeq2 tool for differential expression
+analysis, the package ‘DEGreport’ can use the DESeq2 results output to
+make the top20 genes and the volcano plots generated above by writing
+a few lines of simple code. While you can customize the plots above,
+you may be interested in using the easier code. Below are examples of
+the code to create these plots:</em></p>
 <div class="highlight"><pre><span></span><code><span class="n">DEGreport</span><span class="o">::</span><span class="nf">degPlot</span><span class="p">(</span><span class="n">dds</span> <span class="o">=</span> <span class="n">dds</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> <span class="n">xs</span> <span class="o">=</span> <span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="n">group</span> <span class="o">=</span> <span class="s">&quot;condition&quot;</span><span class="p">)</span> <span class="c1"># dds object is output from DESeq2</span>
 
 <span class="n">DEGreport</span><span class="o">::</span><span class="nf">degVolcano</span><span class="p">(</span>
@@ -1003,8 +1093,12 @@ The problem with these fold change estimates is that they not entirely accurate 
 </code></pre></div>
 </blockquote>
 <hr />
-<p><em>This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
-<p><em>Materials and hands-on activities were adapted from <a href="http://www.bioconductor.org/help/workflows/rnaseqGene/#de">RNA-seq workflow</a> on the Bioconductor website</em></p>
+<p><em>This lesson was originally developed by members of the teaching team
+(Mary Piper, Meeta Mistry, Radhika Khetani) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan
+Bioinformatics Core (HBC)</a>.</em></p>
+<p><em>Materials and hands-on activities were adapted from <a href="http://www.bioconductor.org/help/workflows/rnaseqGene/#de">RNA-seq
+workflow</a> on
+the Bioconductor website</em></p>
 
               
             </article>

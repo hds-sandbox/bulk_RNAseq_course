@@ -1,4 +1,4 @@
-# History files
+B# History files
 *.Rhistory
 *.Rapp.history
 
@@ -42,3 +42,4 @@ vignettes/*.pdf
 .gitignore
 *.DS_Store
 **/tmp
+*.docx
