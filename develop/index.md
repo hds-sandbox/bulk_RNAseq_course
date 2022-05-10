@@ -1,8 +1,8 @@
-# Bulk RNAseq workshop
+# Introduction to bulk RNAseq analysis workshop
 
 Repository for bulk RNAseq course of the Danish Health Data Science Sandbox project.
 
-This workshop contains a basic tutorial on how to approach RNAseq data, starting from your count. Thus, the workshop does not include any information about laboratory protocols, library preparation or any wet-lab related procedures. This workshop is based on the materials developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), a collection of modified tutorials from the [DESeq2](https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) and R language vignettes.
+This workshop material includes a tutorial on how to approach RNAseq data, starting from your count matrix. Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), a collection of modified tutorials from the [DESeq2](https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) and R language vignettes.
 
 ## Goals
 
@@ -25,7 +25,7 @@ By the end of this workshop, you should be able to analyse your own bulk RNAseq 
 9. Functional Analysis
 10. Summarized workflow
 
-## Workshop requirements
+## Workshop prerequisites
 
 - Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop [R basics](https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022)
 - Basic knowledge of RNAseq technology

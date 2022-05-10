@@ -28,8 +28,10 @@ extra_css:
     - extra.css
 theme: 
     name: material
-    #logo: 'img/logo.png'
-markdown_extensions:
+    logo: 'img/favicon.ico'
+    palette:
+      primary: grey
+      accent: cyan
 markdown_extensions:
   - pymdownx.highlight:
       use_pygments: true

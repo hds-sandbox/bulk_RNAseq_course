@@ -15,7 +15,7 @@ Understanding the steps in the experimental process of RNA extraction and prepar
 These important considerations include:
 
 1. Number and type of **replicates**
-2. Avoiding **confounding**
+2. Issues related to **confounding**
 3. Addressing **batch effects**
 
 We will go over each of these considerations in detail, discussing best practice and optimal design.
@@ -91,7 +91,7 @@ Replicates are almost always preferred to greater sequencing depth for bulk RNA-
   
 > **NOTE:** The factor used to estimate the depth of sequencing for genomes is "coverage" - how many times do the number of nucleotides sequenced "cover" the genome. This metric is not exact for genomes (whole genome sequencing), but it is good enough and is used extensively. However, the metric **does not work for transcriptomes** because even though you may know what % of the genome has trancriptional activity, the expression of the genes is highly variable.
   
-## Confounding
+## Confounding variables
   
 A confounded RNA-Seq experiment is one where you **cannot distinguish the separate effects of two different sources of variation** in the data. 
 
@@ -113,7 +113,7 @@ For example, we know that sex has large effects on gene expression, and if all o
 
 ## Batch effects
 
-Batch effects are a significant issue for RNA-Seq analyses, since you can see significant differences in expression due solely to the batch effect. 
+A batch effect appears when variance is introduced into your data as a consequence of technical issues such as sample collection, storage, experimental protocol, etc. Batch effects are problematic for RNA-Seq analyses, since you may see significant differences in expression due solely to the batch effect.
 
 <p align="center">
 <img src="./img/03_experimental_planning/batch_effect_pca.png" width="600">
@@ -145,25 +145,27 @@ If *any* of the answers is **‘No’**, then you have batches.
 
   - **Do NOT confound** your experiment by batch:
     
-    <p align="center">
-    <img src="./img/03_experimental_planning/confounded_batch.png" width="300">
-    </p>
+<p align="center">
+<img src="./img/03_experimental_planning/confounded_batch.png" width="300">
+</p>
     
-    *Image credit: [Hicks SC, et al., bioRxiv (2015)](https://www.biorxiv.org/content/early/2015/08/25/025528)*
+  *Image credit: [Hicks SC, et al., bioRxiv (2015)](https://www.biorxiv.org/content/early/2015/08/25/025528)*
   
   - **DO** split replicates of the different sample groups across batches. The more replicates the better (definitely more than 2).
     
-    <p align="center">
-    <img src="./img/03_experimental_planning/batch_effect.png" width="300">
-    </p>
+<p align="center">
+<img src="./img/03_experimental_planning/batch_effect.png" width="300">
+</p>
     
-    *Image credit: [Hicks SC, et al., bioRxiv (2015)](https://www.biorxiv.org/content/early/2015/08/25/025528)*
-    
+  *Image credit: [Hicks SC, et al., bioRxiv (2015)](https://www.biorxiv.org/content/early/2015/08/25/025528)*
+  
+  - **DO** make a balanced batch design. For example if you can only prepare a subset of samples in the lab on a given day, do not do 90% of samples on day 1 and the remaining 10% on day 2, aim for balance, 50% each day.
+  
   - **DO** include batch information in your **experimental metadata**. During the analysis, we can regress out the variation due to batch if not confounded so it doesn’t affect our results if we have that information.
     
-    <p align="center">
-    <img src="./img/03_experimental_planning/metadata_batch.png" width="300">
-    </p>
+<p align="center">
+<img src="./img/03_experimental_planning/metadata_batch.png" width="300">
+</p>
     
  > **NOTE:** *The sample preparation of cell line "biological" replicates "should be performed as independently as possible" (as batches), "meaning that cell culture media should be prepared freshly for each experiment, different frozen cell stocks and growth factor batches, etc. should be used [[2](http://paasp.net/accurate-design-of-in-vitro-experiments-why-does-it-matter/)]." However, preparation across all conditions should be performed at the same time.*
 
