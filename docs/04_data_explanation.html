@@ -13,7 +13,7 @@
     
     
       
-        <title>Data Explanation - Bulk RNAseq data analysis - an introductory course</title>
+        <title>Data Explanation - Bulk RNAseq data analysis</title>
       
     
     
@@ -21,6 +21,10 @@
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#757575">
         
       
     
@@ -51,7 +55,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="grey" data-md-color-accent="cyan">
   
     
     
@@ -75,10 +79,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+    <a href="https://hds-sandbox.github.io/" title="Bulk RNAseq data analysis" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="img/favicon.ico" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -88,7 +91,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Bulk RNAseq data analysis - an introductory course
+            Bulk RNAseq data analysis
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -161,13 +164,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+    <a href="https://hds-sandbox.github.io/" title="Bulk RNAseq data analysis" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="img/favicon.ico" alt="logo">
 
     </a>
-    Bulk RNAseq data analysis - an introductory course
+    Bulk RNAseq data analysis
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -615,7 +617,7 @@
 </ul>
 <h2 id="review-of-the-dataset">Review of the dataset</h2>
 <p>We will be using the full count matrix from the RNA-Seq dataset that is part of a larger study described in <a href="http://www.ncbi.nlm.nih.gov/pubmed/25464849">Kenny PJ et al, Cell Rep 2014</a>. </p>
-<p>The RNA-Seq was performed on HEK293F cells that were either transfected with a MOV10 transgene, or siRNA to knock down Mov10 expression, or non-specific (irrelevant) siRNA. This resulted in 3 conditions <strong>Mov10 oe</strong> (over expression), <strong>Mov10 kd</strong> (knock down) and <strong>Irrelevant kd</strong>, respectively. The number of replicates is as shown below. </p>
+<p>RNA sequencing was performed on HEK293F cells which were either transfected with a MOV10 transgene, or siRNA to knock down Mov10 expression, or non-specific (irrelevant) siRNA. This resulted in 3 conditions <strong>Mov10 oe</strong> (over expression), <strong>Mov10 kd</strong> (knock down) and <strong>Irrelevant kd</strong>, respectively. The number of replicates is shown below. </p>
 <p>Using these data, we will evaluate transcriptional patterns associated with perturbation of MOV10 expression. Please note that the irrelevant siRNA will be treated as our control condition.</p>
 <p align="center">
 <img src="./img/04_data_explanation/dataset.png" width="400">

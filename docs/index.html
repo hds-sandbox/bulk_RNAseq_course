@@ -13,7 +13,7 @@
     
     
       
-        <title>Bulk RNAseq data analysis - an introductory course</title>
+        <title>Bulk RNAseq data analysis</title>
       
     
     
@@ -21,6 +21,10 @@
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#757575">
         
       
     
@@ -51,7 +55,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="grey" data-md-color-accent="cyan">
   
     
     
@@ -61,7 +65,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#bulk-rnaseq-workshop" class="md-skip">
+        <a href="#introduction-to-bulk-rnaseq-analysis-workshop" class="md-skip">
           Skip to content
         </a>
       
@@ -75,10 +79,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+    <a href="https://hds-sandbox.github.io/" title="Bulk RNAseq data analysis" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="img/favicon.ico" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -88,7 +91,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Bulk RNAseq data analysis - an introductory course
+            Bulk RNAseq data analysis
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -161,13 +164,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+    <a href="https://hds-sandbox.github.io/" title="Bulk RNAseq data analysis" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="img/favicon.ico" alt="logo">
 
     </a>
-    Bulk RNAseq data analysis - an introductory course
+    Bulk RNAseq data analysis
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -228,8 +230,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#workshop-requirements" class="md-nav__link">
-    Workshop requirements
+  <a href="#workshop-prerequisites" class="md-nav__link">
+    Workshop prerequisites
   </a>
   
 </li>
@@ -615,8 +617,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#workshop-requirements" class="md-nav__link">
-    Workshop requirements
+  <a href="#workshop-prerequisites" class="md-nav__link">
+    Workshop prerequisites
   </a>
   
 </li>
@@ -649,9 +651,9 @@
                 
 
 
-<h1 id="bulk-rnaseq-workshop">Bulk RNAseq workshop</h1>
+<h1 id="introduction-to-bulk-rnaseq-analysis-workshop">Introduction to bulk RNAseq analysis workshop</h1>
 <p>Repository for bulk RNAseq course of the Danish Health Data Science Sandbox project.</p>
-<p>This workshop contains a basic tutorial on how to approach RNAseq data, starting from your count. Thus, the workshop does not include any information about laboratory protocols, library preparation or any wet-lab related procedures. This workshop is based on the materials developed by members of the teaching team at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, a collection of modified tutorials from the <a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a> and R language vignettes.</p>
+<p>This workshop material includes a tutorial on how to approach RNAseq data, starting from your count matrix. Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, a collection of modified tutorials from the <a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a> and R language vignettes.</p>
 <h2 id="goals">Goals</h2>
 <p>By the end of this workshop, you should be able to analyse your own bulk RNAseq count matrix:
   - Normalize your data.
@@ -671,7 +673,7 @@
 <li>Functional Analysis</li>
 <li>Summarized workflow</li>
 </ol>
-<h2 id="workshop-requirements">Workshop requirements</h2>
+<h2 id="workshop-prerequisites">Workshop prerequisites</h2>
 <ul>
 <li>Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop <a href="https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022">R basics</a></li>
 <li>Basic knowledge of RNAseq technology</li>

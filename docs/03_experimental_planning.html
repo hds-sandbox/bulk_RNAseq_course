@@ -13,7 +13,7 @@
     
     
       
-        <title>Experimental planning - Bulk RNAseq data analysis - an introductory course</title>
+        <title>Experimental planning - Bulk RNAseq data analysis</title>
       
     
     
@@ -21,6 +21,10 @@
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#757575">
         
       
     
@@ -51,7 +55,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="grey" data-md-color-accent="cyan">
   
     
     
@@ -75,10 +79,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+    <a href="https://hds-sandbox.github.io/" title="Bulk RNAseq data analysis" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="img/favicon.ico" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -88,7 +91,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Bulk RNAseq data analysis - an introductory course
+            Bulk RNAseq data analysis
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -161,13 +164,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+    <a href="https://hds-sandbox.github.io/" title="Bulk RNAseq data analysis" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="img/favicon.ico" alt="logo">
 
     </a>
-    Bulk RNAseq data analysis - an introductory course
+    Bulk RNAseq data analysis
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -265,8 +267,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#confounding" class="md-nav__link">
-    Confounding
+  <a href="#confounding-variables" class="md-nav__link">
+    Confounding variables
   </a>
   
 </li>
@@ -642,8 +644,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#confounding" class="md-nav__link">
-    Confounding
+  <a href="#confounding-variables" class="md-nav__link">
+    Confounding variables
   </a>
   
 </li>
@@ -702,7 +704,7 @@
 <p>These important considerations include:</p>
 <ol>
 <li>Number and type of <strong>replicates</strong></li>
-<li>Avoiding <strong>confounding</strong></li>
+<li>Issues related to <strong>confounding</strong></li>
 <li>Addressing <strong>batch effects</strong></li>
 </ol>
 <p>We will go over each of these considerations in detail, discussing best practice and optimal design.</p>
@@ -794,7 +796,7 @@
 <blockquote>
 <p><strong>NOTE:</strong> The factor used to estimate the depth of sequencing for genomes is "coverage" - how many times do the number of nucleotides sequenced "cover" the genome. This metric is not exact for genomes (whole genome sequencing), but it is good enough and is used extensively. However, the metric <strong>does not work for transcriptomes</strong> because even though you may know what % of the genome has trancriptional activity, the expression of the genes is highly variable.</p>
 </blockquote>
-<h2 id="confounding">Confounding</h2>
+<h2 id="confounding-variables">Confounding variables</h2>
 <p>A confounded RNA-Seq experiment is one where you <strong>cannot distinguish the separate effects of two different sources of variation</strong> in the data. </p>
 <p>For example, we know that sex has large effects on gene expression, and if all of our <em>control</em> mice were female and all of the <em>treatment</em> mice were male, then our treatment effect would be confounded by sex. <strong>We could not differentiate the effect of treatment from the effect of sex.</strong></p>
 <p align="center">
@@ -815,7 +817,7 @@
 </p>
 
 <h2 id="batch-effects">Batch effects</h2>
-<p>Batch effects are a significant issue for RNA-Seq analyses, since you can see significant differences in expression due solely to the batch effect. </p>
+<p>A batch effect appears when variance is introduced into your data as a consequence of technical issues such as sample collection, storage, experimental protocol, etc. Batch effects are problematic for RNA-Seq analyses, since you may see significant differences in expression due solely to the batch effect.</p>
 <p align="center">
 <img src="./img/03_experimental_planning/batch_effect_pca.png" width="600">
 </p>
@@ -851,25 +853,33 @@
 </li>
 <li>
 <p><strong>Do NOT confound</strong> your experiment by batch:</p>
-<p><p align="center">
-<img src="./img/03_experimental_planning/confounded_batch.png" width="300">
-</p></p>
-<p><em>Image credit: <a href="https://www.biorxiv.org/content/early/2015/08/25/025528">Hicks SC, et al., bioRxiv (2015)</a></em></p>
 </li>
-<li>
-<p><strong>DO</strong> split replicates of the different sample groups across batches. The more replicates the better (definitely more than 2).</p>
-<p><p align="center">
-<img src="./img/03_experimental_planning/batch_effect.png" width="300">
-</p></p>
+</ul>
+<p align="center">
+<img src="./img/03_experimental_planning/confounded_batch.png" width="300">
+</p>
+
 <p><em>Image credit: <a href="https://www.biorxiv.org/content/early/2015/08/25/025528">Hicks SC, et al., bioRxiv (2015)</a></em></p>
+<ul>
+<li><strong>DO</strong> split replicates of the different sample groups across batches. The more replicates the better (definitely more than 2).</li>
+</ul>
+<p align="center">
+<img src="./img/03_experimental_planning/batch_effect.png" width="300">
+</p>
+
+<p><em>Image credit: <a href="https://www.biorxiv.org/content/early/2015/08/25/025528">Hicks SC, et al., bioRxiv (2015)</a></em></p>
+<ul>
+<li>
+<p><strong>DO</strong> make a balanced batch design. For example if you can only prepare a subset of samples in the lab on a given day, do not do 90% of samples on day 1 and the remaining 10% on day 2, aim for balance, 50% each day.</p>
 </li>
 <li>
 <p><strong>DO</strong> include batch information in your <strong>experimental metadata</strong>. During the analysis, we can regress out the variation due to batch if not confounded so it doesn’t affect our results if we have that information.</p>
-<p><p align="center">
-<img src="./img/03_experimental_planning/metadata_batch.png" width="300">
-</p></p>
 </li>
 </ul>
+<p align="center">
+<img src="./img/03_experimental_planning/metadata_batch.png" width="300">
+</p>
+
 <blockquote>
 <p><strong>NOTE:</strong> <em>The sample preparation of cell line "biological" replicates "should be performed as independently as possible" (as batches), "meaning that cell culture media should be prepared freshly for each experiment, different frozen cell stocks and growth factor batches, etc. should be used [<a href="http://paasp.net/accurate-design-of-in-vitro-experiments-why-does-it-matter/">2</a>]." However, preparation across all conditions should be performed at the same time.</em></p>
 </blockquote>

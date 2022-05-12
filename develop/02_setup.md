@@ -37,15 +37,7 @@ Now, wait some time until the screen looks like the figure below. It usually tak
 
 Now, click on `open interface` on the top right-hand side of the screen. You will start Rstudio through your browser!
 
-**Important note** First of all, run the following command. It will load all the necessary packages to run the course. Answer "yes" to the prompt `Do you want to proceed? [y/N]: Y`
-
-``` R
-renv::activate("/work/sandbox_bulkRNAseq_testAndFeedback/envs/")
-```
-
-![](./img/02_setup/activateEnv.png)
-
-**Note**: you might encounter this error when running the previous line:  “The project may be out of sync -- use `renv::status()` for more details.” *This error can be ignored safely*.
+**Note**: you might encounter an error/warning message when starting the Rstudio session. *This error can be ignored safely*.
 
 On the lower right side of Rstudio, where you see the file explorer, access the folder `introduction_bulkRNAseq_analysis`. Here you will find the notebooks containing the code used in the course. There are still some theory lessons before we start coding, so keep following the material!
 

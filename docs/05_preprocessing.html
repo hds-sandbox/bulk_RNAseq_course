@@ -13,7 +13,7 @@
     
     
       
-        <title>Preprocessing - Bulk RNAseq data analysis - an introductory course</title>
+        <title>Preprocessing - Bulk RNAseq data analysis</title>
       
     
     
@@ -21,6 +21,10 @@
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#757575">
         
       
     
@@ -51,7 +55,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="grey" data-md-color-accent="cyan">
   
     
     
@@ -75,10 +79,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+    <a href="https://hds-sandbox.github.io/" title="Bulk RNAseq data analysis" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="img/favicon.ico" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -88,7 +91,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Bulk RNAseq data analysis - an introductory course
+            Bulk RNAseq data analysis
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -161,13 +164,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+    <a href="https://hds-sandbox.github.io/" title="Bulk RNAseq data analysis" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="img/favicon.ico" alt="logo">
 
     </a>
-    Bulk RNAseq data analysis - an introductory course
+    Bulk RNAseq data analysis
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -751,33 +753,33 @@
 <li>Learn about existing automated workflows from the bioinformatics community.</li>
 </ul>
 <h2 id="rna-seq-workflow">RNA-seq workflow</h2>
-<p>To perform Differential Gene Expression analysis, we need to start with a matrix of counts representing the levels of gene expression. It is important to understand how the count matrix is generated, before diving into the statistical analysis. </p>
+<p>To perform differential gene expression analysis (DEA), we need to start with a matrix of counts representing the levels of gene expression. It is important to understand how the count matrix is generated, before diving into the statistical analysis. </p>
 <p>In this lesson we will briefly discuss the RNA-processing pipeline for bulk RNA-seq, and the <strong>different steps we take to go from raw sequencing reads to a gene expression count matrix</strong>. </p>
 <p align="center">
 <img src="./img/05_preprocessing/workflow-salmon-DGE-alt2.png" width="600" >
 </p>
 
 <h3 id="1-rna-extraction-and-library-preparation">1. RNA Extraction and library preparation</h3>
-<p>Before RNA can be sequenced, it must first be extracted and separated from its cellular environment prepared into a cDNA library. There are a number of steps involved which are outlined in the figure below, and in parallel there are various quality checks implemented to make sure we have good quality RNA to move forward with. We briefly describe some of these steps below.</p>
-<p><strong>a. Enriching for RNA.</strong> Once the sample has been treated with DNAse to remove any contaminating DNA sequence, the sample undergoes either selection of the mRNA (polyA selection) or depletion of the rRNA. </p>
-<p>Generally, ribosomal RNA represents the majority of the RNAs present in a cell, while messenger RNAs represent a small percentage of total RNA, ~2% in humans. Therefore, if we want to study the protein-coding genes, we need to enrich for mRNA or deplete the rRNA. For differential gene expression analysis, it is best to enrich for Poly(A)+, unless you are aiming to obtain information about long non-coding RNAs, in which case ribosomal RNA depletion is recommended.</p>
+<p>Before RNA can be sequenced, it must first be extracted and separated from its cellular environment and prepared into a cDNA library. There are a number of steps involved which are outlined in the figure below, and in parallel there are various quality checks implemented to make sure we have good quality RNA to move forward with. We briefly describe some of these steps below.</p>
+<p><strong>a. Enriching for RNA.</strong> Once the sample has been treated with DNAse to remove any contaminating DNA sequence, the sample undergoes either selection of the mRNA (polyA selection) or depletion of the ribosomal RNA (rRNA).</p>
+<p>Generally,  rRNA represents the majority of the RNA present in a cell, while messenger RNAs represent a small percentage of total RNA, ~2% in humans. Therefore, if we want to study the protein-coding genes, we need to enrich mRNA or deplete the rRNA. For differential gene expression analysis, it is best to enrich for Poly(A)+, unless you are aiming to obtain information about long non-coding RNAs, in which case rRNA depletion is recommended.</p>
 <blockquote>
-<p><strong>RNA Quality check</strong>: It is essential to check for the integrity of the extracted RNA prior to starting the cDNA library prepation. Traditionally, RNA integrity was assessed via gel electrophoresis by visual inspection of the ribosomal RNA bands; but that method is time consuming and imprecise. The Bioanalyzer system from Agilent will rapidly assess RNA integrity and calculate an RNA Integrity Number (RIN), which facilitates the interpretation and reproducibility of RNA quality. RIN, essentially, provides a means by which RNA quality from different samples can be compared to each other in a standardized manner.</p>
+<p><strong>RNA Quality check</strong>: It is essential to check the integrity of the extracted RNA prior to starting the cDNA library prepation. Traditionally, RNA integrity was assessed via gel electrophoresis by visual inspection of the ribosomal RNA bands; but that method is time consuming and imprecise. The Bioanalyzer system from Agilent will rapidly assess RNA integrity and calculate an RNA Integrity Number (RIN), which facilitates the interpretation and reproducibility of RNA quality. RIN, essentially, provides a means by which RNA quality from different samples can be compared to each other in a standardized manner.</p>
 </blockquote>
 <p><strong>b. Fragmentation and size selection.</strong> The remaining RNA molecules are then fragmented. This is done either via chemical, enzymatic (e.g., RNAses) or physical processes (e.g., chemical/mechanical shearing). These fragments then undergo size selection to retain only those fragments within a size range that Illumina sequencing machines can handle best, i.e., between 150 to 300 bp. </p>
 <blockquote>
-<p><strong>Fragment size quality check</strong>: After size selection/exclusion the fragment size distribution should be assesed to ensure that it is unimodal and well-defined.</p>
+<p><strong>Fragment size quality check</strong>: After size selection/exclusion the fragment size distribution should be assessed to ensure that it is unimodal and well-defined.</p>
 </blockquote>
 <p><strong>c. Reverse transcribe RNA into double-stranded cDNA.</strong> Information about which strand a fragment originated from can be preserved by creating stranded libraries. The most commonly used method incorporates deoxy-UTP during the synthesis
 of the second cDNA strand (for details see Levin et al. (2010)). Once double-stranded cDNA fragments are generated, sequence adapters are ligated to the ends. (Size selection can be performed here instead of at the RNA-level.)</p>
-<p><strong>d. PCR amplification.</strong> If the amount of starting material is low and/or to increase the number of cDNA molecules to an amount sufficient for sequencing, libraries are usually PCR amplified. Run as few amplication cycles as possible to avoid PCR artefacts.  </p>
+<p><strong>d. PCR amplification.</strong> If the amount of starting material is low and/or to increase the number of cDNA molecules to an amount sufficient for sequencing, libraries are usually PCR amplified. Run as few amplification cycles as possible to avoid PCR artifacts.  </p>
 <p align="center">
 <img src="./img/05_preprocessing/library_prep.png" >
 </p>
 
 <p><em>Image source: <a href="https://pubmed.ncbi.nlm.nih.gov/22910383/">Zeng and Mortavi, 2012</a></em></p>
 <h3 id="2-sequencing-illumina">2. Sequencing (Illumina)</h3>
-<p>Sequencing of the cDNA libraries will generate <strong>reads</strong>. Reads correspond to the nucleotide sequences of the ends of each of the cDNA fragements in the library. You will have the choice of sequencing either a single end of the cDNA fragments (single-end reads) or both ends of the fragments (paired-end reads).</p>
+<p>Sequencing of the cDNA libraries will generate <strong>reads</strong>. Reads correspond to the nucleotide sequences of the ends of each of the cDNA fragments in the library. You will have the choice of sequencing either a single end of the cDNA fragments (single-end reads) or both ends of the fragments (paired-end reads).</p>
 <p align="center">
 <img src="./img/05_preprocessing/paired_end_reads.png" width="500">
 </p>
@@ -785,21 +787,22 @@ of the second cDNA strand (for details see Levin et al. (2010)). Once double-str
 <ul>
 <li>SE - Single end dataset =&gt; Only Read1</li>
 <li>PE - Paired-end dataset =&gt; Read1 + Read2<ul>
-<li>can be 2 separate FastQ files or just one with interleaved pairs</li>
+<li>PE can be 2 separate FastQ files or just one with interleaved pairs</li>
 </ul>
 </li>
 </ul>
-<p>Generally single-end sequencing is sufficient unless it is expected that the reads will match multiple locations on the genome (e.g. organisms with many paralogous genes), assemblies are being performed, or for splice isoform differentiation. Be aware that paired-end reads are generally 2x more expensive.</p>
+<p>Generally single-end sequencing is sufficient unless it is expected that the reads will match multiple locations on the genome (e.g. organisms with many paralogous genes), assemblies are being performed, or for splice isoform differentiation. On the other hand, paired-end sequencing helps resolve structural genome rearrangements e.g. insertions, deletions, or inversions. Furthermore, paired reads improve the alignment/assembly of reads from repetitive regions. The downside of this type of sequencing is that it may be twice as expensive.</p>
+<p>The scientific community is moving towards paired-end sequencing in general. However, for many purposes, single-end reads are perfectly adequate. </p>
 <h4 id="sequencing-by-synthesis">Sequencing-by-synthesis</h4>
 <p>Illumina sequencing technology uses a sequencing-by-synthesis approach. <strong>To explore sequencing by synthesis in more depth, please watch <a href="https://www.youtube.com/watch?v=fCd6B5HRaZ8">this linked video on Illumina's YouTube channel</a>.</strong></p>
-<p>We have privided a brief explanation of the steps below:</p>
+<p>We have provided a brief explanation of the steps below:</p>
 <p><em><strong>Cluster growth</strong></em>: The DNA fragments in the cDNA library are denatured and hybridized to the glass flowcell (adapter complementarity). Each fragment is then clonally amplified, forming a cluster of double-stranded DNA. This step is necessary to ensure that the sequencing signal will be strong enough to be detected/captured unambiguously for each base of each fragment.</p>
 <ul>
 <li><strong>Number of clusters ~= Number of reads</strong></li>
 </ul>
 <p><em><strong>Sequencing:</strong></em> The sequencing of the fragment ends is based on fluorophore labelled dNTPs with reversible terminator elements. In each sequencing cycle, a base is incorporated into every cluster and excited by a laser. </p>
 <p><strong><em>Image acquisition:</em></strong> Each dNTP has a distinct excitatory signal emission which is captured by cameras. </p>
-<p><strong><em>Base calling:</em></strong> The Base calling program will then generate the sequence of bases, <strong>i.e. reads</strong>, for each fragement/cluster by assessing the images captured during the many sequencing cycles. In addition to calling the base in every position, the base caller will also report the certainty with which it was able to make the call (quality information).</p>
+<p><strong><em>Base calling:</em></strong> The Base calling program will then generate the sequence of bases, <strong>i.e. reads</strong>, for each fragment/cluster by assessing the images captured during the many sequencing cycles. In addition to calling the base in every position, the base caller will also report the certainty with which it was able to make the call (quality information).</p>
 <ul>
 <li><strong>Number of sequencing cycles = Length of reads</strong></li>
 </ul>
@@ -808,7 +811,7 @@ of the second cDNA strand (for details see Levin et al. (2010)). Once double-str
 </p>
 
 <h3 id="3-quality-control-of-raw-sequencing-data-fastqc">3. Quality control of raw sequencing data (FastQC)</h3>
-<p>The raw reads obtained from the sequencer are stored as <strong><a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ files</a></strong>. The FASTQ file format is the defacto file format for sequence reads generated from next-generation sequencing technologies. </p>
+<p>The raw reads obtained from the sequencer are stored as <strong><a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ files</a></strong>. The FASTQ file format is the de facto file format for sequence reads generated from next-generation sequencing technologies. </p>
 <p>Each FASTQ file is a text file which represents sequence readouts for a sample. Each read is represented by 4 lines as shown below:</p>
 <div class="highlight"><pre><span></span><code>@HWI-ST330:304:H045HADXX:1:1101:1111:61397
 CACTTGTAAGGGCAGGCCCCCTTCACCCTCCCGCTCCTGGGGGANNNNNNNNNNANNNCGAGGCCCTGGGGTAGAGGGNNNNNNNNNNNNNNGATCTTGG

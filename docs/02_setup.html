@@ -13,7 +13,7 @@
     
     
       
-        <title>Setup - Bulk RNAseq data analysis - an introductory course</title>
+        <title>Setup - Bulk RNAseq data analysis</title>
       
     
     
@@ -21,6 +21,10 @@
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#757575">
         
       
     
@@ -51,7 +55,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="grey" data-md-color-accent="cyan">
   
     
     
@@ -75,10 +79,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+    <a href="https://hds-sandbox.github.io/" title="Bulk RNAseq data analysis" class="md-header__button md-logo" aria-label="Bulk RNAseq data analysis" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="img/favicon.ico" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -88,7 +91,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Bulk RNAseq data analysis - an introductory course
+            Bulk RNAseq data analysis
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -161,13 +164,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="Bulk RNAseq data analysis - an introductory course" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis - an introductory course" data-md-component="logo">
+    <a href="https://hds-sandbox.github.io/" title="Bulk RNAseq data analysis" class="md-nav__button md-logo" aria-label="Bulk RNAseq data analysis" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+  <img src="img/favicon.ico" alt="logo">
 
     </a>
-    Bulk RNAseq data analysis - an introductory course
+    Bulk RNAseq data analysis
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -204,40 +206,9 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Setup
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="02_setup.html" class="md-nav__link md-nav__link--active">
         Setup
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#for-ucloud-users" class="md-nav__link">
-    For Ucloud users
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -566,21 +537,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#for-ucloud-users" class="md-nav__link">
-    For Ucloud users
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -594,40 +550,45 @@
 
 
 <h1 id="setup-for-teaching-in-ucloud">Setup for teaching in uCloud</h1>
-<p>In what follows you have the setup guide for the possible hardware where you are running the course material.</p>
-<h2 id="for-ucloud-users">For Ucloud users</h2>
 <p>Access to <a href="https://cloud.sdu.dk">Ucloud</a> with your account and choose the project <code>Health data science sandbox</code> where you have been invited.</p>
 <p><img alt="" src="img/02_setup/chooseProject.png" /></p>
-<p>Click on <code>Apps</code> on the left-side menu, and look for the application <code>Rstudio v4.1.2</code>.</p>
+<p>Click on <code>Apps</code> on the left-side menu, and look for the application <code>Rstudio v4.1.2</code> and click on it.</p>
 <p><img alt="" src="img/02_setup/chooseRstudio.png" /></p>
-<p>Once the app is chosen, click on <code>Run application</code> on the right-hand side of the screen. You will be met with a series of possible parameters to choose. You have to assign:</p>
+<p>You will be met with a series of possible parameters to choose. You have to assign:</p>
 <ul>
-<li>job name: simply any name given to the app execution</li>
+<li>job name: give your job a name you would like. For example: bulk-RNAseq course.</li>
 <li>hours: how long you are using the app. You can choose as many hours as the course session lasts. Or just a couple of hours to do some exercises. You can always add extra time while using the app, or run it again with the same settings (they will be saved under the name you chose as <code>job name</code>)</li>
 <li>
 <p>Machine type: it is sufficient to choose a machine with 4 vCPUs.
 <img alt="" src="img/02_setup/chooseCPU.png" /></p>
 </li>
 <li>
-<p>Dependencies: commands that will run automatically when starting the app. Choose the same file as in the picture (<code>projects/sandbox_bulkRNAseq_testAndFeedback/bulkRNAseq_course/Scripts/Ucloud_setup.sh</code>), it will get all the necessary files and folders.</p>
+<p>Dependencies: commands that will run automatically when starting the app. It will get all the necessary files and folders to run the course. 
+  Choose the same file as in the picture. Either:</p>
+</li>
+<li>Go to <code>hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback → bulkRNAseq_course  → Scripts  → Ucloud_setup.sh</code>, click “Use”. </li>
+<li>
+<p>Or copy-paste this path: <code>/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_setup.sh</code>.</p>
 </li>
 <li>
-<p>Select folders to use: makes specific folders usable by the app. Choose the same folder as in the picture (<code>projects/sandbox_bulkRNAseq_testAndFeedback</code>), it contains the data.</p>
+<p>Select folders to use: makes specific folders usable by the app.  The folder below contains the data used in this course.
+  Choose the same folder as in the picture. Either:</p>
 </li>
+<li>Go to <code>hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback</code>, click “Use.”</li>
+<li>Or copy-paste this path: <code>/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback</code>.</li>
 </ul>
 <p><img alt="" src="img/02_setup/chooseOptional.png" /></p>
 <p>You are ready to run the app by clicking on the button on the right column of the screen (<code>submit</code>).</p>
 <p><img alt="" src="img/02_setup/submit.png" /></p>
-<p>Now, wait some time until the screen will look like in the figure below. It usually takes a few minutes for everything to be ready and installed. You can always come back to this screen from the left menu <code>Runs</code> on uCloud, so that you can add extra time or stop the app if you will not use it.</p>
+<p>Now, wait some time until the screen looks like the figure below. It usually takes a few minutes for everything to be ready and installed. You can always come back to this screen from the left menu Runs on uCloud, so that you can add extra time or stop the app if you will not use it.</p>
 <p><img alt="" src="img/02_setup/startapp.png" /></p>
 <p>Now, click on <code>open interface</code> on the top right-hand side of the screen. You will start Rstudio through your browser!</p>
-<p><strong>Important note</strong> First of all, run the following command. It will load all the necessary packages to run the course. Answer "yes" to the prompt <code>Do you want to proceed? [y/N]: Y</code></p>
-<div class="highlight"><pre><span></span><code><span class="n">renv</span><span class="o">::</span><span class="nf">activate</span><span class="p">(</span><span class="s">&quot;/work/sandbox_bulkRNAseq_testAndFeedback/envs/&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="" src="img/02_setup/activateEnv.png" /></p>
-<p>On the lower right side of Rstudio, where you see the file explorer, access the folder <code>introduction_bulkRNAseq_analysis</code>. Here you will find the notebooks containing the code to run. Just open them (in order from the first one) and run the code you want - the first command always takes a couple of minutes to allow the machine creating some configuration files in background. You can explore beforehand all the jupyter notebooks already compiled on this webpage.</p>
+<p><strong>Note</strong>: you might encounter an error/warning message when starting the Rstudio session. <em>This error can be ignored safely</em>.</p>
+<p>On the lower right side of Rstudio, where you see the file explorer, access the folder <code>introduction_bulkRNAseq_analysis</code>. Here you will find the notebooks containing the code used in the course. There are still some theory lessons before we start coding, so keep following the material!</p>
 <p><strong>Important</strong>: when you are done, go on <code>Runs</code> in uCloud, and choose your app if it is still running. Then you will be able to stop it from using resources. Your material will be saved in a volume with your username, that you should be able to see under the menu <code>Files</code>.
 <img alt="" src="img/02_setup/stop.png" /></p>
+<h1 id="restarting-a-job">Restarting a job</h1>
+<p>ADD HERE HOW TO CONTINUE WITH THE SAME FOLDER WE CREATED BEFORE.</p>
 
               
             </article>
