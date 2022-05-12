@@ -1,5 +1,6 @@
-site_name: 'Bulk RNAseq data analysis - an introductory course'
+site_name: 'Bulk RNAseq data analysis'
 nav:
+    - 'Home': https://hds-sandbox.github.io/
     - 'Course Introduction': index.md
     - 'Setup': 02_setup.md
     - 'Experimental planning': 03_experimental_planning.md
