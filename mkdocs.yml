@@ -28,7 +28,8 @@ extra_css:
     - extra.css
 theme: 
     name: material
-    logo: 'img/favicon.ico'
+    logo: img/sandbox1.png
+    favicon: img/sandbox1.png
     palette:
       primary: grey
       accent: cyan
