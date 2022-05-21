@@ -818,7 +818,7 @@ your data. The last factor entered in the formula should be the
 condition of interest.</strong></p>
 <p>For example, suppose you have the following metadata:</p>
 <p><img src="./img/08a_contrast_design/metadata.png" style="display: block; margin: auto;" /></p>
-<p>If you want to examine the expression differences between treatments,
+<p>If you want to examine the expression differences between <code>treatments</code>,
 and you know that major sources of variation include <code>bloodtype</code> and
 <code>patient</code>, then your design formula would be:</p>
 <p><code>design = ~ bloodtype + patient + treatment</code></p>
@@ -867,8 +867,8 @@ run the DESeq model fitting routine:</p>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>## [1] &quot;Intercept&quot;                  &quot;condition_treat_vs_control&quot;
 </code></pre></div>
-<p>We can see that we have a coefficient for our <em>intercept</em> and
-coefficient for the effect of “treat” (i.e. differences between treat
+<p>We can see that we have a coefficient for our <code>intercept</code> and
+coefficient for the effect of <code>treat</code> (i.e. differences between treat
 versus control).</p>
 <p>Using the more standard syntax, we can obtain the results for the effect
 of treat as such:</p>
@@ -924,7 +924,7 @@ functionality:</p>
 ## attr(,&quot;contrasts&quot;)$condition
 ## [1] &quot;contr.treatment&quot;
 </code></pre></div>
-<p>We can see that R coded “condition” as a dummy variable, with an
+<p>We can see that R coded <code>condition</code> as a dummy variable, with an
 intercept (common to all samples) and a “conditiontreat” variable, which
 adds the effect of treat to samples 4-6.</p>
 <p>We can actually set our contrasts in <code>DESeq2::results()</code> using a numeric

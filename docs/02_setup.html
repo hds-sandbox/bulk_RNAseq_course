@@ -571,7 +571,7 @@
 <p>Or copy-paste this path: <code>/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_setup.sh</code>.</p>
 </li>
 <li>
-<p>Select folders to use: makes specific folders usable by the app.  The folder below contains the data used in this course.
+<p>Select folders to use: makes specific folders usable by the app. The folder below contains the data used in this course.
   Choose the same folder as in the picture. Either:</p>
 </li>
 <li>Go to <code>hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback</code>, click “Use.”</li>
@@ -583,12 +583,31 @@
 <p>Now, wait some time until the screen looks like the figure below. It usually takes a few minutes for everything to be ready and installed. You can always come back to this screen from the left menu Runs on uCloud, so that you can add extra time or stop the app if you will not use it.</p>
 <p><img alt="" src="img/02_setup/startapp.png" /></p>
 <p>Now, click on <code>open interface</code> on the top right-hand side of the screen. You will start Rstudio through your browser!</p>
-<p><strong>Note</strong>: you might encounter an error/warning message when starting the Rstudio session. <em>This error can be ignored safely</em>.</p>
 <p>On the lower right side of Rstudio, where you see the file explorer, access the folder <code>introduction_bulkRNAseq_analysis</code>. Here you will find the notebooks containing the code used in the course. There are still some theory lessons before we start coding, so keep following the material!</p>
 <p><strong>Important</strong>: when you are done, go on <code>Runs</code> in uCloud, and choose your app if it is still running. Then you will be able to stop it from using resources. Your material will be saved in a volume with your username, that you should be able to see under the menu <code>Files</code>.
 <img alt="" src="img/02_setup/stop.png" /></p>
-<h1 id="restarting-a-job">Restarting a job</h1>
-<p>ADD HERE HOW TO CONTINUE WITH THE SAME FOLDER WE CREATED BEFORE.</p>
+<h1 id="restarting-the-rstudio-session">Restarting the Rstudio session</h1>
+<p>After running a first Rstudio session, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal <em>"Jobs"</em> folder. Inside this folder there will be a subfolder called <em>Rstudio</em>, which will contain all the jobs you have run with Rstudio. Inside this folder, you will find your folder named after the job name you gave in the previous step. If you want to keep working on your previous results, you can restart an Rstudio session following these steps:</p>
+<p>Click on <code>Apps</code> on the left-side menu, and look for the application <code>Rstudio v4.1.2</code> and click on it.</p>
+<p><img alt="" src="img/02_setup/chooseRstudio.png" /></p>
+<p>You will be met again with a series of possible parameters to choose. You have to assign again "job name" and "hours"</p>
+<p><img alt="" src="img/02_setup/chooseCPU.png" /></p>
+<p>For dependencies, you will choose a different dependency file
+  Choose the same file as in the picture. Either:</p>
+<ul>
+<li>Go to <code>hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback → bulkRNAseq_course  → Scripts  → Ucloud_restart.sh</code>, click “Use”. </li>
+<li>Or copy-paste this path: <code>/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_restart.sh</code>.</li>
+</ul>
+<p>In <em>"Select folders to use"</em>, add the same folder as before:</p>
+<ul>
+<li>Go to <code>hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback</code>, click “Use.”</li>
+<li>Or copy-paste this path: <code>/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback</code>.</li>
+</ul>
+<p>In addition, add the the folder with the results of your previous job:</p>
+<ul>
+<li>Go to <code>Member Files: your_username → Jobs → Rstudio → job_name → introduction_bulkRNAseq_analysis</code>, click “Use.”</li>
+</ul>
+<p>You are ready to run the app by clicking on the button on the right column of the screen (<code>submit</code>). After opening the Rstudio interface, you should be able to access the folder <code>introduction_bulkRNAseq_analysis</code>, where you will find the your course notebooks and results from your previous work!</p>
 
               
             </article>

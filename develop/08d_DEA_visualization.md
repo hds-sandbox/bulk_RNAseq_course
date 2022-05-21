@@ -23,13 +23,13 @@ Differentially Expressed genes
 # head(res_tableOE)
 ```
 
-The problem with these fold change estimates is that they not entirely
-accurate as they do not account for the large dispersion we observe with
-low read counts. To address this, the **log2 fold changes need to be
-adjusted**.
+The problem with these fold change estimates is that they are not
+entirely accurate as they do not account for the large dispersion we
+observe with low read counts. To address this, the **log2 fold changes
+need to be adjusted**.
 
-To generate more accurate log2 foldchange (LFC) estimates, DESeq2 allows
-for the **shrinkage of the LFC estimates toward zero** when the
+To generate more accurate log2 fold change (LFC) estimates, DESeq2
+allows for the **shrinkage of the LFC estimates toward zero** when the
 information for a gene is low, which could include:
 
 -   Low counts
@@ -46,12 +46,12 @@ estimates.
 *Illustration taken from the [DESeq2
 paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8).*
 
-In the figure above, we have an example using two genes green gene and
+In the figure above, we have an example using two genes: green gene and
 purple gene. For each gene the expression values are plotted for each
 sample in the two different mouse strains (C57BL/6J and DBA/2J). Both
 genes have the same mean values for the two sample groups, but the green
-gene has little variation within group while the purple gene has high
-levels of variation. For the green gene with low within group variation,
+gene has little within-group variation while the purple gene has high
+levels of variation. For the green gene with low within-group variation,
 the **unshrunken LFC estimate** (vertex of the green **solid line**) is
 very similar to the shrunken LFC estimate (vertex of the green dotted
 line). However, LFC estimates for the purple gene are quite different
@@ -119,11 +119,11 @@ and therefore **we chose to use apeglm**.
 ### MA plot
 
 A plot that can be useful to exploring our results is the MA plot. The
-MA plot shows the **mean of the normalized counts versus the log2
-foldchanges for all genes tested**. The genes that are significantly DE
-are colored to be easily identified. This is also a great way to
-illustrate the effect of LFC shrinkage. The DESeq2 package offers a
-simple function to generate an MA plot.
+MA plot shows the **mean of the normalized counts versus the log2 fold
+changes for all genes tested**. The genes that are significantly DE are
+colored to be easily identified. This is also a great way to illustrate
+the effect of LFC shrinkage. The DESeq2 package offers a simple function
+to generate an MA plot.
 
 **Let’s start with the unshrunken results:**
 
@@ -140,9 +140,9 @@ plotMA(res_tableOE, ylim=c(-2,2))
 ```
 
 On the left you have the unshrunken fold change values plotted and you
-can see the abundance of scatter for the the lowly expressed genes. That
-is, many of the low expressors exhibit very high fold changes. After
-shrinkage, we see the fold changes are much smaller estimates.
+can see the abundance of scatter for the lowly expressed genes. That is,
+many of these genes exhibit very high fold changes. After shrinkage, we
+see the fold changes are much smaller estimates.
 
 <img src="./img/08d_DEA_visualization/maplot_unshrunken.png" style="display: block; margin: auto auto auto 0;" /><img src="./img/08d_DEA_visualization/MA_plot.png" style="display: block; margin: auto auto auto 0;" />
 
@@ -154,11 +154,10 @@ significant genes across the full range of expression levels.
 ## Advanced visualizations
 
 When we are working with large amounts of data it can be useful to
-display that information graphically to gain more insight. During this
-lesson, we will get you started with some basic and more advanced plots
-commonly used when exploring differential gene expression data, however,
-many of these plots can be helpful in visualizing other types of data as
-well.
+display that information graphically. During this lesson, we will get
+you started with some basic and more advanced plots commonly used when
+exploring differential gene expression data, however, many of these
+plots can be helpful in visualizing other types of data as well.
 
 We will be working with three different data objects we have already
 created in earlier lessons:
@@ -330,7 +329,7 @@ a log2fold change here.
 ## Obtain logical vector where TRUE values denote padj values < 0.05 and fold change > 1.5 in either direction
 
 res_tableOE_tb <- res_tableOE_tb %>% 
-mutate(threshold_OE = padj < 0.05 & abs(log2FoldChange) >= 0.58)
+mutate(threshold_OE = padj < 0.05 & abs(log2fold change) >= 0.58)
 ```
 
 Now we can start plotting. The `geom_point` object is most applicable,
@@ -339,7 +338,7 @@ as this is essentially a scatter plot:
 ``` r
 ## Volcano plot
 ggplot(res_tableOE_tb) +
-geom_point(aes(x = log2FoldChange, y = -log10(padj), colour = threshold_OE)) +
+geom_point(aes(x = log2fold change, y = -log10(padj), colour = threshold_OE)) +
 ggtitle("Mov10 overexpression") +
 xlab("log2 fold change") + 
 ylab("-log10 adjusted p-value") +
@@ -381,7 +380,7 @@ Next, we plot it as before with an additional layer for
 just created.
 
 ``` r
-ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
+ggplot(res_tableOE_tb, aes(x = log2fold change, y = -log10(padj))) +
   geom_point(aes(colour = threshold_OE)) +
   geom_text_repel(aes(label = genelabels)) +
   ggtitle("Mov10 overexpression") +
@@ -407,8 +406,8 @@ ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
 > DEGreport::degPlot(dds = dds, res = res, n = 20, xs = "type", group = "condition") # dds object is output from DESeq2
 >
 > DEGreport::degVolcano(
->     data.frame(res[,c("log2FoldChange","padj")]), # table - 2 columns
->     plot_text = data.frame(res[1:10,c("log2FoldChange","padj","id")])) # table to add names
+>     data.frame(res[,c("log2fold change","padj")]), # table - 2 columns
+>     plot_text = data.frame(res[1:10,c("log2fold change","padj","id")])) # table to add names
 >     
 > # Available in the newer version for R 3.4
 > DEGreport::degPlotWide(dds = dds, genes = row.names(res)[1:5], group = "condition")

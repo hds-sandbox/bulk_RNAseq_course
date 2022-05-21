@@ -765,19 +765,20 @@ similarity between samples:</p>
 <p>To explore the similarity of our samples, we will be performing
 sample-level QC using Principal Component Analysis (PCA) and
 hierarchical clustering methods. These methods/tools allow us to check
-<strong>how well similar the replicates are to each other</strong> (clustering) and
-<strong>to make sure that the experimental condition is the major source of
+<strong>how similar the replicates are to each other</strong> (clustering) and <strong>to
+make sure that the experimental condition is the major source of
 variation</strong> in the data. Sample-level QC can also help identify any
 samples behaving like outliers; we can further explore any potential
 outliers to determine whether they need to be removed prior to DE
 analysis.</p>
 <p><img src="./img/07_exploratory_analysis/sample_qc.png" style="display: block; margin: auto;" /></p>
 <p>These unsupervised clustering methods are run using <strong>log2 transformed
-normalized counts</strong>. The log2 transformation <strong>improves the
-distances/clustering for visualization</strong>. Instead of using an ordinary
-log2 transform, we will be using <strong>regularized log transform</strong> (rlog),
-to avoid any bias from the abundance of low-count genes; Note1 below
-explains this in more detail.</p>
+normalized counts</strong>. The log2 transformation <strong>improves the sample
+distances for clustering visualization</strong>, i.e., it reduces the impact of
+large outlier counts. Instead of using a classical log2 transform, we
+will be using the <strong>regularized log transform</strong> (rlog). This type of
+transformation helps to avoid any bias from the abundance of low-count
+genes; Note1 below explains this in more detail.</p>
 <p><img src="./img/07_exploratory_analysis/rlog_transformation_new.png" style="display: block; margin: auto;" /></p>
 <p><em>Image adapted from “<a href="https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf">Beginner’s guide to using the DESeq2
 package</a>”
@@ -818,14 +819,23 @@ long to run and the <code>vst()</code> function is faster with similar propertie
 to rlog.</p>
 </blockquote>
 <h2 id="principal-component-analysis-pca">Principal Component Analysis (PCA)</h2>
-<p>Principal Component Analysis (PCA) is a technique used to emphasize
-variation and bring out strong patterns in a dataset (dimensionality
-reduction). This is a very important technique used in the QC and
-analysis of both bulk and single-cell RNAseq data.</p>
-<p>To better understand how it works, <strong>please go through <a href="https://www.youtube.com/watch?v=_UVHneBUBW0">this YouTube
-video from StatQuest</a> that
-explains PCA</strong>. After you have gone through the video, please proceed
-with the interpretation section below.</p>
+<p>Principal Component Analysis (PCA) is a technique used to represent and
+visualize the variation in a dataset of high dimensionality. <strong>The
+number of dimensions, d</strong>, in a dataset may be thought of <strong>as the
+number of variables</strong> it has, e.g., for an RNA-seq dataset with 20.000
+different transcripts, d is 20.000. Principally, this means we would
+need a dimensional space of size <strong>d</strong> to fully represent that dataset.
+However, as we are only able to view and comprehend things in 1,2 or 3
+dimensions, we would like to project this dataset into a lower
+dimensional space, a process called <strong>dimensionality reduction</strong>. This
+makes PCA is a very important technique used in the QC and analysis of
+both bulk and single-cell RNAseq data, specially because many their
+dimensions (transcripts) do not contain any information.</p>
+<p>To better understand how it works, <strong>please go through <a href="https://youtu.be/FgakZw6K1QQ%20that%20explains%20PCA">this YouTube
+video from
+StatQuest</a></strong>.
+After you have gone through the video, please proceed with the
+interpretation section below.</p>
 <h3 id="interpreting-pca-plots">Interpreting PCA plots</h3>
 <p><strong>Essentially, if two samples have similar levels of expression for the
 genes that contribute significantly to the variation represented by a
@@ -882,38 +892,40 @@ sources of variation. In situations <strong>where you can identify those
 sources, it is important to account for these in your model</strong>, as it
 provides more power to the tool for detecting DE genes.</p>
 <h2 id="hierarchical-clustering-heatmap">Hierarchical Clustering Heatmap</h2>
-<p>Similar to PCA, hierarchical clustering is another, complementary,
-method for identifying strong patterns in a dataset and potential
-outliers. The heatmap displays <strong>the correlation of gene expression for
-all pairwise combinations of samples</strong> in the dataset. Since the
-majority of genes are not differentially expressed, samples generally
-have high correlations with each other (values higher than 0.80).
-Samples below 0.80 may indicate an outlier in your data and/or sample
-contamination.</p>
-<p>The hierarchical tree along the axes indicates which samples are more
-similar to each other, i.e. cluster together. The color blocks at the
-top indicate substructure in the data, and you would expect to see your
-replicates cluster together as a block for each sample group. Our
-expectation would be that the samples cluster together similar to the
-groupings we’ve observed in the PCA plot.</p>
-<p><strong>In the plot below, we would be quite concerned about ‘Wt_3’ and ‘KO_3’
-samples not clustering with the other replicates. We would want to
-explore the PCA to see if we see the same clustering of samples.</strong></p>
+<p>Hierarchical clustering is another method for identifying correlation
+patterns in a dataset and potential sample outliers. A heatmap displays
+<strong>the correlation of gene expression for all pairwise combinations of
+samples</strong> in the dataset. The hierarchical tree along the axes indicates
+which samples are more similar to each other, i.e. cluster together. The
+color blocks at the top indicate substructure in the data, and you would
+expect to see your replicates cluster together as a block for each
+sample group. Our expectation would be that the samples cluster together
+similar to the groupings we’ve observed in the PCA plot.</p>
 <p><img src="./img/07_exploratory_analysis/heatmap_example.png" style="display: block; margin: auto;" /></p>
+<p><em>In the example above, we see a clustering of wild-type (Wt) and
+knock-down (KD) cell line samples and we</em> <strong><em>would be quite concerned</em></strong>
+<em>that the ‘Wt_3’ and ‘KD_3’ samples are not clustering with the other
+replicates. Furthermore, since the majority of genes are not
+differentially expressed, we observe that the samples generally have
+high correlations with each other (values higher than 0.80). In this
+case, samples with correlations below 0.80 may indicate an outlier in
+your data and/or sample contamination. N.B It is important to stress
+that these is no universal cut-off for what is a good/bad
+correlation/distance score, it depends on the particular dataset.</em></p>
 <hr />
 <h2 id="mov10-quality-assessment-and-exploratory-analysis-using-deseq2">Mov10 quality assessment and exploratory analysis using DESeq2</h2>
 <p>Now that we have a good understanding of the QC steps normally employed
 for RNA-seq, let’s implement them for the Mov10 dataset we are going to
 be working with.</p>
 <h3 id="transform-normalized-counts-for-the-mov10-dataset">Transform normalized counts for the MOV10 dataset</h3>
-<p><strong>To improve the distances/clustering for the PCA and heirarchical
+<p><strong>To improve the distances/clustering for the PCA and hierarchical
 clustering visualization methods</strong>, we need to moderate the variance
 across the mean by applying the rlog transformation to the normalized
 counts.</p>
 <blockquote>
 <p>The rlog transformation of the normalized counts is only necessary for
 these visualization methods during this quality assessment. We will
-not be using these tranformed counts for determining differential
+not be using these transformed counts for determining differential
 expression.</p>
 </blockquote>
 <div class="highlight"><pre><span></span><code><span class="c1">### Transform counts for data visualization</span>
@@ -929,12 +941,12 @@ has more details about this.</p>
 DESeq-specific object. The reason you don’t just get a matrix of
 transformed values is because all of the parameters (i.e. size factors)
 that went into computing the rlog transform are stored in that object.
-We use this object to plot the PCA and heirarchical clustering figures
+We use this object to plot the PCA and hierarchical clustering figures
 for quality assessment.</p>
 <blockquote>
-<p><strong>NOTE:</strong> The <code>rlog()</code> funtion can be a bit slow when you have e.g. >
-20 samples. In these situations the <code>vst()</code> function is much faster
-and performs a similar transformation appropriate for use with
+<p><strong>NOTE:</strong> The <code>rlog()</code> function can be a bit slow when you have
+e.g. > 20 samples. In these situations the <code>vst()</code> function is much
+faster and performs a similar transformation appropriate for use with
 <code>plotPCA()</code>. It’s typically just a few seconds with <code>vst()</code> due to
 optimizations and the nature of the transformation.</p>
 </blockquote>

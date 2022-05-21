@@ -791,7 +791,7 @@ of the second cDNA strand (for details see Levin et al. (2010)). Once double-str
 </ul>
 </li>
 </ul>
-<p>Generally single-end sequencing is sufficient unless it is expected that the reads will match multiple locations on the genome (e.g. organisms with many paralogous genes), assemblies are being performed, or for splice isoform differentiation. On the other hand, paired-end sequencing helps resolve structural genome rearrangements e.g. insertions, deletions, or inversions. Furthermore, paired reads improve the alignment/assembly of reads from repetitive regions. The downside of this type of sequencing is that it may be twice as expensive.</p>
+<p>Generally, single-end sequencing is sufficient unless it is expected that the reads will match multiple locations on the genome (e.g. organisms with many paralogous genes), assemblies are being performed, or for splice isoform differentiation. On the other hand, paired-end sequencing helps resolve structural genome rearrangements e.g. insertions, deletions, or inversions. Furthermore, paired reads improve the alignment/assembly of reads from repetitive regions. The downside of this type of sequencing is that it may be twice as expensive.</p>
 <p>The scientific community is moving towards paired-end sequencing in general. However, for many purposes, single-end reads are perfectly adequate. </p>
 <h4 id="sequencing-by-synthesis">Sequencing-by-synthesis</h4>
 <p>Illumina sequencing technology uses a sequencing-by-synthesis approach. <strong>To explore sequencing by synthesis in more depth, please watch <a href="https://www.youtube.com/watch?v=fCd6B5HRaZ8">this linked video on Illumina's YouTube channel</a>.</strong></p>
@@ -832,7 +832,7 @@ CACTTGTAAGGGCAGGCCCCCTTCACCCTCCCGCTCCTGGGGGANNNNNNNNNNANNNCGAGGCCCTGGGGTAGAGGGNN
 </tr>
 <tr>
 <td>2</td>
-<td>The actual DNA sequence</td>
+<td>The actual DNA sequence, where N means that no base was called (poor quality)</td>
 </tr>
 <tr>
 <td>3</td>
@@ -857,7 +857,7 @@ CACTTGTAAGGGCAGGCCCCCTTCACCCTCCCGCTCCTGGGGGANNNNNNNNNNANNNCGAGGCCCTGGGGTAGAGGGNN
 * <a href="https://pachterlab.github.io/kallisto/about">Kallisto</a>, 
 * <a href="http://www.nature.com/nbt/journal/v32/n5/full/nbt.2862.html">Sailfish</a> and 
 * <a href="https://combine-lab.github.io/salmon/">Salmon</a></p>
-<p>Each of the tools in the list above work slightly differently from one another. However, common to all of them is that <strong>they avoid base-to-base genomic alignment of the reads</strong>. Genomic alignment is a step performed by older splice-aware alignment tools such as <a href="https://academic.oup.com/bioinformatics/article/29/1/15/272537">STAR</a> and <a href="https://daehwankimlab.github.io/hisat2/">HISAT2</a>. In comparison to these tools, the lightweight alignment tools not only provide quantification estimates <strong>faster</strong> (typically more than 20 times faster), but also prove <strong>improvements in accuracy</strong> [<a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0734-x">1</a>]. </p>
+<p>Each of the tools in the list above work slightly differently from one another. However, common to all of them is that <strong>they avoid base-to-base genomic alignment of the reads</strong>. Genomic alignment is a step performed by older splice-aware alignment tools such as <a href="https://academic.oup.com/bioinformatics/article/29/1/15/272537">STAR</a> and <a href="https://daehwankimlab.github.io/hisat2/">HISAT2</a>. In comparison to these tools, the lightweight alignment tools not only provide quantification estimates <strong>much faster</strong> (typically more than 20 times faster), but also (<strong>improvements in precision</strong>)[https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0734-x]. Nonetheless, a recent (Nature article)[https://www.nature.com/articles/s41598-020-76881-x] that pseudoaligners have low accuracy compared to classic aligners.</p>
 <p><strong>We will use the expression estimates, often referred to as 'pseudocounts', obtained from <a href="https://combine-lab.github.io/salmon/">Salmon</a></strong> as the starting point for the differential gene expression analysis.</p>
 <p align="center">
 <img src="./img/05_preprocessing/salmon.png" width="600">
@@ -873,7 +873,7 @@ CACTTGTAAGGGCAGGCCCCCTTCACCCTCCCGCTCCTGGGGGANNNNNNNNNNANNNCGAGGCCCTGGGGTAGAGGGNN
 </ul>
 <h3 id="6-quality-control-aggregating-results-with-multiqc">6. Quality control: aggregating results with MultiQC</h3>
 <p>Throughout the workflow we have performed various steps of quality checks on our data. You will need <strong>to do this for every sample in your dataset</strong>, making sure these metrics are consistent across the samples for a given experiment. Outlier samples should be flagged for further investigation and potential removal.</p>
-<p>Manually tracking these metrics and browsing through multiple HTML reports (FastQC, Qualimap) and log files (Salmon, STAR) for each samples is tedious and prone to errors. <strong><a href="https://multiqc.info/">MultiQC</a> is a tool which aggregates results from several tools and generates a single HTML report</strong> with plots to visualize and compare various QC metrics between the samples. Assessment of the QC metrics may result in the removal of samples before proceeding to the next step, if necessary.</p>
+<p>Manually tracking these metrics and browsing through multiple HTML reports (FastQC, Qualimap) and log files (Salmon, STAR) for each sample is tedious and prone to errors. <strong><a href="https://multiqc.info/">MultiQC</a> is a tool which aggregates results from several tools and generates a single HTML report</strong> with plots to visualize and compare various QC metrics between the samples. Assessment of the QC metrics may result in the removal of samples before proceeding to the next step, if necessary.</p>
 <p>Once the QC has been performed on all the samples, we are ready to get started with Differential Gene Expression analysis with <a href="http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a>!</p>
 <p align="center">
 <img src="./img/05_preprocessing/deseq_counts_overview.png" width="600">

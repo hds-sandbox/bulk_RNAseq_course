@@ -575,36 +575,43 @@ determine whether genes are differentially expressed.</p>
 <p><img src="./img/06a_count_matrix/rnaseq_full_workflow.png" style="display: block; margin: auto;" /></p>
 <p>In the next few lessons, we will walk you through an <strong>end-to-end
 gene-level RNA-seq differential expression workflow</strong> using various R
-packages. We will start with the count matrix, perform exploratory data
-analysis for quality assessment and to explore the relationship between
-samples, perform differential expression analysis, and visually explore
-the results prior to performing downstream functional analysis.</p>
+packages. We will start with the count matrix, do some exploratory data
+analysis for quality assessment and explore the relationship between
+samples. Next, we will perform differential expression analysis, and
+visually explore the results prior to performing downstream functional
+analysis.</p>
 <h1 id="setting-up">Setting up</h1>
 <p>Before we get into the details of the analysis, let’s get started by
 opening up RStudio and setting up a new project for this analysis.</p>
 <ol>
 <li>Go to the <code>File</code> menu and select <code>New Project</code>.</li>
-<li>In the <code>New Project</code> window, choose <code>New Directory</code>. Then, choose
-    <code>Empty Project</code>. Name your new directory <code>DEanalysis</code> and then
-    “Create the project as subdirectory of:”
-    <code>introduction_bulkRNAseq_analysis</code>.</li>
+<li>In the <code>New Project</code> window, choose <code>Existing Directory</code>. Then,
+    choose <code>introduction_bulkRNAseq_analysis</code> as your project working
+    directory.</li>
 <li>The new project should automatically open in RStudio.</li>
 </ol>
 <p>To check whether or not you are in the correct working directory, use
-<code>getwd()</code>. The path <code>introduction_bulkRNAseq_analysis/DEanalysis</code> should
-be returned to you in the console. Within your working directory use the
-<code>New folder</code> button in the bottom right panel to create three new
-directories: <code>data</code>, <code>meta</code> and <code>results</code>. Remember the key to a good
-analysis is keeping organized from the start!</p>
-<p>Go to the <code>File</code> menu and select <code>New File</code>, then select <code>R Script</code>.
-This should open up a script editor in the top left hand corner. This is
-where we will be typing and saving all commands required for this
-analysis. In the script editor type in header lines:</p>
-<div class="highlight"><pre><span></span><code>## Gene-level differential expression analysis using DESeq2
-</code></pre></div>
-<p>Now save the file as <code>de_script.R</code>. When finished your working directory
+<code>getwd()</code>. The path <code>/work/introduction_bulkRNAseq_analysis</code> should be
+returned to you in the console. When finished your working directory
 should now look similar to this:</p>
 <p><img src="./img/06a_count_matrix/settingup.png" style="display: block; margin: auto;" /></p>
+<ul>
+<li>
+<p>Inside the folder <code>Notebooks</code> you will find the scripts that we will
+    follow during the sessions. They are both in <code>R Script</code> and <code>Rmd</code>
+    formats. Choose whichever is more convenient for you, but we
+    recommend to use <code>Rmd</code> files.</p>
+</li>
+<li>
+<p>In the folder <code>Results</code> you will save the results of your scripts,
+    analysis and tests.</p>
+</li>
+</ul>
+<p>To avoid copying the original dataset for each student (very
+inefficient) the dataset is contained inside the shared folder
+<code>/work/bulk_RNAseq_course/Data/</code>. Do not attempt to modify this folder,
+as it might mess up the files for the rest of your colleagues.</p>
+<p>Now you can open the first practical session: <code>06a_count_matrix.Rmd</code></p>
 <h3 id="loading-libraries">Loading libraries</h3>
 <p>For this analysis we will be using several R packages, some which have
 been installed from CRAN and others from Bioconductor. To use these
@@ -626,9 +633,9 @@ specify arguments to let R know that we have a header (<code>header = T</code>) 
 the first column is our row names (<code>row.names =1</code>). By default the
 function expects tab-delimited files, which is what we have.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Load in data</span>
-<span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;../Data/Mov10_full_counts.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">)</span> 
+<span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;/work/bulk_RNAseq_course/Data/Mov10_full_counts.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">)</span> 
 
-<span class="n">meta</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;../Data/Mov10_full_meta.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">)</span>
+<span class="n">meta</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;/work/bulk_RNAseq_course/Data/Mov10_full_meta.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">)</span>
 </code></pre></div>
 <p>Use <code>class()</code> to inspect our data and make sure we are working with data
 frames:</p>
@@ -657,11 +664,11 @@ for DESeq2, there are <a href="https://hbctraining.github.io/DGE_workshop_salmon
 here</a>.</p>
 </blockquote>
 <h2 id="differential-gene-expression-analysis-overview">Differential gene expression analysis overview</h2>
-<p>So what does this count data actually represent? The count data used for
-differential expression analysis represents the number of sequence reads
-that originated from a particular gene. The higher the number of counts,
-the more reads associated with that gene, and the assumption that there
-was a higher level of expression of that gene in the sample.</p>
+<p>So, what does this count data actually represent? The count data used
+for differential expression analysis represents the number of sequence
+reads that originated from a particular gene. The higher the number of
+counts, the more reads associated with that gene, and the assumption
+that there was a higher level of expression of that gene in the sample.</p>
 <p><img src="./img/06a_count_matrix/deseq_counts_overview.png" style="display: block; margin: auto;" /></p>
 <p>With differential expression analysis, we are looking for genes that
 change in expression between two or more groups (defined in the
@@ -671,17 +678,17 @@ variable or clinical outcome</p>
 ranking the genes by how different they are between the two groups
 (based on fold change values)?</strong></p>
 <p><img src="./img/06a_count_matrix/foldchange_heatmap.png" style="display: block; margin: auto;" /></p>
-<p>More often than not, there is much more going on with your data than
-what you are anticipating. Genes that vary in expression level between
-samples is a consequence of not only the experimental variables of
-interest but also due to extraneous sources. The goal of differential
-expression analysis to determine the relative role of these effects, and
-to separate the “interesting” from the “uninteresting”.</p>
+<p>Genes that vary in expression level between groups of samples may do so
+solely as a consequence of the biological variable(s) of interest.
+However, this difference is often also related to extraneous effects, in
+fact, sometimes these effects exclusively account for the observed
+variation. The goal of differential expression analysis to determine the
+relative role of these effects, hence separating the “interesting”
+variance from the “uninteresting” variance.</p>
 <p><img src="./img/06a_count_matrix/de_variation.png" style="display: block; margin: auto;" /></p>
-<p>The “uninteresting” presents as sources of variation in your data, and
-so even though the mean expression levels between sample groups may
-appear to be quite different, it is possible that the difference is not
-actually significant. This is illustrated for ‘GeneA’ expression between
+<p>Although the mean expression levels between sample groups may appear to
+be quite different, it is possible that the difference is not actually
+significant. This is illustrated for ‘GeneA’ expression between
 ‘untreated’ and ‘treated’ groups in the figure below. The mean
 expression level of geneA for the ‘treated’ group is twice as large as
 for the ‘untreated’ group, but the variation between replicates
@@ -690,9 +697,9 @@ take into account the variation in the data (and where it might be
 coming from) when determining whether genes are differentially
 expressed.</strong></p>
 <p><img src="./img/06a_count_matrix/de_norm_counts_var.png" style="display: block; margin: auto;" /></p>
-<p>The goal of differential expression analysis is to determine, for each
-gene, whether the differences in expression (counts) <strong>between groups</strong>
-is significant given the amount of variation observed <strong>within groups</strong>
+<p>Differential expression analysis is used to determine, for each gene,
+whether the differences in expression (counts) <strong>between groups</strong> is
+significant given the amount of variation observed <strong>within groups</strong>
 (replicates). To test for significance, we need an appropriate
 statistical model that accurately performs normalization (to account for
 differences in sequencing depth, etc.) and variance modeling (to account
@@ -734,18 +741,14 @@ distribution does not accurately model RNA-seq counts
 [<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3541212/">1</a>].</p>
 </blockquote>
 <h3 id="modeling-count-data">Modeling count data</h3>
-<p>Count data is often modeled using the <strong>binomial distribution</strong>, which
-can give you the <strong>probability of getting a number of heads upon tossing
-a coin a number of times</strong>. However, not all count data can be fit with
-the binomial distribution. The binomial is based on discrete events and
-used in situations when you have a certain number of cases.</p>
-<p>When <strong>the number of cases is very large (i.e. people who buy lottery
-tickets), but the probability of an event is very small (probability of
-winning)</strong>, the <strong>Poisson distribution</strong> is used to model these types of
-count data. The Poisson is similar to the binomial, but is based on
-continuous events. <a href="https://youtu.be/fxtB8c3u6l8">Details provided by Rafael Irizarry in the EdX
-class.</a></p>
-<p><strong>With RNA-Seq data, a very large number of RNAs are represented and the
+<p>RNAseq count data can be modeled using a <strong>Poisson distribution</strong>. this
+particular distribution is fitting for data where the <strong>number of cases
+is very large but the probability of an event occurring is very small</strong>.
+To give you an example, think of the lottery: many people buy lottery
+tickets (high number of cases), but only very few win (the probability
+of the event is small). <a href="https://youtu.be/fxtB8c3u6l8">Check this video from Rafael Irizarry in the
+EdX class for more details</a>.</p>
+<p>With RNA-Seq data, <strong>a very large number of RNAs are represented and the
 probability of pulling out a particular transcript is very small</strong>.
 Thus, it would be an appropriate situation to use the Poisson
 distribution. However, a unique property of this distribution is that
@@ -753,17 +756,10 @@ the mean == variance. Realistically, with RNA-Seq data there is always
 some biological variation present across the replicates (within a sample
 class). Genes with larger average expression levels will tend to have
 larger observed variances across replicates.</p>
-<p>If the proportions of mRNA stayed exactly constant between the
-biological replicates for each sample class, we could expect Poisson
-distribution (where mean == variance). <a href="https://youtu.be/HK7WKsL3c2w">A nice description of this
-concept is presented by Rafael Irizarry in the EdX
-class</a>. But this doesn’t happen in
-practice, and so the Poisson distribution is only considered appropriate
-for a single biological sample.</p>
-<p>The model that fits best, given this type of variability between
-replicates, is the Negative Binomial (NB) model. Essentially, <strong>the NB
-model is a good approximation for data where the mean \&lt; variance</strong>, as
-is the case with RNA-Seq count data.</p>
+<p>The model that fits best, given this type of variability observed for
+replicates, is the <strong>Negative Binomial (NB) model</strong>. Essentially, <strong>the
+NB model is a good approximation for data where the mean \&lt; variance</strong>,
+as is the case with RNA-Seq count data.</p>
 <p><img src="./img/06a_count_matrix/deseq_nb.png" style="display: block; margin: auto;" /></p>
 <blockquote>
 <p><strong>NOTE:</strong></p>
@@ -785,13 +781,22 @@ link</a>.
 This is a useful resource in helping you determine how best to set up
 your <em>in-vitro</em> experiment.</p>
 </blockquote>
-<h4 id="how-do-i-know-if-my-data-should-be-modeled-using-the-poisson-distribution-or-negative-binomial-distribution">How do I know if my data should be modeled using the Poisson distribution or Negative Binomial distribution?</h4>
-<p>If it’s count data, it should fit the negative binomial, as discussed
-previously. However, it can be helpful to plot the <em>mean versus the
-variance</em> of your data. <em>Remember for the Poisson model, mean =
-variance, but for NB, mean \&lt; variance.</em></p>
-<p>Run the following code to plot the <em>mean versus variance</em> for the ‘Mov10
-overexpression’ replicates:</p>
+<details>
+<summary>
+
+**How do I know if my data should be modeled using the Poisson
+distribution or Negative Binomial distribution??**
+
+</summary>
+
+If it’s count data, it should fit the negative binomial, as discussed
+previously. However, it can be helpful to plot the *mean versus the
+variance* of your data. *Remember for the Poisson model, mean =
+variance, but for NB, mean \< variance.*
+
+Run the following code to plot the *mean versus variance* for the ‘Mov10
+overexpression’ replicates:
+
 <div class="highlight"><pre><span></span><code><span class="n">mean_counts</span> <span class="o">&lt;-</span> <span class="nf">apply</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span> <span class="m">3</span><span class="o">:</span><span class="m">5</span><span class="p">],</span> <span class="m">1</span><span class="p">,</span> <span class="n">mean</span><span class="p">)</span>
 <span class="n">variance_counts</span> <span class="o">&lt;-</span> <span class="nf">apply</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span> <span class="m">3</span><span class="o">:</span><span class="m">5</span><span class="p">],</span> <span class="m">1</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">variance_counts</span><span class="p">)</span>
@@ -802,14 +807,19 @@ overexpression’ replicates:</p>
         <span class="nf">scale_y_log10</span><span class="p">()</span> <span class="o">+</span>
         <span class="nf">scale_x_log10</span><span class="p">()</span>
 </code></pre></div>
-<p><img src="./img/06a_count_matrix/deseq_mean_vs_variance.png" style="display: block; margin: auto;" /></p>
-<p>Note that in the above figure, the variance across replicates tends to
+
+<img src="./img/06a_count_matrix/deseq_mean_vs_variance.png" style="display: block; margin: auto;" />
+
+Note that in the above figure, the variance across replicates tends to
 be greater than the mean (red line), especially for genes with large
-mean expression levels. <em>This is a good indication that our data do not
+mean expression levels. *This is a good indication that our data do not
 fit the Poisson distribution and we need to account for this increase in
 variance using the Negative Binomial model (i.e. Poisson will
 underestimate variability leading to an increase in false positive DE
-genes).</em></p>
+genes).*
+
+</details>
+
 <h3 id="improving-mean-estimates-ie-reducing-variance-with-biological-replicates">Improving mean estimates (i.e. reducing variance) with biological replicates</h3>
 <p>The variance or scatter tends to reduce as we increase the number of
 biological replicates (<em>the distribution will approach the Poisson
@@ -821,9 +831,9 @@ of group means, and ultimately greater confidence in the ability to
 distinguish differences between sample classes (i.e. more DE genes).</strong></p>
 <p>The figure below illustrates the relationship between sequencing depth
 and number of replicates on the number of differentially expressed genes
-identified
-[<a href="https://academic.oup.com/bioinformatics/article/30/3/301/228651/RNA-seq-differential-expression-studies-more">1</a>].
-Note that an <strong>increase in the number of replicates tends to return more
+identified :</p>
+<p><a href="https://academic.oup.com/bioinformatics/article/30/3/301/228651/RNA-seq-differential-expression-studies-more"></a>.</p>
+<p>Note that an <strong>increase in the number of replicates tends to return more
 DE genes than increasing the sequencing depth</strong>. Therefore, generally
 more replicates are better than higher sequencing depth, with the caveat
 that higher depth is required for detection of lowly expressed DE genes
@@ -837,24 +847,18 @@ are a good number of replicates.</p>
 analysis, there are a number of software packages that have been
 developed for differential expression analysis of RNA-seq data. Even as
 new methods are continuously being developed a few tools are generally
-recommended as best practice,
-e.g. <strong><a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2</a></strong>
+recommended as best practice, like
+<a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html"><strong>DESeq2</strong></a>,
+<a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html"><strong>EdgeR</strong></a>
 and
-<strong><a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html">EdgeR</a></strong>.
-Both these tools use the negative binomial model, employ similar
-methods, and typically, yield similar results. They are pretty
-stringent, and have a good balance between sensitivity and specificity
-(reducing both false positives and false negatives).</p>
-<p><strong><a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29">Limma-Voom</a></strong>
-is another set of tools often used together for DE analysis, but this
-method may be less sensitive for small sample sizes. This method is
-recommended when the number of biological replicates per group grows
-large (> 20).</p>
+<a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29"><strong>Limma-Voom</strong></a>.</p>
 <p>Many studies describing comparisons between these methods show that
 while there is some agreement, there is also much variability between
 tools. <strong>Additionally, there is no one method that performs optimally
-under all conditions (<a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-91">Soneson and Dleorenzi,
-2013</a>).</strong></p>
+under all conditions</strong> <strong>(<a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-91">Soneson and Dleorenzi,
+2013</a>,
+<a href="https://www.nature.com/articles/s41598-020-76881-x">Corchete et al,
+2020</a>)</strong>.</p>
 <p><img src="./img/06a_count_matrix/deg_methods1.png" style="display: block; margin: auto;" /></p>
 <p><img src="./img/06a_count_matrix/deg_methods2.png" style="display: block; margin: auto;" /></p>
 <p><strong>We will be using

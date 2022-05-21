@@ -74,7 +74,7 @@ For example, suppose you have the following metadata:
 
 <img src="./img/08a_contrast_design/metadata.png" style="display: block; margin: auto;" />
 
-If you want to examine the expression differences between treatments,
+If you want to examine the expression differences between `treatments`,
 and you know that major sources of variation include `bloodtype` and
 `patient`, then your design formula would be:
 
@@ -140,8 +140,8 @@ resultsNames(dds)
 
     ## [1] "Intercept"                  "condition_treat_vs_control"
 
-We can see that we have a coefficient for our *intercept* and
-coefficient for the effect of “treat” (i.e. differences between treat
+We can see that we have a coefficient for our `intercept` and
+coefficient for the effect of `treat` (i.e. differences between treat
 versus control).
 
 Using the more standard syntax, we can obtain the results for the effect
@@ -204,7 +204,7 @@ model.matrix(design(dds), colData(dds))
     ## attr(,"contrasts")$condition
     ## [1] "contr.treatment"
 
-We can see that R coded “condition” as a dummy variable, with an
+We can see that R coded `condition` as a dummy variable, with an
 intercept (common to all samples) and a “conditiontreat” variable, which
 adds the effect of treat to samples 4-6.
 

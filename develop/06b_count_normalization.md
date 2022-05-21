@@ -40,14 +40,26 @@ The main factors often considered during normalization are:
 
 <img src="./img/06b_count_normalization/normalization_methods_length.png" style="display: block; margin: auto;" />
 
+-   **GC-content**: Genomic features such as GC-content may result in a
+    read count biases, as GC-rich and GC-poor fragments are
+    under-represented in RNAseq experiments. This under-representation
+    is attributed to the fact that fragments with high and low
+    GC-content are not adequately amplified in a standard high
+    throughput sequencing protocol and, subsequently, that the fragments
+    are difficult to align (correctly) to refence genome, i.e. less
+    unique, repeat regions, etc. (\[Benjamini & Speed, 2012\]
+    (<https://academic.oup.com/nar/article/40/10/e72/2411059>) and
+    \[Risso et al, 2011\]
+    (<https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-480>)).
+
 -   **RNA composition:** A few highly differentially expressed genes
     between samples, differences in the number of genes expressed
     between samples, or presence of contamination can skew some types of
     normalization methods. Accounting for RNA composition is recommended
     for accurate comparison of expression between samples, and is
     particularly important when performing differential expression
-    analyses
-    \[[1](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106)\].
+    analyses \[Anders & Huber, 2010\]
+    (<https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106>).
 
     In the example, if we were to divide each sample by the total number
     of counts to normalize, the counts would be greatly skewed by the DE
@@ -68,13 +80,13 @@ counts between or within samples.***
 Several common normalization methods exist to account for these
 differences:
 
-| Normalization method                                                                                                          | Description                                                                                                                  | Accounted factors                    | Recommendations for use                                                                                                 |
-|-------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| **CPM** (counts per million)                                                                                                  | counts scaled by total number of reads                                                                                       | sequencing depth                     | gene count comparisons between replicates of the same samplegroup; **NOT for within sample comparisons or DE analysis** |
-| **TPM** (transcripts per kilobase million)                                                                                    | counts per length of transcript (kb) per million reads mapped                                                                | sequencing depth and gene length     | gene count comparisons within a sample or between samples of the same sample group; **NOT for DE analysis**             |
-| **RPKM/FPKM** (reads/fragments per kilobase of exon per million reads/fragments mapped)                                       | similar to TPM                                                                                                               | sequencing depth and gene length     | gene count comparisons between genes within a sample; **NOT for between sample comparisons or DE analysis**             |
-| DESeq2’s **median of ratios** \[[1](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106)\]            | counts divided by sample-specific size factors determined by median ratio of gene counts relative to geometric mean per gene | sequencing depth and RNA composition | gene count comparisons between samples and for **DE analysis**; **NOT for within sample comparisons**                   |
-| EdgeR’s **trimmed mean of M values (TMM)** \[[2](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25)\] | uses a weighted trimmed mean of the log expression ratios between samples                                                    | sequencing depth, RNA composition    | gene count comparisons between samples and for **DE analysis**; **NOT for within sample comparisons**                   |
+| Normalization method                                                                                                    | Description                                                                                                                  | Accounted factors                    | Recommendations for use                                                                                                 |
+|-------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| **CPM** (counts per million)                                                                                            | counts scaled by total number of reads                                                                                       | sequencing depth                     | gene count comparisons between replicates of the same samplegroup; **NOT for within sample comparisons or DE analysis** |
+| **TPM** (transcripts per kilobase million)                                                                              | counts per length of transcript (kb) per million reads mapped                                                                | sequencing depth and gene length     | gene count comparisons within a sample or between samples of the same sample group; **NOT for DE analysis**             |
+| **RPKM/FPKM** (reads/fragments per kilobase of exon per million reads/fragments mapped)                                 | similar to TPM                                                                                                               | sequencing depth and gene length     | gene count comparisons between genes within a sample; **NOT for between sample comparisons or DE analysis**             |
+| [DESeq2’s **median of ratios**](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106)            | counts divided by sample-specific size factors determined by median ratio of gene counts relative to geometric mean per gene | sequencing depth and RNA composition | gene count comparisons between samples and for **DE analysis**; **NOT for within sample comparisons**                   |
+| [EdgeR’s **trimmed mean of M values (TMM)**](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25) | uses a weighted trimmed mean of the log expression ratios between samples                                                    | sequencing depth, RNA composition    | gene count comparisons between samples and for **DE analysis**; **NOT for within sample comparisons**                   |
 
 ### RPKM/FPKM (not recommended)
 
@@ -163,14 +175,14 @@ all gene ratios for a single sample (frequency is on the y-axis).
 
 <img src="./img/06b_count_normalization/deseq_median_of_ratios.png" style="display: block; margin: auto;" />
 
-The median of ratios method makes the assumption that not ALL genes are
+The median of ratios method assumes that not ALL genes are
 differentially expressed; therefore, the normalization factors should
 account for sequencing depth and RNA composition of the sample (large
 outlier genes will not represent the median ratio values). **This method
 is robust to imbalance in up-/down-regulation and large numbers of
 differentially expressed genes.**
 
-> Usually these size factors are around 1, if you see large variations
+> Usually, these size factors are around 1, if you see large variations
 > between samples it is important to take note since it might indicate
 > the presence of extreme outliers.
 
@@ -342,7 +354,7 @@ normalized_counts <- counts(dds, normalized=TRUE)
 We can save this normalized data matrix to file for later use:
 
 ``` r
-write.table(normalized_counts, file="data/normalized_counts.txt", sep="\t", quote=F, col.names=NA)
+write.table(normalized_counts, file="Data/normalized_counts.txt", sep="\t", quote=F, col.names=NA)
 ```
 
 > **NOTE:** DESeq2 doesn’t actually use normalized counts, rather it

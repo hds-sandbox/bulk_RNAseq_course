@@ -767,14 +767,27 @@ expression levels are more comparable between and/or within samples.</p>
 <p><img src="./img/06b_count_normalization/normalization_methods_length.png" style="display: block; margin: auto;" /></p>
 <ul>
 <li>
+<p><strong>GC-content</strong>: Genomic features such as GC-content may result in a
+    read count biases, as GC-rich and GC-poor fragments are
+    under-represented in RNAseq experiments. This under-representation
+    is attributed to the fact that fragments with high and low
+    GC-content are not adequately amplified in a standard high
+    throughput sequencing protocol and, subsequently, that the fragments
+    are difficult to align (correctly) to refence genome, i.e. less
+    unique, repeat regions, etc. ([Benjamini &amp; Speed, 2012]
+    (<a href="https://academic.oup.com/nar/article/40/10/e72/2411059">https://academic.oup.com/nar/article/40/10/e72/2411059</a>) and
+    [Risso et al, 2011]
+    (<a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-480">https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-480</a>)).</p>
+</li>
+<li>
 <p><strong>RNA composition:</strong> A few highly differentially expressed genes
     between samples, differences in the number of genes expressed
     between samples, or presence of contamination can skew some types of
     normalization methods. Accounting for RNA composition is recommended
     for accurate comparison of expression between samples, and is
     particularly important when performing differential expression
-    analyses
-    [<a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106">1</a>].</p>
+    analyses [Anders &amp; Huber, 2010]
+    (<a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106">https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106</a>).</p>
 <p>In the example, if we were to divide each sample by the total number
 of counts to normalize, the counts would be greatly skewed by the DE
 gene, which takes up most of the counts for <em>Sample A</em>, but not
@@ -820,13 +833,13 @@ differences:</p>
 <td>gene count comparisons between genes within a sample; <strong>NOT for between sample comparisons or DE analysis</strong></td>
 </tr>
 <tr>
-<td>DESeq2’s <strong>median of ratios</strong> [<a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106">1</a>]</td>
+<td><a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106">DESeq2’s <strong>median of ratios</strong></a></td>
 <td>counts divided by sample-specific size factors determined by median ratio of gene counts relative to geometric mean per gene</td>
 <td>sequencing depth and RNA composition</td>
 <td>gene count comparisons between samples and for <strong>DE analysis</strong>; <strong>NOT for within sample comparisons</strong></td>
 </tr>
 <tr>
-<td>EdgeR’s <strong>trimmed mean of M values (TMM)</strong> [<a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25">2</a>]</td>
+<td><a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25">EdgeR’s <strong>trimmed mean of M values (TMM)</strong></a></td>
 <td>uses a weighted trimmed mean of the log expression ratios between samples</td>
 <td>sequencing depth, RNA composition</td>
 <td>gene count comparisons between samples and for <strong>DE analysis</strong>; <strong>NOT for within sample comparisons</strong></td>
@@ -1004,14 +1017,14 @@ genes should not affect the median value:</p>
 <p>The figure below illustrates the median value for the distribution of
 all gene ratios for a single sample (frequency is on the y-axis).</p>
 <p><img src="./img/06b_count_normalization/deseq_median_of_ratios.png" style="display: block; margin: auto;" /></p>
-<p>The median of ratios method makes the assumption that not ALL genes are
+<p>The median of ratios method assumes that not ALL genes are
 differentially expressed; therefore, the normalization factors should
 account for sequencing depth and RNA composition of the sample (large
 outlier genes will not represent the median ratio values). <strong>This method
 is robust to imbalance in up-/down-regulation and large numbers of
 differentially expressed genes.</strong></p>
 <blockquote>
-<p>Usually these size factors are around 1, if you see large variations
+<p>Usually, these size factors are around 1, if you see large variations
 between samples it is important to take note since it might indicate
 the presence of extreme outliers.</p>
 </blockquote>
@@ -1177,7 +1190,7 @@ using:</p>
 <div class="highlight"><pre><span></span><code><span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 </code></pre></div>
 <p>We can save this normalized data matrix to file for later use:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">write.table</span><span class="p">(</span><span class="n">normalized_counts</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s">&quot;data/normalized_counts.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;\t&quot;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="bp">F</span><span class="p">,</span> <span class="n">col.names</span><span class="o">=</span><span class="kc">NA</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">write.table</span><span class="p">(</span><span class="n">normalized_counts</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s">&quot;Data/normalized_counts.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;\t&quot;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="bp">F</span><span class="p">,</span> <span class="n">col.names</span><span class="o">=</span><span class="kc">NA</span><span class="p">)</span>
 </code></pre></div>
 <blockquote>
 <p><strong>NOTE:</strong> DESeq2 doesn’t actually use normalized counts, rather it

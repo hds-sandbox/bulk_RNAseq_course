@@ -6,7 +6,7 @@ knit: (function(inputFile, encoding) {
       rmarkdown::render(inputFile,
                         encoding=encoding,
                         output_format='all',
-                        output_dir='./')})
+                        output_dir='../develop/')})
 output:
   # To create PDF report, uncomment below
   #pdf_document:
@@ -191,11 +191,11 @@ Dispersion estimates that are slightly above the curve are also shrunk toward th
 knitr::include_graphics("./img/08b_DEA/deseq_dispersion2.png")
 ```
 	
-**This is a good plot to examine to ensure your data is a good fit for the DESeq2 model.** You expect your data to generally scatter around the curve, with the dispersion decreasing with increasing mean expression levels. If you see a cloud or different shapes, then you might want to explore your data more to see if you have contamination (mitochondrial, etc.) or outlier samples.  Note how much shrinkage you get across the whole range of means in the `plotDispEsts()` plot for any experiment with low degrees of freedom.
+**This is a good plot to evaluate whether your data is a good fit for the DESeq2 model.** You expect your data to generally scatter around the curve, with the dispersion decreasing with increasing mean expression levels. If you see a cloud or different shapes, then you might want to explore your data more to see if you have contamination or outlier samples.  Note how much shrinkage you get across the whole range of means in the `plotDispEsts()` plot for any experiment with low degrees of freedom.
 
 Examples of **worrisome dispersion plots** are shown below:
 
-The plot below shows a cloud of dispersion values, which do not generally follow the curve. This would be worrisome and suggests a bad fit of the data to the model. 
+The plot below shows a cloud of dispersion values, which do not generally follow the curve. This would suggest a bad fit of the data to the model. 
 
 ```{r, echo = FALSE, eval = TRUE}
 knitr::include_graphics("./img/08b_DEA/bad_dispersion1.png")

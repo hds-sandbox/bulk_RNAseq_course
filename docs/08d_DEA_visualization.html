@@ -775,12 +775,12 @@ Differentially Expressed genes</p>
 
 <span class="c1"># head(res_tableOE)</span>
 </code></pre></div>
-<p>The problem with these fold change estimates is that they not entirely
-accurate as they do not account for the large dispersion we observe with
-low read counts. To address this, the <strong>log2 fold changes need to be
-adjusted</strong>.</p>
-<p>To generate more accurate log2 foldchange (LFC) estimates, DESeq2 allows
-for the <strong>shrinkage of the LFC estimates toward zero</strong> when the
+<p>The problem with these fold change estimates is that they are not
+entirely accurate as they do not account for the large dispersion we
+observe with low read counts. To address this, the <strong>log2 fold changes
+need to be adjusted</strong>.</p>
+<p>To generate more accurate log2 fold change (LFC) estimates, DESeq2
+allows for the <strong>shrinkage of the LFC estimates toward zero</strong> when the
 information for a gene is low, which could include:</p>
 <ul>
 <li>Low counts</li>
@@ -794,12 +794,12 @@ estimates.</p>
 <p><img src="./img/08d_DEA_visualization/deseq2_shrunken_lfc.png" style="display: block; margin: auto;" /></p>
 <p><em>Illustration taken from the <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">DESeq2
 paper</a>.</em></p>
-<p>In the figure above, we have an example using two genes green gene and
+<p>In the figure above, we have an example using two genes: green gene and
 purple gene. For each gene the expression values are plotted for each
 sample in the two different mouse strains (C57BL/6J and DBA/2J). Both
 genes have the same mean values for the two sample groups, but the green
-gene has little variation within group while the purple gene has high
-levels of variation. For the green gene with low within group variation,
+gene has little within-group variation while the purple gene has high
+levels of variation. For the green gene with low within-group variation,
 the <strong>unshrunken LFC estimate</strong> (vertex of the green <strong>solid line</strong>) is
 very similar to the shrunken LFC estimate (vertex of the green dotted
 line). However, LFC estimates for the purple gene are quite different
@@ -856,11 +856,11 @@ values you have to work with you can use <code>resultsNames(dds)</code>.</p>
 <h2 id="visualizing-the-results">Visualizing the results</h2>
 <h3 id="ma-plot">MA plot</h3>
 <p>A plot that can be useful to exploring our results is the MA plot. The
-MA plot shows the <strong>mean of the normalized counts versus the log2
-foldchanges for all genes tested</strong>. The genes that are significantly DE
-are colored to be easily identified. This is also a great way to
-illustrate the effect of LFC shrinkage. The DESeq2 package offers a
-simple function to generate an MA plot.</p>
+MA plot shows the <strong>mean of the normalized counts versus the log2 fold
+changes for all genes tested</strong>. The genes that are significantly DE are
+colored to be easily identified. This is also a great way to illustrate
+the effect of LFC shrinkage. The DESeq2 package offers a simple function
+to generate an MA plot.</p>
 <p><strong>Let’s start with the unshrunken results:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># MA plot using unshrunken fold changes</span>
 <span class="nf">plotMA</span><span class="p">(</span><span class="n">res_tableOE_unshrunken</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
@@ -870,9 +870,9 @@ simple function to generate an MA plot.</p>
 <span class="nf">plotMA</span><span class="p">(</span><span class="n">res_tableOE</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
 </code></pre></div>
 <p>On the left you have the unshrunken fold change values plotted and you
-can see the abundance of scatter for the the lowly expressed genes. That
-is, many of the low expressors exhibit very high fold changes. After
-shrinkage, we see the fold changes are much smaller estimates.</p>
+can see the abundance of scatter for the lowly expressed genes. That is,
+many of these genes exhibit very high fold changes. After shrinkage, we
+see the fold changes are much smaller estimates.</p>
 <p><img src="./img/08d_DEA_visualization/maplot_unshrunken.png" style="display: block; margin: auto auto auto 0;" /><img src="./img/08d_DEA_visualization/MA_plot.png" style="display: block; margin: auto auto auto 0;" /></p>
 <p>In addition to the comparison described above, this plot allows us to
 evaluate the magnitude of fold changes and how they are distributed
@@ -880,11 +880,10 @@ relative to mean expression. Generally, we would expect to see
 significant genes across the full range of expression levels.</p>
 <h2 id="advanced-visualizations">Advanced visualizations</h2>
 <p>When we are working with large amounts of data it can be useful to
-display that information graphically to gain more insight. During this
-lesson, we will get you started with some basic and more advanced plots
-commonly used when exploring differential gene expression data, however,
-many of these plots can be helpful in visualizing other types of data as
-well.</p>
+display that information graphically. During this lesson, we will get
+you started with some basic and more advanced plots commonly used when
+exploring differential gene expression data, however, many of these
+plots can be helpful in visualizing other types of data as well.</p>
 <p>We will be working with three different data objects we have already
 created in earlier lessons:</p>
 <ul>
@@ -1025,13 +1024,13 @@ a log2fold change here.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Obtain logical vector where TRUE values denote padj values &lt; 0.05 and fold change &gt; 1.5 in either direction</span>
 
 <span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="n">res_tableOE_tb</span> <span class="o">%&gt;%</span> 
-<span class="nf">mutate</span><span class="p">(</span><span class="n">threshold_OE</span> <span class="o">=</span> <span class="n">padj</span> <span class="o">&lt;</span> <span class="m">0.05</span> <span class="o">&amp;</span> <span class="nf">abs</span><span class="p">(</span><span class="n">log2FoldChange</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="m">0.58</span><span class="p">)</span>
+<span class="nf">mutate</span><span class="p">(</span><span class="n">threshold_OE</span> <span class="o">=</span> <span class="n">padj</span> <span class="o">&lt;</span> <span class="m">0.05</span> <span class="o">&amp;</span> <span class="nf">abs</span><span class="p">(</span><span class="n">log2fold</span> <span class="n">change</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="m">0.58</span><span class="p">)</span>
 </code></pre></div>
 <p>Now we can start plotting. The <code>geom_point</code> object is most applicable,
 as this is essentially a scatter plot:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Volcano plot</span>
 <span class="nf">ggplot</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">)</span> <span class="o">+</span>
-<span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">),</span> <span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
+<span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2fold</span> <span class="n">change</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">),</span> <span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
 <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Mov10 overexpression&quot;</span><span class="p">)</span> <span class="o">+</span>
 <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;log2 fold change&quot;</span><span class="p">)</span> <span class="o">+</span> 
 <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;-log10 adjusted p-value&quot;</span><span class="p">)</span> <span class="o">+</span>
@@ -1065,7 +1064,7 @@ to label the plot.</p>
 <p>Next, we plot it as before with an additional layer for
 <code>geom_text_repel()</code> wherein we can specify the column of gene labels we
 just created.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">)))</span> <span class="o">+</span>
+<div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2fold</span> <span class="n">change</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">)))</span> <span class="o">+</span>
   <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
   <span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="n">genelabels</span><span class="p">))</span> <span class="o">+</span>
   <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Mov10 overexpression&quot;</span><span class="p">)</span> <span class="o">+</span>
@@ -1087,8 +1086,8 @@ the code to create these plots:</em></p>
 <div class="highlight"><pre><span></span><code><span class="n">DEGreport</span><span class="o">::</span><span class="nf">degPlot</span><span class="p">(</span><span class="n">dds</span> <span class="o">=</span> <span class="n">dds</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> <span class="n">xs</span> <span class="o">=</span> <span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="n">group</span> <span class="o">=</span> <span class="s">&quot;condition&quot;</span><span class="p">)</span> <span class="c1"># dds object is output from DESeq2</span>
 
 <span class="n">DEGreport</span><span class="o">::</span><span class="nf">degVolcano</span><span class="p">(</span>
-    <span class="nf">data.frame</span><span class="p">(</span><span class="n">res</span><span class="p">[,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;log2FoldChange&quot;</span><span class="p">,</span><span class="s">&quot;padj&quot;</span><span class="p">)]),</span> <span class="c1"># table - 2 columns</span>
-    <span class="n">plot_text</span> <span class="o">=</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;log2FoldChange&quot;</span><span class="p">,</span><span class="s">&quot;padj&quot;</span><span class="p">,</span><span class="s">&quot;id&quot;</span><span class="p">)]))</span> <span class="c1"># table to add names</span>
+    <span class="nf">data.frame</span><span class="p">(</span><span class="n">res</span><span class="p">[,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;log2fold change&quot;</span><span class="p">,</span><span class="s">&quot;padj&quot;</span><span class="p">)]),</span> <span class="c1"># table - 2 columns</span>
+    <span class="n">plot_text</span> <span class="o">=</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;log2fold change&quot;</span><span class="p">,</span><span class="s">&quot;padj&quot;</span><span class="p">,</span><span class="s">&quot;id&quot;</span><span class="p">)]))</span> <span class="c1"># table to add names</span>
     
 <span class="c1"># Available in the newer version for R 3.4</span>
 <span class="n">DEGreport</span><span class="o">::</span><span class="nf">degPlotWide</span><span class="p">(</span><span class="n">dds</span> <span class="o">=</span> <span class="n">dds</span><span class="p">,</span> <span class="n">genes</span> <span class="o">=</span> <span class="nf">row.names</span><span class="p">(</span><span class="n">res</span><span class="p">)[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">],</span> <span class="n">group</span> <span class="o">=</span> <span class="s">&quot;condition&quot;</span><span class="p">)</span>

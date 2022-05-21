@@ -54,7 +54,7 @@ Sequencing of the cDNA libraries will generate **reads**. Reads correspond to th
 - PE - Paired-end dataset => Read1 + Read2
 	- PE can be 2 separate FastQ files or just one with interleaved pairs
 
-Generally single-end sequencing is sufficient unless it is expected that the reads will match multiple locations on the genome (e.g. organisms with many paralogous genes), assemblies are being performed, or for splice isoform differentiation. On the other hand, paired-end sequencing helps resolve structural genome rearrangements e.g. insertions, deletions, or inversions. Furthermore, paired reads improve the alignment/assembly of reads from repetitive regions. The downside of this type of sequencing is that it may be twice as expensive.
+Generally, single-end sequencing is sufficient unless it is expected that the reads will match multiple locations on the genome (e.g. organisms with many paralogous genes), assemblies are being performed, or for splice isoform differentiation. On the other hand, paired-end sequencing helps resolve structural genome rearrangements e.g. insertions, deletions, or inversions. Furthermore, paired reads improve the alignment/assembly of reads from repetitive regions. The downside of this type of sequencing is that it may be twice as expensive.
 
 The scientific community is moving towards paired-end sequencing in general. However, for many purposes, single-end reads are perfectly adequate. 
 
@@ -96,7 +96,7 @@ CACTTGTAAGGGCAGGCCCCCTTCACCCTCCCGCTCCTGGGGGANNNNNNNNNNANNNCGAGGCCCTGGGGTAGAGGGNN
 |Line|Description|
 |----|-----------|
 |1|Always begins with '@' and then information about the read|
-|2|The actual DNA sequence|
+|2|The actual DNA sequence, where N means that no base was called (poor quality)|
 |3|Always begins with a '+' and sometimes the same info as in line 1|
 |4|Has a string of characters which represent the quality scores; must have same number of characters as line 2|
 
@@ -118,8 +118,8 @@ Tools that have been found to be most accurate for this step in the analysis are
 * [Sailfish](http://www.nature.com/nbt/journal/v32/n5/full/nbt.2862.html) and 
 * [Salmon](https://combine-lab.github.io/salmon/)
 
-Each of the tools in the list above work slightly differently from one another. However, common to all of them is that **they avoid base-to-base genomic alignment of the reads**. Genomic alignment is a step performed by older splice-aware alignment tools such as [STAR](https://academic.oup.com/bioinformatics/article/29/1/15/272537) and [HISAT2](https://daehwankimlab.github.io/hisat2/). In comparison to these tools, the lightweight alignment tools not only provide quantification estimates **faster** (typically more than 20 times faster), but also prove **improvements in accuracy** [[1](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0734-x)]. 
-
+Each of the tools in the list above work slightly differently from one another. However, common to all of them is that **they avoid base-to-base genomic alignment of the reads**. Genomic alignment is a step performed by older splice-aware alignment tools such as [STAR](https://academic.oup.com/bioinformatics/article/29/1/15/272537) and [HISAT2](https://daehwankimlab.github.io/hisat2/). In comparison to these tools, the lightweight alignment tools not only provide quantification estimates **much faster** (typically more than 20 times faster), but also (**improvements in precision**)[https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0734-x]. Nonetheless, a recent (Nature article)[https://www.nature.com/articles/s41598-020-76881-x] that pseudoaligners have low accuracy compared to classic aligners.
+ 
 **We will use the expression estimates, often referred to as 'pseudocounts', obtained from [Salmon](https://combine-lab.github.io/salmon/)** as the starting point for the differential gene expression analysis.
 
 <p align="center">
@@ -140,7 +140,7 @@ A tool called [Qualimap](http://qualimap.bioinfo.cipf.es/doc_html/intro.html) **
 
 Throughout the workflow we have performed various steps of quality checks on our data. You will need **to do this for every sample in your dataset**, making sure these metrics are consistent across the samples for a given experiment. Outlier samples should be flagged for further investigation and potential removal.
 
-Manually tracking these metrics and browsing through multiple HTML reports (FastQC, Qualimap) and log files (Salmon, STAR) for each samples is tedious and prone to errors. **[MultiQC](https://multiqc.info/) is a tool which aggregates results from several tools and generates a single HTML report** with plots to visualize and compare various QC metrics between the samples. Assessment of the QC metrics may result in the removal of samples before proceeding to the next step, if necessary.
+Manually tracking these metrics and browsing through multiple HTML reports (FastQC, Qualimap) and log files (Salmon, STAR) for each sample is tedious and prone to errors. **[MultiQC](https://multiqc.info/) is a tool which aggregates results from several tools and generates a single HTML report** with plots to visualize and compare various QC metrics between the samples. Assessment of the QC metrics may result in the removal of samples before proceeding to the next step, if necessary.
 
 Once the QC has been performed on all the samples, we are ready to get started with Differential Gene Expression analysis with [DESeq2](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)!
 

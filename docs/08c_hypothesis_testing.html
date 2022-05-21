@@ -981,38 +981,35 @@ null (i.e. the gene is differentially expressed).</p>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="likelihood-ratio-test-lrt">Likelihood ratio test (LRT)</h3>
-<p>DESeq2 also offers the Likelihood Ratio Test (LRT) as an alternative
-<strong>hypothesis test for when we are comparing more than two sample
-classes</strong>. Rather than evaluating whether a gene’s expression is up- or
-down-regulated in one class compared to another, the LRT <strong>identifies
-genes that are changing in expresssion in any direction across the
-different sample classes</strong>.</p>
+<p>An alternative to pair-wise comparisons is to <strong>analyze all levels of a
+factor at once</strong>. By default, the Wald test is used to generate the
+results table, but DESeq2 also offers the LRT which is used to identify
+any genes that show change in expression across the different levels.
+This type of test can be especially useful in analyzing time course
+experiments.</p>
 <p><em>How does this compare to the Wald test?</em></p>
-<p>The <strong>Wald test</strong> (default) only <strong>estimates one model per gene</strong> and
-evaluates the null hypothesis that LFC == 0.</p>
-<p>For the <strong>Likelihood Ratio Test</strong> is also performed on parameters that
-have been estimated by maximum likelihood. For this test <strong>two models
-are estimated per gene; the fit of one model is compared to the fit of
-the other model.</strong></p>
-<p><img src="./img/08c_hypothesis_testing/lrt_formula.png" style="display: block; margin: auto;" /></p>
+<p>The <strong>Wald test</strong> evaluates whether a gene’s expression is up- or
+down-regulated in one group compared to another, while the LRT
+<strong>identifies genes that are changing in expression in any combination
+across the different sample groups</strong>. For example:</p>
 <ul>
-<li>m1 is the reduced model (i.e the design formula with your main
-    factor term removed)</li>
-<li>m2 is the full model (i.e. the full design formula you provided when
-    creating your <code>dds</code> object)</li>
+<li>Gene expression is equal between Control and Overexpression, but is
+    less in Knockdown</li>
+<li>Gene expression of Overexpression is lower than Control and Control
+    is lower than Knockdown</li>
+<li>Gene expression of Knockdown is equal to Control, but less than
+    Overexpression.</li>
 </ul>
-<blockquote>
-<p><em>This type of test can be especially useful in analyzing time course
-experiments</em>.</p>
-</blockquote>
-<p>Here, we are evaluating the <strong>null hypothesis that the full model fits
-just as well as the reduced model</strong>. If we reject the null hypothesis,
-this suggests that there is a significant amount of variation explained
-by the full model (and our main factor of interest), therefore the gene
-is differentially expressed across the different levels. DESeq2
-implements the LRT by using an Analysis of Deviance (ANODEV) to compare
-the two model fits. It is shown that LR follows a chi-squared
-distribution, and this can be used to calculate and associated p-value.</p>
+<p>Using LRT, we are evaluating the <strong>null hypothesis that the full model
+fits just as well as the reduced model</strong>. If we reject the null
+hypothesis, this suggests that there is a significant amount of
+variation explained by the full model (and our main factor of interest),
+therefore the gene is differentially expressed across the different
+levels. Generally, this test will result in a larger number of genes
+than the individual pair-wise comparisons. However, while the LRT is a
+test of significance for differences of any level of the factor, one
+should not expect it to be exactly equal to the union of sets of genes
+using Wald tests (although we do expect a majority overlap).</p>
 <p>To use the LRT, we use the <code>DESeq()</code> function but this time adding two
 arguments:</p>
 <ol>
@@ -1026,10 +1023,60 @@ arguments:</p>
 <span class="n">dds_lrt</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">&quot;LRT&quot;</span><span class="p">,</span> <span class="n">reduced</span> <span class="o">=</span> <span class="o">~</span> <span class="m">1</span><span class="p">)</span>
 </code></pre></div>
 <p>Since our ‘full’ model only has one factor (<code>sampletype</code>), the ‘reduced’
-model (removing that factor) leaves us with nothing in our design
-formula. DESeq2 cannot fit a model with nothing in the design formula,
-and so in the scenario where you have no additional covariates the
-intercept is modeled using the syntax <code>~ 1</code>.</p>
+model (removing that factor) is just the intercept (\~ 1). You will find
+that similar columns are reported for the LRT test. One thing to note
+is, <strong>even though there are fold changes present they are not directly
+associated with the actual hypothesis test.</strong></p>
+<details>
+<summary>
+**Time course analyses with LRT**
+</summary>
+
+The LRT test can be especially helpful when performing time course
+analyses. We can use the LRT to explore whether there are any
+significant differences in treatment effect between any of the
+timepoints.
+
+For have an experiment looking at the effect of treatment over time on
+mice of two different genotypes. We could use a design formula for our
+‘full model’ that would include the major sources of variation in our
+data: genotype, treatment, time, and our main condition of interest,
+which is the difference in the effect of treatment over time
+(treatment:time).
+
+<div class="highlight"><pre><span></span><code><span class="n">full_model</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="n">genotype</span> <span class="o">+</span> <span class="n">treatment</span> <span class="o">+</span> <span class="n">time</span> <span class="o">+</span> <span class="n">treatment</span><span class="o">:</span><span class="n">time</span>
+</code></pre></div>
+
+To perform the LRT test, we can determine all genes that have
+significant differences in expression between treatments across time
+points by giving the ‘reduced model’ without the treatment:time term:
+
+<div class="highlight"><pre><span></span><code><span class="n">reduced_model</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="n">genotype</span> <span class="o">+</span> <span class="n">treatment</span> <span class="o">+</span> <span class="n">time</span>
+</code></pre></div>
+
+Then, we could run our test by using the following code:
+
+<div class="highlight"><pre><span></span><code><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">countData</span> <span class="o">=</span> <span class="n">raw_counts</span><span class="p">,</span> <span class="n">colData</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">genotype</span> <span class="o">+</span> <span class="n">treatment</span> <span class="o">+</span> <span class="n">time</span> <span class="o">+</span> <span class="n">treatment</span><span class="o">:</span><span class="n">time</span><span class="p">)</span>
+
+<span class="n">dds_lrt_time</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">&quot;LRT&quot;</span><span class="p">,</span> <span class="n">reduced</span> <span class="o">=</span> <span class="o">~</span> <span class="n">genotype</span> <span class="o">+</span> <span class="n">treatment</span> <span class="o">+</span> <span class="n">time</span><span class="p">)</span>
+</code></pre></div>
+
+This analysis will not return genes where the treatment effect does not
+change over time, even though the genes may be differentially expressed
+between groups at a particular time point, as shown in the figure below:
+
+<div class="highlight"><pre><span></span><code><span class="n">knitr</span><span class="o">::</span><span class="nf">include_graphics</span><span class="p">(</span><span class="s">&quot;./img/08c_hypothesis_testing/lrt_time_nodiff.png&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+The significant DE genes will represent those genes that have
+differences in the effect of treatment over time, an example is
+displayed in the figure below:
+
+<div class="highlight"><pre><span></span><code><span class="n">knitr</span><span class="o">::</span><span class="nf">include_graphics</span><span class="p">(</span><span class="s">&quot;./img/08c_hypothesis_testing/lrt_time_yesdiff.png&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</details>
+
 <hr />
 <p><strong>Exercise</strong></p>
 <p>You are studying brain maturation and growth patterns in mouse cortex
@@ -1057,7 +1104,7 @@ directly.</strong></p>
 <h3 id="what-does-the-p-value-mean">What does the p-value mean?</h3>
 <p>A gene with a significance cut-off of p \&lt; 0.05, means there is a 5%
 chance it is a false positive. For example, if we test 20,000 genes for
-differential expression, at p \&lt; 0.05 we would expect to find 1,000
+differential expression, at p \&lt; 0.05 we would expect to find 1,000 DE
 genes by chance. If we found 3000 genes to be differentially expressed
 total, roughly one third of our genes are false positives! We would not
 want to sift through our “significant” genes to identify which ones are
@@ -1096,10 +1143,10 @@ is 5%. For example, if you call 500 genes as differentially expressed
 with an FDR cutoff of 0.05, you expect 25 of them to be false positives.</p>
 <h2 id="exploring-results-wald-test">Exploring Results (Wald test)</h2>
 <p>By default DESeq2 uses the Wald test to identify genes that are
-differentially expressed between two sample classes. Given the factor(s)
+differentially expressed between two sample groups. Given the factor(s)
 used in the design formula, and how many factor levels are present, we
 can extract results for a number of different comparisons. Here, we will
-walk through how to obtain results from the <code>dds</code> object and provide
+walk you through how to obtain results from the <code>dds</code> object and provide
 some explanations on how to interpret them.</p>
 <blockquote>
 <p><strong>NOTE:</strong> The Wald test can also be used with <strong>continuous
@@ -1108,7 +1155,7 @@ formula is continuous-valued, then the reported <code>log2FoldChange</code> is
 per unit of change of that variable.</p>
 </blockquote>
 <h3 id="specifying-contrasts">Specifying contrasts</h3>
-<p>In our dataset, we have three sample classes so we can make three
+<p>In our dataset, we have three sample groups so we can make three
 possible pairwise comparisons:</p>
 <ol>
 <li>Control vs. Mov10 overexpression</li>
@@ -1119,7 +1166,7 @@ possible pairwise comparisons:</p>
 intially created our <code>dds</code> object we had provided <code>~ sampletype</code> as our
 design formula, indicating that <code>sampletype</code> is our main factor of
 interest.</p>
-<p>To indicate which two sample classes we are interested in comparing, we
+<p>To indicate which two sample groups we are interested in comparing, we
 need to specify <strong>contrasts</strong>. The contrasts are used as input to the
 DESeq2 <code>results()</code> function to extract the desired results.</p>
 <p>Contrasts can be specified in two different ways (with the first method
@@ -1229,17 +1276,13 @@ stored in each column represent:</p>
 <h2 id="p-values">P-values</h2>
 <p>The p-value is a probability value used to determine whether there is
 evidence to reject the null hypothesis. <strong>A smaller p-value means that
-there is stronger evidence in favor of the alternative hypothesis</strong>.
-However, because we are performing a test for each individual gene we
-need to correct these p-values for multiple testing.</p>
+there is stronger evidence in favor of the alternative hypothesis</strong>.</p>
 <p><strong>The <code>padj</code> column</strong> in the results table represents the p-value
 adjusted for multiple testing, and is the most important column of the
 results. Typically, a threshold such as <code>padj</code> \&lt; 0.05 is a good
 starting point for identifying significant genes. The default method for
-<strong>multiple test correction</strong> in DESeq2 is an implementation of the
-Benjamini-Hochberg false discovery rate (FDR). There are other
-corrections methods available and can be changed by adding the
-<code>pAdjustMethod</code> argument to the <code>results()</code> function.</p>
+<strong>multiple test correction</strong> in DESeq2 is the FDR. Other methods can be
+used with the <code>pAdjustMethod</code> argument in the <code>results()</code> function.</p>
 <h3 id="gene-level-filtering">Gene-level filtering</h3>
 <p>Let’s take a closer look at our results table. As we scroll through it,
 you will notice that for <strong>selected genes there are NA values in the
@@ -1349,7 +1392,7 @@ of genes!</strong></p>
 <h2 id="summarizing-results">Summarizing results</h2>
 <p>To summarize the results table, a handy function in DESeq2 is
 <code>summary()</code>. Confusingly it has the same name as the function used to
-inspect data frames. This function when called with a DESeq results
+inspect data frames. This function, when called with a DESeq results
 table as input, will summarize the results using a default threshold of
 padj \&lt; 0.1. However, since we had set the <code>alpha</code> argument to 0.05 when
 creating our results table threshold: FDR \&lt; 0.05 (padj/FDR is used even

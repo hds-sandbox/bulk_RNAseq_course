@@ -215,20 +215,20 @@ blue circles below.
 
 <img src="./img/08b_DEA/deseq_dispersion2.png" style="display: block; margin: auto;" />
 
-**This is a good plot to examine to ensure your data is a good fit for
+**This is a good plot to evaluate whether your data is a good fit for
 the DESeq2 model.** You expect your data to generally scatter around the
 curve, with the dispersion decreasing with increasing mean expression
 levels. If you see a cloud or different shapes, then you might want to
-explore your data more to see if you have contamination (mitochondrial,
-etc.) or outlier samples. Note how much shrinkage you get across the
-whole range of means in the `plotDispEsts()` plot for any experiment
-with low degrees of freedom.
+explore your data more to see if you have contamination or outlier
+samples. Note how much shrinkage you get across the whole range of means
+in the `plotDispEsts()` plot for any experiment with low degrees of
+freedom.
 
 Examples of **worrisome dispersion plots** are shown below:
 
 The plot below shows a cloud of dispersion values, which do not
-generally follow the curve. This would be worrisome and suggests a bad
-fit of the data to the model.
+generally follow the curve. This would suggest a bad fit of the data to
+the model.
 
 <img src="./img/08b_DEA/bad_dispersion1.png" style="display: block; margin: auto;" />
 

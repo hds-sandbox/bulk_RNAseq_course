@@ -6,7 +6,7 @@ knit: (function(inputFile, encoding) {
       rmarkdown::render(inputFile,
                         encoding=encoding,
                         output_format='all',
-                        output_dir='./')})
+                        output_dir='../develop/')})
 output:
   # To create PDF report, uncomment below
   #pdf_document:
@@ -66,8 +66,10 @@ knitr::include_graphics("./img/06b_count_normalization/normalization_methods_dep
 ```{r, echo = FALSE, eval = TRUE}
 knitr::include_graphics("./img/06b_count_normalization/normalization_methods_length.png")
 ```
-    
- - **RNA composition:** A few highly differentially expressed genes between samples, differences in the number of genes expressed between samples, or presence of contamination can skew some types of normalization methods. Accounting for RNA composition is recommended for accurate comparison of expression between samples, and is particularly important when performing differential expression analyses [[1](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106)]. 
+   
+ - **GC-content**: Genomic features such as GC-content may result in a read count biases,  as GC-rich and GC-poor fragments are under-represented in RNAseq experiments. This under-representation is attributed to the fact that fragments with high and low GC-content are not adequately amplified in a standard high throughput sequencing protocol and, subsequently, that the fragments are difficult to align (correctly) to refence genome, i.e. less unique, repeat regions, etc. ([Benjamini & Speed, 2012] (https://academic.oup.com/nar/article/40/10/e72/2411059) and [Risso et al, 2011] (https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-480)).
+ 
+ - **RNA composition:** A few highly differentially expressed genes between samples, differences in the number of genes expressed between samples, or presence of contamination can skew some types of normalization methods. Accounting for RNA composition is recommended for accurate comparison of expression between samples, and is particularly important when performing differential expression analyses [Anders & Huber, 2010] (https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106). 
  
 	In the example, if we were to divide each sample by the total number of counts to normalize, the counts would be greatly skewed by the DE gene, which takes up most of the counts for *Sample A*, but not *Sample B*. Most other genes for *Sample A* would be divided by the larger number of total counts and appear to be less expressed than those same genes in *Sample B*.  
     
@@ -86,9 +88,8 @@ Several common normalization methods exist to account for these differences:
 | **CPM** (counts per million) | counts scaled by total number of reads | sequencing depth | gene count comparisons between replicates of the same samplegroup; **NOT for within sample comparisons or DE analysis**  |
 | **TPM** (transcripts per kilobase million) | counts per length of transcript (kb) per million reads mapped | sequencing depth and gene length | gene count comparisons within a sample or between samples of the same sample group; **NOT for DE analysis** |
 | **RPKM/FPKM** (reads/fragments per kilobase of exon per million reads/fragments mapped) | similar to TPM | sequencing depth and gene length | gene count comparisons between genes within a sample; **NOT for between sample comparisons or DE analysis** |
-| DESeq2's **median of ratios** [[1](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106)] | counts divided by sample-specific size factors determined by median ratio of gene counts relative to geometric mean per gene | sequencing depth and RNA composition | gene count comparisons between samples and for **DE analysis**; **NOT for within sample comparisons** |
-| EdgeR's **trimmed mean of M values (TMM)** [[2](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25)] | uses a weighted trimmed mean of the log expression ratios between samples | sequencing depth, RNA composition | gene count comparisons between samples and for **DE analysis**; **NOT for within sample comparisons** |
-
+| [DESeq2's **median of ratios** ](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106) | counts divided by sample-specific size factors determined by median ratio of gene counts relative to geometric mean per gene | sequencing depth and RNA composition | gene count comparisons between samples and for **DE analysis**; **NOT for within sample comparisons** |
+| [EdgeR's **trimmed mean of M values (TMM)**](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25) | uses a weighted trimmed mean of the log expression ratios between samples | sequencing depth, RNA composition | gene count comparisons between samples and for **DE analysis**; **NOT for within sample comparisons** |
 
 ### RPKM/FPKM (not recommended)
 While TPM and RPKM/FPKM normalization methods both account for sequencing depth and gene length, RPKM/FPKM are not recommended. **The reason  is that the normalized count values output by the RPKM/FPKM method are not comparable between samples.** 
@@ -150,9 +151,9 @@ The figure below illustrates the median value for the distribution of all gene r
 knitr::include_graphics("./img/06b_count_normalization/deseq_median_of_ratios.png")
 ```
 
-The median of ratios method makes the assumption that not ALL genes are differentially expressed; therefore, the normalization factors should account for sequencing depth and RNA composition of the sample (large outlier genes will not represent the median ratio values). **This method is robust to imbalance in up-/down-regulation and large numbers of differentially expressed genes.**
+The median of ratios method assumes that not ALL genes are differentially expressed; therefore, the normalization factors should account for sequencing depth and RNA composition of the sample (large outlier genes will not represent the median ratio values). **This method is robust to imbalance in up-/down-regulation and large numbers of differentially expressed genes.**
 
-> Usually these size factors are around 1, if you see large variations between samples it is important to take note since it might indicate the presence of extreme outliers.
+> Usually, these size factors are around 1, if you see large variations between samples it is important to take note since it might indicate the presence of extreme outliers.
 
 **Step 4: calculate the normalized count values using the normalization factor**
 
@@ -181,6 +182,7 @@ SampleB median ratio = 0.77
 > Please note that normalized count values are not whole numbers.
 
 ***
+
 **Exercise**
 
 Determine the normalized counts for your gene of interest, PD1, given the raw counts and size factors below. 
@@ -188,7 +190,6 @@ Determine the normalized counts for your gene of interest, PD1, given the raw co
 NOTE: You will need to run the code below to generate the raw counts dataframe (PD1) and the size factor vector (size_factors), then use these objects to determine the normalized counts values:
 
 ```{r}
-
 # Raw counts for PD1
 PD1 <- c(21, 58, 17, 97, 83, 10)
 names(PD1) <- paste0("Sample", 1:6)
@@ -197,7 +198,6 @@ PD1 <- t(PD1)
 
 # Size factors for each sample
 size_factors <- c(1.32, 0.70, 1.04, 1.27, 1.11, 0.85)
-
 ```
 
 ***
@@ -282,7 +282,7 @@ normalized_counts <- counts(dds, normalized=TRUE)
 We can save this normalized data matrix to file for later use:
 
 ```{r}
-write.table(normalized_counts, file="data/normalized_counts.txt", sep="\t", quote=F, col.names=NA)
+write.table(normalized_counts, file="Data/normalized_counts.txt", sep="\t", quote=F, col.names=NA)
 ```
 
 > **NOTE:** DESeq2 doesn't actually use normalized counts, rather it uses the raw counts and models the normalization inside the Generalized Linear Model (GLM). These normalized counts will be useful for downstream visualization of results, but cannot be used as input to DESeq2 or any other tools that perform differential expression analysis which use the negative binomial model.

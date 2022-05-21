@@ -14,11 +14,23 @@ Understanding the steps in the experimental process of RNA extraction and prepar
 
 These important considerations include:
 
-1. Number and type of **replicates**
-2. Issues related to **confounding**
-3. Addressing **batch effects**
+1. Proper experiment **controls**
+2. Number and type of **replicates**
+3. Issues related to **confounding**
+4. Addressing **batch effects**
 
 We will go over each of these considerations in detail, discussing best practice and optimal design.
+
+## Controls
+
+**Experimental controls** must be used in order to minimize the effect of variables which are not the interest of the study. Thus, it allows the experiment to minimize the changes in all other variables except the one being tested, and help us ensure that there have been no deviations in the environment of the experiment that could end up influencing the outcome of the experiment, besides the variable they are investigating.
+
+There are different types of controls, but we will mainly see **positive** and **negative** controls:
+
+- **Negative**: The negative control is a variable or group of samples where no response is expected.
+- **Positive**: A positive control is a variable or group of samples that receives a treatment with a known positive result.
+
+It is very important that you give serious thought about proper controls of your experiment so you can control as many sources of variation as possible. This will greatly strengthen the results of your experiment.
 
 ## Replicates
 
@@ -89,7 +101,7 @@ Replicates are almost always preferred to greater sequencing depth for bulk RNA-
   
   - Almost always more biological replicates are better!
   
-> **NOTE:** The factor used to estimate the depth of sequencing for genomes is "coverage" - how many times do the number of nucleotides sequenced "cover" the genome. This metric is not exact for genomes (whole genome sequencing), but it is good enough and is used extensively. However, the metric **does not work for transcriptomes** because even though you may know what % of the genome has trancriptional activity, the expression of the genes is highly variable.
+> **NOTE:** The factor used to estimate the depth of sequencing for genomes is "coverage" - how many times do the number of nucleotides sequenced "cover" the genome. This metric is not exact for genomes (whole genome sequencing), but it is good enough and is used extensively. However, the metric **does not work for transcriptomes** because even though you may know what % of the genome has transcriptional activity, the expression of the genes is highly variable.
   
 ## Confounding variables
   
@@ -168,6 +180,7 @@ If *any* of the answers is **‘No’**, then you have batches.
 </p>
     
  > **NOTE:** *The sample preparation of cell line "biological" replicates "should be performed as independently as possible" (as batches), "meaning that cell culture media should be prepared freshly for each experiment, different frozen cell stocks and growth factor batches, etc. should be used [[2](http://paasp.net/accurate-design-of-in-vitro-experiments-why-does-it-matter/)]." However, preparation across all conditions should be performed at the same time.*
+
 
 ***
 

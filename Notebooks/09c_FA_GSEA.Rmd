@@ -6,7 +6,7 @@ knit: (function(inputFile, encoding) {
       rmarkdown::render(inputFile,
                         encoding=encoding,
                         output_format='all',
-                        output_dir='./')})
+                        output_dir='../develop/')})
 output:
   # To create PDF report, uncomment below
   #pdf_document:

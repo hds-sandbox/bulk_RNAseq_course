@@ -260,6 +260,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#controls" class="md-nav__link">
+    Controls
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#replicates" class="md-nav__link">
     Replicates
   </a>
@@ -637,6 +644,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#controls" class="md-nav__link">
+    Controls
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#replicates" class="md-nav__link">
     Replicates
   </a>
@@ -703,11 +717,20 @@
 <p>Understanding the steps in the experimental process of RNA extraction and preparation of RNA-Seq libraries is helpful for designing an RNA-Seq experiment, but there are special considerations that should be highlighted that can greatly affect the quality of a differential expression analysis. </p>
 <p>These important considerations include:</p>
 <ol>
+<li>Proper experiment <strong>controls</strong></li>
 <li>Number and type of <strong>replicates</strong></li>
 <li>Issues related to <strong>confounding</strong></li>
 <li>Addressing <strong>batch effects</strong></li>
 </ol>
 <p>We will go over each of these considerations in detail, discussing best practice and optimal design.</p>
+<h2 id="controls">Controls</h2>
+<p><strong>Experimental controls</strong> must be used in order to minimize the effect of variables which are not the interest of the study. Thus, it allows the experiment to minimize the changes in all other variables except the one being tested, and help us ensure that there have been no deviations in the environment of the experiment that could end up influencing the outcome of the experiment, besides the variable they are investigating.</p>
+<p>There are different types of controls, but we will mainly see <strong>positive</strong> and <strong>negative</strong> controls:</p>
+<ul>
+<li><strong>Negative</strong>: The negative control is a variable or group of samples where no response is expected.</li>
+<li><strong>Positive</strong>: A positive control is a variable or group of samples that receives a treatment with a known positive result.</li>
+</ul>
+<p>It is very important that you give serious thought about proper controls of your experiment so you can control as many sources of variation as possible. This will greatly strengthen the results of your experiment.</p>
 <h2 id="replicates">Replicates</h2>
 <p>Experimental replicates can be performed as <strong>technical replicates</strong> or <strong>biological replicates</strong>. </p>
 <p align="center">
@@ -794,7 +817,7 @@
 </li>
 </ul>
 <blockquote>
-<p><strong>NOTE:</strong> The factor used to estimate the depth of sequencing for genomes is "coverage" - how many times do the number of nucleotides sequenced "cover" the genome. This metric is not exact for genomes (whole genome sequencing), but it is good enough and is used extensively. However, the metric <strong>does not work for transcriptomes</strong> because even though you may know what % of the genome has trancriptional activity, the expression of the genes is highly variable.</p>
+<p><strong>NOTE:</strong> The factor used to estimate the depth of sequencing for genomes is "coverage" - how many times do the number of nucleotides sequenced "cover" the genome. This metric is not exact for genomes (whole genome sequencing), but it is good enough and is used extensively. However, the metric <strong>does not work for transcriptomes</strong> because even though you may know what % of the genome has transcriptional activity, the expression of the genes is highly variable.</p>
 </blockquote>
 <h2 id="confounding-variables">Confounding variables</h2>
 <p>A confounded RNA-Seq experiment is one where you <strong>cannot distinguish the separate effects of two different sources of variation</strong> in the data. </p>
