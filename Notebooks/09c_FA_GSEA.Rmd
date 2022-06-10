@@ -71,11 +71,10 @@ For a gene set or pathway analysis using clusterProfiler, coordinated differenti
 clusterProfiler offers several functions to perform GSEA using different genes sets, including but not limited to GO, KEGG, and MSigDb. We will use the KEGG gene sets, which identify genes using their Entrez IDs. Therefore, to perform the analysis, we will need to acquire the Entrez IDs. We will also need to remove the Entrez ID NA values and duplicates (due to gene ID conversion) prior to the analysis:
 
 ```{r}
-## Remove any NA values (reduces the data by quite a bit)
-res_entrez <- dplyr::filter(res_ids, entrezid != "NA")
+## Remove any NA values (reduces the data by quite a bit) and duplicates
 
-## Remove any Entrez duplicates
-res_entrez <- res_entrez[which(duplicated(res_entrez$entrezid) == F), ]
+res_entrez <- dplyr::filter(res_ids, entrezid != "NA" & duplicated(entrezid)==F)
+
 ```
 
 Finally, extract and name the fold changes:

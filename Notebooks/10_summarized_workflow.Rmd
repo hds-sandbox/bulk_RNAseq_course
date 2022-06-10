@@ -46,19 +46,20 @@ We have detailed the various steps in a differential expression analysis workflo
 1. Obtaining gene-level counts from your preprocessing
 
 ```{r}
-data <- read.table("data/Mov10_full_counts.txt", header=T, row.names=1) 
+data <- read_table("data/Mov10_full_counts.txt") 
 
-meta <- read.table("meta/Mov10_full_meta.txt", header=T, row.names=1)
+meta <- read_table("meta/Mov10_full_meta.txt", skip = 1, col_names = c("samplename","sampletype", "MOVexpr"))
 ```
 
 2. Creating the dds object:
 
 ```{r}
 # Check that the row names of the metadata equal the column names of the **raw counts** data
-all(colnames(data$counts) == rownames(metadata))
+all(colnames(datacounts)[-1] == metadata$samplename)
 
 # Create DESeq2Dataset object
-dds <- DESeqDataSetFromTximport(data, 
+dds <- DESeqDataSetFromTximport(datacounts[,-1],
+                                rowData= datacounts[,1],
                                 colData = metadata, 
                                 design = ~ condition)
 ```

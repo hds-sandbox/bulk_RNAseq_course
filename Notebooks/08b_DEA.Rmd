@@ -51,7 +51,7 @@ Previously, we created the DESeq2 object using the appropriate design formula an
 # DO NOT RUN
 
 ## Create DESeq2Dataset object
-dds <- DESeqDataSetFromMatrix(data, colData = meta, design = ~ sampletype)
+dds <- DESeqDataSetFromMatrix(data[,-1], rowData=data[,1], colData = meta, design = ~ sampletype)
 
 ## Run analysis
 dds <- DESeq(dds)
