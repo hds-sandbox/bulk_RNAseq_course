@@ -14,7 +14,7 @@ git config core.sparseCheckout true
 echo "Assignments/" >> .git/info/sparse-checkout
 echo "Environments/" >> .git/info/sparse-checkout
 echo "Notebooks/" >> .git/info/sparse-checkout
-git pull --depth=1 origin spring_2022
+git pull --depth=1 origin Thilde_code_review
 
 rm .gitignore
 
