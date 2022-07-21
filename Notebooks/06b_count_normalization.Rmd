@@ -285,7 +285,7 @@ normalized_counts <- counts(dds, normalized=TRUE)
 We can save this normalized data matrix to file for later use:
 
 ```{r}
-write.table(normalized_counts, file="Data/normalized_counts.txt", sep="\t", quote=F, col.names=NA)
+write.table(normalized_counts, file="/work/introduction_bulkRNAseq_analysis/Results/normalized_counts.txt", sep="\t", quote=F)
 ```
 
 > **NOTE:** DESeq2 doesn't actually use normalized counts, rather it uses the raw counts and models the normalization inside the Generalized Linear Model (GLM). These normalized counts will be useful for downstream visualization of results, but cannot be used as input to DESeq2 or any other tools that perform differential expression analysis which use the negative binomial model.

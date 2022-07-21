@@ -84,7 +84,7 @@ DESeq2 implements the Wald test by:
 
 The **model fit and Wald test were already run previously as part of the `DESeq()` function**:
 
-```{r}
+```{r, eval = FALSE}
 ## DO NOT RUN THIS CODE
 
 ## Create DESeq2Dataset object
@@ -142,9 +142,9 @@ reduced_model <- ~ genotype + treatment + time
   Then, we could run our test by using the following code:
 
 ```{r}
-dds <- DESeqDataSetFromMatrix(countData = raw_counts, colData = metadata, design = ~ genotype + treatment + time + treatment:time)
+dds_lrt <- DESeqDataSetFromMatrix(countData = raw_counts, colData = metadata, design = ~ genotype + treatment + time + treatment:time)
 
-dds_lrt_time <- DESeq(dds, test="LRT", reduced = ~ genotype + treatment + time)
+dds_lrt_time <- DESeq(dds_lrt, test="LRT", reduced = ~ genotype + treatment + time)
 ```
 
   This analysis will not return genes where the treatment effect does not change over time, even though the genes may be differentially expressed between groups at a particular time point, as shown in the figure below:
@@ -220,7 +220,7 @@ Contrasts can be specified in two different ways (with the first method more com
 
 1. Contrasts can be supplied as a **character vector with exactly three elements**: the name of the factor (of interest) in the design formula, the name of the two factors levels to compare. The factor level given last is the base level for the comparison. The syntax is given below:
 
-```{r}
+```{r, eval = FALSE}
 # DO NOT RUN!
 contrast <- c("condition", "level_to_compare", "base_level")
 results(dds, contrast = contrast)
@@ -276,7 +276,6 @@ class(res_tableOE)
 Now let's take a look at **what information is stored** in the results:
 
 ```{r}
-
 # What is stored in results?
 res_tableOE %>% 
   data.frame() %>% 
@@ -390,7 +389,7 @@ Another important column in the results table, is the `log2FoldChange`. With lar
 
 The fold changes reported in the results table are calculated by:
 
-```{r}
+```{r, eval = FALSE}
 log2(normalized_counts_group1 / normalized_counts_group2)
 ```
 
