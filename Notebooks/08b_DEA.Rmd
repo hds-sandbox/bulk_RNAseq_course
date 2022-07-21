@@ -47,7 +47,7 @@ Approximate time: 60 minutes
 
 Previously, we created the DESeq2 object using the appropriate design formula.
 
-```{r}
+```{r, eval = FALSE}
 # DO NOT RUN
 
 ## Create DESeq2Dataset object

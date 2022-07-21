@@ -238,9 +238,8 @@ Let's start by creating the `DESeqDataSet` object and then we can talk a bit mor
 
 ```{r}
 ## Create DESeq2Dataset object
-dds <- DESeqDataSetFromMatrix(countData = data[,-1], 
+dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data$GeneSymbol), 
                               colData = meta, 
-                              rowData=data[,1], 
                               design = ~ sampletype)
 ```
 

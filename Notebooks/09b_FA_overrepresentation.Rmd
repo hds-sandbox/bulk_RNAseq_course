@@ -193,7 +193,7 @@ ego <- enrichGO(gene = sigOE_genes,
 ## Output results from GO analysis to a table
 cluster_summary <- data.frame(ego)
 
-write.csv(cluster_summary, "results/clusterProfiler_Mov10oe.csv")
+write.csv(cluster_summary, "Results/clusterProfiler_Mov10oe.csv")
 ```
 
 ```{r, echo = FALSE, eval = TRUE}  
@@ -229,14 +229,10 @@ clusterProfiler has a variety of options for viewing the over-represented GO ter
 
 The **dotplot** shows the number of genes associated with the first 50 terms (size) and the p-adjusted values for these terms (color). This plot displays the top 50 GO terms by gene ratio (# genes related to GO term / total number of sig genes), not p-adjusted value.
 
-```{r}
+```{r, fig.height= 10, fig.width=5}
 ## Dotplot 
 dotplot(ego, showCategory=50)
 ```
-
-**To save the figure,** click on the `Export` button in the RStudio `Plots` tab and `Save as PDF...`. In the pop-up window, change:
-- `Orientation:` to `Landscape`
-- `PDF size` to `8 x 14` to give a figure of appropriate size for the text labels
 
 ```{r, echo = FALSE, eval = TRUE} 
 knitr::include_graphics("./img/09b_FA_overrepresentation/mov10oe_dotplot.png")
@@ -247,12 +243,13 @@ The next plot is the **enrichment GO plot**, which shows the relationship betwee
 ```{r}
 ## Add similarity matrix to the termsim slot of enrichment result
 ego <- enrichplot::pairwise_termsim(ego)
+```
 
+
+```{r, fig.height= 10}
 ## Enrichmap clusters the 50 most significant (by padj) GO terms to visualize relationships between terms
 emapplot(ego, showCategory = 50)
 ```
-
-**To save the figure,** click on the `Export` button in the RStudio `Plots` tab and `Save as PDF...`. In the pop-up window, change the `PDF size` to `12 x 14` to give a figure of appropriate size for the text labels.
 
 ```{r, echo = FALSE, eval = TRUE} 
 knitr::include_graphics("./img/09b_FA_overrepresentation/emapplot.png")
@@ -267,18 +264,11 @@ Finally, the **category netplot** shows the relationships between the genes asso
 OE_foldchanges <- sigOE$log2FoldChange
 
 names(OE_foldchanges) <- sigOE$gene
+```
 
+
+```{r}
 ## Cnetplot details the genes associated with one or more terms - by default gives the top 5 significant terms (by padj)
-cnetplot(ego, 
-         categorySize="pvalue", 
-         showCategory = 5, 
-         foldChange=OE_foldchanges, 
-         vertex.label.font=6)
-         
-## If some of the high fold changes are getting drowned out due to a large range, you could set a maximum fold change value
-OE_foldchanges <- ifelse(OE_foldchanges > 2, 2, OE_foldchanges)
-OE_foldchanges <- ifelse(OE_foldchanges < -2, -2, OE_foldchanges)
-
 cnetplot(ego, 
          categorySize="pvalue", 
          showCategory = 5, 
@@ -286,7 +276,22 @@ cnetplot(ego,
          vertex.label.font=6)
 ```
 
-**Again, to save the figure,** click on the `Export` button in the RStudio `Plots` tab and `Save as PDF...`. Change the `PDF size` to `12 x 14` to give a figure of appropriate size for the text labels.
+
+```{r}
+## If some of the high fold changes are getting drowned out due to a large range, you could set a maximum fold change value
+OE_foldchanges <- ifelse(OE_foldchanges > 2, 2, OE_foldchanges)
+OE_foldchanges <- ifelse(OE_foldchanges < -2, -2, OE_foldchanges)
+```
+
+
+```{r}
+cnetplot(ego, 
+         categorySize="pvalue", 
+         showCategory = 5, 
+         foldChange=OE_foldchanges, 
+         vertex.label.font=6)
+```
+
 
 ```{r, echo = FALSE, eval = TRUE} 
 knitr::include_graphics("./img/09b_FA_overrepresentation/cnetplot1.png")

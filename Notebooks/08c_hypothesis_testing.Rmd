@@ -113,7 +113,7 @@ To use the LRT, we use the `DESeq()` function but this time adding two arguments
 1. specifying that we want to use the LRT test
 2. the 'reduced' model
 
-```{r}
+```{r, eval = FALSE}
 # The full model was specified previously with the `design = ~ sampletype`:
 # dds <- DESeqDataSetFromMatrix(data, colData = meta, ~ sampletype)
 
@@ -129,20 +129,20 @@ Since our 'full' model only has one factor (`sampletype`), the 'reduced' model (
   
   For have an experiment looking at the effect of treatment over time on mice of two different genotypes. We could use a design formula for our ‘full model’ that would include the major sources of variation in our data: genotype, treatment, time, and our main condition of interest, which is the difference in the effect of treatment over time (treatment:time).
   
-```{r}
+```{r, eval = FALSE}
 full_model <- ~ genotype + treatment + time + treatment:time
 ```
 
   To perform the LRT test, we can determine all genes that have significant differences in expression between treatments across time points by giving the ‘reduced model’ without the treatment:time term:
 
-```{r}
+```{r, eval = FALSE}
 reduced_model <- ~ genotype + treatment + time
 ```
 
   Then, we could run our test by using the following code:
 
-```{r}
-dds_lrt <- DESeqDataSetFromMatrix(countData = raw_counts, colData = metadata, design = ~ genotype + treatment + time + treatment:time)
+```{r, eval = FALSE}
+dds_lrt <- DESeqDataSetFromMatrix(countData = data, colData = metadata, design = ~ genotype + treatment + time + treatment:time)
 
 dds_lrt_time <- DESeq(dds_lrt, test="LRT", reduced = ~ genotype + treatment + time)
 ```
@@ -228,7 +228,7 @@ results(dds, contrast = contrast)
 
 2. Contrasts can be given as a **list of 2 character vectors**: the names of the fold changes for the level of ineterest, and the names of the fold changes for the base level. These names should match identically to the elements of `resultsNames(object)`. *This method can be useful for combining interaction terms and main effects.*
 
-```{r}
+```{r, eval = FALSE}
 # DO NOT RUN!
 resultsNames(dds) # to see what names to use
 contrast <- list(resultsNames(dds)[1], resultsNames(dds)[2])
@@ -279,21 +279,7 @@ Now let's take a look at **what information is stored** in the results:
 # What is stored in results?
 res_tableOE %>% 
   data.frame() %>% 
-  View()
-```
-
-```
-log2 fold change (MAP): sampletype MOV10_overexpression vs control 
-Wald test p-value: sampletype MOV10_overexpression vs control 
-DataFrame with 57914 rows and 6 columns
-baseMean	log2FoldChange	lfcSE		stat		pvalue		padj
-<numeric>	<numeric>	<numeric>	<numeric>	<numeric>	<numeric>
-ENSG00000000003		3.53E+03	-0.427190489	0.0755347	-5.65604739	1.55E-08	4.47E-07
-ENSG00000000005		2.62E+01	0.016159765	0.23735203	0.06584098	9.48E-01	9.74E-01
-ENSG00000000419		1.48E+03	0.362663551	0.10761742	3.36995355	7.52E-04	4.91E-03
-ENSG00000000457		5.19E+02	0.219135591	0.09768842	2.24476439	2.48E-02	8.21E-02
-ENSG00000000460		1.16E+03	-0.261603812	0.07912962	-3.30661411	9.44E-04	5.92E-03
-...			...		...		...		...		...		...
+  head()
 ```
 
 We have six columns of information reported for each gene (row). We can use the `mcols()` function to extract information on what the values stored in each column represent:
@@ -332,11 +318,10 @@ If within a row, all samples have zero counts there is no expression information
 
 ```{r}
 # Filter genes by zero expression
-res_tableOE %>% 
-  as_tibble() %>% 
+res_tableOE %>%
+  as_tibble(rownames = "gene") %>% 
   filter(baseMean==0) %>%
-  View()
-
+  head()
 ```
 
 > **The baseMean column for these genes will be zero, and the log2 fold change estimates, p-value and adjusted p-value will all be set to NA.**
@@ -348,9 +333,9 @@ The `DESeq()` function calculates, for every gene and for every sample, a diagno
 ```{r}
 # Filter genes that have an extreme outlier
 res_tableOE %>% 
-  as_tibble() %>% 
+  as_tibble(rownames = "gene") %>% 
   filter(is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
-  View()
+  head()
 ```
 
 > **If a gene contains a sample with an extreme count outlier then the p-value and adjusted p-value will be set to NA.** 
@@ -370,9 +355,9 @@ At a user-specified value (`alpha = 0.05`), DESeq2 evaluates the change in the n
 ```{r}
 # Filter genes below the low mean threshold
 res_tableOE %>% 
-  as_tibble() %>% 
+  as_tibble(rownames = "gene") %>% 
   filter(!is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
-  View()
+  head()
 ```
 
 > **If a gene is filtered by independent filtering, then only the adjusted p-value will be set to NA.** 
@@ -418,10 +403,8 @@ We can easily subset the results table to only include those that are significan
 
 ```{r}
 # Create a tibble of results and add gene symbols to new object
-
 res_tableOE_tb <- res_tableOE %>%
-  as_tibble() %>%
-  mutate(gene=rowData(dds)$GeneSymbol) %>%
+  as_tibble(rownames = "gene") %>%
   relocate(gene, .before = baseMean)
 ```
 

@@ -130,8 +130,6 @@ To perform the GSEA using KEGG gene sets with clusterProfiler, we can use the `g
 ## GSEA using gene sets from KEGG pathways
 gseaKEGG <- gseKEGG(geneList = foldchanges, # ordered named vector of fold changes (Entrez IDs are the associated names)
               organism = "hsa", # supported organisms listed below
-              nPerm = 1000, # default number permutations
-              minGSSize = 20, # minimum gene set size (# genes in set) - change to test more sets or recover sets with fewer # genes
               pvalueCutoff = 0.05, # padj cutoff value
               verbose = FALSE)
 
@@ -147,7 +145,7 @@ gseaKEGG_results <- gseaKEGG@result
 ## Write GSEA results to file
 View(gseaKEGG_results)
 
-write.csv(gseaKEGG_results, "results/gseaOE_kegg.csv", quote=F)
+write.csv(gseaKEGG_results, "Results/gseaOE_kegg.csv", quote=F)
 ```
 
 > _**NOTE:** We will all get different results for the GSEA because the permutations performed use random reordering. If we would like to use the same permutations every time we run a function (i.e. we would like the same results every time we run the function), then we could use the `set.seed(123456)` function prior to running. The input to `set.seed()` could be any number, but if you would want the same results, then you would need to use the same number as input._
@@ -158,6 +156,7 @@ Explore the GSEA plot of enrichment of one of the pathways in the ranked list:
 ## Plot the GSEA plot for a single enriched pathway, `hsa03040`
 gseaplot(gseaKEGG, geneSetID = 'hsa03040')
 ```
+
 ```{r, echo = FALSE, eval = TRUE} 
 knitr::include_graphics("./img/09c_FA_GSEA/gsea_kegg_hsa03040.png")
 ```
@@ -167,7 +166,7 @@ In this plot, the lines in plot represent the genes in the gene set 'hsa03040', 
 Use the [Pathview R package](http://bioconductor.org/packages/release/bioc/html/pathview.html) to integrate the KEGG pathway data from clusterProfiler into pathway images:
 
 ```{r}
-detach("package:dplyr", unload=TRUE) # first unload dplyr to avoid conflicts
+#detach("package:dplyr", unload=TRUE) # first unload dplyr to avoid conflicts
 
 ## Output images for a single significant KEGG pathway
 pathview(gene.data = foldchanges,
@@ -205,7 +204,6 @@ Instead of exploring enrichment of KEGG gene sets, we can also explore the enric
 gseaGO <- gseGO(geneList = foldchanges, 
               OrgDb = org.Hs.eg.db, 
               ont = 'BP', 
-              nPerm = 1000, 
               minGSSize = 20, 
               pvalueCutoff = 0.05,
               verbose = FALSE) 
@@ -217,7 +215,7 @@ gseaplot(gseaGO, geneSetID = 'GO:0007423')
 
 There are other gene sets available for GSEA analysis in clusterProfiler (Disease Ontology, Reactome pathways, etc.). In addition, it is possible to supply your own gene set GMT file, such as a GMT for [MSigDB](http://software.broadinstitute.org/gsea/msigdb/index.jsp) using special clusterProfiler functions as shown below:
 
-```{r}
+```{r, eval = FALSE}
 # DO NOT RUN
 
 BiocManager::install("GSEABase")

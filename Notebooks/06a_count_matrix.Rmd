@@ -87,6 +87,7 @@ library(RColorBrewer)
 library(DESeq2)
 library(pheatmap)
 library(DEGreport)
+library(ggrepel)
 ```
 
 ### Loading data
