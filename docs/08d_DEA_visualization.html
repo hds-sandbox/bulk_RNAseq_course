@@ -771,9 +771,9 @@
 <p>In the previous lessons, we learned about how to generate a table with
 Differentially Expressed genes</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## DO NOT RUN</span>
-<span class="c1"># res_tableOE &lt;- results(dds, contrast=contrast_oe, alpha = 0.05)</span>
+<span class="n">res_tableOE</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="n">contrast_oe</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="m">0.05</span><span class="p">)</span>
 
-<span class="c1"># head(res_tableOE)</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">res_tableOE</span><span class="p">)</span>
 </code></pre></div>
 <p>The problem with these fold change estimates is that they are not
 entirely accurate as they do not account for the large dispersion we
@@ -893,45 +893,16 @@ created in earlier lessons:</p>
 <li>Tibble versions of the DESeq2 results we generated in the last
     lesson: <code>res_tableOE_tb</code> and <code>res_tableKD_tb</code></li>
 </ul>
-<p>First, let’s create a metadata tibble from the data frame (don’t lose
-the row names!)</p>
-<div class="highlight"><pre><span></span><code><span class="n">mov10_meta</span> <span class="o">&lt;-</span> <span class="n">meta</span> <span class="o">%&gt;%</span> 
-<span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;samplename&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-<span class="nf">as_tibble</span><span class="p">()</span>
+<p>First, we already have a metadata tibble.</p>
+<div class="highlight"><pre><span></span><code><span class="n">meta</span> <span class="o">%&gt;%</span> <span class="nf">head</span><span class="p">()</span>
 </code></pre></div>
-<p>Next, let’s bring in a column with gene symbols to the
-<code>normalized_counts</code> object, so we can use them to label our plots.
-Ensembl IDs are great for many things, but the gene symbols are much
-more recognizable to us, as biologists.</p>
+<p>Next, let’s bring in the <code>normalized_counts</code> object with our gene names.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># DESeq2 creates a matrix when you use the counts() function</span>
 <span class="c1">## First convert normalized_counts to a data frame and transfer the row names to a new column called &quot;gene&quot;</span>
 <span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-<span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span>
-<span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">)</span> 
-
-<span class="c1"># Next, merge together (ensembl IDs) the normalized counts data frame with a subset of the annotations in the tx2gene data frame (only the columns for ensembl gene IDs and gene symbols)</span>
-<span class="n">grch38annot</span> <span class="o">&lt;-</span> <span class="n">tx2gene</span> <span class="o">%&gt;%</span> 
-<span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">ensgene</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-<span class="n">dplyr</span><span class="o">::</span><span class="nf">distinct</span><span class="p">()</span>
-
-<span class="c1">## This will bring in a column of gene symbols</span>
-<span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="nf">merge</span><span class="p">(</span><span class="n">normalized_counts</span><span class="p">,</span> <span class="n">grch38annot</span><span class="p">,</span> <span class="n">by.x</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">,</span> <span class="n">by.y</span><span class="o">=</span><span class="s">&quot;ensgene&quot;</span><span class="p">)</span>
-
-<span class="c1"># Now create a tibble for the normalized counts</span>
-<span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="n">normalized_counts</span> <span class="o">%&gt;%</span>
-<span class="nf">as_tibble</span><span class="p">()</span>
-
-<span class="n">normalized_counts</span> 
+  <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span>
+  <span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">)</span> 
 </code></pre></div>
-<blockquote>
-<p><strong>NOTE:</strong> A possible alternative to the above:</p>
-<div class="highlight"><pre><span></span><code><span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-                     <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span>
-                     <span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span>
-                     <span class="nf">as_tibble</span><span class="p">()</span> <span class="o">%&gt;%</span>
-                     <span class="nf">left_join</span><span class="p">(</span><span class="n">grch38annot</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;gene&quot;</span> <span class="o">=</span> <span class="s">&quot;ensgene&quot;</span><span class="p">))</span>
-</code></pre></div>
-</blockquote>
 <h3 id="plotting-significant-de-genes">Plotting significant DE genes</h3>
 <p>One way to visualize results would be to simply plot the expression data
 for a handful of genes. We could do that by picking out specific genes
@@ -939,13 +910,9 @@ of interest or selecting a range of genes.</p>
 <p><strong>Using DESeq2 <code>plotCounts()</code> to plot expression of a single gene</strong></p>
 <p>To pick out a specific gene of interest to plot, for example MOV10, we
 can use the <code>plotCounts()</code> from DESeq2. <code>plotCounts()</code> requires that the
-gene specified matches the original input to DESeq2, which in our case
-was Ensembl IDs.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Find the Ensembl ID of MOV10</span>
-<span class="n">grch38annot</span><span class="p">[</span><span class="n">grch38annot</span><span class="o">$</span><span class="n">symbol</span> <span class="o">==</span> <span class="s">&quot;MOV10&quot;</span><span class="p">,</span> <span class="s">&quot;ensgene&quot;</span><span class="p">]</span>
-
-<span class="c1"># Plot expression for single gene</span>
-<span class="nf">plotCounts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">gene</span><span class="o">=</span><span class="s">&quot;ENSG00000155363&quot;</span><span class="p">,</span> <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">)</span> 
+gene specified matches the original input to DESeq2.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Plot expression for single gene</span>
+<span class="nf">plotCounts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">gene</span><span class="o">=</span><span class="s">&quot;MOV10&quot;</span><span class="p">,</span> <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">)</span> 
 </code></pre></div>
 <p><img src="./img/08d_DEA_visualization/topgen_plot.png" style="display: block; margin: auto;" /></p>
 <blockquote>
@@ -957,12 +924,12 @@ gene at a time, and is not flexible regarding the appearance.</p>
 output of <code>plotCounts()</code> to a variable specifying the <code>returnData=TRUE</code>
 argument, then use <code>ggplot()</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Save plotcounts to a data frame object</span>
-<span class="n">d</span> <span class="o">&lt;-</span> <span class="nf">plotCounts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">gene</span><span class="o">=</span><span class="s">&quot;ENSG00000155363&quot;</span><span class="p">,</span> <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">,</span> <span class="n">returnData</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">&lt;-</span> <span class="nf">plotCounts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">gene</span><span class="o">=</span><span class="s">&quot;MOV10&quot;</span><span class="p">,</span> <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">,</span> <span class="n">returnData</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 
 <span class="c1"># What is the data output of plotCounts()?</span>
-<span class="n">d</span> <span class="o">%&gt;%</span> <span class="nf">View</span><span class="p">()</span>
-
-<span class="c1"># Plot the MOV10 normalized counts, using the samplenames (rownames(d) as labels)</span>
+<span class="n">d</span> <span class="o">%&gt;%</span> <span class="nf">head</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Plot the MOV10 normalized counts, using the samplenames (rownames(d) as labels)</span>
 <span class="nf">ggplot</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">sampletype</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">count</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">sampletype</span><span class="p">))</span> <span class="o">+</span> 
 <span class="nf">geom_point</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="nf">position_jitter</span><span class="p">(</span><span class="n">w</span> <span class="o">=</span> <span class="m">0.1</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="m">0</span><span class="p">))</span> <span class="o">+</span>
 <span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">d</span><span class="p">)))</span> <span class="o">+</span> 
@@ -986,15 +953,11 @@ expression using <code>pheatmap()</code>.</p>
   <span class="nf">filter</span><span class="p">(</span><span class="n">gene</span> <span class="o">%in%</span> <span class="n">sigOE</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>  
 </code></pre></div>
 <p>Now let’s draw the heatmap using <code>pheatmap</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">### Set a color palette</span>
-<span class="n">heat_colors</span> <span class="o">&lt;-</span> <span class="nf">brewer.pal</span><span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="s">&quot;YlOrRd&quot;</span><span class="p">)</span>
-
-<span class="c1">### Run pheatmap using the metadata data frame for the annotation</span>
+<div class="highlight"><pre><span></span><code><span class="c1">### Run pheatmap using the metadata data frame for the annotation</span>
 <span class="nf">pheatmap</span><span class="p">(</span><span class="n">norm_OEsig</span><span class="p">[</span><span class="m">2</span><span class="o">:</span><span class="m">7</span><span class="p">],</span> 
-         <span class="n">color</span> <span class="o">=</span> <span class="n">heat_colors</span><span class="p">,</span> 
          <span class="n">cluster_rows</span> <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> 
          <span class="n">show_rownames</span> <span class="o">=</span> <span class="bp">F</span><span class="p">,</span>
-         <span class="n">annotation</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> 
+         <span class="n">annotation</span> <span class="o">=</span> <span class="n">meta</span> <span class="o">%&gt;%</span> <span class="nf">column_to_rownames</span><span class="p">(</span><span class="n">var</span> <span class="o">=</span> <span class="s">&quot;samplename&quot;</span><span class="p">),</span> 
          <span class="n">border_color</span> <span class="o">=</span> <span class="kc">NA</span><span class="p">,</span> 
          <span class="n">fontsize</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span> 
          <span class="n">scale</span> <span class="o">=</span> <span class="s">&quot;row&quot;</span><span class="p">,</span> 
@@ -1024,13 +987,13 @@ a log2fold change here.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Obtain logical vector where TRUE values denote padj values &lt; 0.05 and fold change &gt; 1.5 in either direction</span>
 
 <span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="n">res_tableOE_tb</span> <span class="o">%&gt;%</span> 
-<span class="nf">mutate</span><span class="p">(</span><span class="n">threshold_OE</span> <span class="o">=</span> <span class="n">padj</span> <span class="o">&lt;</span> <span class="m">0.05</span> <span class="o">&amp;</span> <span class="nf">abs</span><span class="p">(</span><span class="n">log2fold</span> <span class="n">change</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="m">0.58</span><span class="p">)</span>
+<span class="nf">mutate</span><span class="p">(</span><span class="n">threshold_OE</span> <span class="o">=</span> <span class="n">padj</span> <span class="o">&lt;</span> <span class="m">0.05</span> <span class="o">&amp;</span> <span class="nf">abs</span><span class="p">(</span><span class="n">log2FoldChange</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="m">0.58</span><span class="p">)</span>
 </code></pre></div>
 <p>Now we can start plotting. The <code>geom_point</code> object is most applicable,
 as this is essentially a scatter plot:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Volcano plot</span>
 <span class="nf">ggplot</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">)</span> <span class="o">+</span>
-<span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2fold</span> <span class="n">change</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">),</span> <span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
+<span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">),</span> <span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
 <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Mov10 overexpression&quot;</span><span class="p">)</span> <span class="o">+</span>
 <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;log2 fold change&quot;</span><span class="p">)</span> <span class="o">+</span> 
 <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;-log10 adjusted p-value&quot;</span><span class="p">)</span> <span class="o">+</span>
@@ -1047,24 +1010,21 @@ gene name on the Volcano plot using <code>geom_text_repel()</code>.</p>
 <p>First, we need to order the res_tableOE tibble by <code>padj</code>, and add an
 additional column to it, to include on those gene names we want to use
 to label the plot.</p>
-<div class="highlight"><pre><span></span><code><span class="c1">## Add all the gene symbols as a column from the grch38 table using bind_cols()</span>
-<span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="nf">bind_cols</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">grch38annot</span><span class="o">$</span><span class="n">symbol</span><span class="p">[</span><span class="nf">match</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">gene</span><span class="p">,</span> <span class="n">grch38annot</span><span class="o">$</span><span class="n">ensgene</span><span class="p">)])</span>
-
-<span class="c1">## Create an empty column to indicate which genes to label</span>
+<div class="highlight"><pre><span></span><code><span class="c1">## Create an empty column to indicate which genes to label</span>
 <span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="n">res_tableOE_tb</span> <span class="o">%&gt;%</span> <span class="nf">mutate</span><span class="p">(</span><span class="n">genelabels</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
 <span class="c1">## Sort by padj values </span>
 <span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="n">res_tableOE_tb</span> <span class="o">%&gt;%</span> <span class="nf">arrange</span><span class="p">(</span><span class="n">padj</span><span class="p">)</span>
 
 <span class="c1">## Populate the genelabels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes</span>
-<span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">genelabels</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="nf">as.character</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">symbol</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">])</span>
+<span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">genelabels</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="nf">as.character</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">gene</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">])</span>
 
 <span class="nf">View</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">)</span>
 </code></pre></div>
 <p>Next, we plot it as before with an additional layer for
 <code>geom_text_repel()</code> wherein we can specify the column of gene labels we
 just created.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2fold</span> <span class="n">change</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">)))</span> <span class="o">+</span>
+<div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">)))</span> <span class="o">+</span>
   <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">colour</span> <span class="o">=</span> <span class="n">threshold_OE</span><span class="p">))</span> <span class="o">+</span>
   <span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="n">genelabels</span><span class="p">))</span> <span class="o">+</span>
   <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Mov10 overexpression&quot;</span><span class="p">)</span> <span class="o">+</span>

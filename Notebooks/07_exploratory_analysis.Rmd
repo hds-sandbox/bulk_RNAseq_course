@@ -178,6 +178,10 @@ The function `plotPCA()` requires two arguments as input: a `DESeqTransform` obj
 plotPCA(rld, intgroup="sampletype")
 ```
 
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics("./img/07_exploratory_analysis/PCA_500.png")
+```
+
 ***
 
 Exercise:
@@ -245,6 +249,10 @@ pheatmap(rld_cor, annotation_col = meta %>% column_to_rownames("samplename"))
 ```
 
 When you plot using `pheatmap()` the hierarchical clustering information is used to place similar samples together and this information is represented by the tree structure along the axes. The `annotation` argument accepts a dataframe as input, in our case it is the `meta` data frame. 
+
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics("./img/07_exploratory_analysis/pheatmap_salmon.png")
+```
 
 Overall, we observe pretty high correlations across the board ( > 0.999) suggesting no outlying sample(s). Also, similar to the PCA plot you see the samples clustering together by sample group. Together, these plots suggest to us that the data are of good quality and we have the green light to proceed to differential expression analysis.
 

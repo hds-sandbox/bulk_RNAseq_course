@@ -975,7 +975,7 @@ null (i.e. the gene is differentially expressed).</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## DO NOT RUN THIS CODE</span>
 
 <span class="c1">## Create DESeq2Dataset object</span>
-<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">colData</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">sampletype</span><span class="p">)</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span><span class="m">-1</span><span class="p">],</span> <span class="n">rowData</span><span class="o">=</span><span class="n">data</span><span class="p">[,</span><span class="m">1</span><span class="p">],</span> <span class="n">colData</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">sampletype</span><span class="p">)</span>
 
 <span class="c1">## Run analysis</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
@@ -1056,9 +1056,9 @@ points by giving the ‘reduced model’ without the treatment:time term:
 
 Then, we could run our test by using the following code:
 
-<div class="highlight"><pre><span></span><code><span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">countData</span> <span class="o">=</span> <span class="n">raw_counts</span><span class="p">,</span> <span class="n">colData</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">genotype</span> <span class="o">+</span> <span class="n">treatment</span> <span class="o">+</span> <span class="n">time</span> <span class="o">+</span> <span class="n">treatment</span><span class="o">:</span><span class="n">time</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">dds_lrt</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">countData</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">colData</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">genotype</span> <span class="o">+</span> <span class="n">treatment</span> <span class="o">+</span> <span class="n">time</span> <span class="o">+</span> <span class="n">treatment</span><span class="o">:</span><span class="n">time</span><span class="p">)</span>
 
-<span class="n">dds_lrt_time</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">&quot;LRT&quot;</span><span class="p">,</span> <span class="n">reduced</span> <span class="o">=</span> <span class="o">~</span> <span class="n">genotype</span> <span class="o">+</span> <span class="n">treatment</span> <span class="o">+</span> <span class="n">time</span><span class="p">)</span>
+<span class="n">dds_lrt_time</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds_lrt</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">&quot;LRT&quot;</span><span class="p">,</span> <span class="n">reduced</span> <span class="o">=</span> <span class="o">~</span> <span class="n">genotype</span> <span class="o">+</span> <span class="n">treatment</span> <span class="o">+</span> <span class="n">time</span><span class="p">)</span>
 </code></pre></div>
 
 This analysis will not return genes where the treatment effect does not
@@ -1245,19 +1245,7 @@ like visualization.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># What is stored in results?</span>
 <span class="n">res_tableOE</span> <span class="o">%&gt;%</span> 
   <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span> 
-  <span class="nf">View</span><span class="p">()</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>log2 fold change (MAP): sampletype MOV10_overexpression vs control 
-Wald test p-value: sampletype MOV10_overexpression vs control 
-DataFrame with 57914 rows and 6 columns
-baseMean    log2FoldChange  lfcSE       stat        pvalue      padj
-&lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
-ENSG00000000003     3.53E+03    -0.427190489    0.0755347   -5.65604739 1.55E-08    4.47E-07
-ENSG00000000005     2.62E+01    0.016159765 0.23735203  0.06584098  9.48E-01    9.74E-01
-ENSG00000000419     1.48E+03    0.362663551 0.10761742  3.36995355  7.52E-04    4.91E-03
-ENSG00000000457     5.19E+02    0.219135591 0.09768842  2.24476439  2.48E-02    8.21E-02
-ENSG00000000460     1.16E+03    -0.261603812    0.07912962  -3.30661411 9.44E-04    5.92E-03
-...         ...     ...     ...     ...     ...     ...
+  <span class="nf">head</span><span class="p">()</span>
 </code></pre></div>
 <p>We have six columns of information reported for each gene (row). We can
 use the <code>mcols()</code> function to extract information on what the values
@@ -1300,9 +1288,10 @@ the <strong>three filtering criteria outlined below</strong>:</p>
 <p>If within a row, all samples have zero counts there is no expression
 information and therefore these genes are not tested.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Filter genes by zero expression</span>
-<span class="n">res_tableOE</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="n">res_tableOE</span><span class="o">$</span><span class="n">baseMean</span> <span class="o">==</span> <span class="m">0</span><span class="p">),]</span> <span class="o">%&gt;%</span> 
-  <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span> 
-  <span class="nf">View</span><span class="p">()</span>
+<span class="n">res_tableOE</span> <span class="o">%&gt;%</span>
+  <span class="nf">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="nf">filter</span><span class="p">(</span><span class="n">baseMean</span><span class="o">==</span><span class="m">0</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">head</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
 <p><strong>The baseMean column for these genes will be zero, and the log2 fold
@@ -1321,11 +1310,10 @@ might be an outlier with only 2 replicates. We can turn off this
 filtering by using the <code>cooksCutoff</code> argument in the <code>results()</code>
 function.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Filter genes that have an extreme outlier</span>
-<span class="n">res_tableOE</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">res_tableOE</span><span class="o">$</span><span class="n">pvalue</span><span class="p">)</span> <span class="o">&amp;</span> 
-                    <span class="nf">is.na</span><span class="p">(</span><span class="n">res_tableOE</span><span class="o">$</span><span class="n">padj</span><span class="p">)</span> <span class="o">&amp;</span>
-                    <span class="n">res_tableOE</span><span class="o">$</span><span class="n">baseMean</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">),]</span> <span class="o">%&gt;%</span> 
-  <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span> 
-  <span class="nf">View</span><span class="p">()</span>
+<span class="n">res_tableOE</span> <span class="o">%&gt;%</span> 
+  <span class="nf">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="nf">filter</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nf">is.na</span><span class="p">(</span><span class="n">padj</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">baseMean</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">head</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
 <p><strong>If a gene contains a sample with an extreme count outlier then the
@@ -1350,11 +1338,10 @@ is the low mean threshold that is used to filter genes that undergo
 multiple testing. There is also an argument to turn off the filtering
 off by setting <code>independentFiltering = F</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Filter genes below the low mean threshold</span>
-<span class="n">res_tableOE</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">res_tableOE</span><span class="o">$</span><span class="n">pvalue</span><span class="p">)</span> <span class="o">&amp;</span> 
-                    <span class="nf">is.na</span><span class="p">(</span><span class="n">res_tableOE</span><span class="o">$</span><span class="n">padj</span><span class="p">)</span> <span class="o">&amp;</span> 
-                    <span class="n">res_tableOE</span><span class="o">$</span><span class="n">baseMean</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">),]</span> <span class="o">%&gt;%</span> 
-  <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span> 
-  <span class="nf">View</span><span class="p">()</span>
+<span class="n">res_tableOE</span> <span class="o">%&gt;%</span> 
+  <span class="nf">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="nf">filter</span><span class="p">(</span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nf">is.na</span><span class="p">(</span><span class="n">padj</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">baseMean</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">head</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
 <p><strong>If a gene is filtered by independent filtering, then only the
@@ -1387,7 +1374,7 @@ more conservative approach, so expect to retrieve a much smaller set
 of genes!</strong></p>
 </blockquote>
 <p>The fold changes reported in the results table are calculated by:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">log2 </span><span class="p">(</span><span class="n">normalized_counts_group1</span> <span class="o">/</span> <span class="n">normalized_counts_group2</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">log2</span><span class="p">(</span><span class="n">normalized_counts_group1</span> <span class="o">/</span> <span class="n">normalized_counts_group2</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="summarizing-results">Summarizing results</h2>
 <p>To summarize the results table, a handy function in DESeq2 is
@@ -1414,11 +1401,10 @@ will only be using the adjusted p-values in our criteria:</p>
 <p>We can easily subset the results table to only include those that are
 significant using the <code>filter()</code> function, but first we will convert the
 results table into a tibble:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Create a tibble of results</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Create a tibble of results and add gene symbols to new object</span>
 <span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="n">res_tableOE</span> <span class="o">%&gt;%</span>
-  <span class="nf">data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span>
-  <span class="nf">rownames_to_column</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-  <span class="nf">as_tibble</span><span class="p">()</span>
+  <span class="nf">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">relocate</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span> <span class="n">.before</span> <span class="o">=</span> <span class="n">baseMean</span><span class="p">)</span>
 </code></pre></div>
 <p>Now we can subset that table to only keep the significant genes using
 our pre-defined thresholds:</p>

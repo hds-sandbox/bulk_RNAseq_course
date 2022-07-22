@@ -82,6 +82,7 @@ library(RColorBrewer)
 library(DESeq2)
 library(pheatmap)
 library(DEGreport)
+library(ggrepel)
 ```
 
 ### Loading data
@@ -94,9 +95,9 @@ function expects tab-delimited files, which is what we have.
 
 ``` r
 ## Load in data
-data <- read.table("/work/bulk_RNAseq_course/Data/Mov10_full_counts.txt", header=T, row.names=1) 
+data <- read_table("/work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/Mov10_full_counts.txt") 
 
-meta <- read.table("/work/bulk_RNAseq_course/Data/Mov10_full_meta.txt", header=T, row.names=1)
+meta <- read_table("/work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/Mov10_full_meta.txt")
 ```
 
 Use `class()` to inspect our data and make sure we are working with data
@@ -188,12 +189,16 @@ for few numbers of replicates and large dynamic expression range).
 
 To determine the appropriate statistical model, we need information
 about the distribution of counts. To get an idea about how RNA-seq
-counts are distributed, let’s plot the counts for a single sample,
-‘Mov10_oe_1’:
+counts are distributed, let’s plot the counts of all the samples:
 
 ``` r
-ggplot(data) +
-  geom_histogram(aes(x = Mov10_oe_1), stat = "bin", bins = 200) +
+pdata <- data %>% 
+  gather(key = Sample, value = Count, -GeneSymbol)
+
+pdata
+
+ggplot(pdata) +
+  geom_histogram(aes(x = Count), stat = "bin", bins = 200) +
   xlab("Raw expression counts") +
   ylab("Number of genes")
 ```
@@ -204,8 +209,8 @@ If we zoom in close to zero, we can see a large number of genes with
 counts of zero:
 
 ``` r
-ggplot(data) +
-   geom_histogram(aes(x = Mov10_oe_1), stat = "bin", bins = 200) + 
+ggplot(pdata) +
+   geom_histogram(aes(x = Count), stat = "bin", bins = 200) + 
    xlim(-5, 500)  +
    xlab("Raw expression counts") +
    ylab("Number of genes")
@@ -291,15 +296,17 @@ Run the following code to plot the *mean versus variance* for the ‘Mov10
 overexpression’ replicates:
 
 ``` r
-mean_counts <- apply(data[, 3:5], 1, mean)
-variance_counts <- apply(data[, 3:5], 1, var)
-df <- data.frame(mean_counts, variance_counts)
+df <- data %>% 
+  rowwise() %>% 
+  summarise(mean_counts = mean(Mov10_kd_2:Irrel_kd_3), 
+            variance_counts = var(Mov10_kd_2:Irrel_kd_3))
+
 
 ggplot(df) +
-        geom_point(aes(x=mean_counts, y=variance_counts)) + 
-        geom_line(aes(x=mean_counts, y=mean_counts, color="red")) +
-        scale_y_log10() +
-        scale_x_log10()
+  geom_point(aes(x=mean_counts, y=variance_counts)) + 
+  geom_line(aes(x=mean_counts, y=mean_counts, color="red")) +
+  scale_y_log10() +
+  scale_x_log10()
 ```
 
 <img src="./img/06a_count_matrix/deseq_mean_vs_variance.png" style="display: block; margin: auto;" />

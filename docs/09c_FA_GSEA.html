@@ -833,11 +833,9 @@ use the KEGG gene sets, which identify genes using their Entrez IDs.
 Therefore, to perform the analysis, we will need to acquire the Entrez
 IDs. We will also need to remove the Entrez ID NA values and duplicates
 (due to gene ID conversion) prior to the analysis:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">## Remove any NA values (reduces the data by quite a bit)</span>
-<span class="n">res_entrez</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">res_ids</span><span class="p">,</span> <span class="n">entrezid</span> <span class="o">!=</span> <span class="s">&quot;NA&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1">## Remove any NA values (reduces the data by quite a bit) and duplicates</span>
 
-<span class="c1">## Remove any Entrez duplicates</span>
-<span class="n">res_entrez</span> <span class="o">&lt;-</span> <span class="n">res_entrez</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="nf">duplicated</span><span class="p">(</span><span class="n">res_entrez</span><span class="o">$</span><span class="n">entrezid</span><span class="p">)</span> <span class="o">==</span> <span class="bp">F</span><span class="p">),</span> <span class="p">]</span>
+<span class="n">res_entrez</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">res_ids</span><span class="p">,</span> <span class="n">entrezid</span> <span class="o">!=</span> <span class="s">&quot;NA&quot;</span> <span class="o">&amp;</span> <span class="nf">duplicated</span><span class="p">(</span><span class="n">entrezid</span><span class="p">)</span><span class="o">==</span><span class="bp">F</span><span class="p">)</span>
 </code></pre></div>
 <p>Finally, extract and name the fold changes:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Extract the foldchanges</span>
@@ -909,8 +907,6 @@ use the <code>gseKEGG()</code> function:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## GSEA using gene sets from KEGG pathways</span>
 <span class="n">gseaKEGG</span> <span class="o">&lt;-</span> <span class="nf">gseKEGG</span><span class="p">(</span><span class="n">geneList</span> <span class="o">=</span> <span class="n">foldchanges</span><span class="p">,</span> <span class="c1"># ordered named vector of fold changes (Entrez IDs are the associated names)</span>
               <span class="n">organism</span> <span class="o">=</span> <span class="s">&quot;hsa&quot;</span><span class="p">,</span> <span class="c1"># supported organisms listed below</span>
-              <span class="n">nPerm</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="c1"># default number permutations</span>
-              <span class="n">minGSSize</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> <span class="c1"># minimum gene set size (# genes in set) - change to test more sets or recover sets with fewer # genes</span>
               <span class="n">pvalueCutoff</span> <span class="o">=</span> <span class="m">0.05</span><span class="p">,</span> <span class="c1"># padj cutoff value</span>
               <span class="n">verbose</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
 
@@ -925,7 +921,7 @@ use the <code>gseKEGG()</code> function:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Write GSEA results to file</span>
 <span class="nf">View</span><span class="p">(</span><span class="n">gseaKEGG_results</span><span class="p">)</span>
 
-<span class="nf">write.csv</span><span class="p">(</span><span class="n">gseaKEGG_results</span><span class="p">,</span> <span class="s">&quot;results/gseaOE_kegg.csv&quot;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="bp">F</span><span class="p">)</span>
+<span class="nf">write.csv</span><span class="p">(</span><span class="n">gseaKEGG_results</span><span class="p">,</span> <span class="s">&quot;Results/gseaOE_kegg.csv&quot;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="bp">F</span><span class="p">)</span>
 </code></pre></div>
 <blockquote>
 <p><em><strong>NOTE:</strong> We will all get different results for the GSEA because the
@@ -954,7 +950,7 @@ changes).</p>
 package</a>
 to integrate the KEGG pathway data from clusterProfiler into pathway
 images:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">detach</span><span class="p">(</span><span class="s">&quot;package:dplyr&quot;</span><span class="p">,</span> <span class="n">unload</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span> <span class="c1"># first unload dplyr to avoid conflicts</span>
+<div class="highlight"><pre><span></span><code><span class="c1">#detach(&quot;package:dplyr&quot;, unload=TRUE) # first unload dplyr to avoid conflicts</span>
 
 <span class="c1">## Output images for a single significant KEGG pathway</span>
 <span class="nf">pathview</span><span class="p">(</span><span class="n">gene.data</span> <span class="o">=</span> <span class="n">foldchanges</span><span class="p">,</span>
@@ -992,7 +988,6 @@ analysis:</p>
 <span class="n">gseaGO</span> <span class="o">&lt;-</span> <span class="nf">gseGO</span><span class="p">(</span><span class="n">geneList</span> <span class="o">=</span> <span class="n">foldchanges</span><span class="p">,</span> 
               <span class="n">OrgDb</span> <span class="o">=</span> <span class="n">org.Hs.eg.db</span><span class="p">,</span> 
               <span class="n">ont</span> <span class="o">=</span> <span class="s">&#39;BP&#39;</span><span class="p">,</span> 
-              <span class="n">nPerm</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> 
               <span class="n">minGSSize</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> 
               <span class="n">pvalueCutoff</span> <span class="o">=</span> <span class="m">0.05</span><span class="p">,</span>
               <span class="n">verbose</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span> 

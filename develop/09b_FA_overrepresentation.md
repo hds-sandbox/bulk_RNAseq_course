@@ -204,7 +204,7 @@ previously to merge with our differential expression results.
 
 ``` r
 ## Merge the AnnotationHub dataframe with the results 
-res_ids <- left_join(res_tableOE_tb, annotations_ahb, by=c("gene"="gene_id"))    
+res_ids <- left_join(res_tableOE_tb, annotations_ahb, by=c("gene"="gene_name"))    
 ```
 
 > ***NOTE:** If you were unable to generate the `annotations_ahb`
@@ -224,13 +224,18 @@ genes with p-adjusted values less than 0.05 (we could include a fold
 change threshold too if we have many DE genes).
 
 ``` r
-## Create background dataset for hypergeometric testing using all genes tested for significance in the results                 
-allOE_genes <- as.character(res_ids$gene)
+## Create background dataset for hypergeometric testing using all genes tested for significance in the results         
+
+allOE_genes <- dplyr::filter(res_ids, !is.na(gene_id)) %>% 
+  pull(gene_id) %>% 
+  as.character()
 
 ## Extract significant results
-sigOE <- dplyr::filter(res_ids, padj < 0.05)
+sigOE <- dplyr::filter(res_ids, padj < 0.05 & !is.na(gene_id))
 
-sigOE_genes <- as.character(sigOE$gene)
+sigOE_genes <- sigOE %>% 
+  pull(gene_id) %>% 
+  as.character()
 ```
 
 Now we can perform the GO enrichment analysis and save the results:
@@ -262,7 +267,7 @@ ego <- enrichGO(gene = sigOE_genes,
 ## Output results from GO analysis to a table
 cluster_summary <- data.frame(ego)
 
-write.csv(cluster_summary, "results/clusterProfiler_Mov10oe.csv")
+write.csv(cluster_summary, "Results/clusterProfiler_Mov10oe.csv")
 ```
 
 <img src="./img/09b_FA_overrepresentation/cluster_summary.png" style="display: block; margin: auto;" />
@@ -321,11 +326,6 @@ term / total number of sig genes), not p-adjusted value.
 dotplot(ego, showCategory=50)
 ```
 
-**To save the figure,** click on the `Export` button in the RStudio
-`Plots` tab and `Save as PDF...`. In the pop-up window, change: -
-`Orientation:` to `Landscape` - `PDF size` to `8 x 14` to give a figure
-of appropriate size for the text labels
-
 <img src="./img/09b_FA_overrepresentation/mov10oe_dotplot.png" style="display: block; margin: auto;" />
 
 The next plot is the **enrichment GO plot**, which shows the
@@ -342,15 +342,12 @@ from our list.
 ``` r
 ## Add similarity matrix to the termsim slot of enrichment result
 ego <- enrichplot::pairwise_termsim(ego)
+```
 
+``` r
 ## Enrichmap clusters the 50 most significant (by padj) GO terms to visualize relationships between terms
 emapplot(ego, showCategory = 50)
 ```
-
-**To save the figure,** click on the `Export` button in the RStudio
-`Plots` tab and `Save as PDF...`. In the pop-up window, change the
-`PDF size` to `12 x 14` to give a figure of appropriate size for the
-text labels.
 
 <img src="./img/09b_FA_overrepresentation/emapplot.png" style="display: block; margin: auto;" />
 
@@ -371,18 +368,10 @@ important to several of the most affected processes.
 OE_foldchanges <- sigOE$log2FoldChange
 
 names(OE_foldchanges) <- sigOE$gene
+```
 
+``` r
 ## Cnetplot details the genes associated with one or more terms - by default gives the top 5 significant terms (by padj)
-cnetplot(ego, 
-         categorySize="pvalue", 
-         showCategory = 5, 
-         foldChange=OE_foldchanges, 
-         vertex.label.font=6)
-         
-## If some of the high fold changes are getting drowned out due to a large range, you could set a maximum fold change value
-OE_foldchanges <- ifelse(OE_foldchanges > 2, 2, OE_foldchanges)
-OE_foldchanges <- ifelse(OE_foldchanges < -2, -2, OE_foldchanges)
-
 cnetplot(ego, 
          categorySize="pvalue", 
          showCategory = 5, 
@@ -390,9 +379,19 @@ cnetplot(ego,
          vertex.label.font=6)
 ```
 
-**Again, to save the figure,** click on the `Export` button in the
-RStudio `Plots` tab and `Save as PDF...`. Change the `PDF size` to
-`12 x 14` to give a figure of appropriate size for the text labels.
+``` r
+## If some of the high fold changes are getting drowned out due to a large range, you could set a maximum fold change value
+OE_foldchanges <- ifelse(OE_foldchanges > 2, 2, OE_foldchanges)
+OE_foldchanges <- ifelse(OE_foldchanges < -2, -2, OE_foldchanges)
+```
+
+``` r
+cnetplot(ego, 
+         categorySize="pvalue", 
+         showCategory = 5, 
+         foldChange=OE_foldchanges, 
+         vertex.label.font=6)
+```
 
 <img src="./img/09b_FA_overrepresentation/cnetplot1.png" style="display: block; margin: auto;" />
 

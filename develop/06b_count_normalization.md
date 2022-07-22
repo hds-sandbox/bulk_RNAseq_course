@@ -230,10 +230,10 @@ these objects to determine the normalized counts values:
 
 ``` r
 # Raw counts for PD1
-PD1 <- c(21, 58, 17, 97, 83, 10)
-names(PD1) <- paste0("Sample", 1:6)
-PD1 <- data.frame(PD1)
-PD1 <- t(PD1)
+PD1 <- t(c(21, 58, 17, 97, 83, 10)) %>% 
+  as_tibble() %>%
+  rename_all(~paste0("Sample", 1:6))
+
 
 # Size factors for each sample
 size_factors <- c(1.32, 0.70, 1.04, 1.27, 1.11, 0.85)
@@ -260,8 +260,8 @@ output an error if this is not the case.
 
 ``` r
 ### Check that sample names match in both files
-all(colnames(data) %in% rownames(meta))
-all(colnames(data) == rownames(meta))
+all(meta$samplename %in% colnames(data))
+all(meta$samplename == colnames(data)[-1])
 ```
 
 If your data did not match, you could use the `match()` function to
@@ -300,7 +300,9 @@ with respect to these different levels.
 
 ``` r
 ## Create DESeq2Dataset object
-dds <- DESeqDataSetFromMatrix(countData = data, colData = meta, design = ~ sampletype)
+dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data$GeneSymbol), 
+                              colData = meta, 
+                              design = ~ sampletype)
 ```
 
 <img src="./img/06b_count_normalization/deseq_obj1.png" style="display: block; margin: auto;" />
@@ -354,7 +356,7 @@ normalized_counts <- counts(dds, normalized=TRUE)
 We can save this normalized data matrix to file for later use:
 
 ``` r
-write.table(normalized_counts, file="Data/normalized_counts.txt", sep="\t", quote=F, col.names=NA)
+write.table(normalized_counts, file="/work/introduction_bulkRNAseq_analysis/Results/normalized_counts.txt", sep="\t", quote=F)
 ```
 
 > **NOTE:** DESeq2 doesn’t actually use normalized counts, rather it

@@ -83,7 +83,7 @@ The **model fit and Wald test were already run previously as part of the
 ## DO NOT RUN THIS CODE
 
 ## Create DESeq2Dataset object
-dds <- DESeqDataSetFromMatrix(data, colData = meta, design = ~ sampletype)
+dds <- DESeqDataSetFromMatrix(data[,-1], rowData=data[,1], colData = meta, design = ~ sampletype)
 
 ## Run analysis
 dds <- DESeq(dds)
@@ -175,9 +175,9 @@ reduced_model <- ~ genotype + treatment + time
 Then, we could run our test by using the following code:
 
 ``` r
-dds <- DESeqDataSetFromMatrix(countData = raw_counts, colData = metadata, design = ~ genotype + treatment + time + treatment:time)
+dds_lrt <- DESeqDataSetFromMatrix(countData = data, colData = metadata, design = ~ genotype + treatment + time + treatment:time)
 
-dds_lrt_time <- DESeq(dds, test="LRT", reduced = ~ genotype + treatment + time)
+dds_lrt_time <- DESeq(dds_lrt, test="LRT", reduced = ~ genotype + treatment + time)
 ```
 
 This analysis will not return genes where the treatment effect does not
@@ -400,20 +400,8 @@ Now let’s take a look at **what information is stored** in the results:
 # What is stored in results?
 res_tableOE %>% 
   data.frame() %>% 
-  View()
+  head()
 ```
-
-    log2 fold change (MAP): sampletype MOV10_overexpression vs control 
-    Wald test p-value: sampletype MOV10_overexpression vs control 
-    DataFrame with 57914 rows and 6 columns
-    baseMean    log2FoldChange  lfcSE       stat        pvalue      padj
-    <numeric>   <numeric>   <numeric>   <numeric>   <numeric>   <numeric>
-    ENSG00000000003     3.53E+03    -0.427190489    0.0755347   -5.65604739 1.55E-08    4.47E-07
-    ENSG00000000005     2.62E+01    0.016159765 0.23735203  0.06584098  9.48E-01    9.74E-01
-    ENSG00000000419     1.48E+03    0.362663551 0.10761742  3.36995355  7.52E-04    4.91E-03
-    ENSG00000000457     5.19E+02    0.219135591 0.09768842  2.24476439  2.48E-02    8.21E-02
-    ENSG00000000460     1.16E+03    -0.261603812    0.07912962  -3.30661411 9.44E-04    5.92E-03
-    ...         ...     ...     ...     ...     ...     ...
 
 We have six columns of information reported for each gene (row). We can
 use the `mcols()` function to extract information on what the values
@@ -468,9 +456,10 @@ information and therefore these genes are not tested.
 
 ``` r
 # Filter genes by zero expression
-res_tableOE[which(res_tableOE$baseMean == 0),] %>% 
-  data.frame() %>% 
-  View()
+res_tableOE %>%
+  as_tibble(rownames = "gene") %>% 
+  filter(baseMean==0) %>%
+  head()
 ```
 
 > **The baseMean column for these genes will be zero, and the log2 fold
@@ -492,11 +481,10 @@ function.
 
 ``` r
 # Filter genes that have an extreme outlier
-res_tableOE[which(is.na(res_tableOE$pvalue) & 
-                    is.na(res_tableOE$padj) &
-                    res_tableOE$baseMean > 0),] %>% 
-  data.frame() %>% 
-  View()
+res_tableOE %>% 
+  as_tibble(rownames = "gene") %>% 
+  filter(is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
+  head()
 ```
 
 > **If a gene contains a sample with an extreme count outlier then the
@@ -527,11 +515,10 @@ off by setting `independentFiltering = F`.
 
 ``` r
 # Filter genes below the low mean threshold
-res_tableOE[which(!is.na(res_tableOE$pvalue) & 
-                    is.na(res_tableOE$padj) & 
-                    res_tableOE$baseMean > 0),] %>% 
-  data.frame() %>% 
-  View()
+res_tableOE %>% 
+  as_tibble(rownames = "gene") %>% 
+  filter(!is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
+  head()
 ```
 
 > **If a gene is filtered by independent filtering, then only the
@@ -569,7 +556,7 @@ would translate to an actual fold change of 2.
 The fold changes reported in the results table are calculated by:
 
 ``` r
-log2 (normalized_counts_group1 / normalized_counts_group2)
+log2(normalized_counts_group1 / normalized_counts_group2)
 ```
 
 ## Summarizing results
@@ -608,11 +595,10 @@ significant using the `filter()` function, but first we will convert the
 results table into a tibble:
 
 ``` r
-# Create a tibble of results
+# Create a tibble of results and add gene symbols to new object
 res_tableOE_tb <- res_tableOE %>%
-  data.frame() %>%
-  rownames_to_column(var="gene") %>% 
-  as_tibble()
+  as_tibble(rownames = "gene") %>%
+  relocate(gene, .before = baseMean)
 ```
 
 Now we can subset that table to only keep the significant genes using

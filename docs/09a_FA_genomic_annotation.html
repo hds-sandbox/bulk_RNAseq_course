@@ -1043,7 +1043,7 @@ file:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Create a gene-level dataframe </span>
 <span class="n">annotations_ahb</span> <span class="o">&lt;-</span> <span class="nf">genes</span><span class="p">(</span><span class="n">human_ens</span><span class="p">,</span> <span class="n">return.type</span> <span class="o">=</span> <span class="s">&quot;data.frame&quot;</span><span class="p">)</span>  <span class="o">%&gt;%</span>
   <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_id</span><span class="p">,</span> <span class="n">gene_name</span><span class="p">,</span> <span class="n">entrezid</span><span class="p">,</span> <span class="n">gene_biotype</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-  <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">gene_id</span> <span class="o">%in%</span> <span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>
+  <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">gene_name</span> <span class="o">%in%</span> <span class="n">res_tableOE_tb</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>
 </code></pre></div>
 <p>This dataframe looks like it should be fine as it is, but we look a
 little closer we will notice that the column containing Entrez

@@ -921,7 +921,7 @@ the Ensembl IDs.</p>
 and Entrez IDs. We will use the gene annotations that we generated
 previously to merge with our differential expression results.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Merge the AnnotationHub dataframe with the results </span>
-<span class="n">res_ids</span> <span class="o">&lt;-</span> <span class="nf">left_join</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="n">annotations_ahb</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;gene&quot;</span><span class="o">=</span><span class="s">&quot;gene_id&quot;</span><span class="p">))</span>    
+<span class="n">res_ids</span> <span class="o">&lt;-</span> <span class="nf">left_join</span><span class="p">(</span><span class="n">res_tableOE_tb</span><span class="p">,</span> <span class="n">annotations_ahb</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;gene&quot;</span><span class="o">=</span><span class="s">&quot;gene_name&quot;</span><span class="p">))</span>    
 </code></pre></div>
 <blockquote>
 <p><em><strong>NOTE:</strong> If you were unable to generate the <code>annotations_ahb</code>
@@ -938,13 +938,18 @@ dataset we will use all genes tested for differential expression (all
 genes in our results table). For our significant gene list we will use
 genes with p-adjusted values less than 0.05 (we could include a fold
 change threshold too if we have many DE genes).</p>
-<div class="highlight"><pre><span></span><code><span class="c1">## Create background dataset for hypergeometric testing using all genes tested for significance in the results                 </span>
-<span class="n">allOE_genes</span> <span class="o">&lt;-</span> <span class="nf">as.character</span><span class="p">(</span><span class="n">res_ids</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1">## Create background dataset for hypergeometric testing using all genes tested for significance in the results         </span>
+
+<span class="n">allOE_genes</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">res_ids</span><span class="p">,</span> <span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">gene_id</span><span class="p">))</span> <span class="o">%&gt;%</span> 
+  <span class="nf">pull</span><span class="p">(</span><span class="n">gene_id</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="nf">as.character</span><span class="p">()</span>
 
 <span class="c1">## Extract significant results</span>
-<span class="n">sigOE</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">res_ids</span><span class="p">,</span> <span class="n">padj</span> <span class="o">&lt;</span> <span class="m">0.05</span><span class="p">)</span>
+<span class="n">sigOE</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">res_ids</span><span class="p">,</span> <span class="n">padj</span> <span class="o">&lt;</span> <span class="m">0.05</span> <span class="o">&amp;</span> <span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">gene_id</span><span class="p">))</span>
 
-<span class="n">sigOE_genes</span> <span class="o">&lt;-</span> <span class="nf">as.character</span><span class="p">(</span><span class="n">sigOE</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>
+<span class="n">sigOE_genes</span> <span class="o">&lt;-</span> <span class="n">sigOE</span> <span class="o">%&gt;%</span> 
+  <span class="nf">pull</span><span class="p">(</span><span class="n">gene_id</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="nf">as.character</span><span class="p">()</span>
 </code></pre></div>
 <p>Now we can perform the GO enrichment analysis and save the results:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Run GO enrichment analysis </span>
@@ -970,7 +975,7 @@ subontologies, or “ALL” for all three.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Output results from GO analysis to a table</span>
 <span class="n">cluster_summary</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">ego</span><span class="p">)</span>
 
-<span class="nf">write.csv</span><span class="p">(</span><span class="n">cluster_summary</span><span class="p">,</span> <span class="s">&quot;results/clusterProfiler_Mov10oe.csv&quot;</span><span class="p">)</span>
+<span class="nf">write.csv</span><span class="p">(</span><span class="n">cluster_summary</span><span class="p">,</span> <span class="s">&quot;Results/clusterProfiler_Mov10oe.csv&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p><img src="./img/09b_FA_overrepresentation/cluster_summary.png" style="display: block; margin: auto;" /></p>
 <blockquote>
@@ -1020,10 +1025,6 @@ term / total number of sig genes), not p-adjusted value.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Dotplot </span>
 <span class="nf">dotplot</span><span class="p">(</span><span class="n">ego</span><span class="p">,</span> <span class="n">showCategory</span><span class="o">=</span><span class="m">50</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>To save the figure,</strong> click on the <code>Export</code> button in the RStudio
-<code>Plots</code> tab and <code>Save as PDF...</code>. In the pop-up window, change: -
-<code>Orientation:</code> to <code>Landscape</code> - <code>PDF size</code> to <code>8 x 14</code> to give a figure
-of appropriate size for the text labels</p>
 <p><img src="./img/09b_FA_overrepresentation/mov10oe_dotplot.png" style="display: block; margin: auto;" /></p>
 <p>The next plot is the <strong>enrichment GO plot</strong>, which shows the
 relationship between the top 50 most significantly enriched GO terms
@@ -1037,14 +1038,10 @@ size of the terms represents the number of genes that are significant
 from our list.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Add similarity matrix to the termsim slot of enrichment result</span>
 <span class="n">ego</span> <span class="o">&lt;-</span> <span class="n">enrichplot</span><span class="o">::</span><span class="nf">pairwise_termsim</span><span class="p">(</span><span class="n">ego</span><span class="p">)</span>
-
-<span class="c1">## Enrichmap clusters the 50 most significant (by padj) GO terms to visualize relationships between terms</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">## Enrichmap clusters the 50 most significant (by padj) GO terms to visualize relationships between terms</span>
 <span class="nf">emapplot</span><span class="p">(</span><span class="n">ego</span><span class="p">,</span> <span class="n">showCategory</span> <span class="o">=</span> <span class="m">50</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>To save the figure,</strong> click on the <code>Export</code> button in the RStudio
-<code>Plots</code> tab and <code>Save as PDF...</code>. In the pop-up window, change the
-<code>PDF size</code> to <code>12 x 14</code> to give a figure of appropriate size for the
-text labels.</p>
 <p><img src="./img/09b_FA_overrepresentation/emapplot.png" style="display: block; margin: auto;" /></p>
 <p>Finally, the <strong>category netplot</strong> shows the relationships between the
 genes associated with the top five most significant GO terms and the
@@ -1062,27 +1059,24 @@ work.</p>
 <span class="n">OE_foldchanges</span> <span class="o">&lt;-</span> <span class="n">sigOE</span><span class="o">$</span><span class="n">log2FoldChange</span>
 
 <span class="nf">names</span><span class="p">(</span><span class="n">OE_foldchanges</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">sigOE</span><span class="o">$</span><span class="n">gene</span>
-
-<span class="c1">## Cnetplot details the genes associated with one or more terms - by default gives the top 5 significant terms (by padj)</span>
-<span class="nf">cnetplot</span><span class="p">(</span><span class="n">ego</span><span class="p">,</span> 
-         <span class="n">categorySize</span><span class="o">=</span><span class="s">&quot;pvalue&quot;</span><span class="p">,</span> 
-         <span class="n">showCategory</span> <span class="o">=</span> <span class="m">5</span><span class="p">,</span> 
-         <span class="n">foldChange</span><span class="o">=</span><span class="n">OE_foldchanges</span><span class="p">,</span> 
-         <span class="n">vertex.label.font</span><span class="o">=</span><span class="m">6</span><span class="p">)</span>
-
-<span class="c1">## If some of the high fold changes are getting drowned out due to a large range, you could set a maximum fold change value</span>
-<span class="n">OE_foldchanges</span> <span class="o">&lt;-</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">OE_foldchanges</span> <span class="o">&gt;</span> <span class="m">2</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="n">OE_foldchanges</span><span class="p">)</span>
-<span class="n">OE_foldchanges</span> <span class="o">&lt;-</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">OE_foldchanges</span> <span class="o">&lt;</span> <span class="m">-2</span><span class="p">,</span> <span class="m">-2</span><span class="p">,</span> <span class="n">OE_foldchanges</span><span class="p">)</span>
-
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">## Cnetplot details the genes associated with one or more terms - by default gives the top 5 significant terms (by padj)</span>
 <span class="nf">cnetplot</span><span class="p">(</span><span class="n">ego</span><span class="p">,</span> 
          <span class="n">categorySize</span><span class="o">=</span><span class="s">&quot;pvalue&quot;</span><span class="p">,</span> 
          <span class="n">showCategory</span> <span class="o">=</span> <span class="m">5</span><span class="p">,</span> 
          <span class="n">foldChange</span><span class="o">=</span><span class="n">OE_foldchanges</span><span class="p">,</span> 
          <span class="n">vertex.label.font</span><span class="o">=</span><span class="m">6</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>Again, to save the figure,</strong> click on the <code>Export</code> button in the
-RStudio <code>Plots</code> tab and <code>Save as PDF...</code>. Change the <code>PDF size</code> to
-<code>12 x 14</code> to give a figure of appropriate size for the text labels.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## If some of the high fold changes are getting drowned out due to a large range, you could set a maximum fold change value</span>
+<span class="n">OE_foldchanges</span> <span class="o">&lt;-</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">OE_foldchanges</span> <span class="o">&gt;</span> <span class="m">2</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="n">OE_foldchanges</span><span class="p">)</span>
+<span class="n">OE_foldchanges</span> <span class="o">&lt;-</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">OE_foldchanges</span> <span class="o">&lt;</span> <span class="m">-2</span><span class="p">,</span> <span class="m">-2</span><span class="p">,</span> <span class="n">OE_foldchanges</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nf">cnetplot</span><span class="p">(</span><span class="n">ego</span><span class="p">,</span> 
+         <span class="n">categorySize</span><span class="o">=</span><span class="s">&quot;pvalue&quot;</span><span class="p">,</span> 
+         <span class="n">showCategory</span> <span class="o">=</span> <span class="m">5</span><span class="p">,</span> 
+         <span class="n">foldChange</span><span class="o">=</span><span class="n">OE_foldchanges</span><span class="p">,</span> 
+         <span class="n">vertex.label.font</span><span class="o">=</span><span class="m">6</span><span class="p">)</span>
+</code></pre></div>
 <p><img src="./img/09b_FA_overrepresentation/cnetplot1.png" style="display: block; margin: auto;" /></p>
 <p>If you are interested in significant processes that are <strong>not</strong> among
 the top five, you can subset your <code>ego</code> dataset to only display these

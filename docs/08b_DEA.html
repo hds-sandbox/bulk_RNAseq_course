@@ -448,18 +448,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-3-fit-curve-to-gene-wise-dispersion-estimates" class="md-nav__link">
-    Step 3: Fit curve to gene-wise dispersion estimates
+  <a href="#step-3a-fit-curve-to-gene-wise-dispersion-estimates" class="md-nav__link">
+    Step 3a: Fit curve to gene-wise dispersion estimates
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-4-shrink-gene-wise-dispersion-estimates-toward-the-values-predicted-by-the-curve" class="md-nav__link">
-    Step 4: Shrink gene-wise dispersion estimates toward the values predicted by the curve
+  <a href="#step-3b-shrink-gene-wise-dispersion-estimates-toward-the-values-predicted-by-the-curve" class="md-nav__link">
+    Step 3b: Shrink gene-wise dispersion estimates toward the values predicted by the curve
   </a>
   
-    <nav class="md-nav" aria-label="Step 4: Shrink gene-wise dispersion estimates toward the values predicted by the curve">
+    <nav class="md-nav" aria-label="Step 3b: Shrink gene-wise dispersion estimates toward the values predicted by the curve">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -680,18 +680,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-3-fit-curve-to-gene-wise-dispersion-estimates" class="md-nav__link">
-    Step 3: Fit curve to gene-wise dispersion estimates
+  <a href="#step-3a-fit-curve-to-gene-wise-dispersion-estimates" class="md-nav__link">
+    Step 3a: Fit curve to gene-wise dispersion estimates
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-4-shrink-gene-wise-dispersion-estimates-toward-the-values-predicted-by-the-curve" class="md-nav__link">
-    Step 4: Shrink gene-wise dispersion estimates toward the values predicted by the curve
+  <a href="#step-3b-shrink-gene-wise-dispersion-estimates-toward-the-values-predicted-by-the-curve" class="md-nav__link">
+    Step 3b: Shrink gene-wise dispersion estimates toward the values predicted by the curve
   </a>
   
-    <nav class="md-nav" aria-label="Step 4: Shrink gene-wise dispersion estimates toward the values predicted by the curve">
+    <nav class="md-nav" aria-label="Step 3b: Shrink gene-wise dispersion estimates toward the values predicted by the curve">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -738,17 +738,26 @@
 </ul>
 <h2 id="deseq2-differential-gene-expression-analysis-workflow">DESeq2 differential gene expression analysis workflow</h2>
 <p>Previously, we created the DESeq2 object using the appropriate design
-formula and running DESeq2 using the two lines of code:</p>
+formula.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># DO NOT RUN</span>
 
 <span class="c1">## Create DESeq2Dataset object</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">colData</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">sampletype</span><span class="p">)</span>
-
-<span class="c1">## Run analysis</span>
+</code></pre></div>
+<p>Then, to run the actual differential expression analysis, we use a
+single call to the function <code>DESeq()</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## Run analysis</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 </code></pre></div>
-<p>We completed the entire workflow for the differential gene expression
-analysis with DESeq2. The steps in the analysis are output below:</p>
+<p>And with that we completed the entire workflow for the differential gene
+expression analysis with DESeq2! The <code>DESeq()</code> function performs a
+default analysis through the following steps:</p>
+<ol>
+<li>Estimation of size factors: <code>estimateSizeFactors()</code></li>
+<li>Estimation of dispersion: <code>estimateDispersions()</code></li>
+<li>Negative Binomial GLM fitting and Wald statistics:
+    <code>nbinomWaldTest()</code></li>
+</ol>
 <p><img src="./img/08b_DEA/deseq2_workflow_separate.png" style="display: block; margin: auto;" /></p>
 <p>We will be taking a detailed look at each of these steps to better
 understand how DESeq2 is performing the statistical analysis and what
@@ -867,7 +876,7 @@ dispersion.</strong></p>
 <p><strong>Estimating the dispersion for each gene separately:</strong></p>
 <p>DESeq2 estimates the dispersion for each gene based on the gene’s
 expression level (mean counts of within-group replicates) and variance.</p>
-<h3 id="step-3-fit-curve-to-gene-wise-dispersion-estimates">Step 3: Fit curve to gene-wise dispersion estimates</h3>
+<h3 id="step-3a-fit-curve-to-gene-wise-dispersion-estimates">Step 3a: Fit curve to gene-wise dispersion estimates</h3>
 <p>The next step in the workflow is to fit a curve to the gene-wise
 dispersion estimates. The idea behind fitting a curve to the data is
 that different genes will have different scales of biological
@@ -880,7 +889,7 @@ expression strength</strong>. Each black dot is a gene with an associated mean
 expression level and maximum likelihood estimation (MLE) of the
 dispersion (Step 1).</p>
 <p><img src="./img/08b_DEA/deseq_dispersion1.png" style="display: block; margin: auto;" /></p>
-<h3 id="step-4-shrink-gene-wise-dispersion-estimates-toward-the-values-predicted-by-the-curve">Step 4: Shrink gene-wise dispersion estimates toward the values predicted by the curve</h3>
+<h3 id="step-3b-shrink-gene-wise-dispersion-estimates-toward-the-values-predicted-by-the-curve">Step 3b: Shrink gene-wise dispersion estimates toward the values predicted by the curve</h3>
 <p>The next step in the workflow is to shrink the gene-wise dispersion
 estimates toward the expected dispersion values.</p>
 <p><img src="./img/08b_DEA/deseq2_workflow_separate_shr.png" style="display: block; margin: auto;" /></p>

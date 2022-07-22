@@ -11,20 +11,31 @@ Approximate time: 60 minutes
 ## DESeq2 differential gene expression analysis workflow
 
 Previously, we created the DESeq2 object using the appropriate design
-formula and running DESeq2 using the two lines of code:
+formula.
 
 ``` r
 # DO NOT RUN
 
 ## Create DESeq2Dataset object
 dds <- DESeqDataSetFromMatrix(data, colData = meta, design = ~ sampletype)
+```
 
+Then, to run the actual differential expression analysis, we use a
+single call to the function `DESeq()`.
+
+``` r
 ## Run analysis
 dds <- DESeq(dds)
 ```
 
-We completed the entire workflow for the differential gene expression
-analysis with DESeq2. The steps in the analysis are output below:
+And with that we completed the entire workflow for the differential gene
+expression analysis with DESeq2! The `DESeq()` function performs a
+default analysis through the following steps:
+
+1.  Estimation of size factors: `estimateSizeFactors()`
+2.  Estimation of dispersion: `estimateDispersions()`
+3.  Negative Binomial GLM fitting and Wald statistics:
+    `nbinomWaldTest()`
 
 <img src="./img/08b_DEA/deseq2_workflow_separate.png" style="display: block; margin: auto;" />
 
@@ -163,7 +174,7 @@ dispersion.**
 DESeq2 estimates the dispersion for each gene based on the gene’s
 expression level (mean counts of within-group replicates) and variance.
 
-### Step 3: Fit curve to gene-wise dispersion estimates
+### Step 3a: Fit curve to gene-wise dispersion estimates
 
 The next step in the workflow is to fit a curve to the gene-wise
 dispersion estimates. The idea behind fitting a curve to the data is
@@ -181,7 +192,7 @@ dispersion (Step 1).
 
 <img src="./img/08b_DEA/deseq_dispersion1.png" style="display: block; margin: auto;" />
 
-### Step 4: Shrink gene-wise dispersion estimates toward the values predicted by the curve
+### Step 3b: Shrink gene-wise dispersion estimates toward the values predicted by the curve
 
 The next step in the workflow is to shrink the gene-wise dispersion
 estimates toward the expected dispersion values.

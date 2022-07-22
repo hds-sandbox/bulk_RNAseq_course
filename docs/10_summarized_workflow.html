@@ -619,20 +619,20 @@ the steps in an analysis below:</p>
 <ol>
 <li>Obtaining gene-level counts from your preprocessing</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;data/Mov10_full_counts.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">)</span> 
+<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">read_table</span><span class="p">(</span><span class="s">&quot;data/Mov10_full_counts.txt&quot;</span><span class="p">)</span> 
 
-<span class="n">meta</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;meta/Mov10_full_meta.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">)</span>
+<span class="n">meta</span> <span class="o">&lt;-</span> <span class="nf">read_table</span><span class="p">(</span><span class="s">&quot;meta/Mov10_full_meta.txt&quot;</span><span class="p">)</span>
 </code></pre></div>
 <ol>
 <li>Creating the dds object:</li>
 </ol>
 <div class="highlight"><pre><span></span><code><span class="c1"># Check that the row names of the metadata equal the column names of the **raw counts** data</span>
-<span class="nf">all</span><span class="p">(</span><span class="nf">colnames</span><span class="p">(</span><span class="n">data</span><span class="o">$</span><span class="n">counts</span><span class="p">)</span> <span class="o">==</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">metadata</span><span class="p">))</span>
+<span class="nf">all</span><span class="p">(</span><span class="nf">colnames</span><span class="p">(</span><span class="n">datacounts</span><span class="p">)[</span><span class="m">-1</span><span class="p">]</span> <span class="o">==</span> <span class="n">meta</span><span class="o">$</span><span class="n">samplename</span><span class="p">)</span>
 
 <span class="c1"># Create DESeq2Dataset object</span>
-<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromTximport</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> 
-                                <span class="n">colData</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">,</span> 
-                                <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">condition</span><span class="p">)</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">countData</span> <span class="o">=</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span><span class="m">-1</span><span class="p">],</span> <span class="n">row.names</span> <span class="o">=</span> <span class="n">data</span><span class="o">$</span><span class="n">GeneSymbol</span><span class="p">),</span> 
+                              <span class="n">colData</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> 
+                              <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">sampletype</span><span class="p">)</span>
 </code></pre></div>
 <ol>
 <li>Exploratory data analysis (PCA &amp; hierarchical clustering) -
@@ -644,7 +644,7 @@ the steps in an analysis below:</p>
 
 <span class="c1"># Plot PCA </span>
 <span class="nf">plotPCA</span><span class="p">(</span><span class="n">rld</span><span class="p">,</span> 
-        <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;condition&quot;</span><span class="p">)</span>
+        <span class="n">intgroup</span><span class="o">=</span><span class="s">&quot;sampletype&quot;</span><span class="p">)</span>
 
 <span class="c1"># Extract the rlog matrix from the object and compute pairwise correlation values</span>
 <span class="n">rld_mat</span> <span class="o">&lt;-</span> <span class="nf">assay</span><span class="p">(</span><span class="n">rld</span><span class="p">)</span>
@@ -652,12 +652,12 @@ the steps in an analysis below:</p>
 
 <span class="c1"># Plot heatmap</span>
 <span class="nf">pheatmap</span><span class="p">(</span><span class="n">rld_cor</span><span class="p">,</span> 
-         <span class="n">annotation</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">)</span>
+         <span class="n">annotation</span> <span class="o">=</span> <span class="n">meta</span> <span class="o">%&gt;%</span> <span class="nf">column_to_rownames</span><span class="p">(</span><span class="s">&quot;samplename&quot;</span><span class="p">))</span>
 </code></pre></div>
 <ol>
 <li>Run DESeq2:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="c1"># **Optional step** - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using &quot;dds &lt;- DESeqDataSetFromMatrix(data, colData = metadata, design = ~ covaraite + condition)&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># **Optional step** - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using &quot;dds &lt;- DESeqDataSetFromMatrix(data, colData = metadata, design = ~ covariate + condition)&quot;</span>
 
 <span class="c1"># Run DESeq2 differential expression analysis</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>

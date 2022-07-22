@@ -1014,7 +1014,7 @@ matrix in this case).</p>
 <p>Next, we need to compute the pairwise correlation values for all the
 samples. We can do this using the <code>cor()</code> function:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">### Compute pairwise correlation values</span>
-<span class="n">rld_cor</span> <span class="o">&lt;-</span> <span class="nf">cor</span><span class="p">(</span><span class="n">rld_mat</span><span class="p">)</span>    <span class="c1">## cor() is a base R function</span>
+<span class="n">rld_cor</span> <span class="o">&lt;-</span> <span class="nf">as.matrix</span><span class="p">(</span><span class="nf">cor</span><span class="p">(</span><span class="n">rld_mat</span><span class="p">))</span>    <span class="c1">## cor() is a base R function</span>
 </code></pre></div>
 <p>Let’s take a look at the column and row names of the correlation matrix.</p>
 <div class="highlight"><pre><span></span><code>## check the output of cor(), make note of the row names and column names
@@ -1032,7 +1032,7 @@ hierarchical clustering.</p>
 <span class="nf">library</span><span class="p">(</span><span class="n">pheatmap</span><span class="p">)</span>
 
 <span class="c1">### Plot heatmap using the correlation matrix and the metadata object</span>
-<span class="nf">pheatmap</span><span class="p">(</span><span class="n">rld_cor</span><span class="p">,</span> <span class="n">annotation</span> <span class="o">=</span> <span class="n">meta</span><span class="p">)</span>
+<span class="nf">pheatmap</span><span class="p">(</span><span class="n">rld_cor</span><span class="p">,</span> <span class="n">annotation_col</span> <span class="o">=</span> <span class="n">meta</span> <span class="o">%&gt;%</span> <span class="nf">column_to_rownames</span><span class="p">(</span><span class="s">&quot;samplename&quot;</span><span class="p">))</span>
 </code></pre></div>
 <p>When you plot using <code>pheatmap()</code> the hierarchical clustering information
 is used to place similar samples together and this information is

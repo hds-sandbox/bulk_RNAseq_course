@@ -1102,10 +1102,10 @@ the raw counts and size factors below.</p>
 dataframe (PD1) and the size factor vector (size_factors), then use
 these objects to determine the normalized counts values:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Raw counts for PD1</span>
-<span class="n">PD1</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">58</span><span class="p">,</span> <span class="m">17</span><span class="p">,</span> <span class="m">97</span><span class="p">,</span> <span class="m">83</span><span class="p">,</span> <span class="m">10</span><span class="p">)</span>
-<span class="nf">names</span><span class="p">(</span><span class="n">PD1</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Sample&quot;</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="m">6</span><span class="p">)</span>
-<span class="n">PD1</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">PD1</span><span class="p">)</span>
-<span class="n">PD1</span> <span class="o">&lt;-</span> <span class="nf">t</span><span class="p">(</span><span class="n">PD1</span><span class="p">)</span>
+<span class="n">PD1</span> <span class="o">&lt;-</span> <span class="nf">t</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">58</span><span class="p">,</span> <span class="m">17</span><span class="p">,</span> <span class="m">97</span><span class="p">,</span> <span class="m">83</span><span class="p">,</span> <span class="m">10</span><span class="p">))</span> <span class="o">%&gt;%</span> 
+  <span class="nf">as_tibble</span><span class="p">()</span> <span class="o">%&gt;%</span>
+  <span class="nf">rename_all</span><span class="p">(</span><span class="o">~</span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Sample&quot;</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="m">6</span><span class="p">))</span>
+
 
 <span class="c1"># Size factors for each sample</span>
 <span class="n">size_factors</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">1.32</span><span class="p">,</span> <span class="m">0.70</span><span class="p">,</span> <span class="m">1.04</span><span class="p">,</span> <span class="m">1.27</span><span class="p">,</span> <span class="m">1.11</span><span class="p">,</span> <span class="m">0.85</span><span class="p">)</span>
@@ -1126,8 +1126,8 @@ steps:</p>
 the two files, and that the samples are in the right order. DESeq2 will
 output an error if this is not the case.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">### Check that sample names match in both files</span>
-<span class="nf">all</span><span class="p">(</span><span class="nf">colnames</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%in%</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">meta</span><span class="p">))</span>
-<span class="nf">all</span><span class="p">(</span><span class="nf">colnames</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nf">rownames</span><span class="p">(</span><span class="n">meta</span><span class="p">))</span>
+<span class="nf">all</span><span class="p">(</span><span class="n">meta</span><span class="o">$</span><span class="n">samplename</span> <span class="o">%in%</span> <span class="nf">colnames</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nf">all</span><span class="p">(</span><span class="n">meta</span><span class="o">$</span><span class="n">samplename</span> <span class="o">==</span> <span class="nf">colnames</span><span class="p">(</span><span class="n">data</span><span class="p">)[</span><span class="m">-1</span><span class="p">])</span>
 </code></pre></div>
 <p>If your data did not match, you could use the <code>match()</code> function to
 rearrange them to be matching.</p>
@@ -1156,7 +1156,9 @@ that is <code>~sampletype</code>. This column has three factor levels, which tel
 DESeq2 that for each gene we want to evaluate gene expression change
 with respect to these different levels.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Create DESeq2Dataset object</span>
-<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">countData</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">colData</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">sampletype</span><span class="p">)</span>
+<span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">countData</span> <span class="o">=</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span><span class="m">-1</span><span class="p">],</span> <span class="n">row.names</span> <span class="o">=</span> <span class="n">data</span><span class="o">$</span><span class="n">GeneSymbol</span><span class="p">),</span> 
+                              <span class="n">colData</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> 
+                              <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">sampletype</span><span class="p">)</span>
 </code></pre></div>
 <p><img src="./img/06b_count_normalization/deseq_obj1.png" style="display: block; margin: auto;" /></p>
 <p>You can use DESeq-specific functions to access the different slots and
@@ -1190,7 +1192,7 @@ using:</p>
 <div class="highlight"><pre><span></span><code><span class="n">normalized_counts</span> <span class="o">&lt;-</span> <span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 </code></pre></div>
 <p>We can save this normalized data matrix to file for later use:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">write.table</span><span class="p">(</span><span class="n">normalized_counts</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s">&quot;Data/normalized_counts.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;\t&quot;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="bp">F</span><span class="p">,</span> <span class="n">col.names</span><span class="o">=</span><span class="kc">NA</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">write.table</span><span class="p">(</span><span class="n">normalized_counts</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s">&quot;/work/introduction_bulkRNAseq_analysis/Results/normalized_counts.txt&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;\t&quot;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="bp">F</span><span class="p">)</span>
 </code></pre></div>
 <blockquote>
 <p><strong>NOTE:</strong> DESeq2 doesn’t actually use normalized counts, rather it

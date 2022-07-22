@@ -15,21 +15,21 @@ the steps in an analysis below:
 1.  Obtaining gene-level counts from your preprocessing
 
 ``` r
-data <- read.table("data/Mov10_full_counts.txt", header=T, row.names=1) 
+data <- read_table("data/Mov10_full_counts.txt") 
 
-meta <- read.table("meta/Mov10_full_meta.txt", header=T, row.names=1)
+meta <- read_table("meta/Mov10_full_meta.txt")
 ```
 
 2.  Creating the dds object:
 
 ``` r
 # Check that the row names of the metadata equal the column names of the **raw counts** data
-all(colnames(data$counts) == rownames(metadata))
+all(colnames(datacounts)[-1] == meta$samplename)
 
 # Create DESeq2Dataset object
-dds <- DESeqDataSetFromTximport(data, 
-                                colData = metadata, 
-                                design = ~ condition)
+dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data$GeneSymbol), 
+                              colData = meta, 
+                              design = ~ sampletype)
 ```
 
 3.  Exploratory data analysis (PCA & hierarchical clustering) -
@@ -42,7 +42,7 @@ rld <- rlog(dds,
 
 # Plot PCA 
 plotPCA(rld, 
-        intgroup="condition")
+        intgroup="sampletype")
 
 # Extract the rlog matrix from the object and compute pairwise correlation values
 rld_mat <- assay(rld)
@@ -50,13 +50,13 @@ rld_cor <- cor(rld_mat)
 
 # Plot heatmap
 pheatmap(rld_cor, 
-         annotation = metadata)
+         annotation = meta %>% column_to_rownames("samplename"))
 ```
 
 4.  Run DESeq2:
 
 ``` r
-# **Optional step** - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using "dds <- DESeqDataSetFromMatrix(data, colData = metadata, design = ~ covaraite + condition)"
+# **Optional step** - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using "dds <- DESeqDataSetFromMatrix(data, colData = metadata, design = ~ covariate + condition)"
 
 # Run DESeq2 differential expression analysis
 dds <- DESeq(dds)

@@ -168,6 +168,9 @@ ggplot(pdata) +
   ylab("Number of genes")
 ```
 
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics("./img/06a_count_matrix/deseq_counts_distribution.png")
+```
 
 If we zoom in close to zero, we can see a large number of genes with counts of zero:
 
@@ -177,6 +180,10 @@ ggplot(pdata) +
    xlim(-5, 500)  +
    xlab("Raw expression counts") +
    ylab("Number of genes")
+```
+
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics("./img/06a_count_matrix/deseq_counts_distribution_zoomed.png")
 ```
 
 These images illustrate some common features of RNA-seq count data, including a **low number of counts associated with a large proportion of genes**, and a long right tail due to the **lack of any upper limit for expression**. Unlike microarray data, which has a dynamic range maximum limited due to when the probes max out, there is no limit of maximum expression for RNA-seq data. Due to the differences in these technologies, the statistical models used to fit the data are different between the two methods.
@@ -230,6 +237,9 @@ ggplot(df) +
   scale_x_log10()
 ```
 
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics("./img/06a_count_matrix/deseq_mean_vs_variance.png")
+```
 
 Note that in the above figure, the variance across replicates tends to be greater than the mean (red line), especially for genes with large mean expression levels. *This is a good indication that our data do not fit the Poisson distribution and we need to account for this increase in variance using the Negative Binomial model (i.e. Poisson will underestimate variability leading to an increase in false positive DE genes).*
 

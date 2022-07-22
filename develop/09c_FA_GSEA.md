@@ -66,11 +66,9 @@ IDs. We will also need to remove the Entrez ID NA values and duplicates
 (due to gene ID conversion) prior to the analysis:
 
 ``` r
-## Remove any NA values (reduces the data by quite a bit)
-res_entrez <- dplyr::filter(res_ids, entrezid != "NA")
+## Remove any NA values (reduces the data by quite a bit) and duplicates
 
-## Remove any Entrez duplicates
-res_entrez <- res_entrez[which(duplicated(res_entrez$entrezid) == F), ]
+res_entrez <- dplyr::filter(res_ids, entrezid != "NA" & duplicated(entrezid)==F)
 ```
 
 Finally, extract and name the fold changes:
@@ -164,8 +162,6 @@ use the `gseKEGG()` function:
 ## GSEA using gene sets from KEGG pathways
 gseaKEGG <- gseKEGG(geneList = foldchanges, # ordered named vector of fold changes (Entrez IDs are the associated names)
               organism = "hsa", # supported organisms listed below
-              nPerm = 1000, # default number permutations
-              minGSSize = 20, # minimum gene set size (# genes in set) - change to test more sets or recover sets with fewer # genes
               pvalueCutoff = 0.05, # padj cutoff value
               verbose = FALSE)
 
@@ -182,7 +178,7 @@ gseaKEGG_results <- gseaKEGG@result
 ## Write GSEA results to file
 View(gseaKEGG_results)
 
-write.csv(gseaKEGG_results, "results/gseaOE_kegg.csv", quote=F)
+write.csv(gseaKEGG_results, "Results/gseaOE_kegg.csv", quote=F)
 ```
 
 > ***NOTE:** We will all get different results for the GSEA because the
@@ -218,7 +214,7 @@ to integrate the KEGG pathway data from clusterProfiler into pathway
 images:
 
 ``` r
-detach("package:dplyr", unload=TRUE) # first unload dplyr to avoid conflicts
+#detach("package:dplyr", unload=TRUE) # first unload dplyr to avoid conflicts
 
 ## Output images for a single significant KEGG pathway
 pathview(gene.data = foldchanges,
@@ -260,7 +256,6 @@ analysis:
 gseaGO <- gseGO(geneList = foldchanges, 
               OrgDb = org.Hs.eg.db, 
               ont = 'BP', 
-              nPerm = 1000, 
               minGSSize = 20, 
               pvalueCutoff = 0.05,
               verbose = FALSE) 

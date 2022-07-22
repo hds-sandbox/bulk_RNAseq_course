@@ -289,7 +289,7 @@ file:
 # Create a gene-level dataframe 
 annotations_ahb <- genes(human_ens, return.type = "data.frame")  %>%
   dplyr::select(gene_id, gene_name, entrezid, gene_biotype) %>% 
-  dplyr::filter(gene_id %in% res_tableOE_tb$gene)
+  dplyr::filter(gene_name %in% res_tableOE_tb$gene)
 ```
 
 This dataframe looks like it should be fine as it is, but we look a

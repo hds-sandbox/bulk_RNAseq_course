@@ -332,7 +332,7 @@ samples. We can do this using the `cor()` function:
 
 ``` r
 ### Compute pairwise correlation values
-rld_cor <- cor(rld_mat)    ## cor() is a base R function
+rld_cor <- as.matrix(cor(rld_mat))    ## cor() is a base R function
 ```
 
 Let’s take a look at the column and row names of the correlation matrix.
@@ -355,7 +355,7 @@ Let’s plot the heatmap!
 library(pheatmap)
 
 ### Plot heatmap using the correlation matrix and the metadata object
-pheatmap(rld_cor, annotation = meta)
+pheatmap(rld_cor, annotation_col = meta %>% column_to_rownames("samplename"))
 ```
 
 When you plot using `pheatmap()` the hierarchical clustering information

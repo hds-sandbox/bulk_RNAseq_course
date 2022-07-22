@@ -625,6 +625,7 @@ comment liberally!</p>
 <span class="nf">library</span><span class="p">(</span><span class="n">DESeq2</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">pheatmap</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">DEGreport</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">ggrepel</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="loading-data">Loading data</h3>
 <p>To load the data into our current environment, we will be using the
@@ -633,9 +634,9 @@ specify arguments to let R know that we have a header (<code>header = T</code>) 
 the first column is our row names (<code>row.names =1</code>). By default the
 function expects tab-delimited files, which is what we have.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Load in data</span>
-<span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;/work/bulk_RNAseq_course/Data/Mov10_full_counts.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">)</span> 
+<span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">read_table</span><span class="p">(</span><span class="s">&quot;/work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/Mov10_full_counts.txt&quot;</span><span class="p">)</span> 
 
-<span class="n">meta</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;/work/bulk_RNAseq_course/Data/Mov10_full_meta.txt&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">T</span><span class="p">,</span> <span class="n">row.names</span><span class="o">=</span><span class="m">1</span><span class="p">)</span>
+<span class="n">meta</span> <span class="o">&lt;-</span> <span class="nf">read_table</span><span class="p">(</span><span class="s">&quot;/work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/Mov10_full_meta.txt&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>Use <code>class()</code> to inspect our data and make sure we are working with data
 frames:</p>
@@ -707,18 +708,22 @@ for few numbers of replicates and large dynamic expression range).</p>
 <h3 id="rna-seq-count-distribution">RNA-seq count distribution</h3>
 <p>To determine the appropriate statistical model, we need information
 about the distribution of counts. To get an idea about how RNA-seq
-counts are distributed, let’s plot the counts for a single sample,
-‘Mov10_oe_1’:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span>
-  <span class="nf">geom_histogram</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">Mov10_oe_1</span><span class="p">),</span> <span class="n">stat</span> <span class="o">=</span> <span class="s">&quot;bin&quot;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="m">200</span><span class="p">)</span> <span class="o">+</span>
+counts are distributed, let’s plot the counts of all the samples:</p>
+<div class="highlight"><pre><span></span><code><span class="n">pdata</span> <span class="o">&lt;-</span> <span class="n">data</span> <span class="o">%&gt;%</span> 
+  <span class="nf">gather</span><span class="p">(</span><span class="n">key</span> <span class="o">=</span> <span class="n">Sample</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">Count</span><span class="p">,</span> <span class="o">-</span><span class="n">GeneSymbol</span><span class="p">)</span>
+
+<span class="n">pdata</span>
+
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">pdata</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">geom_histogram</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">Count</span><span class="p">),</span> <span class="n">stat</span> <span class="o">=</span> <span class="s">&quot;bin&quot;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="m">200</span><span class="p">)</span> <span class="o">+</span>
   <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Raw expression counts&quot;</span><span class="p">)</span> <span class="o">+</span>
   <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Number of genes&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p><img src="./img/06a_count_matrix/deseq_counts_distribution.png" style="display: block; margin: auto;" /></p>
 <p>If we zoom in close to zero, we can see a large number of genes with
 counts of zero:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span>
-   <span class="nf">geom_histogram</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">Mov10_oe_1</span><span class="p">),</span> <span class="n">stat</span> <span class="o">=</span> <span class="s">&quot;bin&quot;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="m">200</span><span class="p">)</span> <span class="o">+</span> 
+<div class="highlight"><pre><span></span><code><span class="nf">ggplot</span><span class="p">(</span><span class="n">pdata</span><span class="p">)</span> <span class="o">+</span>
+   <span class="nf">geom_histogram</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">Count</span><span class="p">),</span> <span class="n">stat</span> <span class="o">=</span> <span class="s">&quot;bin&quot;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="m">200</span><span class="p">)</span> <span class="o">+</span> 
    <span class="nf">xlim</span><span class="p">(</span><span class="m">-5</span><span class="p">,</span> <span class="m">500</span><span class="p">)</span>  <span class="o">+</span>
    <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Raw expression counts&quot;</span><span class="p">)</span> <span class="o">+</span>
    <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Number of genes&quot;</span><span class="p">)</span>
@@ -797,15 +802,17 @@ variance, but for NB, mean \< variance.*
 Run the following code to plot the *mean versus variance* for the ‘Mov10
 overexpression’ replicates:
 
-<div class="highlight"><pre><span></span><code><span class="n">mean_counts</span> <span class="o">&lt;-</span> <span class="nf">apply</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span> <span class="m">3</span><span class="o">:</span><span class="m">5</span><span class="p">],</span> <span class="m">1</span><span class="p">,</span> <span class="n">mean</span><span class="p">)</span>
-<span class="n">variance_counts</span> <span class="o">&lt;-</span> <span class="nf">apply</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span> <span class="m">3</span><span class="o">:</span><span class="m">5</span><span class="p">],</span> <span class="m">1</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">variance_counts</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">df</span> <span class="o">&lt;-</span> <span class="n">data</span> <span class="o">%&gt;%</span> 
+  <span class="nf">rowwise</span><span class="p">()</span> <span class="o">%&gt;%</span> 
+  <span class="nf">summarise</span><span class="p">(</span><span class="n">mean_counts</span> <span class="o">=</span> <span class="nf">mean</span><span class="p">(</span><span class="n">Mov10_kd_2</span><span class="o">:</span><span class="n">Irrel_kd_3</span><span class="p">),</span> 
+            <span class="n">variance_counts</span> <span class="o">=</span> <span class="nf">var</span><span class="p">(</span><span class="n">Mov10_kd_2</span><span class="o">:</span><span class="n">Irrel_kd_3</span><span class="p">))</span>
+
 
 <span class="nf">ggplot</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">+</span>
-        <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">variance_counts</span><span class="p">))</span> <span class="o">+</span> 
-        <span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">))</span> <span class="o">+</span>
-        <span class="nf">scale_y_log10</span><span class="p">()</span> <span class="o">+</span>
-        <span class="nf">scale_x_log10</span><span class="p">()</span>
+  <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">variance_counts</span><span class="p">))</span> <span class="o">+</span> 
+  <span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">))</span> <span class="o">+</span>
+  <span class="nf">scale_y_log10</span><span class="p">()</span> <span class="o">+</span>
+  <span class="nf">scale_x_log10</span><span class="p">()</span>
 </code></pre></div>
 
 <img src="./img/06a_count_matrix/deseq_mean_vs_variance.png" style="display: block; margin: auto;" />
