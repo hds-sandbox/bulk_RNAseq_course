@@ -16,7 +16,7 @@ nav:
         - 'Visualization': 08d_DEA_visualization.md
     - 'Functional Analysis': 
         - 'Gene annotation': 09a_FA_genomic_annotation.md
-        - 'Over represetation analysis': 09b_FA_overrepresentation.md
+        - 'Over representation analysis': 09b_FA_overrepresentation.md
         - 'Class scoring': 09c_FA_GSEA.md
     - 'Summarized workflow': 10_summarized_workflow.md
     
