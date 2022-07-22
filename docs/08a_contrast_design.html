@@ -437,46 +437,40 @@
     One factor, three levels (slide 7)
   </a>
   
-    <nav class="md-nav" aria-label="One factor, three levels (slide 7)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
+</li>
+      
+        <li class="md-nav__item">
   <a href="#a-and-b-against-o-slide-7" class="md-nav__link">
     A and B against O (slide 7)
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#extra-why-not-define-a-new-group-in-our-design-matrix-slide-8" class="md-nav__link">
     Extra: why not define a new group in our design matrix? (slide 8)
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#two-factors-with-interaction-slide-9" class="md-nav__link">
     Two factors with interaction (slide 9)
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#three-factors-with-nesting-slide-10" class="md-nav__link">
     Three factors, with nesting (slide 10)
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#extra-imbalanced-design" class="md-nav__link">
     Extra: imbalanced design
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -586,7 +580,7 @@
   
     <li class="md-nav__item">
       <a href="09b_FA_overrepresentation.html" class="md-nav__link">
-        Over represetation analysis
+        Over representation analysis
       </a>
     </li>
   
@@ -698,46 +692,40 @@
     One factor, three levels (slide 7)
   </a>
   
-    <nav class="md-nav" aria-label="One factor, three levels (slide 7)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
+</li>
+      
+        <li class="md-nav__item">
   <a href="#a-and-b-against-o-slide-7" class="md-nav__link">
     A and B against O (slide 7)
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#extra-why-not-define-a-new-group-in-our-design-matrix-slide-8" class="md-nav__link">
     Extra: why not define a new group in our design matrix? (slide 8)
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#two-factors-with-interaction-slide-9" class="md-nav__link">
     Two factors with interaction (slide 9)
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#three-factors-with-nesting-slide-10" class="md-nav__link">
     Three factors, with nesting (slide 10)
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#extra-imbalanced-design" class="md-nav__link">
     Extra: imbalanced design
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -754,6 +742,8 @@
               
                 
 
+
+  <h1>Design formula</h1>
 
 <p>Approximate time: 40 minutes</p>
 <h2 id="learning-objectives">Learning Objectives</h2>
@@ -1042,7 +1032,7 @@ can see the result is the same:</p>
 design. The design with an intercept is more common, but for the
 purposes of understanding what’s going on, it’s sometimes easier to look
 at models without intercept.</p>
-<h1 id="one-factor-three-levels-slide-7">One factor, three levels (slide 7)</h1>
+<h2 id="one-factor-three-levels-slide-7">One factor, three levels (slide 7)</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># simulate data</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">9</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="kc">NULL</span>

@@ -355,7 +355,7 @@ design. The design with an intercept is more common, but for the
 purposes of understanding what’s going on, it’s sometimes easier to look
 at models without intercept.
 
-# One factor, three levels (slide 7)
+## One factor, three levels (slide 7)
 
 ``` r
 # simulate data
