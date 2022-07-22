@@ -8,7 +8,7 @@ Approximate time: 40 minutes
 -   List other tools and resources for identifying genes of novel
     pathways or networks
 
-# Functional analysis
+## Functional analysis
 
 Over-representation analysis is only a single type of functional
 analysis method that is available for teasing apart the biological

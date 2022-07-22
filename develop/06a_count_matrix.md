@@ -1,6 +1,6 @@
 Approximate time: 20 minutes
 
-# Learning Objectives
+## Learning Objectives
 
 -   Describe how to set up an RNA-seq project in R
 -   Describe the RNA-seq and the differential gene expression analysis
@@ -8,7 +8,7 @@ Approximate time: 20 minutes
 -   Explain why negative binomial distribution is used to model RNA-seq
     count data
 
-# Differential gene expression (DGE) analysis overview
+## Differential gene expression (DGE) analysis overview
 
 The goal of RNA-seq is often to perform differential expression testing
 to determine which genes are expressed at different levels between
@@ -33,7 +33,7 @@ samples. Next, we will perform differential expression analysis, and
 visually explore the results prior to performing downstream functional
 analysis.
 
-# Setting up
+## Setting up
 
 Before we get into the details of the analysis, let’s get started by
 opening up RStudio and setting up a new project for this analysis.

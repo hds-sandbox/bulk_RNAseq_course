@@ -8,7 +8,7 @@ Approximate time: 30 minutes
     annotation databases
 -   Apply various R packages for retrieval of genomic annotations
 
-# Genomic annotations
+## Genomic annotations
 
 The analysis of next-generation sequencing results requires associating
 genes, transcripts, proteins, etc. with functional or regulatory

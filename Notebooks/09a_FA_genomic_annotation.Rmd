@@ -41,7 +41,7 @@ Approximate time: 30 minutes
 * Compare and contrast the tools available for accessing genomic annotation databases 
 * Apply various R packages for retrieval of genomic annotations
 
-# Genomic annotations
+## Genomic annotations
 
 The analysis of next-generation sequencing results requires associating genes, transcripts, proteins, etc. with functional or regulatory information. To perform functional analysis on gene lists, we often need to obtain gene identifiers that are compatible with the tools we wish to use and this is not always trivial. Here, we discuss **ways in which you can obtain gene annotation information and some of the advantages and disadvantages of each method**.
 
