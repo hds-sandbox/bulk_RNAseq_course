@@ -1,0 +1,47 @@
+{
+    "siteVersion": 3,
+    "request": {
+        "application": {
+            "name": "rstudio",
+            "version": "4.2.0"
+        },
+        "product": {
+            "id": "u1-standard-1",
+            "category": "u1-standard",
+            "provider": "ucloud"
+        },
+        "name": "bulk RNAseq workshop",
+        "replicas": 1,
+        "parameters": {
+            "d_var": {
+                "path": "/54396/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_setup.sh",
+                "type": "file",
+                "readOnly": false
+            }
+        },
+        "resources": [
+            {
+                "path": "/54396/projects/sandbox_bulkRNAseq_testAndFeedback",
+                "type": "file",
+                "readOnly": true
+            },
+        ],
+        "timeAllocation": {
+            "hours": 8,
+            "minutes": 0,
+            "seconds": 0
+        },
+        "resolvedProduct": null,
+        "resolvedApplication": null,
+        "resolvedSupport": null,
+        "allowDuplicateJob": true
+    },
+    "resolvedResources": {
+        "ingress": {
+        }
+    },
+    "machineType": {
+        "cpu": 4,
+        "memoryInGigs": 23
+    }
+}
