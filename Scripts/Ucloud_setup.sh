@@ -9,11 +9,12 @@ FILE="introduction_bulkRNAseq_analysis"
 if [[ -f "$FILE" ]]; then
     echo "$FILE exists. No overwriting."
 else
+	echo "No $FILE found. Creating new directory"
 	mkdir introduction_bulkRNAseq_analysis
 	cd introduction_bulkRNAseq_analysis
 	mkdir Results
-	cp -r work/sandbox_bulkRNAseq_testAndFeedback/Notebooks ./
-	ls 
+	cp -r /work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Notebooks ./
+	ln -s ../sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/ ./Data
 fi
 
 # mkdir introduction_bulkRNAseq_analysis
