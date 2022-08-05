@@ -7,29 +7,30 @@ This workshop material includes a tutorial on how to approach RNAseq data, start
 ## Goals
 
 By the end of this workshop, you should be able to analyse your own bulk RNAseq count matrix:
-  - Normalize your data.
-  - Explore your samples with PCAs and heatmaps.
-  - Perform Differential Expression Analysis.
-  - Annotate your results.
+
+-   Normalize your data.
+-   Explore your samples with PCAs and heatmaps.
+-   Perform Differential Expression Analysis.
+-   Annotate your results.
 
 ## Syllabus
 
-1. Introduction to bulk-RNASeq
-2. Setup
-3. Experimental planning
-4. Intro to the data
-5. Preprocessing overview
-6. RNAseq data
-7. Exploratory analysis
-8. Differential Expression Analysis
-9. Functional Analysis
+1.  Course Introduction
+2.  Setup
+3.  Experimental planning
+4.  Data Explanation
+5.  Preprocessing
+6.  RNAseq counts
+7.  Exploratory analysis
+8.  Differential Expression Analysis
+9.  Functional Analysis
 10. Summarized workflow
 
 ## Workshop prerequisites
 
-- Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop [R basics](https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022)
-- Basic knowledge of RNAseq technology
-- Basic knowledge of data science and statistics such as PCA, clustering and statistical testing
+-   Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop [R basics](https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022)
+-   Basic knowledge of RNAseq technology
+-   Basic knowledge of data science and statistics such as PCA, clustering and statistical testing
 
 ## Intended use
 
@@ -37,7 +38,7 @@ The aim of this repository is to run a comprehensive but introductory workshop o
 
 ## Acknowledgements
 
-- [Center for Health Data Science](https://heads.ku.dk/), University of Copenhagen.
-- [Hugo Tavares](https://bioinfotraining.bio.cam.ac.uk/about), Bioinformatics Training Facility, University of Cambridge.
-- [Silvia Raineri](https://danstem.ku.dk/people/serup_staff/), Center for Stem Cell Medicine (reNew), University of Copenhagen.
-- [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), check out their [github repo](https://github.com/hbctraining/DGE_workshop_salmon_online)
+-   [Center for Health Data Science](https://heads.ku.dk/), University of Copenhagen.
+-   [Hugo Tavares](https://bioinfotraining.bio.cam.ac.uk/about), Bioinformatics Training Facility, University of Cambridge.
+-   [Silvia Raineri](https://danstem.ku.dk/people/serup_staff/), Center for Stem Cell Medicine (reNew), University of Copenhagen.
+-   [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), check out their [github repo](https://github.com/hbctraining/DGE_workshop_salmon_online)

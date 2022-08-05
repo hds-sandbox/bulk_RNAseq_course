@@ -121,9 +121,9 @@ and therefore **we chose to use apeglm**.
 A plot that can be useful to exploring our results is the MA plot. The
 MA plot shows the **mean of the normalized counts versus the log2 fold
 changes for all genes tested**. The genes that are significantly DE are
-colored to be easily identified. This is also a great way to illustrate
-the effect of LFC shrinkage. The DESeq2 package offers a simple function
-to generate an MA plot.
+colored to be easily identified (adjusted p-value \< 0.01 by default).
+This is also a great way to illustrate the effect of LFC shrinkage. The
+DESeq2 package offers a simple function to generate an MA plot.
 
 **Let’s start with the unshrunken results:**
 
@@ -234,9 +234,7 @@ theme(plot.title = element_text(hjust = 0.5))
 > `geom_text_repel()` from the `ggrepel` package to label our individual
 > points on the plot.
 
-``` r
-knitr::include_graphics("./img/08d_DEA_visualization/plotCounts_ggrepel.png")
-```
+<img src="./img/08d_DEA_visualization/plotCounts_ggrepel.png" style="display: block; margin: auto auto auto 0;" />
 
 ### Heatmap
 

@@ -25,7 +25,7 @@ Using these data, we will evaluate transcriptional patterns associated with pert
 
 The authors are investigating interactions between various genes involved in Fragile X syndrome, a disease in which there is aberrant production of the FMRP protein. 
 
-> **FMRP** is “most commonly found in the brain, is essential for normal cognitive development and female reproductive function. Mutations of this gene can lead to fragile X syndrome, mental retardation, premature ovarian failure, autism, Parkinson's disease, developmental delays and other cognitive deficits.” - from [wikipedia](https://en.wikipedia.org/wiki/FMR1)
+> **FMRP** is “most commonly found in the brain, is essential for normal cognitive development and female reproductive function. Mutations of this gene can lead to fragile X syndrome, mental retardation, premature ovarian failure, autism, Parkinson's disease, developmental delays and other cognitive deficits.” - from [Wikipedia](https://en.wikipedia.org/wiki/FMR1)
 
 > **MOV10**, is a putative RNA helicase that is also associated with **FMRP** in the context of the microRNA pathway. 
 

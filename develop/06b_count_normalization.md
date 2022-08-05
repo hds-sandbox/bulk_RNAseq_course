@@ -301,7 +301,7 @@ with respect to these different levels.
 ``` r
 ## Create DESeq2Dataset object
 dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data$GeneSymbol), 
-                              colData = meta, 
+                              colData = data.frame(meta[,-1], row.names = meta$samplename), 
                               design = ~ sampletype)
 ```
 

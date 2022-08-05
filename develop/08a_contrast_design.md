@@ -74,11 +74,11 @@ For example, suppose you have the following metadata:
 
 <img src="./img/08a_contrast_design/metadata.png" style="display: block; margin: auto;" />
 
-If you want to examine the expression differences between `treatments`,
+If you want to examine the expression differences between `condition`,
 and you know that major sources of variation include `bloodtype` and
 `patient`, then your design formula would be:
 
-`design = ~ bloodtype + patient + treatment`
+`design = ~ bloodtype + patient + condition`
 
 The tilde (`~`) should always precede your factors and tells DESeq2 to
 model the counts using the following formula. Note the **factors
@@ -100,7 +100,7 @@ created a DESeqDataSet object from their own data following the
 [instructions in the
 vignette](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset).
 
-## One factor, two levels (slide 5)
+## One factor, two levels
 
 ``` r
 # simulate data
@@ -294,7 +294,7 @@ plot(res1$log2FoldChange, res2$log2FoldChange)
 
 <img src="./img/08a_contrast_design/contrast_res1.png" style="display: block; margin: auto;" />
 
-## Recoding the design (slide 6)
+## Recoding the design
 
 Often, we can use different model matrices that essentially correspond
 to the same design. For example, we could recode our design above by
@@ -355,7 +355,7 @@ design. The design with an intercept is more common, but for the
 purposes of understanding what’s going on, it’s sometimes easier to look
 at models without intercept.
 
-## One factor, three levels (slide 7)
+## One factor, three levels
 
 ``` r
 # simulate data
@@ -385,7 +385,7 @@ colData(dds)
     ## sample9    bloodO
 
 As in the previous example, we only have one factor of interest,
-`condition`, and so we define our design and run the DESeq as before:
+`bloodtype`, and so we define our design and run the DESeq as before:
 
 ``` r
 design(dds) <- ~ 1 + bloodtype
@@ -468,7 +468,7 @@ plot(res1_bloodB_bloodO$log2FoldChange, res2_bloodB_bloodO$log2FoldChange)
 plot(res1_bloodA_bloodB$log2FoldChange, res2_bloodA_bloodB$log2FoldChange)
 ```
 
-## A and B against O (slide 7)
+## A and B against O
 
 With this approach, we could even define a more unusual contrast, for
 example to find genes that differ between A and B against and O samples:
@@ -504,7 +504,7 @@ To obtain our results, we use the `results()` function as before:
 res2_AB <- results(dds, contrast = A_B - bloodO)
 ```
 
-## Extra: why not define a new group in our design matrix? (slide 8)
+## Extra: why not define a new group in our design matrix?
 
 For this last example (A_B vs bloodO), we may have considered creating a
 new variable in our column data:
@@ -564,7 +564,7 @@ abline(0, 1, col = "brown", lwd = 2)
 
 <img src="./img/08a_contrast_design/contrast_res4.png" style="display: block; margin: auto;" />
 
-## Two factors with interaction (slide 9)
+## Two factors with interaction
 
 ``` r
 # simulate data
@@ -678,7 +678,7 @@ In conclusion, although we can define these contrasts using DESeq
 coefficient names, it is somewhat more explicit (and perhaps intuitive?)
 what it is we’re comparing using matrix-based contrasts.
 
-## Three factors, with nesting (slide 10)
+## Three factors, with nesting
 
 ``` r
 # simulate data

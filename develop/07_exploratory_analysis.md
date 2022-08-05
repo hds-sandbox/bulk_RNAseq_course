@@ -270,7 +270,7 @@ experimental sample groups.
 plotPCA(rld, intgroup="sampletype")
 ```
 
-<img src="./img/07_exploratory_analysis/PCA_500.png" style="display: block; margin: auto;" />
+<img src="./img/07_exploratory_analysis/pca_500.png" style="display: block; margin: auto;" />
 
 ------------------------------------------------------------------------
 

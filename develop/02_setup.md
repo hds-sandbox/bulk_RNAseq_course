@@ -1,6 +1,6 @@
 # Setup for teaching in uCloud
 
-Access to [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Health data science sandbox` where you have been invited.
+Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Health data science sandbox` where you have been invited.
 
 ![](./img/02_setup/chooseProject.png)
 
@@ -10,20 +10,21 @@ Click on `Apps` on the left-side menu, and look for the application `Rstudio v4.
 
 You will be met with a series of possible parameters to choose. You have to assign:
 
-- job name: give your job a name you would like. For example: bulk-RNAseq course.
-- hours: how long you are using the app. You can choose as many hours as the course session lasts. Or just a couple of hours to do some exercises. You can always add extra time while using the app, or run it again with the same settings (they will be saved under the name you chose as `job name`)
-- Machine type: it is sufficient to choose a machine with 4 vCPUs.
-![](./img/02_setup/chooseCPU.png)
+-   job name: give your job a name you would like. For example: bulk-RNAseq course.
 
-- Dependencies: commands that will run automatically when starting the app. It will get all the necessary files and folders to run the course. 
-  Choose the same file as in the picture. Either:
-  * Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback → bulkRNAseq_course  → Scripts  → Ucloud_setup.sh`, click “Use”. 
-  * Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_setup.sh`.
+-   hours: how long you are using the app. You can choose as many hours as the course session lasts. Or just a couple of hours to do some exercises. You can always add extra time while using the app, or run it again with the same settings (they will be saved under the name you chose as `job name`)
 
-- Select folders to use: makes specific folders usable by the app. The folder below contains the data used in this course.
-  Choose the same folder as in the picture. Either:
-  * Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback`, click “Use.”
-  * Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback`.
+-   Machine type: it is sufficient to choose a machine with 4 vCPUs. ![](./img/02_setup/chooseCPU.png)
+
+-   Dependencies: commands that will run automatically when starting the app. It will get all the necessary files and folders to run the course. Choose the same file as in the picture. Either:
+
+    -   Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback → bulkRNAseq_course  → Scripts  → Ucloud_setup.sh`, click "Use".
+    -   Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_setup.sh`.
+
+-   Select folders to use: makes specific folders usable by the app. The folder below contains the data used in this course. Choose the same folder as in the picture. Either:
+
+    -   Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback`, click "Use."
+    -   Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback`.
 
 ![](./img/02_setup/chooseOptional.png)
 
@@ -39,8 +40,7 @@ Now, click on `open interface` on the top right-hand side of the screen. You wil
 
 On the lower right side of Rstudio, where you see the file explorer, access the folder `introduction_bulkRNAseq_analysis`. Here you will find the notebooks containing the code used in the course. There are still some theory lessons before we start coding, so keep following the material!
 
-**Important**: when you are done, go on `Runs` in uCloud, and choose your app if it is still running. Then you will be able to stop it from using resources. Your material will be saved in a volume with your username, that you should be able to see under the menu `Files`.
-![](./img/02_setup/stop.png)
+**Important**: when you are done, go on `Runs` in uCloud, and choose your app if it is still running. Then you will be able to stop it from using resources. Your material will be saved in a volume with your username, that you should be able to see under the menu `Files`. ![](./img/02_setup/stop.png)
 
 # Restarting the Rstudio session
 
@@ -54,20 +54,18 @@ You will be met again with a series of possible parameters to choose. You have t
 
 ![](./img/02_setup/chooseCPU.png)
 
-For dependencies, you will choose a different dependency file
-  Choose the same file as in the picture. Either:
-  
-  * Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback → bulkRNAseq_course  → Scripts  → Ucloud_restart.sh`, click “Use”. 
-  * Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_restart.sh`.
+For dependencies, you will choose a different dependency file Choose the same file as in the picture. Either:
+
+-   Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback → bulkRNAseq_course  → Scripts  → Ucloud_restart.sh`, click "Use".
+-   Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_restart.sh`.
 
 In *"Select folders to use"*, add the same folder as before:
 
-  * Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback`, click “Use.”
-  * Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback`.
+-   Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback`, click "Use."
+-   Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback`.
 
 In addition, add the the folder with the results of your previous job:
 
-  * Go to `Member Files: your_username → Jobs → Rstudio → job_name → introduction_bulkRNAseq_analysis`, click “Use.”
+-   Go to `Member Files: your_username → Jobs → Rstudio → job_name → introduction_bulkRNAseq_analysis`, click "Use."
 
 You are ready to run the app by clicking on the button on the right column of the screen (`submit`). After opening the Rstudio interface, you should be able to access the folder `introduction_bulkRNAseq_analysis`, where you will find the your course notebooks and results from your previous work!
-
