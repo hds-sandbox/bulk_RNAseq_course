@@ -419,50 +419,50 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#one-factor-two-levels-slide-5" class="md-nav__link">
-    One factor, two levels (slide 5)
+  <a href="#one-factor-two-levels" class="md-nav__link">
+    One factor, two levels
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#recoding-the-design-slide-6" class="md-nav__link">
-    Recoding the design (slide 6)
+  <a href="#recoding-the-design" class="md-nav__link">
+    Recoding the design
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#one-factor-three-levels-slide-7" class="md-nav__link">
-    One factor, three levels (slide 7)
+  <a href="#one-factor-three-levels" class="md-nav__link">
+    One factor, three levels
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-and-b-against-o-slide-7" class="md-nav__link">
-    A and B against O (slide 7)
+  <a href="#a-and-b-against-o" class="md-nav__link">
+    A and B against O
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#extra-why-not-define-a-new-group-in-our-design-matrix-slide-8" class="md-nav__link">
-    Extra: why not define a new group in our design matrix? (slide 8)
+  <a href="#extra-why-not-define-a-new-group-in-our-design-matrix" class="md-nav__link">
+    Extra: why not define a new group in our design matrix?
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#two-factors-with-interaction-slide-9" class="md-nav__link">
-    Two factors with interaction (slide 9)
+  <a href="#two-factors-with-interaction" class="md-nav__link">
+    Two factors with interaction
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#three-factors-with-nesting-slide-10" class="md-nav__link">
-    Three factors, with nesting (slide 10)
+  <a href="#three-factors-with-nesting" class="md-nav__link">
+    Three factors, with nesting
   </a>
   
 </li>
@@ -674,50 +674,50 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#one-factor-two-levels-slide-5" class="md-nav__link">
-    One factor, two levels (slide 5)
+  <a href="#one-factor-two-levels" class="md-nav__link">
+    One factor, two levels
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#recoding-the-design-slide-6" class="md-nav__link">
-    Recoding the design (slide 6)
+  <a href="#recoding-the-design" class="md-nav__link">
+    Recoding the design
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#one-factor-three-levels-slide-7" class="md-nav__link">
-    One factor, three levels (slide 7)
+  <a href="#one-factor-three-levels" class="md-nav__link">
+    One factor, three levels
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-and-b-against-o-slide-7" class="md-nav__link">
-    A and B against O (slide 7)
+  <a href="#a-and-b-against-o" class="md-nav__link">
+    A and B against O
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#extra-why-not-define-a-new-group-in-our-design-matrix-slide-8" class="md-nav__link">
-    Extra: why not define a new group in our design matrix? (slide 8)
+  <a href="#extra-why-not-define-a-new-group-in-our-design-matrix" class="md-nav__link">
+    Extra: why not define a new group in our design matrix?
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#two-factors-with-interaction-slide-9" class="md-nav__link">
-    Two factors with interaction (slide 9)
+  <a href="#two-factors-with-interaction" class="md-nav__link">
+    Two factors with interaction
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#three-factors-with-nesting-slide-10" class="md-nav__link">
-    Three factors, with nesting (slide 10)
+  <a href="#three-factors-with-nesting" class="md-nav__link">
+    Three factors, with nesting
   </a>
   
 </li>
@@ -808,10 +808,10 @@ your data. The last factor entered in the formula should be the
 condition of interest.</strong></p>
 <p>For example, suppose you have the following metadata:</p>
 <p><img src="./img/08a_contrast_design/metadata.png" style="display: block; margin: auto;" /></p>
-<p>If you want to examine the expression differences between <code>treatments</code>,
+<p>If you want to examine the expression differences between <code>condition</code>,
 and you know that major sources of variation include <code>bloodtype</code> and
 <code>patient</code>, then your design formula would be:</p>
-<p><code>design = ~ bloodtype + patient + treatment</code></p>
+<p><code>design = ~ bloodtype + patient + condition</code></p>
 <p>The tilde (<code>~</code>) should always precede your factors and tells DESeq2 to
 model the counts using the following formula. Note the <strong>factors
 included in the design formula need to match the column names in the
@@ -829,7 +829,7 @@ example. In practice, users can ignore this step as they should have
 created a DESeqDataSet object from their own data following the
 <a href="https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset">instructions in the
 vignette</a>.</p>
-<h2 id="one-factor-two-levels-slide-5">One factor, two levels (slide 5)</h2>
+<h2 id="one-factor-two-levels">One factor, two levels</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># simulate data</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">6</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;control&quot;</span><span class="p">,</span> <span class="s">&quot;treat&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">3</span><span class="p">))</span>
@@ -986,7 +986,7 @@ approach:</p>
 <div class="highlight"><pre><span></span><code><span class="nf">plot</span><span class="p">(</span><span class="n">res1</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
 </code></pre></div>
 <p><img src="./img/08a_contrast_design/contrast_res1.png" style="display: block; margin: auto;" /></p>
-<h2 id="recoding-the-design-slide-6">Recoding the design (slide 6)</h2>
+<h2 id="recoding-the-design">Recoding the design</h2>
 <p>Often, we can use different model matrices that essentially correspond
 to the same design. For example, we could recode our design above by
 removing the intercept:</p>
@@ -1032,7 +1032,7 @@ can see the result is the same:</p>
 design. The design with an intercept is more common, but for the
 purposes of understanding what’s going on, it’s sometimes easier to look
 at models without intercept.</p>
-<h2 id="one-factor-three-levels-slide-7">One factor, three levels (slide 7)</h2>
+<h2 id="one-factor-three-levels">One factor, three levels</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># simulate data</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">9</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 <span class="n">dds</span><span class="o">$</span><span class="n">condition</span> <span class="o">&lt;-</span> <span class="kc">NULL</span>
@@ -1056,7 +1056,7 @@ at models without intercept.</p>
 ## sample9    bloodO
 </code></pre></div>
 <p>As in the previous example, we only have one factor of interest,
-<code>condition</code>, and so we define our design and run the DESeq as before:</p>
+<code>bloodtype</code>, and so we define our design and run the DESeq as before:</p>
 <div class="highlight"><pre><span></span><code><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="o">~</span> <span class="m">1</span> <span class="o">+</span> <span class="n">bloodtype</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeq</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
 <span class="c1"># check the coefficients estimated by DEseq</span>
@@ -1122,7 +1122,7 @@ define our comparisons from the design matrix:</p>
 <span class="nf">plot</span><span class="p">(</span><span class="n">res1_bloodB_bloodO</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2_bloodB_bloodO</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
 <span class="nf">plot</span><span class="p">(</span><span class="n">res1_bloodA_bloodB</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">,</span> <span class="n">res2_bloodA_bloodB</span><span class="o">$</span><span class="n">log2FoldChange</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="a-and-b-against-o-slide-7">A and B against O (slide 7)</h2>
+<h2 id="a-and-b-against-o">A and B against O</h2>
 <p>With this approach, we could even define a more unusual contrast, for
 example to find genes that differ between A and B against and O samples:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># define vector of coefficients for A_B samples</span>
@@ -1148,7 +1148,7 @@ this:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># get the results between A_B and bloodA</span>
 <span class="n">res2_AB</span> <span class="o">&lt;-</span> <span class="nf">results</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span> <span class="n">contrast</span> <span class="o">=</span> <span class="n">A_B</span> <span class="o">-</span> <span class="n">bloodO</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="extra-why-not-define-a-new-group-in-our-design-matrix-slide-8">Extra: why not define a new group in our design matrix? (slide 8)</h2>
+<h2 id="extra-why-not-define-a-new-group-in-our-design-matrix">Extra: why not define a new group in our design matrix?</h2>
 <p>For this last example (A_B vs bloodO), we may have considered creating a
 new variable in our column data:</p>
 <div class="highlight"><pre><span></span><code><span class="n">dds</span><span class="o">$</span><span class="n">A_B</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">%in%</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="s">&quot;bloodB&quot;</span><span class="p">))</span>
@@ -1191,7 +1191,7 @@ above estimates the error within each of those groups.</p>
 <span class="nf">abline</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s">&quot;brown&quot;</span><span class="p">,</span> <span class="n">lwd</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 </code></pre></div>
 <p><img src="./img/08a_contrast_design/contrast_res4.png" style="display: block; margin: auto;" /></p>
-<h2 id="two-factors-with-interaction-slide-9">Two factors with interaction (slide 9)</h2>
+<h2 id="two-factors-with-interaction">Two factors with interaction</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># simulate data</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">12</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 <span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodO&quot;</span><span class="p">,</span> <span class="s">&quot;bloodA&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">6</span><span class="p">))</span>
@@ -1275,7 +1275,7 @@ names from DESeq).</p>
 <p>In conclusion, although we can define these contrasts using DESeq
 coefficient names, it is somewhat more explicit (and perhaps intuitive?)
 what it is we’re comparing using matrix-based contrasts.</p>
-<h2 id="three-factors-with-nesting-slide-10">Three factors, with nesting (slide 10)</h2>
+<h2 id="three-factors-with-nesting">Three factors, with nesting</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># simulate data</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">makeExampleDESeqDataSet</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="m">1000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="m">24</span><span class="p">,</span> <span class="n">betaSD</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 <span class="n">dds</span><span class="o">$</span><span class="n">bloodtype</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;bloodA&quot;</span><span class="p">,</span> <span class="s">&quot;bloodO&quot;</span><span class="p">),</span> <span class="n">each</span> <span class="o">=</span> <span class="m">12</span><span class="p">))</span>

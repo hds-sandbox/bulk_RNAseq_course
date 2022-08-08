@@ -19,4 +19,4 @@ else
 	ln -s ../82207/bulk_RNAseq_course/Data/ ./Data
 fi
 
-echo "Done.\n"
+echo "Done."

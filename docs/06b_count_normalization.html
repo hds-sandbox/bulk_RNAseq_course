@@ -1157,7 +1157,7 @@ DESeq2 that for each gene we want to evaluate gene expression change
 with respect to these different levels.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Create DESeq2Dataset object</span>
 <span class="n">dds</span> <span class="o">&lt;-</span> <span class="nf">DESeqDataSetFromMatrix</span><span class="p">(</span><span class="n">countData</span> <span class="o">=</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span><span class="m">-1</span><span class="p">],</span> <span class="n">row.names</span> <span class="o">=</span> <span class="n">data</span><span class="o">$</span><span class="n">GeneSymbol</span><span class="p">),</span> 
-                              <span class="n">colData</span> <span class="o">=</span> <span class="n">meta</span><span class="p">,</span> 
+                              <span class="n">colData</span> <span class="o">=</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">meta</span><span class="p">[,</span><span class="m">-1</span><span class="p">],</span> <span class="n">row.names</span> <span class="o">=</span> <span class="n">meta</span><span class="o">$</span><span class="n">samplename</span><span class="p">),</span> 
                               <span class="n">design</span> <span class="o">=</span> <span class="o">~</span> <span class="n">sampletype</span><span class="p">)</span>
 </code></pre></div>
 <p><img src="./img/06b_count_normalization/deseq_obj1.png" style="display: block; margin: auto;" /></p>

@@ -858,9 +858,9 @@ values you have to work with you can use <code>resultsNames(dds)</code>.</p>
 <p>A plot that can be useful to exploring our results is the MA plot. The
 MA plot shows the <strong>mean of the normalized counts versus the log2 fold
 changes for all genes tested</strong>. The genes that are significantly DE are
-colored to be easily identified. This is also a great way to illustrate
-the effect of LFC shrinkage. The DESeq2 package offers a simple function
-to generate an MA plot.</p>
+colored to be easily identified (adjusted p-value \&lt; 0.01 by default).
+This is also a great way to illustrate the effect of LFC shrinkage. The
+DESeq2 package offers a simple function to generate an MA plot.</p>
 <p><strong>Let’s start with the unshrunken results:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># MA plot using unshrunken fold changes</span>
 <span class="nf">plotMA</span><span class="p">(</span><span class="n">res_tableOE_unshrunken</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">-2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
@@ -942,8 +942,7 @@ argument, then use <code>ggplot()</code>:</p>
 <code>geom_text_repel()</code> from the <code>ggrepel</code> package to label our individual
 points on the plot.</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><span class="n">knitr</span><span class="o">::</span><span class="nf">include_graphics</span><span class="p">(</span><span class="s">&quot;./img/08d_DEA_visualization/plotCounts_ggrepel.png&quot;</span><span class="p">)</span>
-</code></pre></div>
+<p><img src="./img/08d_DEA_visualization/plotCounts_ggrepel.png" style="display: block; margin: auto auto auto 0;" /></p>
 <h3 id="heatmap">Heatmap</h3>
 <p>In addition to plotting subsets, we could also extract the normalized
 values of <em>all</em> the significant genes and plot a heatmap of their
