@@ -14,14 +14,14 @@
         "replicas": 1,
         "parameters": {
             "d_var": {
-                "path": "/54396/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_setup.sh",
+                "path": "/82207/bulk_RNAseq_course/Scripts/Ucloud_setup.sh",
                 "type": "file",
                 "readOnly": false
             }
         },
         "resources": [
             {
-                "path": "/54396/projects/sandbox_bulkRNAseq_testAndFeedback",
+                "path": "/82207/",
                 "type": "file",
                 "readOnly": true
             },
