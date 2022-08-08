@@ -1,6 +1,6 @@
 # Setup for teaching in uCloud
 
-Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Health data science sandbox` where you have been invited.
+Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` where you have been invited.
 
 ![](./img/02_setup/chooseProject.png)
 
@@ -11,6 +11,18 @@ Click on `Apps` on the left-side menu, and look for the application `Rstudio v4.
 You will be met with a series of possible parameters to choose. However, we have prepared the parameters already for you! Just click on `Import parameters`:
 
 ![](./img/02_setup/importParameters.png)
+
+Then, `Import file from UCloud`:
+
+![](./img/02_setup/importParameters2.png)
+
+And select the `jobParameters.json` in:
+
+-   `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `Scripts` -\> `jobParameters.json`
+
+Make sure that the hard-drive icon says sandbox_bulkRNASeq!!
+
+![](./img/02_setup/importParameters3.png)
 
 You are ready to run the app by clicking on the button on the right column of the screen (`submit`).
 
