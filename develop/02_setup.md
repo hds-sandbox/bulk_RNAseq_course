@@ -4,29 +4,13 @@ Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `
 
 ![](./img/02_setup/chooseProject.png)
 
-Click on `Apps` on the left-side menu, and look for the application `Rstudio v4.1.2` and click on it.
+Click on `Apps` on the left-side menu, and look for the application `Rstudio v4.2.0` and click on it.
 
 ![](./img/02_setup/chooseRstudio.png)
 
-You will be met with a series of possible parameters to choose. You have to assign:
+You will be met with a series of possible parameters to choose. However, we have prepared the parameters already for you! Just click on `Import parameters`:
 
--   job name: give your job a name you would like. For example: bulk-RNAseq course.
-
--   hours: how long you are using the app. You can choose as many hours as the course session lasts. Or just a couple of hours to do some exercises. You can always add extra time while using the app, or run it again with the same settings (they will be saved under the name you chose as `job name`)
-
--   Machine type: it is sufficient to choose a machine with 4 vCPUs. ![](./img/02_setup/chooseCPU.png)
-
--   Dependencies: commands that will run automatically when starting the app. It will get all the necessary files and folders to run the course. Choose the same file as in the picture. Either:
-
-    -   Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback → bulkRNAseq_course  → Scripts  → Ucloud_setup.sh`, click "Use".
-    -   Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_setup.sh`.
-
--   Select folders to use: makes specific folders usable by the app. The folder below contains the data used in this course. Choose the same folder as in the picture. Either:
-
-    -   Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback`, click "Use."
-    -   Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback`.
-
-![](./img/02_setup/chooseOptional.png)
+![](./img/02_setup/importParameters.png)
 
 You are ready to run the app by clicking on the button on the right column of the screen (`submit`).
 
@@ -46,25 +30,15 @@ On the lower right side of Rstudio, where you see the file explorer, access the 
 
 After running a first Rstudio session, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *Rstudio*, which will contain all the jobs you have run with Rstudio. Inside this folder, you will find your folder named after the job name you gave in the previous step. If you want to keep working on your previous results, you can restart an Rstudio session following these steps:
 
-Click on `Apps` on the left-side menu, and look for the application `Rstudio v4.1.2` and click on it.
+Click on `Apps` on the left-side menu, and look for the application `Rstudio v4.2.0` and click on it.
 
 ![](./img/02_setup/chooseRstudio.png)
 
-You will be met again with a series of possible parameters to choose. You have to assign again "job name" and "hours"
+You will be met again with a series of possible parameters to choose. You have to assign again the `Import parameters` file
 
-![](./img/02_setup/chooseCPU.png)
+![](./img/02_setup/importParameters.png)
 
-For dependencies, you will choose a different dependency file Choose the same file as in the picture. Either:
-
--   Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback → bulkRNAseq_course  → Scripts  → Ucloud_restart.sh`, click "Use".
--   Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Scripts/Ucloud_restart.sh`.
-
-In *"Select folders to use"*, add the same folder as before:
-
--   Go to `hds-sandbox → projects → sandbox_bulkRNAseq_testAndFeedback`, click "Use."
--   Or copy-paste this path: `/hds-sandbox/projects/sandbox_bulkRNAseq_testAndFeedback`.
-
-In addition, add the the folder with the results of your previous job:
+In *"Select folders to use"*, add the folder with the results of your previous job:
 
 -   Go to `Member Files: your_username → Jobs → Rstudio → job_name → introduction_bulkRNAseq_analysis`, click "Use."
 

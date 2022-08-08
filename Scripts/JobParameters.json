@@ -6,11 +6,11 @@
             "version": "4.2.0"
         },
         "product": {
-            "id": "u1-standard-1",
+            "id": "u1-standard-4",
             "category": "u1-standard",
             "provider": "ucloud"
         },
-        "name": "bulk RNAseq workshop",
+        "name": "Bulk RNAseq course",
         "replicas": 1,
         "parameters": {
             "d_var": {
@@ -21,10 +21,10 @@
         },
         "resources": [
             {
-                "path": "/82207/",
+                "path": "/82207",
                 "type": "file",
                 "readOnly": true
-            },
+            }
         ],
         "timeAllocation": {
             "hours": 8,
