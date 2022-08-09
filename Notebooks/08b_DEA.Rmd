@@ -114,7 +114,7 @@ plotDispEsts(dds)
 
 ***
 
-**Exercise**
+**Exercise 1**
 
 Given the dispersion plot below, would you have any concerns regarding the fit of your data to the model? 
 	

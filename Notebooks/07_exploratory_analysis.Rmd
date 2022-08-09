@@ -75,7 +75,7 @@ plotPCA(rld, intgroup="sampletype")
 
 ***
 
-Exercise:
+**Exercise 1**:
 
 1. What does the above plot tell you about the similarity of samples?
 2. Does it fit the expectation from the experimental design?
@@ -142,7 +142,7 @@ pheatmap(sampleDistMatrix, annotation_col = meta %>% column_to_rownames("samplen
 
 When you plot using `pheatmap()` the hierarchical clustering information is used to place similar samples together and this information is represented by the tree structure along the axes. The `annotation` argument accepts a dataframe as input, in our case it is the `meta` data frame. 
 
-**Exercise**
+**Exercise 2**
 
 Instead of using distances between expression patterns, check the Pearson correlation between samples using `cor()`. Use your rlog count matrix as an input.
 

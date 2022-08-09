@@ -56,9 +56,9 @@ To load the data into our current environment, we will be using the `read.table`
 
 ```{r}
 ## Load in data
-data <- read_table("/work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/Mov10_full_counts.txt") 
+data <- read_table("/work/introduction_bulkRNAseq_analysis/Data/Mov10_full_counts.txt") 
 
-meta <- read_table("/work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/Mov10_full_meta.txt")
+meta <- read_table("/work/introduction_bulkRNAseq_analysis/Data/Mov10_full_meta.txt")
 ```
 
 Use `class()` to inspect our data and make sure we are working with data frames:

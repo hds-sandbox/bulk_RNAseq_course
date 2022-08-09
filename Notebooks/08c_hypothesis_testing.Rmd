@@ -287,7 +287,7 @@ Now that we have extracted the significant results, we are ready for visualizati
 
 ***
 
-**Exercise**
+**Exercise 1**
 
 **MOV10 Differential Expression Analysis: Control versus Knockdown**
 
