@@ -51,18 +51,17 @@ should now look similar to this:
 
 <img src="./img/06a_count_matrix/settingup.png" style="display: block; margin: auto;" />
 
--   Inside the folder `Notebooks` you will find the scripts that we will
-    follow during the sessions. They are both in `R Script` and `Rmd`
-    formats. Choose whichever is more convenient for you, but we
-    recommend to use `Rmd` files.
+-   Inside the folder `Notebooks` you will find the scripts (in `Rmd`
+    format) that we will follow during the sessions.
 
 -   In the folder `Results` you will save the results of your scripts,
     analysis and tests.
 
 To avoid copying the original dataset for each student (very
 inefficient) the dataset is contained inside the shared folder
-`/work/bulk_RNAseq_course/Data/`. Do not attempt to modify this folder,
-as it might mess up the files for the rest of your colleagues.
+`/work/introduction_bulkRNAseq_analysis/Data/`. Do not attempt to modify
+this folder, as it might mess up the files for the rest of your
+colleagues.
 
 Now you can open the first practical session: `06a_count_matrix.Rmd`
 
@@ -95,9 +94,9 @@ function expects tab-delimited files, which is what we have.
 
 ``` r
 ## Load in data
-data <- read_table("/work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/Mov10_full_counts.txt") 
+data <- read_table("/work/introduction_bulkRNAseq_analysis/Data/Mov10_full_counts.txt") 
 
-meta <- read_table("/work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/Mov10_full_meta.txt")
+meta <- read_table("/work/introduction_bulkRNAseq_analysis/Data/Mov10_full_meta.txt")
 ```
 
 Use `class()` to inspect our data and make sure we are working with data
@@ -304,7 +303,7 @@ df <- data %>%
 
 ggplot(df) +
   geom_point(aes(x=mean_counts, y=variance_counts)) + 
-  geom_line(aes(x=mean_counts, y=mean_counts, color="red")) +
+  geom_abline(intercept = 0, slope = 1, color="red") +
   scale_y_log10() +
   scale_x_log10()
 ```

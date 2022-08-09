@@ -1095,9 +1095,9 @@ for SampleB was 0.77, you could calculate normalized counts as follows:</p>
 <p>Please note that normalized count values are not whole numbers.</p>
 </blockquote>
 <hr />
-<p><strong>Exercise</strong></p>
-<p>Determine the normalized counts for your gene of interest, PD1, given
-the raw counts and size factors below.</p>
+<p><strong>Exercise 1</strong></p>
+<p>Determine the normalized (median of ratios) counts for your gene of
+interest, PD1, given the raw counts and size factors below.</p>
 <p>NOTE: You will need to run the code below to generate the raw counts
 dataframe (PD1) and the size factor vector (size_factors), then use
 these objects to determine the normalized counts values:</p>
@@ -1132,11 +1132,18 @@ output an error if this is not the case.</p>
 <p>If your data did not match, you could use the <code>match()</code> function to
 rearrange them to be matching.</p>
 <hr />
-<p><strong>Exercise</strong></p>
+<p><strong>Exercise 2</strong></p>
 <p>Suppose we had sample names matching in the counts matrix and metadata
 file, but they were out of order. Write the line(s) of code required to
 create a new matrix with columns ordered such that they were identical
-to the row names of the metadata.</p>
+to the row names of the metadata. Remember that <code>data</code> contains the
+column <code>GeneSymbol</code> witht the names of the genes!</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># randomize count data columns and metadata rownames</span>
+<span class="n">meta_random</span> <span class="o">&lt;-</span> <span class="n">meta</span><span class="p">[</span><span class="nf">sample</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="nf">nrow</span><span class="p">(</span><span class="n">meta</span><span class="p">)),]</span>
+<span class="n">data_random</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="p">[,</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="nf">sample</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="nf">ncol</span><span class="p">(</span><span class="n">data</span><span class="p">)))]</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># your code here</span>
+</code></pre></div>
 <hr />
 <h3 id="2-create-deseq2-object">2. Create DESEq2 object</h3>
 <p>Bioconductor software packages often define and use a custom class

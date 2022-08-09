@@ -274,7 +274,7 @@ plotPCA(rld, intgroup="sampletype")
 
 ------------------------------------------------------------------------
 
-Exercise:
+**Exercise 1**:
 
 1.  What does the above plot tell you about the similarity of samples?
 2.  Does it fit the expectation from the experimental design?

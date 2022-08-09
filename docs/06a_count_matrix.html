@@ -817,10 +817,8 @@ should now look similar to this:</p>
 <p><img src="./img/06a_count_matrix/settingup.png" style="display: block; margin: auto;" /></p>
 <ul>
 <li>
-<p>Inside the folder <code>Notebooks</code> you will find the scripts that we will
-    follow during the sessions. They are both in <code>R Script</code> and <code>Rmd</code>
-    formats. Choose whichever is more convenient for you, but we
-    recommend to use <code>Rmd</code> files.</p>
+<p>Inside the folder <code>Notebooks</code> you will find the scripts (in <code>Rmd</code>
+    format) that we will follow during the sessions.</p>
 </li>
 <li>
 <p>In the folder <code>Results</code> you will save the results of your scripts,
@@ -829,8 +827,9 @@ should now look similar to this:</p>
 </ul>
 <p>To avoid copying the original dataset for each student (very
 inefficient) the dataset is contained inside the shared folder
-<code>/work/bulk_RNAseq_course/Data/</code>. Do not attempt to modify this folder,
-as it might mess up the files for the rest of your colleagues.</p>
+<code>/work/introduction_bulkRNAseq_analysis/Data/</code>. Do not attempt to modify
+this folder, as it might mess up the files for the rest of your
+colleagues.</p>
 <p>Now you can open the first practical session: <code>06a_count_matrix.Rmd</code></p>
 <h3 id="loading-libraries">Loading libraries</h3>
 <p>For this analysis we will be using several R packages, some which have
@@ -854,9 +853,9 @@ specify arguments to let R know that we have a header (<code>header = T</code>) 
 the first column is our row names (<code>row.names =1</code>). By default the
 function expects tab-delimited files, which is what we have.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Load in data</span>
-<span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">read_table</span><span class="p">(</span><span class="s">&quot;/work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/Mov10_full_counts.txt&quot;</span><span class="p">)</span> 
+<span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">read_table</span><span class="p">(</span><span class="s">&quot;/work/introduction_bulkRNAseq_analysis/Data/Mov10_full_counts.txt&quot;</span><span class="p">)</span> 
 
-<span class="n">meta</span> <span class="o">&lt;-</span> <span class="nf">read_table</span><span class="p">(</span><span class="s">&quot;/work/sandbox_bulkRNAseq_testAndFeedback/bulk_RNAseq_course/Data/Mov10_full_meta.txt&quot;</span><span class="p">)</span>
+<span class="n">meta</span> <span class="o">&lt;-</span> <span class="nf">read_table</span><span class="p">(</span><span class="s">&quot;/work/introduction_bulkRNAseq_analysis/Data/Mov10_full_meta.txt&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>Use <code>class()</code> to inspect our data and make sure we are working with data
 frames:</p>
@@ -1030,7 +1029,7 @@ overexpression’ replicates:
 
 <span class="nf">ggplot</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">+</span>
   <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">variance_counts</span><span class="p">))</span> <span class="o">+</span> 
-  <span class="nf">geom_line</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">mean_counts</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">))</span> <span class="o">+</span>
+  <span class="nf">geom_abline</span><span class="p">(</span><span class="n">intercept</span> <span class="o">=</span> <span class="m">0</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span> <span class="o">+</span>
   <span class="nf">scale_y_log10</span><span class="p">()</span> <span class="o">+</span>
   <span class="nf">scale_x_log10</span><span class="p">()</span>
 </code></pre></div>

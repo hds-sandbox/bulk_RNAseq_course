@@ -219,10 +219,10 @@ SampleB median ratio = 0.77
 
 ------------------------------------------------------------------------
 
-**Exercise**
+**Exercise 1**
 
-Determine the normalized counts for your gene of interest, PD1, given
-the raw counts and size factors below.
+Determine the normalized (median of ratios) counts for your gene of
+interest, PD1, given the raw counts and size factors below.
 
 NOTE: You will need to run the code below to generate the raw counts
 dataframe (PD1) and the size factor vector (size_factors), then use
@@ -269,12 +269,23 @@ rearrange them to be matching.
 
 ------------------------------------------------------------------------
 
-**Exercise**
+**Exercise 2**
 
 Suppose we had sample names matching in the counts matrix and metadata
 file, but they were out of order. Write the line(s) of code required to
 create a new matrix with columns ordered such that they were identical
-to the row names of the metadata.
+to the row names of the metadata. Remember that `data` contains the
+column `GeneSymbol` witht the names of the genes!
+
+``` r
+# randomize count data columns and metadata rownames
+meta_random <- meta[sample(1:nrow(meta)),]
+data_random <- data[,c(1,sample(2:ncol(data)))]
+```
+
+``` r
+# your code here
+```
 
 ------------------------------------------------------------------------
 
