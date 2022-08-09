@@ -6,7 +6,7 @@ knit: (function(inputFile, encoding) {
       rmarkdown::render(inputFile,
                         encoding=encoding,
                         output_format='all',
-                        output_dir='../')})
+                        output_dir='../develop/')})
 output:
   # To create PDF report, uncomment below
   #pdf_document:
@@ -46,9 +46,9 @@ We have detailed the various steps in a differential expression analysis workflo
 1. Obtaining gene-level counts from your preprocessing
 
 ```{r}
-data <- read_table("data/Mov10_full_counts.txt") 
+data <- read_table("your/data/path.txt") 
 
-meta <- read_table("meta/Mov10_full_meta.txt")
+meta <- read_table("your/metadata/path.txt")
 ```
 
 2. Creating the dds object:
@@ -59,8 +59,8 @@ all(colnames(datacounts)[-1] == meta$samplename)
 
 # Create DESeq2Dataset object
 dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data$GeneSymbol), 
-                              colData = meta, 
-                              design = ~ sampletype)
+                              colData = data.frame(meta[,-1], row.names = meta$samplenames), 
+                              design = ~ condition)
 ```
 
 3. Exploratory data analysis (PCA & hierarchical clustering) - identifying outliers and sources of variation in the data:
@@ -86,12 +86,14 @@ pheatmap(rld_cor,
 4. Run DESeq2:
 
 ```{r}
-# **Optional step** - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using "dds <- DESeqDataSetFromMatrix(data, colData = metadata, design = ~ covariate + condition)"
+# **Optional step** - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using 
+#"dds <- DESeqDataSetFromMatrix(data, colData = metadata, design = ~ covariate + condition)"
 
 # Run DESeq2 differential expression analysis
 dds <- DESeq(dds)
 
-# **Optional step** - Output normalized counts to save as a file to access outside RStudio using "normalized_counts <- counts(dds, normalized=TRUE)"
+# **Optional step** - Output normalized counts to save as a file to access outside RStudio using 
+#"normalized_counts <- counts(dds, normalized=TRUE)"
 ```
 
 5. Check the fit of the dispersion estimates:
@@ -101,7 +103,7 @@ dds <- DESeq(dds)
 plotDispEsts(dds)
 ``` 
 
-6. Create contrasts to perform Wald testing on the shrunken log2 foldchanges between specific conditions:
+6. Create contrasts to perform Wald testing or the shrunken log2 fold changes between specific conditions:
 
 ```{r}
 # Specify contrast for comparison of interest

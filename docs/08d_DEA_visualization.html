@@ -949,7 +949,7 @@ values of <em>all</em> the significant genes and plot a heatmap of their
 expression using <code>pheatmap()</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">### Extract normalized expression for significant genes from the OE and control samples (2:4 and 7:9)</span>
 <span class="n">norm_OEsig</span> <span class="o">&lt;-</span> <span class="n">normalized_counts</span><span class="p">[,</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">,</span><span class="m">7</span><span class="o">:</span><span class="m">9</span><span class="p">)]</span> <span class="o">%&gt;%</span> 
-  <span class="nf">filter</span><span class="p">(</span><span class="n">gene</span> <span class="o">%in%</span> <span class="n">sigOE</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>  
+  <span class="n">dplyr</span><span class="o">:</span><span class="nf">filter</span><span class="p">(</span><span class="n">gene</span> <span class="o">%in%</span> <span class="n">sigOE</span><span class="o">$</span><span class="n">gene</span><span class="p">)</span>  
 </code></pre></div>
 <p>Now let’s draw the heatmap using <code>pheatmap</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">### Run pheatmap using the metadata data frame for the annotation</span>

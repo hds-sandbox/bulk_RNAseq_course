@@ -49,7 +49,10 @@ Previously, we created the DESeq2 object using the appropriate design formula.
 # DO NOT RUN
 
 ## Create DESeq2Dataset object
-dds <- DESeqDataSetFromMatrix(data, colData = meta, design = ~ sampletype)
+## Create DESeq2Dataset object
+dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data$GeneSymbol), 
+                              colData = data.frame(meta[,-1], row.names = meta$samplename), 
+                              design = ~ sampletype)
 ```
 
 Then, to run the entire differential expression analysis workflow, we use a single call to the function `DESeq()`. 

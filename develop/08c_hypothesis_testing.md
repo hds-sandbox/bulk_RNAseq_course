@@ -57,7 +57,8 @@ for each gene. In our case, the null hypothesis is that there is **no
 differential expression across the two sample groups (LFC == 0)**.
 Notice that we can do this without observing any data, because it is
 based on a thought experiment. Second, we use a statistical test to
-determine if based on the observed data, the null hypothesis is true.
+determine if based on the observed data, the null hypothesis can be
+rejected.
 
 ### Wald test
 
@@ -458,7 +459,7 @@ information and therefore these genes are not tested.
 # Filter genes by zero expression
 res_tableOE %>%
   as_tibble(rownames = "gene") %>% 
-  filter(baseMean==0) %>%
+  dplyr::filter(baseMean==0) %>%
   head()
 ```
 
@@ -483,7 +484,7 @@ function.
 # Filter genes that have an extreme outlier
 res_tableOE %>% 
   as_tibble(rownames = "gene") %>% 
-  filter(is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
+  dplyr::filter(is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
   head()
 ```
 
@@ -517,7 +518,7 @@ off by setting `independentFiltering = F`.
 # Filter genes below the low mean threshold
 res_tableOE %>% 
   as_tibble(rownames = "gene") %>% 
-  filter(!is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
+  dplyr::filter(!is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
   head()
 ```
 
@@ -591,8 +592,8 @@ padj.cutoff <- 0.05
 ```
 
 We can easily subset the results table to only include those that are
-significant using the `filter()` function, but first we will convert the
-results table into a tibble:
+significant using the `dplyr::filter()` function, but first we will
+convert the results table into a tibble:
 
 ``` r
 # Create a tibble of results and add gene symbols to new object
@@ -607,7 +608,7 @@ our pre-defined thresholds:
 ``` r
 # Subset the tibble to keep only significant genes
 sigOE <- res_tableOE_tb %>%
-  filter(padj < padj.cutoff)
+  dplyr::filter(padj < padj.cutoff)
 ```
 
 ``` r

@@ -256,7 +256,9 @@ steps:
 
 We should always make sure that we have sample names that match between
 the two files, and that the samples are in the right order. DESeq2 will
-output an error if this is not the case.
+output an error if this is not the case. We are using tibbles, which
+unfortunately do not support row names, but DESeq uses rownames, so we
+need to do some work around it.
 
 ``` r
 ### Check that sample names match in both files
@@ -272,10 +274,10 @@ rearrange them to be matching.
 **Exercise 2**
 
 Suppose we had sample names matching in the counts matrix and metadata
-file, but they were out of order. Write the line(s) of code required to
-create a new matrix with columns ordered such that they were identical
-to the row names of the metadata. Remember that `data` contains the
-column `GeneSymbol` witht the names of the genes!
+file, but they were out of order. Write the line(s) of code required
+make the `data_random` dataframe with columns ordered such that they
+were identical to the row names of the metadata. Remember that `data`
+contains the column `GeneSymbol` with the names of the genes!
 
 ``` r
 # randomize count data columns and metadata rownames

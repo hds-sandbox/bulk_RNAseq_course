@@ -92,7 +92,7 @@ library(ggrepel)
 
 ### Loading data
 
-To load the data into our current environment, we will be using the `read.table` function. We need to provide the path to each file and also specify arguments to let R know that we have a header (`header = T`) and the first column is our row names (`row.names =1`). By default the function expects tab-delimited files, which is what we have.
+To load the data into our current environment, we will be using the `read.table` function. By default the function expects tab-delimited files, which is what we have.
 
 ```{r}
 ## Load in data
@@ -249,9 +249,11 @@ Note that in the above figure, the variance across replicates tends to be greate
 
 The variance or scatter tends to reduce as we increase the number of biological replicates (*the distribution will approach the Poisson distribution with increasing numbers of replicates*), since standard deviations of averages are smaller than standard deviations of individual observations. **The value of additional replicates is that as you add more data (replicates), you get increasingly precise estimates of group means, and ultimately greater confidence in the ability to distinguish differences between sample classes (i.e. more DE genes).**
 
-The figure below illustrates the relationship between sequencing depth and number of replicates on the number of differentially expressed genes identified :
+The figure below illustrates the relationship between sequencing depth and number of replicates on the number of differentially expressed genes identified (from [Liu et al. (2013)](https://doi.org/10.1093/bioinformatics/btt688):
 
-[](https://academic.oup.com/bioinformatics/article/30/3/301/228651/RNA-seq-differential-expression-studies-more). 
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics("./img/06a_count_matrix/seqDepth_DEA.png")
+```
 
 Note that an **increase in the number of replicates tends to return more DE genes than increasing the sequencing depth**. Therefore, generally more replicates are better than higher sequencing depth, with the caveat that higher depth is required for detection of lowly expressed DE genes and for performing isoform-level differential expression. Generally, the minimum sequencing depth recommended is 20-30 million reads per sample, but we have seen good RNA-seq experiments with 10 million reads if there are a good number of replicates.
 

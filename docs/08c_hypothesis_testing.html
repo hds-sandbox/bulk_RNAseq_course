@@ -955,7 +955,8 @@ for each gene. In our case, the null hypothesis is that there is <strong>no
 differential expression across the two sample groups (LFC == 0)</strong>.
 Notice that we can do this without observing any data, because it is
 based on a thought experiment. Second, we use a statistical test to
-determine if based on the observed data, the null hypothesis is true.</p>
+determine if based on the observed data, the null hypothesis can be
+rejected.</p>
 <h3 id="wald-test">Wald test</h3>
 <p>In DESeq2, the <strong>Wald test is the default used for hypothesis testing
 when comparing two groups</strong>. The Wald test is a test usually performed
@@ -1290,7 +1291,7 @@ information and therefore these genes are not tested.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Filter genes by zero expression</span>
 <span class="n">res_tableOE</span> <span class="o">%&gt;%</span>
   <span class="nf">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-  <span class="nf">filter</span><span class="p">(</span><span class="n">baseMean</span><span class="o">==</span><span class="m">0</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">baseMean</span><span class="o">==</span><span class="m">0</span><span class="p">)</span> <span class="o">%&gt;%</span>
   <span class="nf">head</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
@@ -1312,7 +1313,7 @@ function.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Filter genes that have an extreme outlier</span>
 <span class="n">res_tableOE</span> <span class="o">%&gt;%</span> 
   <span class="nf">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-  <span class="nf">filter</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nf">is.na</span><span class="p">(</span><span class="n">padj</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">baseMean</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nf">is.na</span><span class="p">(</span><span class="n">padj</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">baseMean</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="o">%&gt;%</span>
   <span class="nf">head</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
@@ -1340,7 +1341,7 @@ off by setting <code>independentFiltering = F</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Filter genes below the low mean threshold</span>
 <span class="n">res_tableOE</span> <span class="o">%&gt;%</span> 
   <span class="nf">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-  <span class="nf">filter</span><span class="p">(</span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nf">is.na</span><span class="p">(</span><span class="n">padj</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">baseMean</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nf">is.na</span><span class="p">(</span><span class="n">padj</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">baseMean</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="o">%&gt;%</span>
   <span class="nf">head</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
@@ -1399,8 +1400,8 @@ will only be using the adjusted p-values in our criteria:</p>
 <span class="n">padj.cutoff</span> <span class="o">&lt;-</span> <span class="m">0.05</span>
 </code></pre></div>
 <p>We can easily subset the results table to only include those that are
-significant using the <code>filter()</code> function, but first we will convert the
-results table into a tibble:</p>
+significant using the <code>dplyr::filter()</code> function, but first we will
+convert the results table into a tibble:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Create a tibble of results and add gene symbols to new object</span>
 <span class="n">res_tableOE_tb</span> <span class="o">&lt;-</span> <span class="n">res_tableOE</span> <span class="o">%&gt;%</span>
   <span class="nf">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s">&quot;gene&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span>
@@ -1410,7 +1411,7 @@ results table into a tibble:</p>
 our pre-defined thresholds:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Subset the tibble to keep only significant genes</span>
 <span class="n">sigOE</span> <span class="o">&lt;-</span> <span class="n">res_tableOE_tb</span> <span class="o">%&gt;%</span>
-  <span class="nf">filter</span><span class="p">(</span><span class="n">padj</span> <span class="o">&lt;</span> <span class="n">padj.cutoff</span><span class="p">)</span>
+  <span class="n">dplyr</span><span class="o">::</span><span class="nf">filter</span><span class="p">(</span><span class="n">padj</span> <span class="o">&lt;</span> <span class="n">padj.cutoff</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Take a quick look at this tibble</span>
 <span class="n">sigOE</span>

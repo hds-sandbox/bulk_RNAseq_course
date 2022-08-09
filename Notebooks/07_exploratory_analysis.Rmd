@@ -160,4 +160,4 @@ pheatmap(rld_cor, annotation = meta, color = heat.colors, border_color=NA, fonts
          fontsize_row = 10, height=20)
 ```       
 
-You can all the colors that RColorBrewer offers by using the following command: `display.brewer.all()`
+You can check all the colors that RColorBrewer offers by using the following command: `display.brewer.all()`

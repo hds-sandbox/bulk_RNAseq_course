@@ -60,7 +60,7 @@ After the model is fit, coefficients are estimated for each sample group along w
 
 ### Hypothesis testing
 
-The first step in hypothesis testing is to set up a **null hypothesis** for each gene. In our case, the null hypothesis is that there is **no differential expression across the two sample groups (LFC == 0)**. Second, we use a statistical test to determine if based on the observed data, the null hypothesis is true.
+The first step in hypothesis testing is to set up a **null hypothesis** for each gene. In our case, the null hypothesis is that there is **no differential expression across the two sample groups (LFC == 0)**. Second, we use a statistical test to determine if based on the observed data, the null hypothesis can be rejected.
 
 In DESeq2, the **Wald test is the default used for hypothesis testing when comparing two groups**. In our case we are testing each gene model coefficient (LFC) which was derived using parameters like dispersion, which were estimated using maximum likelihood.
 
@@ -127,9 +127,10 @@ results(dds)
 
 To start, we want to evaluate **expression changes between the MOV10 overexpression samples and the control samples**. As such we will use the first method for specifying contrasts and create a character vector:
 
+**Exercise 1**
 ```{r}
 ## Define contrasts for MOV10 overexpression
-#contrast_oe <- c("", "","")
+contrast_oe <- c("", "","")
 ```
 
 ## The results table
@@ -195,7 +196,7 @@ If within a row, all samples have zero counts there is no expression information
 # Filter genes by zero expression
 res_tableOE %>%
   as_tibble(rownames = "gene") %>% 
-  filter(baseMean==0) %>%
+  dplyr::filter(baseMean==0) %>%
   head()
 ```
 
@@ -207,7 +208,7 @@ res_tableOE %>%
 # Filter genes that have an extreme outlier
 res_tableOE %>% 
   as_tibble(rownames = "gene") %>% 
-  filter(is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
+  dplyr::filter(is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
   head()
 ```
 
@@ -219,7 +220,7 @@ res_tableOE %>%
 # Filter genes below the low mean threshold
 res_tableOE %>% 
   as_tibble(rownames = "gene") %>% 
-  filter(!is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
+  dplyr::filter(!is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
   head()
 ```
 
@@ -259,7 +260,7 @@ Let's first create variables that contain our threshold criteria. We will only b
 padj.cutoff <- 0.05
 ```
 
-We can easily subset the results table to only include those that are significant using the `filter()` function, but first we will convert the results table into a tibble:
+We can easily subset the results table to only include those that are significant using the `dplyr::filter()` function, but first we will convert the results table into a tibble:
 
 ```{r}
 # Create a tibble of results and add gene symbols to new object
@@ -275,7 +276,7 @@ Now we can subset that table to only keep the significant genes using our pre-de
 ```{r}
 # Subset the tibble to keep only significant genes
 sigOE <- res_tableOE_tb %>%
-  filter(padj < padj.cutoff)
+  dplyr::filter(padj < padj.cutoff)
 ```
 
 ```{r}
@@ -287,7 +288,7 @@ Now that we have extracted the significant results, we are ready for visualizati
 
 ***
 
-**Exercise 1**
+**Exercise 2**
 
 **MOV10 Differential Expression Analysis: Control versus Knockdown**
 

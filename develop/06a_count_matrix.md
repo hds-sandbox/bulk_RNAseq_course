@@ -87,10 +87,8 @@ library(ggrepel)
 ### Loading data
 
 To load the data into our current environment, we will be using the
-`read.table` function. We need to provide the path to each file and also
-specify arguments to let R know that we have a header (`header = T`) and
-the first column is our row names (`row.names =1`). By default the
-function expects tab-delimited files, which is what we have.
+`read.table` function. By default the function expects tab-delimited
+files, which is what we have.
 
 ``` r
 ## Load in data
@@ -333,9 +331,10 @@ distinguish differences between sample classes (i.e. more DE genes).**
 
 The figure below illustrates the relationship between sequencing depth
 and number of replicates on the number of differentially expressed genes
-identified :
+identified (from [Liu et
+al. (2013)](https://doi.org/10.1093/bioinformatics/btt688):
 
-[](https://academic.oup.com/bioinformatics/article/30/3/301/228651/RNA-seq-differential-expression-studies-more).
+<img src="./img/06a_count_matrix/seqDepth_DEA.png" style="display: block; margin: auto;" />
 
 Note that an **increase in the number of replicates tends to return more
 DE genes than increasing the sequencing depth**. Therefore, generally

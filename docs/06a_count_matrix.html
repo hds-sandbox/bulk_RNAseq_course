@@ -848,10 +848,8 @@ comment liberally!</p>
 </code></pre></div>
 <h3 id="loading-data">Loading data</h3>
 <p>To load the data into our current environment, we will be using the
-<code>read.table</code> function. We need to provide the path to each file and also
-specify arguments to let R know that we have a header (<code>header = T</code>) and
-the first column is our row names (<code>row.names =1</code>). By default the
-function expects tab-delimited files, which is what we have.</p>
+<code>read.table</code> function. By default the function expects tab-delimited
+files, which is what we have.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Load in data</span>
 <span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">read_table</span><span class="p">(</span><span class="s">&quot;/work/introduction_bulkRNAseq_analysis/Data/Mov10_full_counts.txt&quot;</span><span class="p">)</span> 
 
@@ -1057,8 +1055,9 @@ of group means, and ultimately greater confidence in the ability to
 distinguish differences between sample classes (i.e. more DE genes).</strong></p>
 <p>The figure below illustrates the relationship between sequencing depth
 and number of replicates on the number of differentially expressed genes
-identified :</p>
-<p><a href="https://academic.oup.com/bioinformatics/article/30/3/301/228651/RNA-seq-differential-expression-studies-more"></a>.</p>
+identified (from <a href="https://doi.org/10.1093/bioinformatics/btt688">Liu et
+al. (2013)</a>:</p>
+<p><img src="./img/06a_count_matrix/seqDepth_DEA.png" style="display: block; margin: auto;" /></p>
 <p>Note that an <strong>increase in the number of replicates tends to return more
 DE genes than increasing the sequencing depth</strong>. Therefore, generally
 more replicates are better than higher sequencing depth, with the caveat

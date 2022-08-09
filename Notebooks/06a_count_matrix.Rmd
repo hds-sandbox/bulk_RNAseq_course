@@ -52,7 +52,7 @@ library(ggrepel)
 
 ### Loading data
 
-To load the data into our current environment, we will be using the `read.table` function. We need to provide the path to each file and also specify arguments to let R know that we have a header (`header = T`) and the first column is our row names (`row.names =1`). By default the function expects tab-delimited files, which is what we have.
+To load the data into our current environment, we will be using the `read_table` function. We need to provide the path to each file. By default the function expects tab-delimited files, which is what we have.
 
 ```{r}
 ## Load in data
