@@ -38,6 +38,8 @@ On the lower right side of Rstudio, where you see the file explorer, access the 
 
 **Important**: when you are done, go on `Runs` in uCloud, and choose your app if it is still running. Then you will be able to stop it from using resources. Your material will be saved in a volume with your username, that you should be able to see under the menu `Files`. ![](./img/02_setup/stop.png)
 
+![](./img/02_setup/01_import_rstudio_from_ucloud_4k.gif)
+
 # Restarting the Rstudio session
 
 After running a first Rstudio session, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *Rstudio*, which will contain all the jobs you have run with Rstudio. Inside this folder, you will find your folder named after the job name you gave in the previous step. If you want to keep working on your previous results, you can restart an Rstudio session following these steps:

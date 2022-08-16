@@ -98,7 +98,7 @@ and therefore **we chose to use apeglm**.
 
 > #### `contrast` vs `coef`
 >
-> When using the alternative methods, rather than using the `contrast`
+> When using the shrinkage method, rather than using the `contrast`
 > argument you will be required to specify `coef`. Using contrast forms
 > an expanded model matrix, treating all factor levels equally, and
 > averages over all distances between all pairs of factor levels to
