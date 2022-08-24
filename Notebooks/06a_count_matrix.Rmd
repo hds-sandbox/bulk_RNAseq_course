@@ -10,7 +10,13 @@ knit: (function(inputFile, encoding) {
 output:
   # To create PDF report, uncomment below
   #pdf_document:
-  #  toc: yes
+  #  toc: yes  
+  html_document:
+    theme: yeti # nice theme for the webpage
+    toc: yes # table of contents
+    toc_float: yes # table of contents "floats" in the document
+    df_print: paged # data frames are interactive
+    dev: png # what format do you want for the figures?
 ---
 
 ```{r knitr, include = FALSE}
@@ -21,12 +27,10 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       echo           = TRUE,
                       error          = FALSE,
                       fig.align      = "center",
-                      fig.path       = paste0("./img/", DOCNAME, "/"),
-                      #fig.width      = 10,
-                      #fig.height     = 8,
+                      fig.path       = paste0("./img/", DOCNAME, "/"), #images will be put in this folder, under the notebook name
                       message        = FALSE,
                       warning        = FALSE,
-                      eval           = FALSE)
+                      eval           = TRUE)
 ```
 
 Approximate time: 20 minutes
@@ -37,28 +41,28 @@ Approximate time: 20 minutes
 -   Describe the RNA-seq and the differential gene expression analysis workflow
 -   Explain why negative binomial distribution is used to model RNA-seq count data
 
-### Loading libraries
+## Loading libraries
 
 For this analysis we will be using several R packages, some which have been installed from CRAN and others from Bioconductor. To use these packages (and the functions contained within them), we need to **load the libraries.** 
 
 ```{r}
 library(tidyverse)
-library(RColorBrewer)
 library(DESeq2)
-library(pheatmap)
-library(DEGreport)
-library(ggrepel)
+
+# And with this last line of code, we set our working directory to the folder with this notebook.
+# This way, the relative paths will work without issues
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 ```
 
-### Loading data
+## Loading data
 
 To load the data into our current environment, we will be using the `read_table` function. We need to provide the path to each file. By default the function expects tab-delimited files, which is what we have.
 
 ```{r}
 ## Load in data
-data <- read_table("/work/introduction_bulkRNAseq_analysis/Data/Mov10_full_counts.txt") 
+data <- read_table("../Data/Mov10_full_counts.txt") 
 
-meta <- read_table("/work/introduction_bulkRNAseq_analysis/Data/Mov10_full_meta.txt")
+meta <- read_table("../Data/Mov10_full_meta.txt")
 ```
 
 Use `class()` to inspect our data and make sure we are working with data frames:
@@ -69,20 +73,20 @@ class(meta)
 class(data)
 ```
 
-### Viewing data
+## Viewing data
 
 Make sure your datasets contain the expected samples / information before proceeding to perfom any type of analysis.
 
 ```{r}
-View(meta)
-View(data)
+head(meta)
+head(data)
 ```
 
-### RNA-seq count distribution
+## RNA-seq count distribution
 
 To determine the appropriate statistical model, we need information about the distribution of counts. To get an idea about how RNA-seq counts are distributed, let's plot the counts of all the samples: 
 
-```{r}
+```{r count_distribution}
 pdata <- data %>% 
   gather(key = Sample, value = Count, -GeneSymbol)
 
@@ -96,7 +100,7 @@ ggplot(pdata) +
 
 If we zoom in close to zero, we can see a large number of genes with counts of zero:
 
-```{r}
+```{r count_distribution_zoom}
 ggplot(pdata) +
    geom_histogram(aes(x = Count), stat = "bin", bins = 200) + 
    xlim(-5, 500)  +
@@ -104,10 +108,9 @@ ggplot(pdata) +
    ylab("Number of genes")
 ```
 
-
 These images illustrate some common features of RNA-seq count data, including a **low number of counts associated with a large proportion of genes**, and a long right tail due to the **lack of any upper limit for expression**. Unlike microarray data, which has a dynamic range maximum limited due to when the probes max out, there is no limit of maximum expression for RNA-seq data. Due to the differences in these technologies, the statistical models used to fit the data are different between the two methods.
 
-### Modeling count data
+## Modeling count data
 
 RNAseq count data can be modeled using a **Poisson distribution**. this particular distribution is fitting for data where the **number of cases is very large but the probability of an event occurring is very small**. To give you an example, think of the lottery: many people buy lottery tickets (high number of cases), but only very few win (the probability of the event is small).
 
@@ -115,9 +118,9 @@ With RNA-Seq data, **a very large number of RNAs are represented and the probabi
 
 The model that fits best, given this type of variability observed for replicates, is the **Negative Binomial (NB) model**. Essentially, **the NB model is a good approximation for data where the mean \< variance**, as is the case with RNA-Seq count data.
 
-Run the following code to plot the *mean versus variance* for the 'Mov10 overexpression' replicates:
+Run the following code to plot the *mean versus variance* for our data:
 
-```{r}
+```{r mean_vs_variance}
 df <- data %>% 
   rowwise() %>% 
   summarise(mean_counts = mean(Mov10_kd_2:Irrel_kd_3), 

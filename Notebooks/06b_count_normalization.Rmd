@@ -10,8 +10,13 @@ knit: (function(inputFile, encoding) {
 output:
   # To create PDF report, uncomment below
   #pdf_document:
-  #  toc: yes
-
+  #  toc: yes  
+  html_document:
+    theme: yeti # nice theme for the webpage
+    toc: yes # table of contents
+    toc_float: yes # table of contents "floats" in the document
+    df_print: paged # data frames are interactive
+    dev: png # what format do you want for the figures?
 ---
 
 ```{r knitr, include = FALSE}
@@ -22,13 +27,27 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       echo           = TRUE,
                       error          = FALSE,
                       fig.align      = "center",
-                      fig.path       = paste0("./img/", DOCNAME, "/"),
-                      #fig.width      = 10,
-                      #fig.height     = 8,
+                      fig.path       = paste0("./img/", DOCNAME, "/"), #images will be put in this folder, under the notebook name
                       message        = FALSE,
                       warning        = FALSE,
-                      eval           = FALSE)
+                      eval           = TRUE)
 ```
+
+```{r setup, include = FALSE, echo = FALSE}
+# DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
+# This chunk is ONLY necessary if you want to knit this document into a pdf!!
+library(tidyverse)
+library(DESeq2)
+
+# And with this last line of code, we set our working directory to the folder with this notebook.
+# This way, the relative paths will work without issues
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+# Load objects so it can be knitted
+data <- read_table("../Data/Mov10_full_counts.txt") 
+meta <- read_table("../Data/Mov10_full_meta.txt")
+```
+
 
 Approximate time: 40 minutes
 
@@ -113,15 +132,15 @@ Let's start by creating the `DESeqDataSet` object and then we can talk a bit mor
 
 ```{r}
 ## Create DESeq2Dataset object
-dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data$GeneSymbol), 
-                              colData = data.frame(meta[,-1], row.names = meta$samplename), 
+dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
+                              colData = meta %>% column_to_rownames("samplename"), 
                               design = ~ sampletype)
 ```
 
-You can use DESeq-specific functions to access the different slots and retrieve information, if you wish. For example, suppose we wanted the original count matrix we would use `counts()` (*Note: we nested it within the `View()` function so that rather than getting printed in the console we can see it in the script editor*) :
+You can use DESeq-specific functions to access the different slots and retrieve information, if you wish. For example, suppose we wanted the original count matrix we would use `counts()`:
 
 ```{r}
-View(counts(dds))
+head(counts(dds))
 ```
 
 As we go through the workflow we will use the relevant functions to check what information gets stored inside our object.
@@ -146,10 +165,11 @@ Now, to retrieve the normalized counts matrix from `dds`, we use the `counts()` 
 
 ```{r}
 normalized_counts <- counts(dds, normalized=TRUE)
+head(normalized_counts)
 ```
 
 We can save this normalized data matrix to file for later use:
 
 ```{r}
-write.table(normalized_counts, file="/work/introduction_bulkRNAseq_analysis/Results/normalized_counts.txt", sep="\t", quote=F)
+write.table(normalized_counts, file="../Results/normalized_counts.txt", sep="\t", quote=F)
 ```

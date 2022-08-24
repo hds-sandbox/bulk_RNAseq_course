@@ -1,5 +1,5 @@
 ---
-title: "Exploratory analysis of bulk RNAseq"
+title: "Count normalization with DESeq2"
 author: "You!"
 date: '`r Sys.Date()`'
 knit: (function(inputFile, encoding) { 
@@ -10,8 +10,13 @@ knit: (function(inputFile, encoding) {
 output:
   # To create PDF report, uncomment below
   #pdf_document:
-  #  toc: yes
-
+  #  toc: yes  
+  html_document:
+    theme: yeti # nice theme for the webpage
+    toc: yes # table of contents
+    toc_float: yes # table of contents "floats" in the document
+    df_print: paged # data frames are interactive
+    dev: png # what format do you want for the figures?
 ---
 
 ```{r knitr, include = FALSE}
@@ -22,12 +27,30 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       echo           = TRUE,
                       error          = FALSE,
                       fig.align      = "center",
-                      fig.path       = paste0("./img/", DOCNAME, "/"),
-                      #fig.width      = 10,
-                      #fig.height     = 8,
+                      fig.path       = paste0("./img/", DOCNAME, "/"), #images will be put in this folder, under the notebook name
                       message        = FALSE,
                       warning        = FALSE,
-                      eval           = FALSE)
+                      eval           = TRUE)
+```
+
+```{r setup, include = FALSE, echo = FALSE}
+# DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
+# This chunk is ONLY necessary if you want to knit this document into a pdf!!
+library(tidyverse)
+library(DESeq2)
+
+# And with this last line of code, we set our working directory to the folder with this notebook.
+# This way, the relative paths will work without issues
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+# Load objects so it can be knitted
+data <- read_table("../Data/Mov10_full_counts.txt") 
+meta <- read_table("../Data/Mov10_full_meta.txt")
+
+# Create dds object
+dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
+                              colData = meta %>% column_to_rownames("samplename"), 
+                              design = ~ sampletype)
 ```
 
 Approximate time: 80 minutes
@@ -68,7 +91,7 @@ DESeq2 has a built-in function for generating PCA plots using `ggplot2` under th
 
 The function `plotPCA()` requires two arguments as input: a `DESeqTransform` object and the "intgroup" (interesting group), i.e. the name of the column in our metadata that has information about the experimental sample groups. 
 
-```{r}
+```{r DESeq_PCA}
 ### Plot PCA 
 plotPCA(rld, intgroup="sampletype")
 ```
@@ -100,7 +123,7 @@ pca <- prcomp(t(rld_mat)) # perform PCA
 df <- cbind(meta, pca$x) # Create data frame with metadata and PC3 and PC4 values for input to ggplot
 ```
 
-```{r}
+```{r custom_PCA}
 # ggplot with info for all PCAs
 ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = sampletype))
 ```
@@ -133,7 +156,7 @@ You will notice that they match the names we have given our samples in the metad
 
 Now, let's plot the heatmap!
 
-```{r}
+```{r dist_heatmap}
 ### Load pheatmap package
 library(pheatmap)
 
@@ -155,9 +178,21 @@ Instead of using distances between expression patterns, check the Pearson correl
 There are many arguments and options for the `pheatmap()` function. You could, for example, change the color scale used, remove the dendograms, avoid clustering or even scale the values per row or per column.
 
 ```{r}
-heat.colors <- RColorBrewer::brewer.pal(6, "Blues")
-pheatmap(rld_cor, annotation = meta, color = heat.colors, border_color=NA, fontsize = 10, 
+library(RColorBrewer)
+heat.colors <- brewer.pal(6, "Blues") # Colors from the RColorBrewer package (only 6)
+heat.colors <- colorRampPalette(heat.colors)(100) # Interpolate 100 colors
+```
+
+
+```{r custom_heatmap}
+pheatmap(sampleDistMatrix, annotation = meta %>% column_to_rownames("samplename"), 
+         color = heat.colors, border_color=NA, fontsize = 10, 
          fontsize_row = 10, height=20)
 ```       
 
 You can check all the colors that RColorBrewer offers by using the following command: `display.brewer.all()`
+
+```{r RcolorBrewer_colors}
+display.brewer.all()
+```
+

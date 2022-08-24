@@ -6,11 +6,17 @@ knit: (function(inputFile, encoding) {
       rmarkdown::render(inputFile,
                         encoding=encoding,
                         output_format='all',
-                        output_dir='../develop/')})
+                        output_dir='./')})
 output:
   # To create PDF report, uncomment below
   #pdf_document:
-  #  toc: yes
+  #  toc: yes  
+  html_document:
+    theme: yeti # nice theme for the webpage
+    toc: yes # table of contents
+    toc_float: yes # table of contents "floats" in the document
+    df_print: paged # data frames are interactive
+    dev: png # what format do you want for the figures?
 ---
 
 ```{r knitr, include = FALSE}
@@ -18,17 +24,33 @@ DOCNAME = knitr::current_input()
 DOCNAME = gsub(DOCNAME, pattern = ".Rmd", replacement = "", fixed = T)
 knitr::opts_chunk$set(autodep        = TRUE,
                       cache          = FALSE,
-                      cache.path     = paste0("cache/", DOCNAME, "/"),
-                      cache.comments = TRUE,
                       echo           = TRUE,
                       error          = FALSE,
                       fig.align      = "center",
-                      fig.path       = paste0("./img/", DOCNAME, "/"),
-                      #fig.width      = 10,
-                      #fig.height     = 8,
+                      fig.path       = paste0("./img/", DOCNAME, "/"), #images will be put in this folder, under the notebook name
                       message        = FALSE,
                       warning        = FALSE,
-                      eval           = FALSE)
+                      eval           = TRUE)
+```
+
+```{r setup, include = FALSE, echo = FALSE}
+# DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
+# This chunk is ONLY necessary if you want to knit this document into a pdf!!
+library(tidyverse)
+library(DESeq2)
+
+# And with this last line of code, we set our working directory to the folder with this notebook.
+# This way, the relative paths will work without issues
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+# Load objects so it can be knitted
+data <- read_table("../Data/Mov10_full_counts.txt") 
+meta <- read_table("../Data/Mov10_full_meta.txt")
+
+# Create dds object
+dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
+                              colData = meta %>% column_to_rownames("samplename"), 
+                              design = ~ sampletype)
 ```
 
 Approximate time: 60 minutes
@@ -48,10 +70,9 @@ Previously, we created the DESeq2 object using the appropriate design formula.
 ```{r, eval = FALSE}
 # DO NOT RUN
 
-## Create DESeq2Dataset object
-## Create DESeq2Dataset object
-dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data$GeneSymbol), 
-                              colData = data.frame(meta[,-1], row.names = meta$samplename), 
+# Create dds object
+dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
+                              colData = meta %>% column_to_rownames("samplename"), 
                               design = ~ sampletype)
 ```
 
@@ -125,5 +146,5 @@ Given the dispersion plot below, would you have any concerns regarding the fit o
 - If so, what are your concerns? What would you do to address them?
 
 ```{r, echo = FALSE, eval = TRUE}
-knitr::include_graphics("./img/08b_DEA/exercise_dispersion.png")
+knitr::include_graphics("./img/08a_DEA/exercise_dispersion.png")
 ```

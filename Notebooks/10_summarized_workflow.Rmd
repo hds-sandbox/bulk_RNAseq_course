@@ -1,18 +1,22 @@
 ---
 title: "Summary of DGE workflow"
-author: "Jose Alejandro Romero Herrera"
+author: "You!"
 date: '`r Sys.Date()`'
 knit: (function(inputFile, encoding) { 
       rmarkdown::render(inputFile,
                         encoding=encoding,
                         output_format='all',
-                        output_dir='../develop/')})
+                        output_dir='./')})
 output:
   # To create PDF report, uncomment below
   #pdf_document:
-  #  toc: yes
-  md_document:
-    variant: gfm
+  #  toc: yes  
+  html_document:
+    theme: yeti # nice theme for the webpage
+    toc: yes # table of contents
+    toc_float: yes # table of contents "floats" in the document
+    df_print: paged # data frames are interactive
+    dev: png # what format do you want for the figures?
 ---
 
 ```{r knitr, include = FALSE}
@@ -20,17 +24,13 @@ DOCNAME = knitr::current_input()
 DOCNAME = gsub(DOCNAME, pattern = ".Rmd", replacement = "", fixed = T)
 knitr::opts_chunk$set(autodep        = TRUE,
                       cache          = FALSE,
-                      cache.path     = paste0("cache/", DOCNAME, "/"),
-                      cache.comments = TRUE,
                       echo           = TRUE,
                       error          = FALSE,
                       fig.align      = "center",
-                      fig.path       = paste0("./img/", DOCNAME, "/"),
-                      #fig.width      = 10,
-                      #fig.height     = 8,
+                      fig.path       = paste0("./img/", DOCNAME, "/"), #images will be put in this folder, under the notebook name
                       message        = FALSE,
                       warning        = FALSE,
-                      eval           = FALSE)
+                      eval           = TRUE)
 ```
 
 Approximate time: 15 minutes
@@ -39,6 +39,20 @@ Approximate time: 15 minutes
 
 * Identify the R commands needed to run a complete differential expression analysis using DESeq2
 
+## Libraries
+
+```{r}
+library(tidyverse)
+library(DESeq2)
+library(ggrepel)
+library(pheatmap)
+library(annotables)
+library(clusterProfiler)
+library(DOSE)
+library(pathview)
+library(org.Hs.eg.db)
+```
+
 ## Summary of differential expression analysis workflow
 
 We have detailed the various steps in a differential expression analysis workflow, providing theory with example code. To provide a more succinct reference for the code needed to run a DGE analysis, we have summarized the steps in an analysis below:
@@ -46,21 +60,21 @@ We have detailed the various steps in a differential expression analysis workflo
 1. Obtaining gene-level counts from your preprocessing
 
 ```{r}
-data <- read_table("your/data/path.txt") 
+data <- read_table("../Data/Mov10_full_counts.txt") 
 
-meta <- read_table("your/metadata/path.txt")
+meta <- read_table("../Data/Mov10_full_meta.txt")
 ```
 
 2. Creating the dds object:
 
 ```{r}
 # Check that the row names of the metadata equal the column names of the **raw counts** data
-all(colnames(datacounts)[-1] == meta$samplename)
+all(colnames(data)[-1] == meta$samplename)
 
 # Create DESeq2Dataset object
-dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data$GeneSymbol), 
-                              colData = data.frame(meta[,-1], row.names = meta$samplenames), 
-                              design = ~ condition)
+dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
+                              colData = meta %>% column_to_rownames("samplename"), 
+                              design = ~ sampletype)
 ```
 
 3. Exploratory data analysis (PCA & hierarchical clustering) - identifying outliers and sources of variation in the data:
@@ -69,18 +83,38 @@ dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data
 # Transform counts for data visualization
 rld <- rlog(dds, 
             blind=TRUE)
+```
 
+PCA
+```{r PCA_plot}
 # Plot PCA 
 plotPCA(rld, 
         intgroup="sampletype")
+```
 
-# Extract the rlog matrix from the object and compute pairwise correlation values
+Heatmaps
+```{r}
+# Extract the rlog matrix from the object
 rld_mat <- assay(rld)
-rld_cor <- cor(rld_mat)
+rld_cor <- cor(rld_mat) # Pearson correlation betweeen samples
+rld_dist <- as.matrix(dist(t(assay(rld)))) #distances are computed by rows, so we need to transponse the matrix
+```
 
-# Plot heatmap
+
+```{r cor_heatmap}
+# Plot heatmap of correlations
 pheatmap(rld_cor, 
          annotation = meta %>% column_to_rownames("samplename"))
+```
+
+```{r dist_heatmap}
+# Plot heatmap of distances
+library(RColorBrewer)
+heat.colors <- brewer.pal(6, "Blues") # Colors from the RColorBrewer package (only 6)
+heat.colors <- colorRampPalette(heat.colors)(100) # Interpolate 100 colors
+
+pheatmap(rld_dist, 
+         annotation = meta %>% column_to_rownames("samplename"), color = heat.colors)
 ```
 
 4. Run DESeq2:
@@ -91,14 +125,16 @@ pheatmap(rld_cor,
 
 # Run DESeq2 differential expression analysis
 dds <- DESeq(dds)
+```
 
+```{r}
 # **Optional step** - Output normalized counts to save as a file to access outside RStudio using 
-#"normalized_counts <- counts(dds, normalized=TRUE)"
+normalized_counts <- counts(dds, normalized=TRUE)
 ```
 
 5. Check the fit of the dispersion estimates:
 
-```{r}
+```{r DispEsts_plot}
 # Plot dispersion estimates
 plotDispEsts(dds)
 ``` 
@@ -107,7 +143,7 @@ plotDispEsts(dds)
 
 ```{r}
 # Specify contrast for comparison of interest
-contrast <- c("condition", "level_to_compare", "base_level")
+contrast <- c("sampletype", "MOV10_overexpression", "control")
 
 # Output results of Wald test for contrast
 res <- results(dds, 
@@ -124,7 +160,7 @@ res <- lfcShrink(dds,
 
 ```{r}
 # Set thresholds
-padj.cutoff < - 0.05
+padj.cutoff <- 0.05
 
 # Turn the results object into a tibble for use with tidyverse functions
 res_tbl <- res %>%
@@ -139,16 +175,175 @@ sig_res <- filter(res_tbl,
 
 8. Visualize results: volcano plots, heatmaps, normalized counts plots of top genes, etc.
 
+Plot expression for single gene
+```{r counts_plot}
+plotCounts(dds, gene="MOV10", intgroup="sampletype")
+```
+
+MAplot
+```{r MAplot}
+plotMA(res)
+```
+
+Volcano plot with labels (top N genes)
+```{r}
+## Obtain logical vector where TRUE values denote padj values < 0.05 and fold change > 1.5 in either direction
+res_tbl <- res_tbl %>% 
+mutate(threshold = padj < 0.05 & abs(log2FoldChange) >= 0.58)
+```
+
+```{r}
+## Create an empty column to indicate which genes to label
+res_tbl <- res_tbl %>% mutate(genelabels = "")
+
+## Sort by padj values 
+res_tbl <- res_tbl %>% arrange(padj)
+
+## Populate the genelabels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes
+res_tbl$genelabels[1:10] <- as.character(res_tbl$gene[1:10])
+
+head(res_tbl)
+```
+
+```{r volcano_plot_label}
+ggplot(res_tbl, aes(x = log2FoldChange, y = -log10(padj))) +
+  geom_point(aes(colour = threshold)) +
+  geom_text_repel(aes(label = genelabels)) +
+  ggtitle("Mov10 overexpression") +
+  xlab("log2 fold change") + 
+  ylab("-log10 adjusted p-value") +
+  theme(legend.position = "none",
+        plot.title = element_text(size = rel(1.5), hjust = 0.5),
+        axis.title = element_text(size = rel(1.25))) 
+```
+
+Heatmap of differentially expressed genes
+```{r}
+# filter significant results from normalized counts
+norm_sig <- normalized_counts %>% as_tibble(rownames = "gene") %>%
+  dplyr::filter(gene %in% sig_res$gene) %>% column_to_rownames(var="gene")
+```
+
+```{r sig_heatmap}
+pheatmap(norm_sig, 
+         cluster_rows = T, #cluster by expression pattern
+         scale = "row", # scale by gene so expression pattern is visible
+         treeheight_row = 0, # dont show the row dendogram
+         show_rownames = F, # remove rownames so it is more clear
+         annotation = meta %>% column_to_rownames(var = "samplename") %>% dplyr::select(MOVexpr)
+         )
+```
+
 9. Perform analysis to extract functional significance of results: GO or KEGG enrichment, GSEA, etc.
+
+Annotate with `annotables`
+
+```{r}
+ids <- grch37 %>% dplyr::filter(symbol %in% res_tbl$gene) %>% dplyr::filter(!duplicated(symbol))
+res_ids <- inner_join(res_tbl, ids, by=c("gene"="symbol"))
+```
+
+Perform enrichment analysis of GO terms (can be done as well with KEGG pathways)
+```{r}
+# Create background dataset for hypergeometric testing using all genes tested for significance in the results
+all_genes <- dplyr::filter(res_ids, !is.na(ensgene)) %>% 
+  pull(ensgene) %>% 
+  as.character()
+
+# Extract significant results
+sig <- dplyr::filter(res_ids, padj < 0.05 & !is.na(ensgene))
+
+sig_genes <- sig %>% 
+  pull(ensgene) %>% 
+  as.character()
+```
+
+```{r}
+# Perform enrichment analysis
+ego <- enrichGO(gene = sig_genes, 
+                universe = all_genes,
+                keyType = "ENSEMBL",
+                OrgDb = org.Hs.eg.db, 
+                ont = "BP", 
+                pAdjustMethod = "BH", 
+                qvalueCutoff = 0.05, 
+                readable = TRUE)
+ego <- enrichplot::pairwise_termsim(ego)
+```
+
+Visualize result
+```{r enrichGO, fig.height=10, fig.width=5}
+dotplot(ego, showCategory=50)
+```
+```{r emapplot, fig.height=10, fig.width=10}
+emapplot(ego, showCategory = 50)
+```
+
+Cnetplot
+
+```{r}
+## To color genes by log2 fold changes, we need to extract the log2 fold changes from our results table creating a named vector
+sig_foldchanges <- sig$log2FoldChange
+
+names(sig_foldchanges) <- sig$gene
+```
+
+```{r cnetplot}
+## Cnetplot details the genes associated with one or more terms - by default gives the top 5 significant terms (by padj)
+cnetplot(ego, 
+         categorySize="pvalue", 
+         showCategory = 5, 
+         foldChange=sig_foldchanges, 
+         vertex.label.font=6)
+```
+
+Perform GSEA analysis of KEGG pathways *can be done as well with GO terms)
+```{r}
+# Extract entrez IDs. IDs should not be duplicated or NA
+res_entrez <- dplyr::filter(res_ids, entrez != "NA" & entrez != "NULL" & duplicated(entrez)==F)
+
+## Extract the foldchanges
+foldchanges <- res_entrez$log2FoldChange
+
+## Name each fold change with the corresponding Entrez ID
+names(foldchanges) <- res_entrez$entrez
+
+## Sort fold changes in decreasing order
+foldchanges <- sort(foldchanges, decreasing = TRUE)
+```
+
+```{r}
+# Run GSEA of KEGG
+gseaKEGG <- gseKEGG(geneList = foldchanges, # ordered named vector of fold changes (Entrez IDs are the associated names)
+              organism = "hsa", # supported organisms listed below
+              pvalueCutoff = 0.05, # padj cutoff value
+              verbose = FALSE)
+
+gseaKEGG_results <- gseaKEGG@result
+head(gseaKEGG_results)
+```
+
+```{r gseaplot_KEGG}
+## Plot the GSEA plot for a single enriched pathway:
+gseaplot(gseaKEGG, geneSetID = 'hsa04060')
+```
+
+```{r pathview}
+## Output images for a single significant KEGG pathway
+pathview(gene.data = foldchanges,
+              pathway.id = "hsa04060",
+              species = "hsa",
+              limit = list(gene = 2, # value gives the max/min limit for foldchanges
+              cpd = 1))
+```
+
+```{r pathway_plot}
+knitr::include_graphics("./hsa04060.png")
+```
+
 
 10. Make sure to output the versions of all tools used in the DE analysis:
 
 ```{r}
 sessionInfo()
 ```
-
-For better reproducibility, it can help to create **RMarkdown reports**, which save all code, results, and visualizations as nicely formatted html reports. We have available an [example html report](https://www.dropbox.com/s/xp7l0b46rvwmbya/workshop-example.html?dl=1) for perusal. To create these reports we have [additional materials](https://hbctraining.github.io/Training-modules/Rmarkdown/) available.
-
-***
-
-*This lesson was originally developed by members of the teaching team (Mary Piper) at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/).*

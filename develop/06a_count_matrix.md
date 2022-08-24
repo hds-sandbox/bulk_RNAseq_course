@@ -289,8 +289,7 @@ previously. However, it can be helpful to plot the *mean versus the
 variance* of your data. *Remember for the Poisson model, mean =
 variance, but for NB, mean \< variance.*
 
-Run the following code to plot the *mean versus variance* for the ‘Mov10
-overexpression’ replicates:
+Run the following code to plot the *mean versus variance* for our data:
 
 ``` r
 df <- data %>% 

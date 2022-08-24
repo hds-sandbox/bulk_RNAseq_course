@@ -10,8 +10,13 @@ knit: (function(inputFile, encoding) {
 output:
   # To create PDF report, uncomment below
   #pdf_document:
-  #  toc: yes
-
+  #  toc: yes  
+  html_document:
+    theme: yeti # nice theme for the webpage
+    toc: yes # table of contents
+    toc_float: yes # table of contents "floats" in the document
+    df_print: paged # data frames are interactive
+    dev: png # what format do you want for the figures?
 ---
 
 ```{r knitr, include = FALSE}
@@ -22,12 +27,44 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       echo           = TRUE,
                       error          = FALSE,
                       fig.align      = "center",
-                      fig.path       = paste0("./img/", DOCNAME, "/"),
-                      #fig.width      = 10,
-                      #fig.height     = 8,
+                      fig.path       = paste0("./img/", DOCNAME, "/"), #images will be put in this folder, under the notebook name
                       message        = FALSE,
                       warning        = FALSE,
-                      eval           = FALSE)
+                      eval           = TRUE)
+```
+
+```{r setup, include = FALSE, echo = FALSE}
+# DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
+# This chunk is ONLY necessary if you want to knit this document into a pdf!!
+library(tidyverse)
+library(DESeq2)
+library(pheatmap)
+library(RColorBrewer)
+library(DEGreport)
+library(ggrepel)
+
+# And with this last line of code, we set our working directory to the folder with this notebook.
+# This way, the relative paths will work without issues
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+# Load objects so it can be knitted
+data <- read_table("../Data/Mov10_full_counts.txt") 
+meta <- read_table("../Data/Mov10_full_meta.txt")
+
+# Create dds object
+dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
+                              colData = meta %>% column_to_rownames("samplename"), 
+                              design = ~ sampletype)
+dds <- DESeq(dds)
+
+contrast_oe <- c("sampletype", "MOV10_overexpression","control")
+res_tableOE <- results(dds, contrast=contrast_oe, alpha = 0.05)
+res_tableOE_tb <- res_tableOE %>%
+  as_tibble(rownames = "gene") %>%
+  relocate(gene, .before = baseMean)
+
+sigOE <- res_tableOE_tb %>%
+  dplyr::filter(padj < 0.05)
 ```
 
 Approximate time: 75 minutes
@@ -52,11 +89,6 @@ head(res_tableOE)
 ```
 
 The problem with these fold change estimates is that they are not entirely accurate as they do not account for the large dispersion we observe with low read counts. To address this, the **log2 fold changes need to be adjusted**. 
-
-```{r}
-# MA plot using unshrunken fold changes
-plotMA(res_tableOE_unshrunken, ylim=c(-2,2))
-```
 
 To generate the shrunken log2 fold change estimates, you have to run an additional step on your results object (that we will create below) with the function `lfcShrink()`.
 
@@ -85,14 +117,14 @@ A plot that can be useful to exploring our results is the MA plot. The MA plot s
 
 **Let's start with the unshrunken results:**
 
-```{r}
+```{r MAplot_unshrunken}
 # MA plot using unshrunken fold changes
 plotMA(res_tableOE_unshrunken, ylim=c(-2,2))
 ```
 
 **And now the shrunken results:**
 
-```{r}
+```{r MAplot_shrunken}
 # MA plot using shrunken fold changes
 plotMA(res_tableOE, ylim=c(-2,2))
 ```
@@ -132,7 +164,7 @@ One way to visualize results would be to simply plot the expression data for a h
 
 To pick out a specific gene of interest to plot, for example MOV10, we can use the `plotCounts()` from DESeq2. `plotCounts()` requires that the gene specified matches the original input to DESeq2.
 
-```{r}
+```{r countPlot}
 # Plot expression for single gene
 plotCounts(dds, gene="MOV10", intgroup="sampletype") 
 ```
@@ -150,7 +182,7 @@ d %>% head()
 ```
 
 
-```{r}
+```{r custom_countPlot}
 # Plot the MOV10 normalized counts, using the samplenames (rownames(d) as labels)
 ggplot(d, aes(x = sampletype, y = count, color = sampletype)) + 
 geom_point(position=position_jitter(w = 0.1,h = 0)) +
@@ -165,14 +197,15 @@ theme(plot.title = element_text(hjust = 0.5))
 In addition to plotting subsets, we could also extract the normalized values of *all* the significant genes and plot a heatmap of their expression using `pheatmap()`.
 
 ```{r}
-### Extract normalized expression for significant genes from the OE and control samples (2:4 and 7:9)
-norm_OEsig <- normalized_counts[,c(1:4,7:9)] %>% 
+### Extract normalized expression for significant genes from the OE and control samples (columns 4 to 9)
+### also get gene name (column 1)
+norm_OEsig <- normalized_counts[,c(1,4:9)] %>% 
   dplyr::filter(gene %in% sigOE$gene)  
 ```
 
 Now let's draw the heatmap using `pheatmap`:
 
-```{r}
+```{r sigOE_heatmap}
 ### Run pheatmap using the metadata data frame for the annotation
 pheatmap(norm_OEsig[2:7], 
          cluster_rows = T, 
@@ -202,7 +235,7 @@ mutate(threshold_OE = padj < 0.05 & abs(log2FoldChange) >= 0.58)
 
 Now we can start plotting. The `geom_point` object is most applicable, as this is essentially a scatter plot:
 
-```{r}
+```{r volcano_plot}
 ## Volcano plot
 ggplot(res_tableOE_tb) +
 geom_point(aes(x = log2FoldChange, y = -log10(padj), colour = threshold_OE)) +
@@ -231,12 +264,12 @@ res_tableOE_tb <- res_tableOE_tb %>% arrange(padj)
 ## Populate the genelabels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes
 res_tableOE_tb$genelabels[1:10] <- as.character(res_tableOE_tb$gene[1:10])
 
-View(res_tableOE_tb)
+head(res_tableOE_tb)
 ```
 
 Next, we plot it as before with an additional layer for `geom_text_repel()` wherein we can specify the column of gene labels we just created. 
 
-```{r}
+```{r volcano_plot_label}
 ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
   geom_point(aes(colour = threshold_OE)) +
   geom_text_repel(aes(label = genelabels)) +
@@ -254,15 +287,16 @@ ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
 
 ***NOTE:** If using the DESeq2 tool for differential expression analysis, the package 'DEGreport' can use the DESeq2 results output to make the top20 genes and the volcano plots generated above by writing a few lines of simple code. While you can customize the plots above, you may be interested in using the easier code. Below are examples of the code to create these plots:*
 
-```{r, fig.height=10}
+```{r degPlot, fig.height=10}
 DEGreport::degPlot(dds = dds, res = res_tableOE_unshrunken, n = 20, xs = "sampletype", group = "sampletype") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))# dds object is output from DESeq2
 ```
-```{r}
+
+```{r degPlotWide}
 DEGreport::degPlotWide(counts = dds, genes = row.names(res_tableOE)[1:5], group = "sampletype")
 ```
 
-```{r}
+```{r degVolcano}
 DEGreport::degVolcano(
     data.frame(res_tableOE[,c("log2FoldChange","padj")]), # table - 2 columns
     plot_text = data.frame(res_tableOE_tb[1:10,c("log2FoldChange","padj","gene")])) # table to add names

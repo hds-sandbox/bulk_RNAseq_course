@@ -23,7 +23,7 @@
             {
                 "path": "/82207",
                 "type": "file",
-                "readOnly": true
+                "readOnly": false
             }
         ],
         "timeAllocation": {
