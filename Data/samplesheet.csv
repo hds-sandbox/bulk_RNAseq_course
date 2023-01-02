@@ -1,0 +1,9 @@
+sample,fastq_1,fastq_2,strandedness
+Control_3,Irrel_kd_3.fastq.gz,,unstranded
+Control_2,Irrel_kd_2.fastq.gz,,unstranded
+Control_1,Irrel_kd_1.fastq.gz,,unstranded
+Mov10_oe_3,Mov10_oe_3.fastq.gz,,unstranded
+Mov10_oe_2,Mov10_oe_2.fastq.gz,,unstranded
+Mov10_oe_1,Mov10_oe_1.fastq.gz,,unstranded
+Mov10_kd_3,Mov10_kd_3.fastq.gz,,unstranded
+Mov10_kd_2,Mov10_kd_2.fastq.gz,,unstranded
