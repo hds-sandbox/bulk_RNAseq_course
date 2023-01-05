@@ -12,7 +12,7 @@ The first step in the DE analysis workflow is count normalization, which
 is necessary to make accurate comparisons of gene expression between
 samples.
 
-<img src="./img/06b_count_normalization/deseq_workflow_normalization_2018.png" style="display: block; margin: auto;" />
+<img src="./img/05c_count_normalization/deseq_workflow_normalization_2018.png" style="display: block; margin: auto;" />
 
 The counts of mapped reads for each gene is proportional to the
 expression of RNA (“interesting”) in addition to many other factors
@@ -28,7 +28,7 @@ The main factors often considered during normalization are:
     relative to *Sample B*, however this is a consequence of *Sample A*
     having double the sequencing depth.
 
-<img src="./img/06b_count_normalization/normalization_methods_depth.png" style="display: block; margin: auto;" />
+<img src="./img/05c_count_normalization/normalization_methods_depth.png" style="display: block; margin: auto;" />
 
     >***NOTE:** In the figure above, each pink and green rectangle represents a read aligned to a gene. Reads connected by dashed lines connect a read spanning an intron.*
 
@@ -38,7 +38,7 @@ The main factors often considered during normalization are:
     expression, but the number of reads mapped to *Gene X* would be many
     more than the number mapped to *Gene Y* because *Gene X* is longer.
 
-<img src="./img/06b_count_normalization/normalization_methods_length.png" style="display: block; margin: auto;" />
+<img src="./img/05c_count_normalization/normalization_methods_length.png" style="display: block; margin: auto;" />
 
 -   **GC-content**: Genomic features such as GC-content may result in a
     read count biases, as GC-rich and GC-poor fragments are
@@ -68,7 +68,7 @@ The main factors often considered during normalization are:
     larger number of total counts and appear to be less expressed than
     those same genes in *Sample B*.
 
-<img src="./img/06b_count_normalization/normalization_methods_composition.png" style="display: block; margin: auto;" />
+<img src="./img/05c_count_normalization/normalization_methods_composition.png" style="display: block; margin: auto;" />
 
 ***While normalization is essential for differential expression
 analyses, it is also necessary for exploratory data analysis,
@@ -173,7 +173,7 @@ genes should not affect the median value:
 The figure below illustrates the median value for the distribution of
 all gene ratios for a single sample (frequency is on the y-axis).
 
-<img src="./img/06b_count_normalization/deseq_median_of_ratios.png" style="display: block; margin: auto;" />
+<img src="./img/05c_count_normalization/deseq_median_of_ratios.png" style="display: block; margin: auto;" />
 
 The median of ratios method assumes that not ALL genes are
 differentially expressed; therefore, the normalization factors should
@@ -318,7 +318,7 @@ dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data
                               design = ~ sampletype)
 ```
 
-<img src="./img/06b_count_normalization/deseq_obj1.png" style="display: block; margin: auto;" />
+<img src="./img/05c_count_normalization/deseq_obj1.png" style="display: block; margin: auto;" />
 
 You can use DESeq-specific functions to access the different slots and
 retrieve information, if you wish. For example, suppose we wanted the
@@ -338,7 +338,7 @@ check what information gets stored inside our object.
 The next step is to normalize the count data in order to be able to make
 fair gene comparisons between samples.
 
-<img src="./img/06b_count_normalization/deseq_workflow_normalization_2018.png" style="display: block; margin: auto;" />
+<img src="./img/05c_count_normalization/deseq_workflow_normalization_2018.png" style="display: block; margin: auto;" />
 
 To perform the **median of ratios method** of normalization, DESeq2 has
 a single `estimateSizeFactors()` function that will generate size

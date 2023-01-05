@@ -16,7 +16,7 @@ processes important to your condition of interest. Other types of
 analyses can be equally important or informative, including functional
 class scoring methods.
 
-<img src="./img/09c_FA_GSEA/pathway_analysis.png" style="display: block; margin: auto;" />
+<img src="./img/08c_FA_GSEA/pathway_analysis.png" style="display: block; margin: auto;" />
 
 ## Functional class scoring
 
@@ -27,7 +27,7 @@ differential expression results, then look to see whether gene sets for
 particular biological pathways are enriched among the large positive or
 negative fold changes.
 
-<img src="./img/09c_FA_GSEA/gsea_theory.png" style="display: block; margin: auto;" />
+<img src="./img/08c_FA_GSEA/gsea_theory.png" style="display: block; margin: auto;" />
 
 The hypothesis of FCS methods is that although large changes in
 individual genes can have significant effects on pathways (and will be
@@ -99,7 +99,7 @@ found in the [PNAS paper](https://www.pnas.org/content/102/43/15545) by
 Subramanian et al. We will describe briefly the steps outlined in the
 paper below:
 
-<img src="./img/09c_FA_GSEA/gsea_overview.png" style="display: block; margin: auto;" />
+<img src="./img/08c_FA_GSEA/gsea_overview.png" style="display: block; margin: auto;" />
 
 ***Image credit:** [Subramanian et al. Proceedings of the National
 Academy of Sciences Oct 2005, 102 (43) 15545-15550; DOI:
@@ -197,7 +197,7 @@ list:
 gseaplot(gseaKEGG, geneSetID = 'hsa03040')
 ```
 
-<img src="./img/09c_FA_GSEA/gsea_kegg_hsa03040.png" style="display: block; margin: auto;" />
+<img src="./img/08c_FA_GSEA/gsea_kegg_hsa03040.png" style="display: block; margin: auto;" />
 
 In this plot, the lines in plot represent the genes in the gene set
 ‘hsa03040’, and where they occur among the log2 fold changes. The
@@ -229,7 +229,7 @@ pathview(gene.data = foldchanges,
 > that means the dplyr package is not currently loaded. Ignore the
 > message and continue to run pathview command.
 
-<img src="./img/09c_FA_GSEA/hsa03040.pathview.png" style="display: block; margin: auto;" />
+<img src="./img/08c_FA_GSEA/hsa03040.pathview.png" style="display: block; margin: auto;" />
 
 > **NOTE:** Printing out Pathview images for all significant pathways
 > can be easily performed as follows:
@@ -288,7 +288,7 @@ msig_df <- data.frame(msig)
 
 ## Pathway topology tools
 
-<img src="./img/09c_FA_GSEA/pathway_analysis.png" style="display: block; margin: auto;" />
+<img src="./img/08c_FA_GSEA/pathway_analysis.png" style="display: block; margin: auto;" />
 
 The last main type of functional analysis technique is pathway topology
 analysis. Pathway topology analysis often takes into account gene

@@ -23,7 +23,7 @@ functional analysis are generally performed in R using R packages
 specifically designed for the complex statistical analyses required to
 determine whether genes are differentially expressed.
 
-<img src="./img/06a_count_matrix/rnaseq_full_workflow.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/rnaseq_full_workflow.png" style="display: block; margin: auto;" />
 
 In the next few lessons, we will walk you through an **end-to-end
 gene-level RNA-seq differential expression workflow** using various R
@@ -49,7 +49,7 @@ To check whether or not you are in the correct working directory, use
 returned to you in the console. When finished your working directory
 should now look similar to this:
 
-<img src="./img/06a_count_matrix/settingup.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/settingup.png" style="display: block; margin: auto;" />
 
 -   Inside the folder `Notebooks` you will find the scripts (in `Rmd`
     format) that we will follow during the sessions.
@@ -138,7 +138,7 @@ reads that originated from a particular gene. The higher the number of
 counts, the more reads associated with that gene, and the assumption
 that there was a higher level of expression of that gene in the sample.
 
-<img src="./img/06a_count_matrix/deseq_counts_overview.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deseq_counts_overview.png" style="display: block; margin: auto;" />
 
 With differential expression analysis, we are looking for genes that
 change in expression between two or more groups (defined in the
@@ -149,7 +149,7 @@ variable or clinical outcome
 ranking the genes by how different they are between the two groups
 (based on fold change values)?**
 
-<img src="./img/06a_count_matrix/foldchange_heatmap.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/foldchange_heatmap.png" style="display: block; margin: auto;" />
 
 Genes that vary in expression level between groups of samples may do so
 solely as a consequence of the biological variable(s) of interest.
@@ -159,7 +159,7 @@ variation. The goal of differential expression analysis to determine the
 relative role of these effects, hence separating the “interesting”
 variance from the “uninteresting” variance.
 
-<img src="./img/06a_count_matrix/de_variation.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/de_variation.png" style="display: block; margin: auto;" />
 
 Although the mean expression levels between sample groups may appear to
 be quite different, it is possible that the difference is not actually
@@ -172,7 +172,7 @@ take into account the variation in the data (and where it might be
 coming from) when determining whether genes are differentially
 expressed.**
 
-<img src="./img/06a_count_matrix/de_norm_counts_var.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/de_norm_counts_var.png" style="display: block; margin: auto;" />
 
 Differential expression analysis is used to determine, for each gene,
 whether the differences in expression (counts) **between groups** is
@@ -200,7 +200,7 @@ ggplot(pdata) +
   ylab("Number of genes")
 ```
 
-<img src="./img/06a_count_matrix/deseq_counts_distribution.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deseq_counts_distribution.png" style="display: block; margin: auto;" />
 
 If we zoom in close to zero, we can see a large number of genes with
 counts of zero:
@@ -213,7 +213,7 @@ ggplot(pdata) +
    ylab("Number of genes")
 ```
 
-<img src="./img/06a_count_matrix/deseq_counts_distribution_zoomed.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deseq_counts_distribution_zoomed.png" style="display: block; margin: auto;" />
 
 These images illustrate some common features of RNA-seq count data,
 including a **low number of counts associated with a large proportion of
@@ -255,7 +255,7 @@ replicates, is the **Negative Binomial (NB) model**. Essentially, **the
 NB model is a good approximation for data where the mean \< variance**,
 as is the case with RNA-Seq count data.
 
-<img src="./img/06a_count_matrix/deseq_nb.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deseq_nb.png" style="display: block; margin: auto;" />
 
 > **NOTE:**
 >
@@ -305,7 +305,7 @@ ggplot(df) +
   scale_x_log10()
 ```
 
-<img src="./img/06a_count_matrix/deseq_mean_vs_variance.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deseq_mean_vs_variance.png" style="display: block; margin: auto;" />
 
 Note that in the above figure, the variance across replicates tends to
 be greater than the mean (red line), especially for genes with large
@@ -333,7 +333,7 @@ and number of replicates on the number of differentially expressed genes
 identified (from [Liu et
 al. (2013)](https://doi.org/10.1093/bioinformatics/btt688):
 
-<img src="./img/06a_count_matrix/seqDepth_DEA.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/seqDepth_DEA.png" style="display: block; margin: auto;" />
 
 Note that an **increase in the number of replicates tends to return more
 DE genes than increasing the sequencing depth**. Therefore, generally
@@ -344,7 +344,7 @@ minimum sequencing depth recommended is 20-30 million reads per sample,
 but we have seen good RNA-seq experiments with 10 million reads if there
 are a good number of replicates.
 
-<img src="./img/06a_count_matrix/de_replicates_img.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/de_replicates_img.png" style="display: block; margin: auto;" />
 
 ### Differential expression analysis workflow
 
@@ -366,9 +366,9 @@ under all conditions** **([Soneson and Dleorenzi,
 [Corchete et al,
 2020](https://www.nature.com/articles/s41598-020-76881-x))**.
 
-<img src="./img/06a_count_matrix/deg_methods1.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deg_methods1.png" style="display: block; margin: auto;" />
 
-<img src="./img/06a_count_matrix/deg_methods2.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deg_methods2.png" style="display: block; margin: auto;" />
 
 **We will be using
 [DESeq2](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8)
@@ -380,7 +380,7 @@ QC at the gene and sample level. The final step is to use the
 appropriate functions from the DESeq2 package to perform the
 differential expression analysis.
 
-<img src="./img/06a_count_matrix/deseq_workflow_full_2018.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deseq_workflow_full_2018.png" style="display: block; margin: auto;" />
 
 We will go in-depth into each of these steps in the following lessons,
 but additional details and helpful suggestions regarding DESeq2 can be

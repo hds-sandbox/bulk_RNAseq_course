@@ -2,12 +2,13 @@
 
 Repository for bulk RNAseq course of the Danish Health Data Science Sandbox project.
 
-This workshop material includes a tutorial on how to approach RNAseq data, starting from your count matrix. Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), a collection of modified tutorials from the [DESeq2](https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) and R language vignettes.
+This workshop material includes a tutorial on how to approach RNAseq data, starting from your sequencing reads (fastq files). Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), a collection of modified tutorials from the [DESeq2](https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html), R language vignettes and the [nf-core rnaseq pipeline](https://nf-co.re/rnaseq).
 
 ## Goals
 
-By the end of this workshop, you should be able to analyse your own bulk RNAseq count matrix:
+By the end of this workshop, you should be able to analyse your own bulk RNAseq data:
 
+-   Preprocess your reads into a count matrix.
 -   Normalize your data.
 -   Explore your samples with PCAs and heatmaps.
 -   Perform Differential Expression Analysis.
@@ -16,19 +17,18 @@ By the end of this workshop, you should be able to analyse your own bulk RNAseq 
 ## Syllabus
 
 1.  Course Introduction
-2.  Setup
-3.  Experimental planning
-4.  Data Explanation
-5.  Preprocessing
-6.  RNAseq counts
-7.  Exploratory analysis
-8.  Differential Expression Analysis
-9.  Functional Analysis
-10. Summarized workflow
+2.  Experimental planning
+3.  Data Explanation
+4.  Preprocessing and preprocessing pipelines
+5.  RNAseq counts
+6.  Exploratory analysis
+7.  Differential Expression Analysis
+8.  Functional Analysis
+9.  Summarized workflow
 
 ## Workshop prerequisites
 
--   Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop [R basics](https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022)
+-   Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop [From Excel to R](https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022)
 -   Basic knowledge of RNAseq technology
 -   Basic knowledge of data science and statistics such as PCA, clustering and statistical testing
 

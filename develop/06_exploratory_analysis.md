@@ -13,7 +13,7 @@ The next step in the DESeq2 workflow is QC, which includes sample-level
 and gene-level steps to perform QC checks on the count data to help us
 ensure that the samples/replicates look good.
 
-<img src="./img/07_exploratory_analysis/deseq_workflow_qc_2018.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/deseq_workflow_qc_2018.png" style="display: block; margin: auto;" />
 
 ## Sample-level QC
 
@@ -34,7 +34,7 @@ samples behaving like outliers; we can further explore any potential
 outliers to determine whether they need to be removed prior to DE
 analysis.
 
-<img src="./img/07_exploratory_analysis/sample_qc.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/sample_qc.png" style="display: block; margin: auto;" />
 
 These unsupervised clustering methods are run using **log2 transformed
 normalized counts**. The log2 transformation **improves the sample
@@ -44,7 +44,7 @@ will be using the **regularized log transform** (rlog). This type of
 transformation helps to avoid any bias from the abundance of low-count
 genes; Note1 below explains this in more detail.
 
-<img src="./img/07_exploratory_analysis/rlog_transformation_new.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/rlog_transformation_new.png" style="display: block; margin: auto;" />
 
 *Image adapted from “[Beginner’s guide to using the DESeq2
 package](https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf)”
@@ -121,7 +121,7 @@ We have an example dataset and a few associated PCA plots below to get a
 feel for how to interpret them. The metadata for the experiment is
 displayed below. The main condition of interest is `treatment`.
 
-<img src="./img/07_exploratory_analysis/example_metadata.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_metadata.png" style="display: block; margin: auto;" />
 
 When visualizing on PC1 and PC2, we don’t see the samples separate by
 `treatment`, so we decide to explore other sources of variation present
@@ -129,24 +129,24 @@ in the data. We hope that we have included all possible known sources of
 variation in our metadata table, and we can use these factors to color
 the PCA plot.
 
-<img src="./img/07_exploratory_analysis/example_PCA_treatmentPC1.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_PCA_treatmentPC1.png" style="display: block; margin: auto;" />
 
 We start with the factor `cage`, but the `cage` factor does not seem to
 explain the variation on PC1 or PC2.
 
-<img src="./img/07_exploratory_analysis/example_PCA_cage.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_PCA_cage.png" style="display: block; margin: auto;" />
 
 Then, we color by the `sex` factor, which appears to separate samples on
 PC2. This is good information to take note of, as we can use it
 downstream to account for the variation due to sex in the model and
 regress it out.
 
-<img src="./img/07_exploratory_analysis/example_PCA_sex.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_PCA_sex.png" style="display: block; margin: auto;" />
 
 Next we explore the `strain` factor and find that it explains the
 variation on PC1.
 
-<img src="./img/07_exploratory_analysis/example_PCA_strain.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_PCA_strain.png" style="display: block; margin: auto;" />
 
 It’s great that we have been able to identify the sources of variation
 for both PC1 and PC2. By accounting for it in our model, we should be
@@ -163,7 +163,7 @@ Still we haven’t found if `treatment` is a major source of variation
 after `strain` and `sex`. So, we explore PC3 and PC4 to see if
 `treatment` is driving the variation represented by either of these PCs.
 
-<img src="./img/07_exploratory_analysis/example_PCA_treatmentPC3.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_PCA_treatmentPC3.png" style="display: block; margin: auto;" />
 
 We find that the samples separate by `treatment` on PC3, and are
 optimistic about our DE analysis since our condition of interest,
@@ -192,7 +192,7 @@ expect to see your replicates cluster together as a block for each
 sample group. Our expectation would be that the samples cluster together
 similar to the groupings we’ve observed in the PCA plot.
 
-<img src="./img/07_exploratory_analysis/heatmap_example.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/heatmap_example.png" style="display: block; margin: auto;" />
 
 *In the example above, we see a clustering of wild-type (Wt) and
 knock-down (KD) cell line samples and we* ***would be quite concerned***
@@ -270,7 +270,7 @@ experimental sample groups.
 plotPCA(rld, intgroup="sampletype")
 ```
 
-<img src="./img/07_exploratory_analysis/pca_500.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/pca_500.png" style="display: block; margin: auto;" />
 
 ------------------------------------------------------------------------
 
@@ -364,7 +364,7 @@ represented by the tree structure along the axes. The `annotation`
 argument accepts a dataframe as input, in our case it is the `meta` data
 frame.
 
-<img src="./img/07_exploratory_analysis/pheatmap_salmon.png" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/pheatmap_salmon.png" style="display: block; margin: auto;" />
 
 Overall, we observe pretty high correlations across the board ( \>
 0.999) suggesting no outlying sample(s). Also, similar to the PCA plot

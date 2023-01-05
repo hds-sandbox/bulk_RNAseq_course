@@ -18,7 +18,7 @@ RNA sequencing was performed on HEK293F cells which were either transfected with
 Using these data, we will evaluate transcriptional patterns associated with perturbation of MOV10 expression. Please note that the irrelevant siRNA will be treated as our control condition.
 
 <p align="center">
-<img src="./img/04_data_explanation/dataset.png" width="400">
+<img src="./img/03_data_explanation/dataset.png" width="400">
 </p>
 
 ***What is the purpose of these datasets? What does Mov10 do?***
@@ -32,7 +32,7 @@ The authors are investigating interactions between various genes involved in Fra
 **The hypothesis [the paper](http://www.ncbi.nlm.nih.gov/pubmed/25464849) is testing is that FMRP and MOV10 associate and regulate the translation of a subset of RNAs.**
 
 <p align="center">
-<img src="./img/04_data_explanation/mov10-model.png" width="400">
+<img src="./img/03_data_explanation/mov10-model.png" width="400">
 </p>
 
 **Our questions:**

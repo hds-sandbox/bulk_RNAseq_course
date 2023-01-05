@@ -1,24 +1,27 @@
 site_name: 'Bulk RNAseq data analysis'
 nav:
     - 'Course Introduction': index.md
-    - 'Setup': 02_setup.md
-    - 'Experimental planning': 03_experimental_planning.md
-    - 'Data Explanation': 04_data_explanation.md
-    - 'Preprocessing': 05_preprocessing.md
-    - 'RNAseq counts':
-        - 'Count matrix': 06a_count_matrix.md
-        - 'Normalization': 06b_count_normalization.md
-    - 'Exploratory Analysis': 07_exploratory_analysis.md
+    - 'Experimental planning': 02_experimental_planning.md
+    - 'Data Explanation': 03_data_explanation.md
+    - 'Preprocessing':
+        - 'Preprocessing steps': 04a_preprocessing.md
+        - 'Nextflow and nf-core pipelines': 04b_pipelines.md
+        - 'UCloud setup': 04c_preprocessing_setup.md
+    - 'Analysing RNAseq counts':
+        - 'Ucloud setup': 05a_data_analyis_setup.md
+        - 'Count matrix': 05b_count_matrix.md
+        - 'Normalization': 05c_count_normalization.md
+    - 'Exploratory Analysis': 06_exploratory_analysis.md
     - 'Differential Expression': 
-        - 'Design formula': 08a_contrast_design.md
-        - 'DESeq2': 08b_DEA.md
-        - 'Hypothesis testing': 08c_hypothesis_testing.md
-        - 'Visualization': 08d_DEA_visualization.md
+        - 'Design formula': 07a_contrast_design.md
+        - 'DESeq2': 07b_DEA.md
+        - 'Hypothesis testing': 07c_hypothesis_testing.md
+        - 'Visualization': 07d_DEA_visualization.md
     - 'Functional Analysis': 
-        - 'Gene annotation': 09a_FA_genomic_annotation.md
-        - 'Over representation analysis': 09b_FA_overrepresentation.md
-        - 'Class scoring': 09c_FA_GSEA.md
-    - 'Summarized workflow': 10_summarized_workflow.md
+        - 'Gene annotation': 08a_FA_genomic_annotation.md
+        - 'Over representation analysis': 08b_FA_overrepresentation.md
+        - 'Class scoring': 08c_FA_GSEA.md
+    - 'Summarized workflow': 09_summarized_workflow.md
     
 use_directory_urls: false
 docs_dir: develop

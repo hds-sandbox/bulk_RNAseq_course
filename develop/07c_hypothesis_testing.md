@@ -19,7 +19,7 @@ Approximate time: 90 minutes
 The final step in the DESeq2 workflow is taking the counts for each gene
 and fitting it to the model and testing for differential expression.
 
-<img src="./img/08c_hypothesis_testing/de_workflow.png" style="display: block; margin: auto;" />
+<img src="./img/07c_hypothesis_testing/de_workflow.png" style="display: block; margin: auto;" />
 
 ## Generalized Linear Model
 
@@ -29,7 +29,7 @@ distribution used to model the counts needs to account for this. As
 such, DESeq2 uses a **negative binomial distribution to model the
 RNA-seq counts using the equation below**:
 
-<img src="./img/08c_hypothesis_testing/NB_model_formula.png" style="display: block; margin: auto;" />
+<img src="./img/07c_hypothesis_testing/NB_model_formula.png" style="display: block; margin: auto;" />
 
 The two parameters required are the **size factor, and the dispersion
 estimate**. Next, a generalized linear model (GLM) of the NB family is
@@ -186,7 +186,7 @@ change over time, even though the genes may be differentially expressed
 between groups at a particular time point, as shown in the figure below:
 
 ``` r
-knitr::include_graphics("./img/08c_hypothesis_testing/lrt_time_nodiff.png")
+knitr::include_graphics("./img/07c_hypothesis_testing/lrt_time_nodiff.png")
 ```
 
 The significant DE genes will represent those genes that have
@@ -194,7 +194,7 @@ differences in the effect of treatment over time, an example is
 displayed in the figure below:
 
 ``` r
-knitr::include_graphics("./img/08c_hypothesis_testing/lrt_time_yesdiff.png")
+knitr::include_graphics("./img/07c_hypothesis_testing/lrt_time_yesdiff.png")
 ```
 
 </details>
@@ -439,7 +439,7 @@ Let’s take a closer look at our results table. As we scroll through it,
 you will notice that for **selected genes there are NA values in the
 `pvalue` and `padj` columns**. What does this mean?
 
-<img src="./img/08c_hypothesis_testing/gene_filtering.png" style="display: block; margin: auto;" />
+<img src="./img/07c_hypothesis_testing/gene_filtering.png" style="display: block; margin: auto;" />
 
 The missing values represent genes that have undergone filtering as part
 of the `DESeq()` function. Prior to differential expression analysis it
@@ -500,7 +500,7 @@ testing. This is based on the notion that genes with very low counts are
 not likely to see significant differences typically due to high
 dispersion.
 
-<img src="./img/08c_hypothesis_testing/indep_filt_scatterplus.png" style="display: block; margin: auto;" />
+<img src="./img/07c_hypothesis_testing/indep_filt_scatterplus.png" style="display: block; margin: auto;" />
 
 *Image courtesy of [slideshare
 presentation](https://www.slideshare.net/joachimjacob/5rna-seqpart5detecting-differentialexpression)

@@ -15,7 +15,7 @@ In this lesson we will briefly discuss the RNA-processing pipeline for bulk RNA-
 
 <p align="center">
 
-<img src="./img/05_preprocessing/workflow-salmon-DGE-alt2.png" width="600"/>
+<img src="./img/04a_preprocessing/workflow-salmon-DGE-alt2.png" width="600"/>
 
 </p>
 
@@ -39,7 +39,7 @@ Generally, rRNA represents the majority of the RNA present in a cell, while mess
 
 <p align="center">
 
-<img src="./img/05_preprocessing/library_prep.png"/>
+<img src="./img/04a_preprocessing/library_prep.png"/>
 
 </p>
 
@@ -51,7 +51,7 @@ Sequencing of the cDNA libraries will generate **reads**. Reads correspond to th
 
 <p align="center">
 
-<img src="./img/05_preprocessing/paired_end_reads.png" width="500"/>
+<img src="./img/04a_preprocessing/paired_end_reads.png" width="500"/>
 
 </p>
 
@@ -83,7 +83,7 @@ We have provided a brief explanation of the steps below:
 
 <p align="center">
 
-<img src="./img/05_preprocessing/illumina_sequencing_process.png" width="600"/>
+<img src="./img/04a_preprocessing/illumina_sequencing_process.png" width="600"/>
 
 </p>
 
@@ -125,7 +125,7 @@ Each of the tools in the list above work slightly differently from one another. 
 
 <p align="center">
 
-<img src="./img/05_preprocessing/salmon.png" width="600"/>
+<img src="./img/04a_preprocessing/salmon.png" width="600"/>
 
 </p>
 
@@ -149,7 +149,7 @@ Once the QC has been performed on all the samples, we are ready to get started w
 
 <p align="center">
 
-<img src="./img/05_preprocessing/deseq_counts_overview.png" width="600"/>
+<img src="./img/04a_preprocessing/deseq_counts_overview.png" width="600"/>
 
 </p>
 
@@ -159,7 +159,7 @@ The [nf-core project](https://nf-co.re/) is a community effort to collect a cura
 
 <p align="center">
 
-<img src="./img/05_preprocessing/nf-core_RNAseq.png" width="600"/>
+<img src="./img/04a_preprocessing/nf-core_RNAseq.png" width="600"/>
 
 </p>
 

@@ -41,7 +41,7 @@ all genes is used (as a prior) to shrink the LFC estimates of genes with
 little information or high dispersion toward more likely (lower) LFC
 estimates.
 
-<img src="./img/08d_DEA_visualization/deseq2_shrunken_lfc.png" style="display: block; margin: auto;" />
+<img src="../img/07d_DEA_visualization/deseq2_shrunken_lfc.png" style="display: block; margin: auto;" />
 
 *Illustration taken from the [DESeq2
 paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8).*
@@ -144,7 +144,7 @@ can see the abundance of scatter for the lowly expressed genes. That is,
 many of these genes exhibit very high fold changes. After shrinkage, we
 see the fold changes are much smaller estimates.
 
-<img src="./img/08d_DEA_visualization/maplot_unshrunken.png" style="display: block; margin: auto auto auto 0;" /><img src="./img/08d_DEA_visualization/MA_plot.png" style="display: block; margin: auto auto auto 0;" />
+<img src="../img/07d_DEA_visualization/maplot_unshrunken.png" style="display: block; margin: auto auto auto 0;" /><img src="../img/07d_DEA_visualization/MA_plot.png" style="display: block; margin: auto auto auto 0;" />
 
 In addition to the comparison described above, this plot allows us to
 evaluate the magnitude of fold changes and how they are distributed
@@ -201,7 +201,7 @@ gene specified matches the original input to DESeq2.
 plotCounts(dds, gene="MOV10", intgroup="sampletype") 
 ```
 
-<img src="./img/08d_DEA_visualization/topgen_plot.png" style="display: block; margin: auto;" />
+<img src="../img/07d_DEA_visualization/topgen_plot.png" style="display: block; margin: auto;" />
 
 > This DESeq2 function only allows for plotting the counts of a single
 > gene at a time, and is not flexible regarding the appearance.
@@ -234,7 +234,7 @@ theme(plot.title = element_text(hjust = 0.5))
 > `geom_text_repel()` from the `ggrepel` package to label our individual
 > points on the plot.
 
-<img src="./img/08d_DEA_visualization/plotCounts_ggrepel.png" style="display: block; margin: auto auto auto 0;" />
+<img src="../img/07d_DEA_visualization/plotCounts_ggrepel.png" style="display: block; margin: auto auto auto 0;" />
 
 ### Heatmap
 
@@ -263,7 +263,7 @@ pheatmap(norm_OEsig[2:7],
          height = 20)
 ```
 
-<img src="./img/08d_DEA_visualization/pheatmap_aug2020.png" style="display: block; margin: auto auto auto 0;" />
+<img src="../img/07d_DEA_visualization/pheatmap_aug2020.png" style="display: block; margin: auto auto auto 0;" />
 
 > *NOTE:* There are several additional arguments we have included in the
 > function for aesthetics. One important one is `scale="row"`, in which
@@ -310,7 +310,7 @@ plot.title = element_text(size = rel(1.5), hjust = 0.5),
 axis.title = element_text(size = rel(1.25)))  
 ```
 
-<img src="./img/08d_DEA_visualization/volcano_plot_1.png" style="display: block; margin: auto auto auto 0;" />
+<img src="../img/07d_DEA_visualization/volcano_plot_1.png" style="display: block; margin: auto auto auto 0;" />
 
 This is a great way to get an overall picture of what is going on, but
 what if we also wanted to know where the top 10 genes (lowest padj) in
@@ -350,7 +350,7 @@ ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
         axis.title = element_text(size = rel(1.25))) 
 ```
 
-<img src="./img/08d_DEA_visualization/volcano_plot_2.png" style="display: block; margin: auto auto auto 0;" />
+<img src="../img/07d_DEA_visualization/volcano_plot_2.png" style="display: block; margin: auto auto auto 0;" />
 
 ------------------------------------------------------------------------
 

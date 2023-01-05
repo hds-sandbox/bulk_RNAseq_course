@@ -34,7 +34,7 @@ over-representation analysis, functional class scoring, and pathway
 topology
 \[[1](https://github.com/hbctraining/In-depth-NGS-Data-Analysis-Course/raw/master/resources/pathway_tools.pdf)\].
 
-<img src="./img/09b_FA_overrepresentation/pathway_analysis.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/pathway_analysis.png" style="display: block; margin: auto;" />
 
 The goal of functional analysis is to provide biological insight, so
 it’s necessary to analyze our results in the context of our experimental
@@ -72,9 +72,9 @@ associated with a specific category in your gene list based on the
 proportion of genes associated with the same category in the background
 set (gene categorizations for the appropriate organism).
 
-<img src="./img/09b_FA_overrepresentation/go_proportions.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/go_proportions.png" style="display: block; margin: auto;" />
 
-<img src="./img/09b_FA_overrepresentation/go_proportions_table3.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/go_proportions_table3.png" style="display: block; margin: auto;" />
 
 The statistical test that will determine whether something is actually
 over-represented is the *Hypergeometric test*.
@@ -91,7 +91,7 @@ associated with “Functional category 1”
 
 The calculation of probability of k successes follows the formula:
 
-<img src="./img/09b_FA_overrepresentation/hypergeo.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/hypergeo.png" style="display: block; margin: auto;" />
 
 This test will result in an adjusted p-value (after multiple test
 correction) for each category tested.
@@ -166,7 +166,7 @@ Some genes with less information may only be associated with general
 information be associated with many terms.
 
 ![Nature Reviews Cancer 7, 23-34 (January
-2007)](./img/09b_FA_overrepresentation/go_heirarchy.jpg)
+2007)](./img/08b_FA_overrepresentation/go_heirarchy.jpg)
 
 [Tips for working with GO
 terms](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003343)
@@ -254,7 +254,7 @@ ego <- enrichGO(gene = sigOE_genes,
 
 > **NOTE:** The different organisms with annotation databases available
 > to use with for the `OrgDb` argument can be found
-> [here](./img/09b_FA_overrepresentation/orgdb_annotation_databases.png).
+> [here](./img/08b_FA_overrepresentation/orgdb_annotation_databases.png).
 >
 > Also, the `keyType` argument may be coded as `keytype` in different
 > versions of clusterProfiler.
@@ -270,7 +270,7 @@ cluster_summary <- data.frame(ego)
 write.csv(cluster_summary, "Results/clusterProfiler_Mov10oe.csv")
 ```
 
-<img src="./img/09b_FA_overrepresentation/cluster_summary.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/cluster_summary.png" style="display: block; margin: auto;" />
 
 > **NOTE:** Instead of saving just the results summary from the `ego`
 > object, it might also be beneficial to save the object itself. The
@@ -326,7 +326,7 @@ term / total number of sig genes), not p-adjusted value.
 dotplot(ego, showCategory=50)
 ```
 
-<img src="./img/09b_FA_overrepresentation/mov10oe_dotplot.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/mov10oe_dotplot.png" style="display: block; margin: auto;" />
 
 The next plot is the **enrichment GO plot**, which shows the
 relationship between the top 50 most significantly enriched GO terms
@@ -349,7 +349,7 @@ ego <- enrichplot::pairwise_termsim(ego)
 emapplot(ego, showCategory = 50)
 ```
 
-<img src="./img/09b_FA_overrepresentation/emapplot.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/emapplot.png" style="display: block; margin: auto;" />
 
 Finally, the **category netplot** shows the relationships between the
 genes associated with the top five most significant GO terms and the
@@ -393,7 +393,7 @@ cnetplot(ego,
          vertex.label.font=6)
 ```
 
-<img src="./img/09b_FA_overrepresentation/cnetplot1.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/cnetplot1.png" style="display: block; margin: auto;" />
 
 If you are interested in significant processes that are **not** among
 the top five, you can subset your `ego` dataset to only display these
@@ -413,7 +413,7 @@ cnetplot(ego2,
          vertex.label.font=6)
 ```
 
-<img src="./img/09b_FA_overrepresentation/cnetplot-2.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/cnetplot-2.png" style="display: block; margin: auto;" />
 
 ------------------------------------------------------------------------
 

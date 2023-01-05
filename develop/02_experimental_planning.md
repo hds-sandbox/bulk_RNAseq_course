@@ -38,7 +38,7 @@ Experimental replicates can be performed as **technical replicates** or **biolog
 
 <p align="center">
 
-<img src="./img/03_experimental_planning/replicates.png" width="500"/>
+<img src="./img/02_experimental_planning/replicates.png" width="500"/>
 
 </p>
 
@@ -56,7 +56,7 @@ For differential expression analysis, the more biological replicates, the better
 
 <p align="center">
 
-<img src="./img/03_experimental_planning/de_replicates_img2.png" width="500"/>
+<img src="./img/02_experimental_planning/de_replicates_img2.png" width="500"/>
 
 </p>
 
@@ -106,7 +106,7 @@ For example, we know that sex has large effects on gene expression, and if all o
 
 <p align="center">
 
-<img src="./img/03_experimental_planning/confounded_design.png" width="500"/>
+<img src="./img/02_experimental_planning/confounded_design.png" width="500"/>
 
 </p>
 
@@ -118,7 +118,7 @@ For example, we know that sex has large effects on gene expression, and if all o
 
 <p align="center">
 
-<img src="./img/03_experimental_planning/non_confounded_design.png" width="400"/>
+<img src="./img/02_experimental_planning/non_confounded_design.png" width="400"/>
 
 </p>
 
@@ -128,7 +128,7 @@ A batch effect appears when variance is introduced into your data as a consequen
 
 <p align="center">
 
-<img src="./img/03_experimental_planning/batch_effect_pca.png" width="600"/>
+<img src="./img/02_experimental_planning/batch_effect_pca.png" width="600"/>
 
 </p>
 
@@ -160,7 +160,7 @@ If *any* of the answers is **'No'**, then you have batches.
 
 <p align="center">
 
-<img src="./img/03_experimental_planning/confounded_batch.png" width="300"/>
+<img src="./img/02_experimental_planning/confounded_batch.png" width="300"/>
 
 </p>
 
@@ -170,7 +170,7 @@ If *any* of the answers is **'No'**, then you have batches.
 
 <p align="center">
 
-<img src="./img/03_experimental_planning/batch_effect.png" width="300"/>
+<img src="./img/02_experimental_planning/batch_effect.png" width="300"/>
 
 </p>
 
@@ -182,7 +182,7 @@ If *any* of the answers is **'No'**, then you have batches.
 
 <p align="center">
 
-<img src="./img/03_experimental_planning/metadata_batch.png" width="300"/>
+<img src="./img/02_experimental_planning/metadata_batch.png" width="300"/>
 
 </p>
 
