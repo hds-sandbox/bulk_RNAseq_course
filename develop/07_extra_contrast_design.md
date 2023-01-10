@@ -15,7 +15,7 @@ test** for differentially expressed genes. In this step we essentially
 want to determine whether the mean expression levels of different sample
 groups are significantly different.
 
-<img src="./img/07a_contrast_design/de_theory.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/de_theory.png" style="display: block; margin: auto;" />
 
 *Image credit: Paul Pavlidis, UBC*
 
@@ -36,7 +36,7 @@ estimates of dispersion to model the counts. Finally, DESeq2 will fit
 the negative binomial model and perform hypothesis testing using the
 Wald test or Likelihood Ratio Test.
 
-<img src="./img/07a_contrast_design/deseq_workflow1.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/deseq_workflow1.png" style="display: block; margin: auto;" />
 
 > **NOTE:** DESeq2 is actively maintained by the developers and
 > continuously being updated. As such, it is important that you note the
@@ -72,7 +72,7 @@ condition of interest.**
 
 For example, suppose you have the following metadata:
 
-<img src="./img/07a_contrast_design/metadata.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/metadata.png" style="display: block; margin: auto;" />
 
 If you want to examine the expression differences between `condition`,
 and you know that major sources of variation include `bloodtype` and
@@ -292,7 +292,7 @@ approach:
 plot(res1$log2FoldChange, res2$log2FoldChange)
 ```
 
-<img src="./img/07a_contrast_design/contrast_res1.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res1.png" style="display: block; margin: auto;" />
 
 ## Recoding the design
 
@@ -348,7 +348,7 @@ Again, the results are essentially the same:
 plot(res1$log2FoldChange, res3$log2FoldChange)
 ```
 
-<img src="./img/07a_contrast_design/contrast_res2.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res2.png" style="display: block; margin: auto;" />
 
 In theory there’s no difference between these two ways of defining our
 design. The design with an intercept is more common, but for the
@@ -554,7 +554,7 @@ plot(res1_A_B$log2FoldChange, res2_AB$log2FoldChange)
 abline(0, 1, col = "brown", lwd = 2)
 ```
 
-<img src="./img/07a_contrast_design/contrast_res3.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res3.png" style="display: block; margin: auto;" />
 
 ``` r
 # compare the errors between the two approaches
@@ -562,7 +562,7 @@ plot(res1_A_B$lfcSE, res2_AB$lfcSE)
 abline(0, 1, col = "brown", lwd = 2)
 ```
 
-<img src="./img/07a_contrast_design/contrast_res4.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res4.png" style="display: block; margin: auto;" />
 
 ## Two factors with interaction
 

@@ -146,5 +146,5 @@ Given the dispersion plot below, would you have any concerns regarding the fit o
 - If so, what are your concerns? What would you do to address them?
 
 ```{r, echo = FALSE, eval = TRUE}
-knitr::include_graphics("./img/08a_DEA/exercise_dispersion.png")
+knitr::include_graphics("./img/07a_DEA/exercise_dispersion.png")
 ```

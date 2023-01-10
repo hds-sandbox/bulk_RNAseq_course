@@ -125,6 +125,7 @@ Let's check the results:
 ```{r}
 ## Output results from GO analysis to a table
 cluster_summary <- data.frame(ego)
+cluster_summary
 
 write.csv(cluster_summary, "../Results/clusterProfiler_Mov10oe.csv")
 ```
@@ -212,7 +213,7 @@ cnetplot(ego2,
 
 **Exercise 2**
 
-Run a Disease Ontology (DO) overrepresnetation analysis using the `enrichDO()` function. **NOTE** the arguments are very similar to the previous examples. 
+Run a Disease Ontology (DO) overrepresentation analysis using the `enrichDO()` function. **NOTE** the arguments are very similar to the previous examples. 
 
 - Do you find anything interesting?
 

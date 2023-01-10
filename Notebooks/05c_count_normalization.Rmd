@@ -106,8 +106,17 @@ all(meta$samplename %in% colnames(data))
 all(meta$samplename == colnames(data)[-1])
 ```
 
-If your data did not match, you could use the `match()` function to rearrange them to be matching.
+If your data did not match, you could use the `match()` function to rearrange them to be matching. `match()` function will take two arguments and find in which order the indexes of the second argument match the first argument.
 
+```{r}
+a <- c("a","b","c")
+b <- c("b","c","a")
+
+reorder <- match(a,b)
+reorder
+
+b[reorder]
+```
 ***
 
 **Exercise 2**	
