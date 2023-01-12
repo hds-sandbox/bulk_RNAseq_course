@@ -22,11 +22,16 @@
             {
                 "path": "/82207/bulk_RNAseq_course",
                 "type": "file",
-                "readOnly": false
+                "readOnly": true
+            },
+            {
+                "path": "/82207/sequencing_data",
+                "type": "file",
+                "readOnly": true
             }
         ],
         "timeAllocation": {
-            "hours": 8,
+            "hours": 4,
             "minutes": 0,
             "seconds": 0
         },

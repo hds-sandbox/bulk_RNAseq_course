@@ -37,8 +37,7 @@ Approximate time: 20 minutes
 
 ## Learning Objectives
 
--   Describe how to set up an RNA-seq project in R
--   Describe the RNA-seq and the differential gene expression analysis workflow
+-   Load and create a count matrix from our preprocessing analysis using Salmon
 -   Explain why negative binomial distribution is used to model RNA-seq count data
 
 ## Loading libraries
@@ -48,6 +47,7 @@ For this analysis we will be using several R packages, some which have been inst
 ```{r}
 library(tidyverse)
 library(DESeq2)
+library(tximport)
 
 # And with this last line of code, we set our working directory to the folder with this notebook.
 # This way, the relative paths will work without issues
@@ -55,31 +55,93 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 ```
 
 ## Loading data
-
-To load the data into our current environment, we will be using the `read_table` function. We need to provide the path to each file. By default the function expects tab-delimited files, which is what we have.
+The directories of output from the mapping/quantification step of the workflow (Salmon) is the data that we will be using. These transcript abundance estimates, often referred to as **'pseudocounts', will be the starting point for our differential gene expression analysis**.
+The main output of Salmon is a `quant.sf` file, and we have one of these for each individual sample in our dataset.
 
 ```{r}
-## Load in data
-data <- read_table("../Data/Mov10_full_counts.txt") 
-
-meta <- read_table("../Data/Mov10_full_meta.txt")
+# Tabulated separated files can be opened using the read_table() function.
+read_table("/work/sequencing_data/Preprocessing_backup/results_salmon/salmon/Control_1/quant.sf", ) %>% head()
 ```
 
-Use `class()` to inspect our data and make sure we are working with data frames:
+For each transcript that was assayed in the reference, we have:
+
+1. The transcript identifier
+2. The transcript length (in bp)
+3. The effective length (described in detail below) 
+4. TPM (transcripts per million), which is computed using the effective length
+5. The estimated read count ('pseudocount')
+
+> #### What exactly is the effective length?
+> The sequence composition of a transcript affects how many reads are sampled from it. While two transcripts might be of identical actual length, depending on the sequence composition we are more likely to generate fragments from one versus the other. The transcript that has a higer likelihood of being sampled, will end up with the larger effective length. The effective length is transcript length which has been "corrected" to include factors due to sequence-specific and GC biases.
+
+We will be using the R Bioconductor package `tximport` to prepare the `quant.sf` files for DESeq2. The first thing we need to do is create a variable that contains the paths to each of our `quant.sf` files. Then we will **add names to our quant files which will allow us to easily distinguish between samples in the final output matrix**. 
+
+We will use a metadata file that already contains all the information we need to run our analysis.
 
 ```{r}
-### Check classes of the data we just brought in
-class(meta)
-class(data)
+# Load metadata
+meta <- read_table("/work/bulk_RNAseq_course/Data/Mov10_full_meta.txt")
+
+# View metadata
+meta
 ```
 
-## Viewing data
+Using the samplenames, we can create all the paths needed:
+```{r}
+# Directory where salmon files are. You can change this path to the results of your own analysis
+dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon"
 
-Make sure your datasets contain the expected samples / information before proceeding to perfom any type of analysis.
+# List all directories containing quant.sf files using the samplename column of metadata
+files <- file.path(dir,"salmon", meta$samplename, "quant.sf")
+
+# Name the file list with the samplenames
+names(files) <- meta$samplename
+files
+```
+
+Our Salmon files were generated with transcript sequences listed by Ensembl IDs, but `tximport` needs to know **which genes these transcripts came from**. We will use annotation table the that was created in our workflow, called `tx2gene.txt`. 
 
 ```{r}
-head(meta)
-head(data)
+tx2gene <- read_table("/work/sequencing_data/Preprocessing_backup/results_salmon/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene %>% head()
+```
+
+**`tx2gene`** is a three-column **data frame linking transcript ID (column 1) to gene ID (column 2)** to gene symbol (column 3). We will take the first two columns as input to `tximport`. The **column names are not relevant, but the column order is (i.e transcript ID must be first).**
+
+Now we are ready to **run `tximport`**. The `tximport()` function imports transcript-level estimates from various external software (e.g. Salmon, Kallisto) and summarizes to the gene-level (default) or outputs transcript-level matrices. There are optional arguments to use the abundance estimates as they appear in the `quant.sf` files or to calculate alternative values.
+
+For our analysis we **need non-normalized or "raw" count estimates at the gene-level for performing DESeq2 analysis**. 
+
+Since the gene-level count matrix is a default (`txOut=FALSE`) there is only one additional argument for us to modify **to specify how to obtain our "raw" count values**. The options for `countsFromAbundance` are as follows:
+
+* `no` (default): This will take the values in TPM (as our scaled values) and NumReads (as our "raw" counts) columns, and collapse it down to the gene-level.
+* `scaledTPM`: This is taking the TPM scaled up to library size as our "raw" counts
+* `lengthScaledTPM`: This is used to generate the "raw" count table from the TPM (rather than summarizing the NumReads column). "Raw" count values are generated by using the TPM value x featureLength x library size. These represent quantities that are on the same scale as original counts, except no longer correlated with transcript length across samples. **We will use this option for DESeq2 downstream analysis**.
+
+**An additional argument for `tximport`**: When performing your own analysis you may find that the reference transcriptome file you obtain from Ensembl will have version numbers included on your identifiers (i.e ENSG00000265439.2). This will cause a discrepancy with the tx2gene file since the annotation databases don't usually contain version numbers (i.e ENSG00000265439). To get around this issue you can use the argument `ignoreTxVersion	= TRUE`. The logical value indicates whether to split the tx id on the '.' character to remove version information, for easier matching.
+
+```{r}
+txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
+```
+
+### Viewing data
+
+The `txi` object is a simple list containing matrices of the abundance, counts, length. Another list element 'countsFromAbundance' carries through the character argument used in the tximport call. The length matrix contains the average transcript length for each gene which can be used as an offset for gene-level analysis.
+
+```{r}
+attributes(txi)
+```
+
+We will be using the `txi` object as is, for input into DESeq2 but will save it until the next lesson. **For now let's take a look at the count matrix.** You will notice that there are decimal values, so let's round to the nearest whole number and convert it into a dataframe. We will save it to a variable called `data` that we can play with. 
+
+```{r}
+# Look at the counts
+txi$counts %>% View()
+
+# Write the counts to an object
+data <- txi$counts %>% 
+  round() %>% 
+  data.frame()
 ```
 
 ## RNA-seq count distribution
@@ -88,7 +150,7 @@ To determine the appropriate statistical model, we need information about the di
 
 ```{r count_distribution}
 pdata <- data %>% 
-  gather(key = Sample, value = Count, -GeneSymbol)
+  gather(key = Sample, value = Count)
 
 pdata
 
@@ -123,8 +185,8 @@ Run the following code to plot the *mean versus variance* for our data:
 ```{r mean_vs_variance}
 df <- data %>% 
   rowwise() %>% 
-  summarise(mean_counts = mean(Mov10_kd_2:Irrel_kd_3), 
-            variance_counts = var(Mov10_kd_2:Irrel_kd_3))
+  summarise(mean_counts = mean(Mov10_kd_2:Control_3), 
+            variance_counts = var(Mov10_kd_2:Control_3))
 
 
 ggplot(df) +

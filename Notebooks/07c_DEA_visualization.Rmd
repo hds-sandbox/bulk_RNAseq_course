@@ -42,18 +42,17 @@ library(pheatmap)
 library(RColorBrewer)
 library(DEGreport)
 library(ggrepel)
+library(tximport)
 
-# And with this last line of code, we set our working directory to the folder with this notebook.
-# This way, the relative paths will work without issues
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
-# Load objects so it can be knitted
-data <- read_table("../Data/Mov10_full_counts.txt") 
 meta <- read_table("../Data/Mov10_full_meta.txt")
-
-# Create dds object
-dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
-                              colData = meta %>% column_to_rownames("samplename"), 
+dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
+tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
+files <- file.path(dir, meta$samplename, "quant.sf")
+names(files) <- meta$samplename
+txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
+dds <- DESeqDataSetFromTximport(txi,
+                                   colData = meta %>% column_to_rownames("samplename"), 
                               design = ~ sampletype)
 dds <- DESeq(dds)
 
@@ -69,13 +68,13 @@ sigOE <- res_tableOE_tb %>%
 
 Approximate time: 75 minutes
 
-## Learning Objectives 
+## Learning Objectives
 
-* Explain log fold change shrinkage
-* Setup results data for application of visualization techniques
-* Describe different data visualization useful for exploring results from a DGE analysis
-* Create a volcano plot and MA plot to evaluate relationship among DGE statistics
-* Create a heatmap to illustrate expression changes of differentially expressed genes
+-   Explain log fold change shrinkage
+-   Setup results data for application of visualization techniques
+-   Describe different data visualization useful for exploring results from a DGE analysis
+-   Create a volcano plot and MA plot to evaluate relationship among DGE statistics
+-   Create a heatmap to illustrate expression changes of differentially expressed genes
 
 ## More accurate LFC estimates
 
@@ -88,7 +87,7 @@ res_tableOE <- results(dds, contrast=contrast_oe, alpha = 0.05)
 head(res_tableOE)
 ```
 
-The problem with these fold change estimates is that they are not entirely accurate as they do not account for the large dispersion we observe with low read counts. To address this, the **log2 fold changes need to be adjusted**. 
+The problem with these fold change estimates is that they are not entirely accurate as they do not account for the large dispersion we observe with low read counts. To address this, the **log2 fold changes need to be adjusted**.
 
 To generate the shrunken log2 fold change estimates, you have to run an additional step on your results object (that we will create below) with the function `lfcShrink()`.
 
@@ -102,18 +101,19 @@ res_tableOE <- lfcShrink(dds, coef="sampletype_MOV10_overexpression_vs_control",
 
 > For more information on shrinkage, the DESeq2 vignette has an [Extended section on shrinkage estimators](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#extended-section-on-shrinkage-estimators) that is quite useful.
 
-
 > #### `contrast` vs `coef`
+>
 > When using the shrinkage method, rather than using the `contrast` argument you will be required to specify `coef`. Using contrast forms an expanded model matrix, treating all factor levels equally, and averages over all distances between all pairs of factor levels to estimate the prior. Using coef, means looking only at that column of the model matrix (so usually that would be one level against the reference level) and estimates the prior for that coefficient from the distribution of those MLE of coefficients. When using coef, the shrinkage depends on which level is chosen as reference.
 
 > #### How do I know what to value to provide to the `coef` argument?
+>
 > The value you provide here needs to match identically to what is stored in the column header of the coefficients table. To see what values you have to work with you can use `resultsNames(dds)`.
 
 ## Visualizing the results
 
 ### MA plot
 
-A plot that can be useful to exploring our results is the MA plot. The MA plot shows the **mean of the normalized counts versus the log2 fold changes for all genes tested**. The genes that are significantly DE are colored to be easily identified (adjusted p-value < 0.01 by default).  
+A plot that can be useful to exploring our results is the MA plot. The MA plot shows the **mean of the normalized counts versus the log2 fold changes for all genes tested**. The genes that are significantly DE are colored to be easily identified (adjusted p-value \< 0.01 by default).
 
 **Let's start with the unshrunken results:**
 
@@ -130,15 +130,16 @@ plotMA(res_tableOE, ylim=c(-2,2))
 ```
 
 ### Question
+
 **Why are there genes with high mean and big log2 fold changes, but are not statistically significant?**
 
 ## Advanced visualizations
 
 We will be working with three different data objects we have already created in earlier lessons:
 
-- Metadata for our samples (a dataframe): `meta`
-- Normalized expression data for every gene in each of our samples (a matrix): `normalized_counts`
-- Tibble versions of the DESeq2 results we generated in the last lesson: `res_tableOE_tb` and `res_tableKD_tb`
+-   Metadata for our samples (a dataframe): `meta`
+-   Normalized expression data for every gene in each of our samples (a matrix): `normalized_counts`
+-   Tibble versions of the DESeq2 results we generated in the last lesson: `res_tableOE_tb` and `res_tableKD_tb`
 
 First, we already have a metadata tibble.
 
@@ -181,7 +182,6 @@ d <- plotCounts(dds, gene="MOV10", intgroup="sampletype", returnData=TRUE)
 d %>% head()
 ```
 
-
 ```{r custom_countPlot}
 # Plot the MOV10 normalized counts, using the samplenames (rownames(d) as labels)
 ggplot(d, aes(x = sampletype, y = count, color = sampletype)) + 
@@ -207,18 +207,18 @@ Now let's draw the heatmap using `pheatmap`:
 
 ```{r sigOE_heatmap}
 ### Run pheatmap using the metadata data frame for the annotation
-pheatmap(norm_OEsig[2:7], 
+pheatmap(log(norm_OEsig[2:7]+1), 
          cluster_rows = T, 
          show_rownames = F,
          annotation = meta %>% column_to_rownames(var = "samplename"), 
          border_color = NA, 
          fontsize = 10, 
-         scale = "row", 
+         #scale = "row", 
          fontsize_row = 10, 
          height = 20)
 ```
 
-> *NOTE:* There are several additional arguments we have included in the function for aesthetics. One important one is `scale="row"`, in which Z-scores are plotted, rather than the actual normalized count value. 
+> *NOTE:* There are several additional arguments we have included in the function for aesthetics. One important one is `scale="row"`, in which Z-scores are plotted, rather than the actual normalized count value.
 >
 > Z-scores are computed on a gene-by-gene basis by subtracting the mean and then dividing by the standard deviation. The Z-scores are computed **after the clustering**, so that it only affects the graphical aesthetics and the color visualization is improved.
 
@@ -267,7 +267,7 @@ res_tableOE_tb$genelabels[1:10] <- as.character(res_tableOE_tb$gene[1:10])
 head(res_tableOE_tb)
 ```
 
-Next, we plot it as before with an additional layer for `geom_text_repel()` wherein we can specify the column of gene labels we just created. 
+Next, we plot it as before with an additional layer for `geom_text_repel()` wherein we can specify the column of gene labels we just created.
 
 ```{r volcano_plot_label}
 ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
@@ -281,7 +281,7 @@ ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
         axis.title = element_text(size = rel(1.25))) 
 ```
 
-***
+------------------------------------------------------------------------
 
 ## Extra: Reports for DEA
 
@@ -302,5 +302,4 @@ DEGreport::degVolcano(
     plot_text = data.frame(res_tableOE_tb[1:10,c("log2FoldChange","padj","gene")])) # table to add names
 ```
 
-
-***
+------------------------------------------------------------------------

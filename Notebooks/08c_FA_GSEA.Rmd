@@ -44,20 +44,16 @@ library(clusterProfiler)
 library(DOSE)
 library(pathview)
 library(org.Hs.eg.db)
-
-# And with this last line of code, we set our working directory to the folder with this notebook.
-# This way, the relative paths will work without issues
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
-# Load objects so it can be knitted
-data <- read_table("../Data/Mov10_full_counts.txt") 
 meta <- read_table("../Data/Mov10_full_meta.txt")
-
-# Create dds object
-dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
-                              colData = meta %>% column_to_rownames("samplename"), 
+dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
+tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
+files <- file.path(dir, meta$samplename, "quant.sf")
+names(files) <- meta$samplename
+txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
+dds <- DESeqDataSetFromTximport(txi,
+                                   colData = meta %>% column_to_rownames("samplename"), 
                               design = ~ sampletype)
-dds <- DESeq(dds)
 
 res_tableOE <- lfcShrink(dds, coef = "sampletype_MOV10_overexpression_vs_control")
 res_tableOE_tb <- res_tableOE %>%

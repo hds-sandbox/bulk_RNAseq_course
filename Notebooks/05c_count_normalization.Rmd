@@ -38,14 +38,15 @@ knitr::opts_chunk$set(autodep        = TRUE,
 # This chunk is ONLY necessary if you want to knit this document into a pdf!!
 library(tidyverse)
 library(DESeq2)
+library(tximport)
 
-# And with this last line of code, we set our working directory to the folder with this notebook.
-# This way, the relative paths will work without issues
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
-# Load objects so it can be knitted
-data <- read_table("../Data/Mov10_full_counts.txt") 
 meta <- read_table("../Data/Mov10_full_meta.txt")
+dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
+tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
+files <- file.path(dir, meta$samplename, "quant.sf")
+names(files) <- meta$samplename
+txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
 ```
 
 
@@ -98,12 +99,12 @@ Now that we know the theory of count normalization, we will normalize the counts
 
 ### 1. Match the metadata and counts data
 
-We should always make sure that we have sample names that match between the two files, and that the samples are in the right order. DESeq2 will output an error if this is not the case. We are using tibbles, which unfortunately do not support row names, but DESeq uses rownames, so we need to do some work around it.
+We should always make sure that we have sample names that match between the two files, and that the samples are in the right order. DESeq2 will output an error if this is not the case. Since we built our `txi` object from our metadata, everything should be OK.
 
 ```{r}
 ### Check that sample names match in both files
-all(meta$samplename %in% colnames(data))
-all(meta$samplename == colnames(data)[-1])
+all(colnames(txi$counts) %in% meta$samplename)
+all(colnames(txi$counts) == meta$samplename)
 ```
 
 If your data did not match, you could use the `match()` function to rearrange them to be matching. `match()` function will take two arguments and find in which order the indexes of the second argument match the first argument.
@@ -117,16 +118,16 @@ reorder
 
 b[reorder]
 ```
+
 ***
 
 **Exercise 2**	
 
-Suppose we had sample names matching in the counts matrix and metadata file, but they were out of order. Write the line(s) of code required make the `data_random` dataframe with columns ordered such that they were identical to the row names of the metadata. Remember that `data` contains the column `GeneSymbol` with the names of the genes!
+Suppose we had sample names matching in the txi object and metadata file, but they were out of order. Write the line(s) of code required make the `meta_random` dataframe with columns ordered such that they were identical to the row names of the `txi`.
 
 ```{r}
-# randomize count data columns and metadata rownames
+# randomize metadata rownames
 meta_random <- meta[sample(1:nrow(meta)),]
-data_random <- data[,c(1,sample(2:ncol(data)))]
 ```
 
 ```{r}
@@ -137,11 +138,26 @@ data_random <- data[,c(1,sample(2:ncol(data)))]
 
 ### 2. Create DESEq2 object
 
-Let's start by creating the `DESeqDataSet` object and then we can talk a bit more about what is stored inside it. To create the object we will need the **count matrix** and the **metadata** table as input. We will also need to specify a **design formula**. The design formula specifies the column(s) in the metadata table and how they should be used in the analysis. For our dataset we only have one column we are interested in, that is `~sampletype`. This column has three factor levels, which tells DESeq2 that for each gene we want to evaluate gene expression change with respect to these different levels.
+Let's start by creating the `DESeqDataSet` object, and then we can talk a bit more about what is stored inside it. To create the object, we will need the *txi** object and the **metadata** table as input (`colData` argument). We will also need to specify a **design formula**. The design formula specifies the column(s) in the metadata table and how they should be used in the analysis. For our dataset we only have one column we are interested in, which is `~sampletype`. This column has three factor levels, which tells DESeq2 that for each gene we want to evaluate gene expression change with respect to these different levels.
+
+**Our count matrix input is stored in the `txi` list object**. So we need to specify that using the `DESeqDataSetFromTximport()` function, which will extract the counts component and round the values to the nearest whole number.
 
 ```{r}
-## Create DESeq2Dataset object
-dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
+# colData argument requires rownames in order to assess matching sample names
+# meta is a tibble object from tidyverse, so we neeed to add rownames.
+# If you do not do this and the samples do not match, you will add wrong info!
+
+dds <- DESeqDataSetFromTximport(txi,
+                                   colData = meta %>% column_to_rownames("samplename"), 
+                              design = ~ sampletype)
+```
+
+> **NOTE:** If you did not create pseudocounts, but a count matrix from aligned BAM files and tools such as `featurecounts`, you would want to use the `DESeqDataSetFromMatrix()` function. `
+
+```{r, eval=FALSE}
+## DO NOT RUN!
+## Create DESeq2Dataset object from traditional count matrix
+dds <- DESeqDataSetFromMatrix(countData = "/path/to/count/matrix.txt", 
                               colData = meta %>% column_to_rownames("samplename"), 
                               design = ~ sampletype)
 ```
@@ -153,6 +169,17 @@ head(counts(dds))
 ```
 
 As we go through the workflow we will use the relevant functions to check what information gets stored inside our object.
+
+#### Pre-filtering
+
+While it is not necessary to pre-filter low count genes before running the DESeq2 functions, there are two reasons which make pre-filtering useful: by removing rows in which there are very few reads, we reduce the memory size of the dds data object, and we increase the speed of the transformation and testing functions within DESeq2. It can also improve visualizations, as features with no information for differential expression are not plotted.
+
+Here we perform a minimal pre-filtering to keep only rows that have at least 10 reads total. 
+```{r}
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+```
+
 
 ### 3. Generate the Mov10 normalized counts
 
