@@ -50,6 +50,8 @@ txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "le
 dds <- DESeqDataSetFromTximport(txi,
                                    colData = meta %>% column_to_rownames("samplename"), 
                               design = ~ sampletype)
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
 ```
 
 Approximate time: 60 minutes

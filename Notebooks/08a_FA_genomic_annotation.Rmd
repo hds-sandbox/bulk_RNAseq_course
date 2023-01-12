@@ -50,6 +50,10 @@ txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "le
 dds <- DESeqDataSetFromTximport(txi,
                                    colData = meta %>% column_to_rownames("samplename"), 
                               design = ~ sampletype)
+
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+
 dds <- DESeq(dds)
 
 res_tableOE <- lfcShrink(dds, coef = "sampletype_MOV10_overexpression_vs_control")
@@ -191,7 +195,7 @@ To **obtain an annotation data frame** using AnnotationHub, we'll use the `genes
 # Create a gene-level dataframe 
 annotations_ahb <- genes(human_ens, return.type = "data.frame")  %>%
   dplyr::select(gene_id, gene_name, entrezid, gene_biotype, description) %>% 
-  dplyr::filter(gene_name %in% res_tableOE_tb$gene)
+  dplyr::filter(gene_id %in% res_tableOE_tb$gene)
 ```
 
 This dataframe looks like it should be fine as it is, but we look a little closer we will notice that the column containing Entrez identifiers is a list, and in fact there are many Ensembl identifiers that map to more than one Entrez identifier!
@@ -241,7 +245,7 @@ For the different steps in the functional analysis, we require Ensembl and Entre
 
 ```{r}
 ## Merge the AnnotationHub dataframe with the results 
-res_ids_ahb <- left_join(res_tableOE_tb, annotations_ahb, by=c("gene"="gene_name"))    
+res_ids_ahb <- left_join(res_tableOE_tb, annotations_ahb, by=c("gene"="gene_id"))    
 ```
 
 
@@ -288,14 +292,10 @@ res_tableOE_tb <- res_tableOE %>%
 
 ```{r}
 ## Return the IDs for the gene symbols in the DE results
-ids <- grch37 %>% dplyr::filter(symbol %in% rownames(res_tableOE))
-
-## The gene names can map to more than one Ensembl ID (some genes change ID over time), 
-## so we need to remove duplicate IDs prior to assessing enriched GO terms
-ids <- ids %>% dplyr::filter(!duplicated(symbol))
+ids <- grch37 %>% dplyr::filter(ensgene %in% rownames(res_tableOE))
 
 ## Merge the IDs with the results 
-res_ids <- inner_join(res_tableOE_tb, ids, by=c("gene"="symbol"))
+res_ids <- inner_join(res_tableOE_tb, ids, by=c("gene"="ensgene"))
 
 head(res_ids)
 ```

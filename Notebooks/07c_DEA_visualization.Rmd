@@ -54,6 +54,10 @@ txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "le
 dds <- DESeqDataSetFromTximport(txi,
                                    colData = meta %>% column_to_rownames("samplename"), 
                               design = ~ sampletype)
+
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+
 dds <- DESeq(dds)
 
 contrast_oe <- c("sampletype", "MOV10_overexpression","control")
@@ -163,11 +167,11 @@ One way to visualize results would be to simply plot the expression data for a h
 
 **Using DESeq2 `plotCounts()` to plot expression of a single gene**
 
-To pick out a specific gene of interest to plot, for example MOV10, we can use the `plotCounts()` from DESeq2. `plotCounts()` requires that the gene specified matches the original input to DESeq2.
+To pick out a specific gene of interest to plot, for example MOV10 (ID ENSG00000155363), we can use the `plotCounts()` from DESeq2. `plotCounts()` requires that the gene specified matches the original input to DESeq2.
 
 ```{r countPlot}
 # Plot expression for single gene
-plotCounts(dds, gene="MOV10", intgroup="sampletype") 
+plotCounts(dds, gene="ENSG00000155363", intgroup="sampletype") 
 ```
 
 **Using ggplot2 to plot expression of a single gene**
@@ -176,7 +180,7 @@ If you wish to change the appearance of this plot, we can save the output of `pl
 
 ```{r}
 # Save plotcounts to a data frame object
-d <- plotCounts(dds, gene="MOV10", intgroup="sampletype", returnData=TRUE)
+d <- plotCounts(dds, gene="ENSG00000155363", intgroup="sampletype", returnData=TRUE)
 
 # What is the data output of plotCounts()?
 d %>% head()
