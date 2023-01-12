@@ -51,21 +51,21 @@ library(clusterProfiler)
 library(DOSE)
 library(pathview)
 library(org.Hs.eg.db)
+library(tximport)
 ```
-
-## Summary of differential expression analysis workflow
 
 We have detailed the various steps in a differential expression analysis workflow, providing theory with example code. To provide a more succinct reference for the code needed to run a DGE analysis, we have summarized the steps in an analysis below:
 
-1. Obtaining gene-level counts from your preprocessing
+## Obtaining gene-level counts from your preprocessing and create DESeq object
+
+### If you have a traditional raw count matrix
 
 ```{r}
+# Load data and metadata
 data <- read_table("../Data/Mov10_full_counts.txt") 
 
 meta <- read_table("../Data/Mov10_full_meta.txt")
 ```
-
-2. Creating the dds object:
 
 ```{r}
 # Check that the row names of the metadata equal the column names of the **raw counts** data
@@ -77,22 +77,57 @@ dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbo
                               design = ~ sampletype)
 ```
 
-3. Exploratory data analysis (PCA & hierarchical clustering) - identifying outliers and sources of variation in the data:
 
+### If you have pseudocounts
+
+```{r}
+# Load data, metadata and tx2gene and create a txi object
+meta <- read_table("../Data/Mov10_full_meta.txt")
+
+dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
+tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
+
+# Get all salmon results files
+files <- file.path(dir, meta$samplename, "quant.sf")
+names(files) <- meta$samplename
+
+# Create txi object
+txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
+```
+
+
+```{r}
+# Create dds object
+dds <- DESeqDataSetFromTximport(txi,
+                                   colData = meta %>% column_to_rownames("samplename"), 
+                              design = ~ sampletype)
+```
+
+## Exploratory data analysis 
+
+Prefiltering low count genes + PCA & hierarchical clustering - identifying outliers and sources of variation in the data:
+
+### Prefiltering low count genes
+```{r}
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+```
+
+### Rlog transformation
 ```{r}
 # Transform counts for data visualization
 rld <- rlog(dds, 
             blind=TRUE)
 ```
 
-PCA
+### PCA
 ```{r PCA_plot}
 # Plot PCA 
 plotPCA(rld, 
         intgroup="sampletype")
 ```
 
-Heatmaps
+### Heatmaps
 ```{r}
 # Extract the rlog matrix from the object
 rld_mat <- assay(rld)
@@ -117,7 +152,7 @@ pheatmap(rld_dist,
          annotation = meta %>% column_to_rownames("samplename"), color = heat.colors)
 ```
 
-4. Run DESeq2:
+## Run DESeq2:
 
 ```{r}
 # **Optional step** - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using 
@@ -132,14 +167,14 @@ dds <- DESeq(dds)
 normalized_counts <- counts(dds, normalized=TRUE)
 ```
 
-5. Check the fit of the dispersion estimates:
+## Check the fit of the dispersion estimates
 
 ```{r DispEsts_plot}
 # Plot dispersion estimates
 plotDispEsts(dds)
 ``` 
 
-6. Create contrasts to perform Wald testing or the shrunken log2 fold changes between specific conditions:
+## Create contrasts to perform Wald testing or the shrunken log2 fold changes between specific conditions
 
 ```{r}
 # Specify contrast for comparison of interest
@@ -156,7 +191,7 @@ res <- lfcShrink(dds,
                  type = "normal")
 ```
 
-7. Output significant results:
+## Output significant results:
 
 ```{r}
 # Set thresholds
@@ -173,19 +208,19 @@ sig_res <- filter(res_tbl,
                   padj < padj.cutoff)
 ```
 
-8. Visualize results: volcano plots, heatmaps, normalized counts plots of top genes, etc.
+## Visualize results: volcano plots, heatmaps, normalized counts plots of top genes, etc.
 
 Plot expression for single gene
 ```{r counts_plot}
 plotCounts(dds, gene="MOV10", intgroup="sampletype")
 ```
 
-MAplot
+### MAplot
 ```{r MAplot}
 plotMA(res)
 ```
 
-Volcano plot with labels (top N genes)
+### Volcano plot with labels (top N genes)
 ```{r}
 ## Obtain logical vector where TRUE values denote padj values < 0.05 and fold change > 1.5 in either direction
 res_tbl <- res_tbl %>% 
@@ -217,7 +252,7 @@ ggplot(res_tbl, aes(x = log2FoldChange, y = -log10(padj))) +
         axis.title = element_text(size = rel(1.25))) 
 ```
 
-Heatmap of differentially expressed genes
+### Heatmap of differentially expressed genes
 ```{r}
 # filter significant results from normalized counts
 norm_sig <- normalized_counts %>% as_tibble(rownames = "gene") %>%
@@ -234,16 +269,16 @@ pheatmap(norm_sig,
          )
 ```
 
-9. Perform analysis to extract functional significance of results: GO or KEGG enrichment, GSEA, etc.
+## Perform analysis to extract functional significance of results: GO or KEGG enrichment, GSEA, etc.
 
-Annotate with `annotables`
+### Annotate with `annotables`
 
 ```{r}
-ids <- grch37 %>% dplyr::filter(symbol %in% res_tbl$gene) %>% dplyr::filter(!duplicated(symbol))
-res_ids <- inner_join(res_tbl, ids, by=c("gene"="symbol"))
+ids <- grch37 %>% dplyr::filter(ensgene %in% rownames(res_tableOE)) 
+res_ids <- inner_join(res_tableOE_tb, ids, by=c("gene"="ensgene"))
 ```
 
-Perform enrichment analysis of GO terms (can be done as well with KEGG pathways)
+### Perform enrichment analysis of GO terms (can be done as well with KEGG pathways)
 ```{r}
 # Create background dataset for hypergeometric testing using all genes tested for significance in the results
 all_genes <- dplyr::filter(res_ids, !is.na(ensgene)) %>% 
@@ -271,7 +306,7 @@ ego <- enrichGO(gene = sig_genes,
 ego <- enrichplot::pairwise_termsim(ego)
 ```
 
-Visualize result
+### Visualize result
 ```{r enrichGO, fig.height=10, fig.width=5}
 dotplot(ego, showCategory=50)
 ```
@@ -279,7 +314,7 @@ dotplot(ego, showCategory=50)
 emapplot(ego, showCategory = 50)
 ```
 
-Cnetplot
+### Cnetplot
 
 ```{r}
 ## To color genes by log2 fold changes, we need to extract the log2 fold changes from our results table creating a named vector
@@ -297,7 +332,7 @@ cnetplot(ego,
          vertex.label.font=6)
 ```
 
-Perform GSEA analysis of KEGG pathways *can be done as well with GO terms)
+### Perform GSEA analysis of KEGG pathways *can be done as well with GO terms)
 ```{r}
 # Extract entrez IDs. IDs should not be duplicated or NA
 res_entrez <- dplyr::filter(res_ids, entrez != "NA" & entrez != "NULL" & duplicated(entrez)==F)
@@ -341,8 +376,7 @@ pathview(gene.data = foldchanges,
 knitr::include_graphics("./hsa04060.png")
 ```
 
-
-10. Make sure to output the versions of all tools used in the DE analysis:
+## Make sure to output the versions of all tools used in the DE analysis:
 
 ```{r}
 sessionInfo()
