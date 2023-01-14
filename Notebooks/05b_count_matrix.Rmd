@@ -42,7 +42,7 @@ Approximate time: 20 minutes
 
 ## Loading libraries
 
-For this analysis we will be using several R packages, some which have been installed from CRAN and others from Bioconductor. To use these packages (and the functions contained within them), we need to **load the libraries.** 
+For this analysis we will be using several R packages, some which have been installed from CRAN and others from Bioconductor. To use these packages (and the functions contained within them), we need to **load the libraries.**
 
 ```{r}
 library(tidyverse)
@@ -55,8 +55,8 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 ```
 
 ## Loading data
-The directories of output from the mapping/quantification step of the workflow (Salmon) is the data that we will be using. These transcript abundance estimates, often referred to as **'pseudocounts', will be the starting point for our differential gene expression analysis**.
-The main output of Salmon is a `quant.sf` file, and we have one of these for each individual sample in our dataset.
+
+The directories of output from the mapping/quantification step of the workflow (Salmon) is the data that we will be using. These transcript abundance estimates, often referred to as **'pseudocounts', will be the starting point for our differential gene expression analysis**. The main output of Salmon is a `quant.sf` file, and we have one of these for each individual sample in our dataset.
 
 ```{r}
 # Tabulated separated files can be opened using the read_table() function.
@@ -65,16 +65,17 @@ read_table("/work/sequencing_data/Preprocessing_backup/results_salmon/salmon/Con
 
 For each transcript that was assayed in the reference, we have:
 
-1. The transcript identifier
-2. The transcript length (in bp)
-3. The effective length (described in detail below) 
-4. TPM (transcripts per million), which is computed using the effective length
-5. The estimated read count ('pseudocount')
+1.  The transcript identifier
+2.  The transcript length (in bp)
+3.  The effective length (described in detail below)
+4.  TPM (transcripts per million), which is computed using the effective length
+5.  The estimated read count ('pseudocount')
 
 > #### What exactly is the effective length?
+>
 > The sequence composition of a transcript affects how many reads are sampled from it. While two transcripts might be of identical actual length, depending on the sequence composition we are more likely to generate fragments from one versus the other. The transcript that has a higer likelihood of being sampled, will end up with the larger effective length. The effective length is transcript length which has been "corrected" to include factors due to sequence-specific and GC biases.
 
-We will be using the R Bioconductor package `tximport` to prepare the `quant.sf` files for DESeq2. The first thing we need to do is create a variable that contains the paths to each of our `quant.sf` files. Then we will **add names to our quant files which will allow us to easily distinguish between samples in the final output matrix**. 
+We will be using the R Bioconductor package `tximport` to prepare the `quant.sf` files for DESeq2. The first thing we need to do is create a variable that contains the paths to each of our `quant.sf` files. Then we will **add names to our quant files which will allow us to easily distinguish between samples in the final output matrix**.
 
 We will use a metadata file that already contains all the information we need to run our analysis.
 
@@ -87,6 +88,7 @@ meta
 ```
 
 Using the samplenames, we can create all the paths needed:
+
 ```{r}
 # Directory where salmon files are. You can change this path to the results of your own analysis
 dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon"
@@ -99,7 +101,7 @@ names(files) <- meta$samplename
 files
 ```
 
-Our Salmon files were generated with transcript sequences listed by Ensembl IDs, but `tximport` needs to know **which genes these transcripts came from**. We will use annotation table the that was created in our workflow, called `tx2gene.txt`. 
+Our Salmon files were generated with transcript sequences listed by Ensembl IDs, but `tximport` needs to know **which genes these transcripts came from**. We will use annotation table the that was created in our workflow, called `tx2gene.txt`.
 
 ```{r}
 tx2gene <- read_table("/work/sequencing_data/Preprocessing_backup/results_salmon/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
@@ -110,15 +112,15 @@ tx2gene %>% head()
 
 Now we are ready to **run `tximport`**. The `tximport()` function imports transcript-level estimates from various external software (e.g. Salmon, Kallisto) and summarizes to the gene-level (default) or outputs transcript-level matrices. There are optional arguments to use the abundance estimates as they appear in the `quant.sf` files or to calculate alternative values.
 
-For our analysis we **need non-normalized or "raw" count estimates at the gene-level for performing DESeq2 analysis**. 
+For our analysis we **need non-normalized or "raw" count estimates at the gene-level for performing DESeq2 analysis**.
 
 Since the gene-level count matrix is a default (`txOut=FALSE`) there is only one additional argument for us to modify **to specify how to obtain our "raw" count values**. The options for `countsFromAbundance` are as follows:
 
-* `no` (default): This will take the values in TPM (as our scaled values) and NumReads (as our "raw" counts) columns, and collapse it down to the gene-level.
-* `scaledTPM`: This is taking the TPM scaled up to library size as our "raw" counts
-* `lengthScaledTPM`: This is used to generate the "raw" count table from the TPM (rather than summarizing the NumReads column). "Raw" count values are generated by using the TPM value x featureLength x library size. These represent quantities that are on the same scale as original counts, except no longer correlated with transcript length across samples. **We will use this option for DESeq2 downstream analysis**.
+-   `no` (default): This will take the values in TPM (as our scaled values) and NumReads (as our "raw" counts) columns, and collapse it down to the gene-level.
+-   `scaledTPM`: This is taking the TPM scaled up to library size as our "raw" counts
+-   `lengthScaledTPM`: This is used to generate the "raw" count table from the TPM (rather than summarizing the NumReads column). "Raw" count values are generated by using the TPM value x featureLength x library size. These represent quantities that are on the same scale as original counts, except no longer correlated with transcript length across samples. **We will use this option for DESeq2 downstream analysis**.
 
-**An additional argument for `tximport`**: When performing your own analysis you may find that the reference transcriptome file you obtain from Ensembl will have version numbers included on your identifiers (i.e ENSG00000265439.2). This will cause a discrepancy with the tx2gene file since the annotation databases don't usually contain version numbers (i.e ENSG00000265439). To get around this issue you can use the argument `ignoreTxVersion	= TRUE`. The logical value indicates whether to split the tx id on the '.' character to remove version information, for easier matching.
+**An additional argument for `tximport`**: When performing your own analysis you may find that the reference transcriptome file you obtain from Ensembl will have version numbers included on your identifiers (i.e ENSG00000265439.2). This will cause a discrepancy with the tx2gene file since the annotation databases don't usually contain version numbers (i.e ENSG00000265439). To get around this issue you can use the argument `ignoreTxVersion  = TRUE`. The logical value indicates whether to split the tx id on the '.' character to remove version information, for easier matching.
 
 ```{r}
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
@@ -132,12 +134,14 @@ The `txi` object is a simple list containing matrices of the abundance, counts, 
 attributes(txi)
 ```
 
-We will be using the `txi` object as is, for input into DESeq2 but will save it until the next lesson. **For now let's take a look at the count matrix.** You will notice that there are decimal values, so let's round to the nearest whole number and convert it into a dataframe. We will save it to a variable called `data` that we can play with. 
+We will be using the `txi` object as is, for input into DESeq2 but will save it until the next lesson. **For now let's take a look at the count matrix.** You will notice that there are decimal values, so let's round to the nearest whole number and convert it into a dataframe. We will save it to a variable called `data` that we can play with.
 
 ```{r}
 # Look at the counts
-txi$counts %>% View()
+txi$counts %>% head()
+```
 
+```{r}
 # Write the counts to an object
 data <- txi$counts %>% 
   round() %>% 
@@ -146,7 +150,7 @@ data <- txi$counts %>%
 
 ## RNA-seq count distribution
 
-To determine the appropriate statistical model, we need information about the distribution of counts. To get an idea about how RNA-seq counts are distributed, let's plot the counts of all the samples: 
+To determine the appropriate statistical model, we need information about the distribution of counts. To get an idea about how RNA-seq counts are distributed, let's plot the counts of all the samples:
 
 ```{r count_distribution}
 pdata <- data %>% 

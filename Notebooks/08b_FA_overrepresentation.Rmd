@@ -96,15 +96,15 @@ To perform the over-representation analysis, we need a list of background genes 
 
 ```{r}
 ## Create background dataset for hypergeometric testing using all genes tested for significance in the results
-allOE_genes <- dplyr::filter(res_ids, !is.na(ensgene)) %>% 
-  pull(ensgene) %>% 
+allOE_genes <- dplyr::filter(res_ids, !is.na(gene)) %>% 
+  pull(gene) %>% 
   as.character()
 
 ## Extract significant results
-sigOE <- dplyr::filter(res_ids, padj < 0.05 & !is.na(ensgene))
+sigOE <- dplyr::filter(res_ids, padj < 0.05 & !is.na(gene))
 
 sigOE_genes <- sigOE %>% 
-  pull(ensgene) %>% 
+  pull(gene) %>% 
   as.character()
 ```
 

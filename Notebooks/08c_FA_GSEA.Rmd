@@ -44,6 +44,8 @@ library(clusterProfiler)
 library(DOSE)
 library(pathview)
 library(org.Hs.eg.db)
+library(tximport)
+
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 meta <- read_table("../Data/Mov10_full_meta.txt")
 dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
@@ -164,7 +166,7 @@ pathview(gene.data = foldchanges,
 
 > **NOTE:** Printing out Pathview images for all significant pathways can be easily performed as follows:
 >
-> ```{r}
+> ```{r, eval = FALSE}
 > >## Output images for all significant KEGG pathways
 > get_kegg_plots <- function(x) {
 >    pathview(gene.data = foldchanges, 
@@ -191,7 +193,6 @@ gseaGO <- gseGO(geneList = foldchanges,
 gseaGO_results <- gseaGO@result
 head(gseaGO_results)
 ```
-
 
 ```{r gseaplotGO}
 gseaplot(gseaGO, geneSetID = 'GO:0006397')

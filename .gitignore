@@ -45,3 +45,4 @@ vignettes/*.pdf
 *.docx
 old/
 Data/raw
+Results/

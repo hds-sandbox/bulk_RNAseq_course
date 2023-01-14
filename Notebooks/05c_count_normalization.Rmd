@@ -152,7 +152,7 @@ dds <- DESeqDataSetFromTximport(txi,
                               design = ~ sampletype)
 ```
 
-> **NOTE:** If you did not create pseudocounts, but a count matrix from aligned BAM files and tools such as `featurecounts`, you would want to use the `DESeqDataSetFromMatrix()` function. `
+> **NOTE:** If you did not create pseudocounts, but a count matrix from aligned BAM files and tools such as `featurecounts`, you would want to use the `DESeqDataSetFromMatrix()` function.
 
 ```{r, eval=FALSE}
 ## DO NOT RUN!
