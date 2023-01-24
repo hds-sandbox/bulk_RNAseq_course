@@ -15,15 +15,14 @@ By the end of this workshop, you should be able to analyse your own bulk RNAseq 
 ## Syllabus
 
 1. Introduction to bulk-RNASeq
-2. Setup
-3. Experimental planning
-4. Intro to the data
-5. Preprocessing overview
-6. RNAseq data
-7. Exploratory analysis
-8. Differential Expression Analysis
-9. Functional Analysis
-10. Summarized workflow
+2. Experimental planning
+3. Intro to the data
+4. Preprocessing overview
+5. RNAseq data
+6. Exploratory analysis
+7. Differential Expression Analysis
+8. Functional Analysis
+9.  Summarized workflow
 
 ## Workshop requirements
 
@@ -34,6 +33,8 @@ By the end of this workshop, you should be able to analyse your own bulk RNAseq 
 ## Intended use
 
 The aim of this repository is to run a comprehensive but introductory workshop on bulk-RNAseq bioinformatic analyses. Each of the modules of this workshop is accompanied by a powerpoint slideshow explaining the steps and the theory behind a typical bioinformatics analysis (ideally with a teacher). Many of the slides are annotated with extra information and/or point to original sources for extra reading material.
+
+The slides can be found in this [zenodo repository](https://zenodo.org/record/7565963).
 
 ## Acknowledgements
 
