@@ -41,26 +41,25 @@ library(DESeq2)
 library(tximport)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-meta <- read_table("../Data/Mov10_full_meta.txt")
+meta <- read_csv("../Data/samplesheet.csv")
 dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
 tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
-files <- file.path(dir, meta$samplename, "quant.sf")
-names(files) <- meta$samplename
+files <- file.path(dir, meta$sample, "quant.sf")
+names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
 dds <- DESeqDataSetFromTximport(txi,
-                                   colData = meta %>% column_to_rownames("samplename"), 
-                              design = ~ sampletype)
-keep <- rowSums(counts(dds)) >= 10
+                                   colData = meta %>% column_to_rownames("sample"), 
+                              design = ~ condition)
+keep <- rowSums(counts(dds)) > 0
 dds <- dds[keep,]
-dds <- DESeq(dds)
+dds <- estimateSizeFactors(dds)
+dds <- estimateDispersions(dds)
 ```
 
 Approximate time: 90 minutes
 
 ## Learning Objectives
 
--   Describe the process of model fitting
--   Compare two methods for hypothesis testing (Wald test vs. LRT)
 -   Discuss the steps required to generate a results table for pairwise comparisons (Wald test)
 -   Recognize the importance of multiple test correction
 -   Identify different methods for multiple test correction
@@ -82,13 +81,11 @@ knitr::include_graphics("./img/07b_hypothesis_testing/NB_model_formula.png")
 
 The two parameters required are the **size factor, and the dispersion estimate**. Next, a generalized linear model (GLM) of the NB family is used to fit the data. Modeling is a mathematically formalized way to approximate how the data behaves given a set of parameters.
 
-After the model is fit, coefficients are estimated for each sample group along with their standard error. The coefficents are the estimates for the **log2 fold changes**, and will be used as input for hypothesis testing.
+After the model is fit, coefficients are estimated for each sample group along with their standard error. The coefficients are the estimates for the **log2 fold changes**, and will be used as input for hypothesis testing.
 
 ### Hypothesis testing
 
-The first step in hypothesis testing is to set up a **null hypothesis** for each gene. In our case, the null hypothesis is that there is **no differential expression across the two sample groups (LFC == 0)**. Second, we use a statistical test to determine if based on the observed data, the null hypothesis can be rejected.
-
-In DESeq2, the **Wald test is the default used for hypothesis testing when comparing two groups**. In our case we are testing each gene model coefficient (LFC) which was derived using parameters like dispersion, which were estimated using maximum likelihood.
+The first step in hypothesis testing is to set up a **null hypothesis** for each gene. In our case, the null hypothesis is that there is **no differential expression across the two sample groups (LFC == 0)**. Second, we use a statistical test to determine if based on the observed data, the null hypothesis can be rejected. In DESeq2, the **Wald test is the default used for hypothesis testing when comparing two groups**.
 
 The GLM and the statistical testing is done using the function `nbinomWaldTest()`
 
@@ -96,16 +93,15 @@ The GLM and the statistical testing is done using the function `nbinomWaldTest()
 dds <- nbinomWaldTest(dds)
 ```
 
-
 The **model fit and Wald test were already run previously as part of the `DESeq()` function**:
 
 ```{r, eval = FALSE}
 ## DO NOT RUN THIS CODE
 
 ## Create DESeq2Dataset object
-dds <- DESeqDataSetFromMatrix(countData = data.frame(data[,-1], row.names = data$GeneSymbol), 
-                              colData = data.frame(meta[,-1], row.names = meta$samplename), 
-                              design = ~ sampletype)
+dds <- DESeqDataSetFromTximport(txi,
+                                   colData = meta %>% column_to_rownames("sample"), 
+                              design = ~ condition)
 ## Run analysis
 dds <- DESeq(dds)
 ```
@@ -126,7 +122,7 @@ In our dataset, we have three sample groups so we can make three possible pairwi
 
 To indicate which two sample groups we are interested in comparing, we need to specify **contrasts**. The contrasts are used as input to the DESeq2 `results()` function to extract the desired results.
 
-Contrasts can be specified in two different ways (with the first method more commonly used):
+Contrasts can be specified in three different ways (with the first method more commonly used):
 
 1.  Contrasts can be supplied as a **character vector with exactly three elements**:
 
@@ -143,6 +139,14 @@ results(dds, contrast = contrast)
 resultsNames(dds) # to see what names to use
 contrast <- list(resultsNames(dds)[1], resultsNames(dds)[2])
 results(dds, contrast = contrast)
+```
+
+3. One of the results from `resultsNames(dds)` and the `name` argument. This one is the simplest but it can also be very restricted:
+
+```{r, eval = FALSE}
+# DO NOT RUN!
+resultsNames(dds) # to see what names to use
+results(dds, name = resultsNames(dds)[2])
 ```
 
 Alternatively, if you **only had two factor levels you could do nothing**:
@@ -177,7 +181,7 @@ Now that we have our contrast created, we can use it as input to the `results()`
 You will see we have the option to provide a wide array of arguments and tweak things from the defaults as needed. For example:
 
 ```{r}
-## Extract results for MOV10 overexpression vs control
+## Extract results for MOV10 overexpression vs control with a pvalue < 0.05
 res_tableOE <- results(dds, contrast=contrast_oe, alpha = 0.05)
 ```
 
@@ -204,9 +208,9 @@ We can use the `mcols()` function to extract information on what the values stor
 data.frame(mcols(res_tableOE, use.names=T))
 ```
 
--   `baseMean`: mean of normalized counts for all samples
+-   `baseMean`: mean of normalized counts for all samples in your count matrix
 -   `log2FoldChange`: log2 fold change
--   `lfcSE`: standard error
+-   `lfcSE`: standard error for the lfc calculation
 -   `stat`: Wald statistic
 -   `pvalue`: Wald test p-value
 -   `padj`: BH adjusted p-values
@@ -219,35 +223,35 @@ Let's take a closer look at our results table. As we scroll through it, you will
 knitr::include_graphics("./img/07b_hypothesis_testing/gene_filtering.png")
 ```
 
-The missing values represent genes that have undergone filtering as part of the `DESeq()` function. Prior to differential expression analysis it is **beneficial to omit genes that have little or no chance of being detected as differentially expressed.** This will increase the power to detect differentially expressed genes. DESeq2 does not physically remove any genes from the original counts matrix, and so all genes will be present in your results table. The genes omitted by DESeq2 meet one of the **three filtering criteria outlined below**:
+The missing values represent genes that have undergone filtering as part of the `DESeq()` function. Prior to differential expression analysis it is **beneficial to omit genes that have little or no chance of being detected as differentially expressed.** This will increase the power to detect differentially expressed genes. DESeq2 **does not physically remove** any genes from the original counts matrix, and so all genes will be present in your results table. The genes omitted by DESeq2 meet one of the **three filtering criteria outlined below**:
 
 **1. Genes with zero counts in all samples**
 
-If within a row, all samples have zero counts there is no expression information and therefore these genes are not tested.
+If within a row, all samples have zero counts there is no expression information and therefore these genes are not tested. Since we have already filtered out these genes ourselves when we created our `dds` object.
 
 ```{r}
-# Filter genes by zero expression
+# Show genes with zero expression
 res_tableOE %>%
   as_tibble(rownames = "gene") %>% 
   dplyr::filter(baseMean==0) %>%
   head()
 ```
 
-> **The baseMean column for these genes will be zero, and the log2 fold change estimates, p-value and adjusted p-value will all be set to NA.**
+> **If there would be any genes meeting this criteria, the baseMean column for these genes will be zero, and the log2 fold change estimates, p-value and adjusted p-value will all be set to NA.**
 
 **2. Genes with an extreme count outlier**
 
 The `DESeq()` function calculates, for every gene and for every sample, a diagnostic test for outliers called Cook's distance. If several samples are flagged for a certain gene, the gene is filtered out.
 
 ```{r}
-# Filter genes that have an extreme outlier
+# Show genes that have an extreme outlier
 res_tableOE %>% 
   as_tibble(rownames = "gene") %>% 
   dplyr::filter(is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
   head()
 ```
 
-It seems that our dataset does not contain genes with an extreme count outlier!
+It seems that we have some genes with outliers!
 
 > **If a gene contains a sample with an extreme count outlier then the p-value and adjusted p-value will be set to NA.**
 
@@ -256,7 +260,7 @@ It seems that our dataset does not contain genes with an extreme count outlier!
 DESeq2 defines a low mean threshold, that is empirically determined from your data, in which the fraction of significant genes can be increased by reducing the number of genes that are considered for multiple testing. This is based on the notion that genes with very low counts are not likely to see significant differences typically due to high dispersion.
 
 ```{r}
-# Filter genes below the low mean threshold
+# Show genes below the low mean threshold
 res_tableOE %>% 
   as_tibble(rownames = "gene") %>% 
   dplyr::filter(!is.na(pvalue) & is.na(padj) & baseMean > 0) %>%

@@ -45,22 +45,21 @@ library(ggrepel)
 library(tximport)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-meta <- read_table("../Data/Mov10_full_meta.txt")
+meta <- read_csv("../Data/samplesheet.csv")
 dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
 tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
-files <- file.path(dir, meta$samplename, "quant.sf")
-names(files) <- meta$samplename
+files <- file.path(dir, meta$sample, "quant.sf")
+names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
 dds <- DESeqDataSetFromTximport(txi,
-                                   colData = meta %>% column_to_rownames("samplename"), 
-                              design = ~ sampletype)
-
-keep <- rowSums(counts(dds)) >= 10
+                                   colData = meta %>% column_to_rownames("sample"), 
+                              design = ~ condition)
+keep <- rowSums(counts(dds)) > 0
 dds <- dds[keep,]
 
 dds <- DESeq(dds)
 
-contrast_oe <- c("sampletype", "MOV10_overexpression","control")
+contrast_oe <- c("condition", "MOV10_overexpression","control")
 res_tableOE <- results(dds, contrast=contrast_oe, alpha = 0.05)
 res_tableOE_tb <- res_tableOE %>%
   as_tibble(rownames = "gene") %>%
@@ -100,7 +99,7 @@ To generate the shrunken log2 fold change estimates, you have to run an addition
 res_tableOE_unshrunken <- res_tableOE
 
 # Apply fold change shrinkage
-res_tableOE <- lfcShrink(dds, coef="sampletype_MOV10_overexpression_vs_control", type="apeglm")
+res_tableOE <- lfcShrink(dds, coef="condition_MOV10_overexpression_vs_control", type="apeglm")
 ```
 
 > For more information on shrinkage, the DESeq2 vignette has an [Extended section on shrinkage estimators](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#extended-section-on-shrinkage-estimators) that is quite useful.
@@ -171,7 +170,7 @@ To pick out a specific gene of interest to plot, for example MOV10 (ID ENSG00000
 
 ```{r countPlot}
 # Plot expression for single gene
-plotCounts(dds, gene="ENSG00000155363", intgroup="sampletype") 
+plotCounts(dds, gene="ENSG00000155363", intgroup="condition") 
 ```
 
 **Using ggplot2 to plot expression of a single gene**
@@ -180,15 +179,15 @@ If you wish to change the appearance of this plot, we can save the output of `pl
 
 ```{r}
 # Save plotcounts to a data frame object
-d <- plotCounts(dds, gene="ENSG00000155363", intgroup="sampletype", returnData=TRUE)
+d <- plotCounts(dds, gene="ENSG00000155363", intgroup="condition", returnData=TRUE)
 
 # What is the data output of plotCounts()?
 d %>% head()
 ```
 
 ```{r custom_countPlot}
-# Plot the MOV10 normalized counts, using the samplenames (rownames(d) as labels)
-ggplot(d, aes(x = sampletype, y = count, color = sampletype)) + 
+# Plot the MOV10 normalized counts, using the samples (rownames(d) as labels)
+ggplot(d, aes(x = condition, y = count, color = condition)) + 
 geom_point(position=position_jitter(w = 0.1,h = 0)) +
 geom_text_repel(aes(label = rownames(d))) + 
 theme_bw() +
@@ -196,14 +195,30 @@ ggtitle("MOV10") +
 theme(plot.title = element_text(hjust = 0.5))
 ```
 
+**Create a translator from gene names to gene IDs**
+
+While gene IDs are unique and traceable, it is hard for us humans to memorize a bunch of numbers. Let's try to make a translator function that will give you possible gene IDs for a gene name. Then you can use this table to select one of the possible gene_IDs.
+
+The function will take as input a vector of gene names of interest, the tx2gene dataframe and the dds object that you analyzed
+```{r}
+lookup <- function(gene_name, tx2gene, dds){
+  hits <- tx2gene %>% select(gene_symbol, gene_ID) %>% distinct() %>% 
+    filter(gene_symbol %in% gene_name & gene_ID %in% rownames(dds))
+  return(hits)
+}
+
+lookup(gene_name = "MOV10", tx2gene = tx2gene, dds = dds)
+```
+
+
 ### Heatmap
 
 In addition to plotting subsets, we could also extract the normalized values of *all* the significant genes and plot a heatmap of their expression using `pheatmap()`.
 
 ```{r}
-### Extract normalized expression for significant genes from the OE and control samples (columns 4 to 9)
-### also get gene name (column 1)
-norm_OEsig <- normalized_counts[,c(1,4:9)] %>% 
+### Extract normalized expression for significant genes from the OE and control samples
+### also get gene name
+norm_OEsig <- normalized_counts %>% select(gene, starts_with("Control"), starts_with("Mov10_oe")) 
   dplyr::filter(gene %in% sigOE$gene)  
 ```
 
@@ -211,13 +226,13 @@ Now let's draw the heatmap using `pheatmap`:
 
 ```{r sigOE_heatmap}
 ### Run pheatmap using the metadata data frame for the annotation
-pheatmap(log(norm_OEsig[2:7]+1), 
+pheatmap(norm_OEsig %>% column_to_rownames("gene"), 
          cluster_rows = T, 
          show_rownames = F,
-         annotation = meta %>% column_to_rownames(var = "samplename"), 
+         annotation = meta %>% column_to_rownames(var = "sample") %>% select("condition"), 
          border_color = NA, 
          fontsize = 10, 
-         #scale = "row", 
+         scale = "row", 
          fontsize_row = 10, 
          height = 20)
 ```
@@ -241,15 +256,15 @@ Now we can start plotting. The `geom_point` object is most applicable, as this i
 
 ```{r volcano_plot}
 ## Volcano plot
-ggplot(res_tableOE_tb) +
-geom_point(aes(x = log2FoldChange, y = -log10(padj), colour = threshold_OE)) +
-ggtitle("Mov10 overexpression") +
-xlab("log2 fold change") + 
-ylab("-log10 adjusted p-value") +
-#scale_y_continuous(limits = c(0,50)) +
-theme(legend.position = "none",
-plot.title = element_text(size = rel(1.5), hjust = 0.5),
-axis.title = element_text(size = rel(1.25)))  
+ggplot(res_tableOE_tb) + 
+  geom_point(aes(x = log2FoldChange, y = -log10(padj), colour = threshold_OE)) +
+  ggtitle("Mov10 overexpression") +
+  xlab("log2 fold change") + 
+  ylab("-log10 adjusted p-value") +
+  #scale_y_continuous(limits = c(0,50)) +
+  theme(legend.position = "none",
+        plot.title = element_text(size = rel(1.5), hjust = 0.5),
+        axis.title = element_text(size = rel(1.25)))  
 ```
 
 **Checking the top DE genes**
@@ -265,7 +280,7 @@ res_tableOE_tb <- res_tableOE_tb %>% mutate(genelabels = "")
 ## Sort by padj values 
 res_tableOE_tb <- res_tableOE_tb %>% arrange(padj)
 
-## Populate the genelabels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes
+## Populate the gene labels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes
 res_tableOE_tb$genelabels[1:10] <- as.character(res_tableOE_tb$gene[1:10])
 
 head(res_tableOE_tb)
@@ -292,12 +307,12 @@ ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
 ***NOTE:** If using the DESeq2 tool for differential expression analysis, the package 'DEGreport' can use the DESeq2 results output to make the top20 genes and the volcano plots generated above by writing a few lines of simple code. While you can customize the plots above, you may be interested in using the easier code. Below are examples of the code to create these plots:*
 
 ```{r degPlot, fig.height=10}
-DEGreport::degPlot(dds = dds, res = res_tableOE_unshrunken, n = 20, xs = "sampletype", group = "sampletype") +
+DEGreport::degPlot(dds = dds, res = res_tableOE_unshrunken, n = 20, xs = "condition", group = "condition") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))# dds object is output from DESeq2
 ```
 
 ```{r degPlotWide}
-DEGreport::degPlotWide(counts = dds, genes = row.names(res_tableOE)[1:5], group = "sampletype")
+DEGreport::degPlotWide(counts = dds, genes = row.names(res_tableOE)[1:5], group = "condition")
 ```
 
 ```{r degVolcano}

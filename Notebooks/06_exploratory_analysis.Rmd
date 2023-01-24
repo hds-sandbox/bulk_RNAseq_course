@@ -41,16 +41,16 @@ library(DESeq2)
 library(tximport)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-meta <- read_table("../Data/Mov10_full_meta.txt")
+meta <- read_csv("../Data/samplesheet.csv")
 dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
 tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
-files <- file.path(dir, meta$samplename, "quant.sf")
-names(files) <- meta$samplename
+files <- file.path(dir, meta$sample, "quant.sf")
+names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
 dds <- DESeqDataSetFromTximport(txi,
-                                   colData = meta %>% column_to_rownames("samplename"), 
-                              design = ~ sampletype)
-keep <- rowSums(counts(dds)) >= 10
+                                   colData = meta %>% column_to_rownames("sample"), 
+                              design = ~ condition)
+keep <- rowSums(counts(dds)) > 0
 dds <- dds[keep,]
 ```
 
@@ -83,7 +83,6 @@ The `blind=TRUE` argument is to make sure that the `rlog()` function does not ta
 
 The `rlog()` function returns a `DESeqTransform` object, another type of DESeq-specific object. The reason you don't just get a matrix of transformed values is because all of the parameters (i.e. size factors) that went into computing the rlog transform are stored in that object. We use this object to plot the PCA and hierarchical clustering figures for quality assessment.
 
-
 ### Principal component analysis (PCA) for the MOV10 dataset
 
 We are now ready for the QC steps, let's start with PCA!
@@ -94,10 +93,14 @@ The function `plotPCA()` requires two arguments as input: a `DESeqTransform` obj
 
 ```{r DESeq_PCA}
 ### Plot PCA 
-plotPCA(rld, intgroup="sampletype")
+plotPCA(rld, intgroup="condition")
 ```
 
-By default `plotPCA()` uses the *top 500 most variable genes*. You can change this by adding the `ntop=` argument and specifying how many of the genes you want the function to consider. For example, try 1000 genes.
+***
+
+**Exercise 1**:
+
+By default `plotPCA()` uses the *top 500 most variable genes*. You can change this by adding the `ntop=` argument and specifying how many of the genes you want the function to consider. For example, try 1000 genes. Did the plot change a lot?
 
 ```{r}
 # your code here
@@ -105,7 +108,7 @@ By default `plotPCA()` uses the *top 500 most variable genes*. You can change th
 
 ***
 
-**Exercise 1**:
+**Exercise 2**:
 
 1. What does the above plot tell you about the similarity of samples?
 2. Does it fit the expectation from the experimental design?
@@ -120,14 +123,43 @@ The `plotPCA()` function will only return the values for PC1 and PC2. If you wou
 ```{r}
 # Input is a matrix of log transformed values
 rld_mat <- assay(rld) # extract rlog count matrix
-pca <- prcomp(t(rld_mat)) # perform PCA
+pca <- prcomp(t(rld_mat)) # perform PCA on the transposed (t) matrix of data 
+```
+To see what the PCA object contains we can use again the `attributes()` function
+```{r}
+attributes(pca)
+```
+
+You can check the `?prcomp()` for more information. The most important variables are: 
+- sdev: standard deviation explained by each PC.
+- rotation: contribution of each gene to each PC.
+- x: PC values for each sample (we use this values for our plots)
+
+We can create a new object that contains all our metadata information and the PC values
+```{r}
 df <- cbind(meta, pca$x) # Create data frame with metadata and PC3 and PC4 values for input to ggplot
 ```
 
 ```{r custom_PCA}
 # ggplot with info for all PCAs
-ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = sampletype))
+ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = condition))
 ```
+
+If you want to add PC variation information to the plot we can fetch it using the summary() function and take the second row
+
+```{r}
+summary(pca)
+pca_var <- summary(pca)$importance[2,] # second row is stored in the object "importance"
+pca_var <- round(pca_var * 100, digits = 2) # make it percentage and round to 2 digits
+```
+Finally, we can add it to our plot
+
+```{r}
+ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = condition)) + 
+  xlab(paste0("PC3: ",pca_var["PC3"], "% variance")) + 
+  ylab(paste0("PC4: ",pca_var["PC4"], "% variance")) 
+```
+
 
 ### Hierarchical Clustering for the MOV10 dataset
 
@@ -141,7 +173,7 @@ rld_mat <- assay(rld)
 Next, we need to compute the distances values for all the samples. We can do this using the `dist` function:
 
 ```{r}
-sampleDists <- dist(t(assay(rld))) #distances are computed by rows, so we need to transpose the matrix
+sampleDists <- dist(t(rld_mat)) #distances are computed by rows, so we need to transpose (t) the matrix
 sampleDistMatrix <- as.matrix(sampleDists)
 ```
 
@@ -161,7 +193,8 @@ Now, let's plot the heatmap!
 ### Load pheatmap package
 library(pheatmap)
 
-pheatmap(sampleDistMatrix, annotation_col = meta %>% column_to_rownames("samplename"))
+pheatmap(sampleDistMatrix, annotation_col = meta %>% column_to_rownames("sample") %>% 
+           select(condition)) # we only want to use the condition column as an annotation
 ```
 
 When you plot using `pheatmap()` the hierarchical clustering information is used to place similar samples together and this information is represented by the tree structure along the axes. The `annotation` argument accepts a dataframe as input, in our case it is the `meta` data frame. 
@@ -186,7 +219,7 @@ heat.colors <- colorRampPalette(heat.colors)(100) # Interpolate 100 colors
 
 
 ```{r custom_heatmap}
-pheatmap(sampleDistMatrix, annotation = meta %>% column_to_rownames("samplename"), 
+pheatmap(sampleDistMatrix, annotation = meta %>% column_to_rownames("sample") %>% select("condition"), 
          color = heat.colors, border_color=NA, fontsize = 10, 
          fontsize_row = 10, height=20)
 ```       

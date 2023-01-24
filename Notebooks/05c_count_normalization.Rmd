@@ -41,11 +41,11 @@ library(DESeq2)
 library(tximport)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-meta <- read_table("../Data/Mov10_full_meta.txt")
+meta <- read_csv("../Data/samplesheet.csv")
 dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
 tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
-files <- file.path(dir, meta$samplename, "quant.sf")
-names(files) <- meta$samplename
+files <- file.path(dir, meta$sample, "quant.sf")
+names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
 ```
 
@@ -54,13 +54,12 @@ Approximate time: 40 minutes
 
 ## Learning Objectives 
 
-* Explore different types of normalization methods
 * Become familiar with the `DESeqDataSet` object 
 * Understand how to normalize counts using DESeq2
 
 ## Normalization
 
-The first step in the DE analysis workflow is count normalization, which is necessary to make accurate comparisons of gene expression between samples.
+The first step in the DE analysis workflow is count normalization, which is necessary to make accurate comparisons of gene expression between samples. Let's try to run an easy example!
 
 ***
 
@@ -103,8 +102,8 @@ We should always make sure that we have sample names that match between the two 
 
 ```{r}
 ### Check that sample names match in both files
-all(colnames(txi$counts) %in% meta$samplename)
-all(colnames(txi$counts) == meta$samplename)
+all(colnames(txi$counts) %in% meta$sample)
+all(colnames(txi$counts) == meta$sample)
 ```
 
 If your data did not match, you could use the `match()` function to rearrange them to be matching. `match()` function will take two arguments and find in which order the indexes of the second argument match the first argument.
@@ -123,7 +122,7 @@ b[reorder]
 
 **Exercise 2**	
 
-Suppose we had sample names matching in the txi object and metadata file, but they were out of order. Write the line(s) of code required make the `meta_random` dataframe with columns ordered such that they were identical to the row names of the `txi`.
+Suppose we had sample names matching in the txi object and metadata file, but they were out of order. Write the line(s) of code required make the `meta_random` dataframe with rows ordered such that they were identical to the column names of the `txi`.
 
 ```{r}
 # randomize metadata rownames
@@ -138,7 +137,7 @@ meta_random <- meta[sample(1:nrow(meta)),]
 
 ### 2. Create DESEq2 object
 
-Let's start by creating the `DESeqDataSet` object, and then we can talk a bit more about what is stored inside it. To create the object, we will need the *txi** object and the **metadata** table as input (`colData` argument). We will also need to specify a **design formula**. The design formula specifies the column(s) in the metadata table and how they should be used in the analysis. For our dataset we only have one column we are interested in, which is `~sampletype`. This column has three factor levels, which tells DESeq2 that for each gene we want to evaluate gene expression change with respect to these different levels.
+Let's start by creating the `DESeqDataSet` object, and then we can talk a bit more about what is stored inside it. To create the object, we will need the **txi** object and the **metadata** table as input (`colData` argument). We will also need to specify a **design formula**. The design formula specifies which column(s) of our metadata we want to use for statistical testing and modeling (more about that later!). For our dataset we only have one column we are interested in, which is `condition`. This column has three factor levels, which tells DESeq2 that for each gene we want to evaluate gene expression change with respect to these different levels.
 
 **Our count matrix input is stored in the `txi` list object**. So we need to specify that using the `DESeqDataSetFromTximport()` function, which will extract the counts component and round the values to the nearest whole number.
 
@@ -148,8 +147,8 @@ Let's start by creating the `DESeqDataSet` object, and then we can talk a bit mo
 # If you do not do this and the samples do not match, you will add wrong info!
 
 dds <- DESeqDataSetFromTximport(txi,
-                                   colData = meta %>% column_to_rownames("samplename"), 
-                              design = ~ sampletype)
+                                   colData = meta %>% column_to_rownames("sample"), 
+                              design = ~ condition)
 ```
 
 > **NOTE:** If you did not create pseudocounts, but a count matrix from aligned BAM files and tools such as `featurecounts`, you would want to use the `DESeqDataSetFromMatrix()` function.
@@ -157,8 +156,8 @@ dds <- DESeqDataSetFromTximport(txi,
 ```{r, eval=FALSE}
 ## DO NOT RUN!
 ## Create DESeq2Dataset object from traditional count matrix
-dds <- DESeqDataSetFromMatrix(countData = "/path/to/count/matrix.txt", 
-                              colData = meta %>% column_to_rownames("samplename"), 
+dds <- DESeqDataSetFromMatrix(countData = "../Data/Mov10_full_counts.txt", 
+                              colData = meta %>% column_to_rownames("sample"), 
                               design = ~ sampletype)
 ```
 
@@ -172,7 +171,10 @@ As we go through the workflow we will use the relevant functions to check what i
 
 #### Pre-filtering
 
-While it is not necessary to pre-filter low count genes before running the DESeq2 functions, there are two reasons which make pre-filtering useful: by removing rows in which there are very few reads, we reduce the memory size of the dds data object, and we increase the speed of the transformation and testing functions within DESeq2. It can also improve visualizations, as features with no information for differential expression are not plotted.
+While it is not necessary to pre-filter low count genes before running the DESeq2 functions, there are two reasons which make pre-filtering useful: 
+
+- By removing rows in which there are very few reads, we reduce the memory size of the dds data object, and we increase the speed of the transformation and testing functions within DESeq2. 
+- It can also improve visualizations, as features with no information for differential expression are not plotted.
 
 Here we perform a minimal pre-filtering to keep only rows that have at least 10 reads total. 
 ```{r}
