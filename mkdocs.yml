@@ -1,44 +1,177 @@
-site_name: 'Bulk RNAseq data analysis'
+# Project information
+site_name: Bulk RNAseq data analysis
+site_url: http://hds-sandbox.github.io/bulk_RNAseq_course/
+site_author: Jose Alejandro Romero Herrera
+site_description: >-
+  This course is an introduction for how to approach bulk RNAseq data, starting from the sequencing reads. 
+  It will provide an overview of the fundamentals of RNAseq analysis, including read preprocessing, data normalization, data exploration with PCAs and heatmaps, performing differential expression analysis and annotation of the differentially expressed genes. 
+  Participants will also learn how to evaluate confounding and batch effects in the data. 
+  The course will further touch upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, especially about how they influence downstream bioinformatic analysis.   
+
+# Repository
+repo_name: hds-sandbox/bulk_RNAseq_course
+repo_url: https://github.com/hds-sandbox/bulk_RNAseq_course
+
+# Configuration
+theme:
+
+  # Use the Material for MkDocs theme
+  # url: https://squidfunk.github.io/mkdocs-material/
+
+  name: null
+  custom_dir: !ENV [THEME_DIR, "material"]
+
+  # Static files
+  static_templates:
+    - 404.html
+
+  # Necessary for search to work properly
+  include_search_page: false
+  search_index_only: true
+
+  # Default values, taken from mkdocs_theme.yml
+  language: en
+  features:
+    - content.code.annotate
+    # - content.tabs.link
+    - content.tooltips
+    # - header.autohide
+    # - navigation.expand
+    - navigation.indexes
+    # - navigation.instant
+    # - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    # - toc.integrate
+
+  palette:
+    # Sandbox colours - "brightness" and "slate" - are defined in stylesheets/extra.css 
+    # Palette toggle for light mode
+    - scheme: brightness
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+  favicon: images/favicon.png
+  icon:
+    logo: logo
+
+# Changes to website colours and image parameters
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+
+plugins:
+  - search
+
+  # minify HTML of a page before it is written to disk
+  - minify:
+      minify_html: true
+
+# Analytics and social media
+extra:
+  analytics:
+    provider: google
+    property: !ENV GOOGLE_ANALYTICS_KEY
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/hds-sandbox
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/ucph_heads
+
+
+# Extensions
+
+markdown_extensions:
+  - abbr # abbreviations   
+  - admonition  
+  - attr_list # Add HTML/CSS to Markdown elements  
+  - def_list # Definition lists  
+  - footnotes  
+  - md_in_html  
+  - toc: # Table of contents  
+      permalink: true # Adds anchor link, can customise symbol with emoji  
+
+  - tables  
+
+  # Python extensions - can see descriptions  
+  # at https://facelessuser.github.io/pymdown-extensions/  
+
+  - pymdownx.arithmatex: # LaTeX  
+      generic: true  
+  - pymdownx.betterem: # improves emphasis (bold/italic) handling  
+      smart_enable: all   
+  - pymdownx.critic # useful for marking .md file without changes to html  
+  - pymdownx.caret # improved functionality for caret symbol  
+  - pymdownx.details # collapsable elements that hide content  
+  - pymdownx.emoji: 
+      emoji_generator: !!python/name:materialx.emoji.to_svg  
+      emoji_index: !!python/name:materialx.emoji.twemoji  
+  - pymdownx.highlight: # code highlighting  
+      anchor_linenums: true  
+  - pymdownx.inlinehilite # inline code highlight  
+  - pymdownx.keys # to make entering and styling keyboard key presses easier  
+  - pymdownx.mark # highlight/mark text  
+  - pymdownx.smartsymbols # special characters (e.g. arrows, tm, fractions)  
+  - pymdownx.superfences # arbitrary nesting of code and content blocks inside each other
+  - pymdownx.tabbed: # add tabs to .md file
+      alternate_style: true
+  - pymdownx.tasklist: # checkbox task list  
+      custom_checkbox: true
+  - pymdownx.tilde # delete and subscript
+
+
+# Extra configs
+use_directory_urls: false
+docs_dir: develop
+site_dir: docs
+
+# Page tree
 nav:
-    - 'Course Introduction': index.md
-    - 'Experimental planning': 02_experimental_planning.md
-    - 'Data Explanation': 03_data_explanation.md
-    - 'Preprocessing':
-        - 'Preprocessing steps': 04a_preprocessing.md
-        - 'Nextflow and nf-core pipelines': 04b_pipelines.md
-        - 'UCloud setup': 04c_preprocessing_setup.md
-    - 'Analysing RNAseq counts':
-        - 'Ucloud setup': 05a_data_analyis_setup.md
-        - 'Count matrix': 05b_count_matrix.md
-        - 'Normalization': 05c_count_normalization.md
+  - 'Course Introduction': index.md
+  - 'Experimental planning': 02_experimental_planning.md
+  - 'Data Explanation': 03_data_explanation.md
+  - 'Read Preprocessing':
+    - 'Preprocessing steps': 04a_preprocessing.md
+    - 'Nextflow and nf-core pipelines': 04b_pipelines.md
+    - 'UCloud setup': 04c_preprocessing_setup.md
+  - 'Analysing RNAseq data':
+    - 'Ucloud setup': 05a_data_analysis_setup.md
+    - 'Count matrix': 05b_count_matrix.md
+    - 'Normalization': 05c_count_normalization.md
     - 'Exploratory Analysis': 06_exploratory_analysis.md
     - 'Differential Expression': 
-        - 'Design formula': 07a_contrast_design.md
-        - 'DESeq2': 07b_DEA.md
-        - 'Hypothesis testing': 07c_hypothesis_testing.md
-        - 'Visualization': 07d_DEA_visualization.md
+      - 'Design formula': 07_extra_contrast_design.md
+      - 'DESeq2': 07a_DEA.md
+      - 'Hypothesis testing': 07b_hypothesis_testing.md
+      - 'Visualization': 07c_DEA_visualization.md
     - 'Functional Analysis': 
         - 'Gene annotation': 08a_FA_genomic_annotation.md
         - 'Over representation analysis': 08b_FA_overrepresentation.md
         - 'Class scoring': 08c_FA_GSEA.md
-    - 'Summarized workflow': 09_summarized_workflow.md
+  - 'Summarized workflow': 09_summarized_workflow.md
+  - 'example': example.md
+  - 'empty': empty.md
     
-use_directory_urls: false
-docs_dir: develop
-site_dir: docs
-plugins:
-extra_css:
-    - extra.css
-theme: 
-    name: material
-    logo: img/sandbox1.png
-    favicon: img/sandbox1.png
-    palette:
-      primary: grey
-      accent: cyan
-markdown_extensions:
-  - pymdownx.highlight:
-      use_pygments: true
-  - pymdownx.superfences
-extra:
-  homepage: https://hds-sandbox.github.io/

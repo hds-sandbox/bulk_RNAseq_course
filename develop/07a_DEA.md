@@ -58,7 +58,7 @@ DESeq2 will use these values.
 
 To normalize the count data, DESeq2 calculates size factors for each
 sample using the *median of ratios method* discussed previously in the
-[‘Count normalization’](06b_count_normalization.md) lesson.
+[‘Count normalization’](05c_count_normalization.md) lesson.
 
 #### MOV10 DE analysis: examining the size factors
 
