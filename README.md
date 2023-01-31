@@ -2,11 +2,14 @@
 
 Repository for bulk RNAseq course of the Danish Health Data Science Sandbox project.
 
-This workshop contains a basic tutorial on how to approach RNAseq data, starting from your count. Thus, the workshop does not include any information about laboratory protocols, library preparation or any wet-lab related procedures. This workshop is based on the materials developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), a collection of modified tutorials from the [DESeq2](https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) and R language vignettes.
+This course is an introduction for how to approach bulk RNAseq data, starting from the sequencing reads. It will provide an overview of the fundamentals of RNAseq analysis, including read preprocessing, data normalization, data exploration with PCAs and heatmaps, performing differential expression analysis and annotation of the differentially expressed genes. Participants will also learn how to evaluate confounding and batch effects in the data. The course will further touch upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, especially about how they influence downstream bioinformatic analysis. 
+
+This workshop is based on the materials developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), a collection of modified tutorials from the [DESeq2](https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html), R language vignettes and the [nf-core pipeline for bulk RNAseq](https://nf-co.re/rnaseq/3.6).
 
 ## Goals
 
 By the end of this workshop, you should be able to analyse your own bulk RNAseq count matrix:
+  - Preprocess your reads.
   - Normalize your data.
   - Explore your samples with PCAs and heatmaps.
   - Perform Differential Expression Analysis.
@@ -17,12 +20,12 @@ By the end of this workshop, you should be able to analyse your own bulk RNAseq 
 1. Introduction to bulk-RNASeq
 2. Experimental planning
 3. Intro to the data
-4. Preprocessing overview
+4. Preprocessing your reads
 5. RNAseq data
 6. Exploratory analysis
 7. Differential Expression Analysis
 8. Functional Analysis
-9.  Summarized workflow
+9. Summarized workflow
 
 ## Workshop requirements
 
@@ -40,5 +43,7 @@ The slides can be found in this [zenodo repository](https://zenodo.org/record/75
 
 - [Center for Health Data Science](https://heads.ku.dk/), University of Copenhagen.
 - [Hugo Tavares](https://bioinfotraining.bio.cam.ac.uk/about), Bioinformatics Training Facility, University of Cambridge.
-- [Silvia Raineri](https://danstem.ku.dk/people/serup_staff/), Center for Stem Cell Medicine (reNew), University of Copenhagen.
+- [Silvia Raineri](https://renew.ku.dk/research/reseach-groups/serup-group/), Center for Stem Cell Medicine (reNew), University of Copenhagen.
 - [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), check out their [github repo](https://github.com/hbctraining/DGE_workshop_salmon_online)
+- [Adrija Kalvisa](https://renew.ku.dk/people/?id=645384&vis=medarbejder)
+- [nf-core community](https://nf-co.re/)
