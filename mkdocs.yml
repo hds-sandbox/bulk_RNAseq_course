@@ -69,7 +69,7 @@ theme:
     text: Roboto
     code: Roboto Mono
 
-  favicon: images/favicon.png
+  favicon: img/favicon.png
   icon:
     logo: logo
 
@@ -172,6 +172,3 @@ nav:
         - 'Over representation analysis': 08b_FA_overrepresentation.md
         - 'Class scoring': 08c_FA_GSEA.md
   - 'Summarized workflow': 09_summarized_workflow.md
-  - 'example': example.md
-  - 'empty': empty.md
-    
