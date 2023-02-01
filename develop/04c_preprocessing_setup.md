@@ -1,6 +1,25 @@
-# Setup for teaching in uCloud
+---
+title: Running a pipeline in uCloud
+summary: In this lesson we explain how to run the nf-core pipeline in the UCloud computing system
+date: 2023-01-17
+---
 
-Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` where you have been invited.
+# Running the bulk RNAseq pipeline in uCloud
+
+
+!!! note "Section Overview"
+
+    &#128368; **Time Estimation:** X minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1. Learn about the UCloud computing system.
+    2. Learn how to submit a job and explore your results folders.
+    3. Submit a nf-core RNAseq run on our data
+
+# Submit the job in Ucloud
+
+Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` where you have been invited. Or ask to be invited to jose.romero@sund.ku.dk.
 
 ![](./img/04c_preprocessing_setup/chooseProject.png)
 
@@ -30,7 +49,7 @@ You are ready to run the app by clicking on the button on the right column of th
 
 Now, wait some time until the screen looks like the figure below. It usually takes a few minutes for everything to be ready and installed. You can always come back to this screen from the left menu Runs on uCloud, so that you can add extra time or stop the app if you will not use it.
 
-![](./img/04c_preprocessing_setup/startapp.png)
+![](./img/04c_preprocessing_setup/startApp.png)
 
 Now, click on `open interface` on the top right-hand side of the screen. You will start Rstudio through your browser!
 

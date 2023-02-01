@@ -1,14 +1,22 @@
+---
+title: Experimental design considerations
+summary: This lesson explains several experimental design considerations before analysing bulk RNAseq data.
+date: 2023-01-17
+hide:
+  - navigation
+---
+
 # Experimental design considerations
 
-Approximate time: 30 minutes
+!!! note "Section Overview"
 
-## Learning Objectives:
+    &#128368; **Time Estimation:** 30 minutes  
 
--   Describe the importance of replicates for RNA-seq differential expression experiments
--   Explain the relationship between the number of biological replicates, sequencing depth and the differentially expressed genes identified
--   Demonstrate how to design an RNA-seq experiment that avoids confounding and batch effects
+    &#128172; **Learning Objectives:**    
 
-## Experimental planning considerations
+    1. Describe the importance of replicates for RNA-seq differential expression experiments.
+    2. Explain the relationship between the number of biological replicates, sequencing depth and the differentially expressed genes identified.
+    3. Demonstrate how to design an RNA-seq experiment that avoids confounding and batch effects.
 
 Understanding the steps in the experimental process of RNA extraction and preparation of RNA-Seq libraries is helpful for designing an RNA-Seq experiment, but there are special considerations that should be highlighted that can greatly affect the quality of a differential expression analysis.
 
@@ -188,6 +196,6 @@ If *any* of the answers is **'No'**, then you have batches.
 
 > **NOTE:** *The sample preparation of cell line "biological" replicates "should be performed as independently as possible" (as batches), "meaning that cell culture media should be prepared freshly for each experiment, different frozen cell stocks and growth factor batches, etc. should be used [[2](http://paasp.net/accurate-design-of-in-vitro-experiments-why-does-it-matter/)]." However, preparation across all conditions should be performed at the same time.*
 
-------------------------------------------------------------------------
+***
 
 *This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/).*
