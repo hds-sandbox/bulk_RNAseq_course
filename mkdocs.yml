@@ -1,6 +1,6 @@
 # Project information
 site_name: Bulk RNAseq data analysis
-site_url: http://hds-sandbox.github.io/bulk_RNAseq_course/
+site_url: http://hds-sandbox.github.io/
 site_author: Jose Alejandro Romero Herrera
 site_description: >-
   This course is an introduction for how to approach bulk RNAseq data, starting from the sequencing reads. 
@@ -18,8 +18,8 @@ theme:
   # Use the Material for MkDocs theme
   # url: https://squidfunk.github.io/mkdocs-material/
 
-  name: null
-  custom_dir: !ENV [THEME_DIR, "material"]
+  name: material
+  # custom_dir: !ENV [THEME_DIR, "material"]
 
   # Static files
   static_templates:
@@ -70,8 +70,7 @@ theme:
     code: Roboto Mono
 
   favicon: img/favicon.png
-  icon:
-    logo: logo
+  logo: img/logo.png
 
 # Changes to website colours and image parameters
 extra_css:
@@ -100,8 +99,8 @@ extra:
       link: https://github.com/hds-sandbox
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/ucph_heads
-
-
+  # homepage: http://hds-sandbox.github.io/ 
+  
 # Extensions
 
 markdown_extensions:
