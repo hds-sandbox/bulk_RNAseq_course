@@ -1,97 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>http://hds-sandbox.github.io/index.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/02_experimental_planning.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/03_data_explanation.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/04a_preprocessing.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/04b_pipelines.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/04c_preprocessing_setup.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/05a_data_analysis_setup.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/05b_count_matrix.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/05c_count_normalization.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/06_exploratory_analysis.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/07_extra_contrast_design.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/07a_DEA.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/07b_hypothesis_testing.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/07c_DEA_visualization.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/08a_FA_genomic_annotation.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/08b_FA_overrepresentation.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/08c_FA_GSEA.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/09_summarized_workflow.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>http://hds-sandbox.github.io/empty.html</loc>
+         <loc>None</loc>
          <lastmod>2023-02-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
