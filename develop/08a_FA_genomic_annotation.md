@@ -1,14 +1,20 @@
-Approximate time: 30 minutes
+---
+title: Genomic annotations
+summary: In this lesson we explain how create annotate your genes with metadata from databases
+date: 2023-01-17
+---
 
-## Learning Objectives
+# Genomic annotations
 
--   Discuss the available genomic annotation databases and the different
-    types if information stored
--   Compare and contrast the tools available for accessing genomic
-    annotation databases
--   Apply various R packages for retrieval of genomic annotations
+!!! note "Section Overview"
 
-## Genomic annotations
+    &#128368; **Time Estimation:** 30 minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1.  Discuss the available genomic annotation databases and the different types of information stored
+    2.  Compare and contrast the tools available for accessing genomic annotation databases
+    3.  Apply various R packages for retrieval of genomic annotations
 
 The analysis of next-generation sequencing results requires associating
 genes, transcripts, proteins, etc. with functional or regulatory
@@ -420,7 +426,7 @@ some time exploring these packages to become more familiar with them.
 > grch38
 > ```
 
-------------------------------------------------------------------------
+***
 
 *This lesson was originally developed by members of the teaching team
 (Mary Piper) at the [Harvard Chan Bioinformatics Core

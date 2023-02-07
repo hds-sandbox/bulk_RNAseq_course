@@ -1,4 +1,20 @@
+---
+title: Ucloud setup for data analysis
+summary: In this lesson we explain how to start an Rstudio session for data analysis
+date: 2023-01-17
+---
+
 # Setup for teaching in uCloud
+
+!!! note "Section Overview"
+
+    &#128368; **Time Estimation:** X minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1. Start a transcriptomics app job in Ucloud for the next lessons in data analysis
+    
+## Submit the job in Ucloud
 
 Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` where you have been invited.
 
@@ -20,9 +36,9 @@ And select the `jobParameters.json` in:
 
 - `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `Scripts` -\> `ucloud_analysis_setup` -\> `jobParameters.json`
 
-**Make sure that the hard-drive icon says sandbox_bulkRNASeq!!**
-
-![](./img/05a_data_analysis_setup/importParameters3.png)
+!!! warning 
+    **Make sure that the hard-drive icon says `sandbox_bulkRNASeq`!!**
+    ![](./img/04c_preprocessing_setup/importParameters3.png)
 
 You are ready to run the app by clicking on the button on the right column of the screen (`submit`).
 
@@ -46,13 +62,13 @@ Now there should be another folder in the file explorer called `introduction_bul
 
 Now you can go back to the **Console** tab. You are ready to start analysing your data!
 
-# Stopping the app
+##Stopping the app
 
 When you are done, go on `Runs` in uCloud, and choose your app if it is still running. Then you will be able to stop it from using resources.
 
 ![](./img/05a_data_analysis_setup/stopRun.png)
 
-# Saved work
+## Saved work
 
 After running a first work session, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *Transcriptomics Sandbox*, which will contain all the jobs you have run with the Transcriptomics Sandbox app. Inside this folder, you will find your folder named after the job name you gave in the previous step.
 
@@ -64,7 +80,8 @@ After running a first work session, everything that you have created, including 
 
 ![](./img/05a_data_analysis_setup/savedWork2.png)
  
-# Restarting the Rstudio session
+## Restarting the Rstudio session
+
 If you want to keep working on your previous results, you can restart an Rstudio session following these steps:
 
 Click on `Apps` on the left-side menu, and look for the application `Transcriptomics Sandbox` and click on it.

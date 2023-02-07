@@ -1,13 +1,21 @@
-Approximate time: 80 minutes
+---
+title: Exploratory analysis
+summary: In this lesson we explain how to explore the relationships between samples using PCA and heatmaps
+date: 2023-01-17
+---
 
-## Learning Objectives
+# Exploratory Analysis and Quality Control
 
--   Recognize the importance of methods for count data transformation
--   Describe the PCA (principal component analysis) technique
--   Interpret different examples of PCA plots
--   Evaluate sample quality using PCA and hierarchical clustering
+!!! note "Section Overview"
 
-## Quality Control
+    &#128368; **Time Estimation:** 80 minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1. Recognize the importance of methods for count data transformation
+    2. Describe the PCA (principal component analysis) technique
+    3. Interpret different examples of PCA plots
+    4. Evaluate sample quality using PCA and hierarchical clustering
 
 The next step in the DESeq2 workflow is QC, which includes sample-level
 and gene-level steps to perform QC checks on the count data to help us
@@ -391,7 +399,7 @@ green light to proceed to differential expression analysis.
 > Try typing in your console `display.brewer.all()` and see what
 > happens!
 
-------------------------------------------------------------------------
+***
 
 *This lesson was originally developed by members of the teaching team
 (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan

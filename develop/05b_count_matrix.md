@@ -1,14 +1,19 @@
-Approximate time: 20 minutes
+---
+title: RNAseq count matrices
+summary: In this lesson we explain the attributes of bulk RNAseq count data
+date: 2023-01-17
+---
 
-## Learning Objectives
+# Differential gene expression (DGE) analysis overview
 
--   Describe how to set up an RNA-seq project in R
--   Describe the RNA-seq and the differential gene expression analysis
-    workflow
--   Explain why negative binomial distribution is used to model RNA-seq
-    count data
+!!! note "Section Overview"
 
-## Differential gene expression (DGE) analysis overview
+    &#128368; **Time Estimation:** 20 minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1. Describe the RNA-seq and the differential gene expression analysiscworkflow
+    2. Explain why negative binomial distribution is used to model RNA-seq count data
 
 The goal of RNA-seq is often to perform differential expression testing
 to determine which genes are expressed at different levels between
@@ -394,7 +399,7 @@ the vignette from within RStudio:
 This is very convenient, as it provides a wealth of information at your
 fingertips! Be sure to use this as you need during the workshop.
 
-------------------------------------------------------------------------
+***
 
 *This lesson was originally developed by members of the teaching team
 (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan

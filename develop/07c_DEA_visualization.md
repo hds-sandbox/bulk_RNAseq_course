@@ -1,17 +1,23 @@
-Approximate time: 75 minutes
+---
+title: DEA visualization
+summary: In this lesson we explain how visualize DEA results using log fold shrinkage
+date: 2023-01-17
+---
 
-## Learning Objectives
+# DEA Visualization and Log Fold Shrinkage
 
--   Explain log fold change shrinkage
--   Setup results data for application of visualization techniques
--   Describe different data visualization useful for exploring results
-    from a DGE analysis
--   Create a volcano plot and MA plot to evaluate relationship among DGE
-    statistics
--   Create a heatmap to illustrate expression changes of differentially
-    expressed genes
+!!! note "Section Overview"
 
-## More accurate LFC estimates
+    &#128368; **Time Estimation:** 75 minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1.  Construct R code to execute the differential expression analysis workflow with DESeq2
+    2.  Explain log fold change shrinkage
+    3.  Setup results data for application of visualization techniques
+    4.  Describe different data visualization useful for exploring results from a DGE analysis
+    5.  Create a volcano plot and MA plot to evaluate relationship among DGE statistics
+    6.  Create a heatmap to illustrate expression changes of differentially expressed genes
 
 In the previous lessons, we learned about how to generate a table with
 Differentially Expressed genes
@@ -372,7 +378,7 @@ ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
 > DEGreport::degPlotWide(dds = dds, genes = row.names(res)[1:5], group = "condition")
 > ```
 
-------------------------------------------------------------------------
+***
 
 *This lesson was originally developed by members of the teaching team
 (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan

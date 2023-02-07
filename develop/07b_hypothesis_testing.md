@@ -1,21 +1,27 @@
-use_directory_urls: false
-Approximate time: 90 minutes
+---
+title: Hypothesis testing
+summary: In this lesson we explain how DESeq2 perform statistical tests 
+date: 2023-01-17
+---
 
-## Learning Objectives
+# DESeq2: Model fitting and Hypothesis testing
 
--   Describe the process of model fitting
--   Compare two methods for hypothesis testing (Wald test vs. LRT)
--   Discuss the steps required to generate a results table for pairwise
-    comparisons (Wald test)
--   Recognize the importance of multiple test correction
--   Identify different methods for multiple test correction
--   Summarize the different levels of gene filtering
--   Evaluate the number of differentially expressed genes produced for
-    each comparison
--   Construct R objects containing significant genes from each
-    comparison
+!!! note "Section Overview"
 
-## DESeq2: Model fitting and Hypothesis testing
+    &#128368; **Time Estimation:** 90 minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1.  Demonstrate the use of the design formula with simple and complex designs
+    2.  Construct R code to execute the differential expression analysis workflow with DESeq2
+    3.  Describe the process of model fitting
+    4.  Compare two methods for hypothesis testing (Wald test vs. LRT)
+    5.  Discuss the steps required to generate a results table for pairwise comparisons (Wald test)
+    6.  Recognize the importance of multiple test correction
+    7.  Identify different methods for multiple test correction
+    8.  Summarize the different levels of gene filtering
+    9.  Evaluate the number of differentially expressed genes produced for each comparison
+    10. Construct R objects containing significant genes from each comparison
 
 The final step in the DESeq2 workflow is taking the counts for each gene
 and fitting it to the model and testing for differential expression.

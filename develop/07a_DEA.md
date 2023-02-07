@@ -1,14 +1,21 @@
-Approximate time: 60 minutes
+---
+title: Differential Expression Analysis
+summary: In this lesson we explain how DEA works in DESeq
+date: 2023-01-17
+---
 
-## Learning Objectives
+# Differential expression analysis with DESeq2
 
--   Explain the different steps involved in running `DESeq()`
--   Examine size factors and undertand the source of differences
--   Inspect gene-level dispersion estimates
--   Recognize the importance of dispersion during differential
-    expression analysis
+!!! note "Section Overview"
 
-## DESeq2 differential gene expression analysis workflow
+    &#128368; **Time Estimation:** 60 minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1.  Explain the different steps involved in running `DESeq()`
+    2.  Examine size factors and undertand the source of differences
+    3.  Inspect gene-level dispersion estimates
+    4.  Recognize the importance of dispersion during differential expression analysis
 
 Previously, we created the DESeq2 object using the appropriate design
 formula.
@@ -290,7 +297,7 @@ the fit of your data to the model?
 
 <img src="./img/07a_DEA/exercise_dispersion.png" style="display: block; margin: auto;" />
 
-------------------------------------------------------------------------
+***
 
 *This lesson was originally developed by members of the teaching team
 (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan
@@ -299,5 +306,3 @@ Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/).*
 *Some materials and hands-on activities were adapted from [RNA-seq
 workflow](http://www.bioconductor.org/help/workflows/rnaseqGene/#de) on
 the Bioconductor website*
-
-------------------------------------------------------------------------

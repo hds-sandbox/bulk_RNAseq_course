@@ -1,16 +1,22 @@
-Approximate time: 40 minutes
+---
+title: RNAseq data normalization
+summary: In this lesson we explain how to normalize bulk RNAseq count matrices
+date: 2023-01-17
+---
 
-## Learning Objectives
+# Normalization
 
--   Explore different types of normalization methods
--   Become familiar with the `DESeqDataSet` object
--   Understand how to normalize counts using DESeq2
+!!! note "Section Overview"
 
-## Normalization
+    &#128368; **Time Estimation:** 40 minutes  
 
-The first step in the DE analysis workflow is count normalization, which
-is necessary to make accurate comparisons of gene expression between
-samples.
+    &#128172; **Learning Objectives:**    
+
+    1. Explore different types of normalization methods
+    2. Become familiar with the `DESeqDataSet` object
+    3. Understand how to normalize counts using DESeq2
+
+The first step in the DE analysis workflow is count normalization, which is necessary to make accurate comparisons of gene expression between samples.
 
 <img src="./img/05c_count_normalization/deseq_workflow_normalization_2018.png" style="display: block; margin: auto;" />
 
@@ -379,7 +385,7 @@ write.table(normalized_counts, file="/work/introduction_bulkRNAseq_analysis/Resu
 > to DESeq2 or any other tools that perform differential expression
 > analysis which use the negative binomial model.
 
-------------------------------------------------------------------------
+***
 
 *This lesson was originally developed by members of the teaching team
 (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan

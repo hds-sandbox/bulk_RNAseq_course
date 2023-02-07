@@ -1,13 +1,19 @@
-Approximate time: 40 minutes
+---
+title: Contrast design
+summary: In this lesson we explain how create complex design formulas and contrasts
+date: 2023-01-17
+---
 
-## Learning Objectives
+# Design formula and contrasts
 
--   Demonstrate the use of the design formula with simple and complex
-    designs
--   Construct R code to execute the differential expression analysis
-    workflow with DESeq2
+!!! note "Section Overview"
 
-## Differential expression analysis with DESeq2
+    &#128368; **Time Estimation:** 40 minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1.  Demonstrate the use of the design formula with simple and complex designs
+    2.  Construct R code to execute the differential expression analysis workflow with DESeq2
 
 The final step in the differential expression analysis workflow is
 **fitting the raw counts to the NB model and performing the statistical
@@ -972,7 +978,7 @@ bloodA_control - bloodO_control
     ## patientC:conditiontreat patientD:conditiontreat 
     ##                    -0.5                    -0.5
 
-------------------------------------------------------------------------
+***
 
 *Part of this lesson was originally developed by members of the teaching
 team (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan

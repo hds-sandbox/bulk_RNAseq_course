@@ -1,14 +1,23 @@
-Approximate time: 40 minutes
+---
+title: Functional class scoring
+summary: In this lesson we explain how to run functional analysis on your results using Class Scoring methods
+date: 2023-01-17
+---
 
-## Learning Objectives:
+# Functional class scoring
 
--   Discuss functional class scoring, and pathway topology methods
--   Construct a GSEA analysis using GO and KEGG gene sets
--   Examine results of a GSEA using pathview package
--   List other tools and resources for identifying genes of novel
-    pathways or networks
+!!! note "Section Overview"
 
-## Functional analysis
+    &#128368; **Time Estimation:** 40 minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1.  Demonstrate the use of the design formula with simple and complex designs
+    2.  Construct R code to execute the differential expression analysis workflow with DESeq2
+    3.  Discuss functional class scoring, and pathway topology methods
+    4.  Construct a GSEA analysis using GO and KEGG gene sets
+    5.  Examine results of a GSEA using pathview package
+    6.  List other tools and resources for identifying genes of novel pathways or networks
 
 Over-representation analysis is only a single type of functional
 analysis method that is available for teasing apart the biological
@@ -17,8 +26,6 @@ analyses can be equally important or informative, including functional
 class scoring methods.
 
 <img src="./img/08c_FA_GSEA/pathway_analysis.png" style="display: block; margin: auto;" />
-
-## Functional class scoring
 
 Functional class scoring (FCS) tools, such as
 [GSEA](https://www.pnas.org/content/102/43/15545), most often use the
@@ -356,7 +363,7 @@ co-expression clustering.
 -   GAGE/Pathview -
     <http://www.bioconductor.org/packages/release/bioc/html/gage.html>
 
-------------------------------------------------------------------------
+***
 
 *This lesson was originally developed by members of the teaching team
 (Mary Piper, Radhika Khetani) at the [Harvard Chan Bioinformatics Core

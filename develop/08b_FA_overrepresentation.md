@@ -1,17 +1,21 @@
-Approximate time: 120 minutes
+---
+title: Functional analysis
+summary: In this lesson we explain how to run functional analysis on your results using overrepresentation analysis
+date: 2023-01-17
+---
 
-## Learning Objectives:
+# Functional analysis
 
--   Determine how functions are attributed to genes using Gene Ontology
-    terms
--   Describe the theory of how functional enrichment tools yield
-    statistically enriched functions or interactions
--   Discuss functional analysis using over-representation analysis,
-    functional class scoring, and pathway topology methods
--   Identify popular functional analysis tools for over-representation
-    analysis
+!!! note "Section Overview"
 
-## Functional analysis
+    &#128368; **Time Estimation:** 120 minutes  
+
+    &#128172; **Learning Objectives:**    
+
+    1.  Determine how functions are attributed to genes using Gene Ontology terms
+    2.  Describe the theory of how functional enrichment tools yield statistically enriched functions or interactions
+    3.  Discuss functional analysis using over-representation analysis, functional class scoring, and pathway topology methods
+    4.  Identify popular functional analysis tools for over-representation analysis
 
 The output of RNA-seq differential expression analysis is a list of
 significant differentially expressed genes (DEGs). To gain greater
@@ -415,7 +419,7 @@ cnetplot(ego2,
 
 <img src="./img/08b_FA_overrepresentation/cnetplot-2.png" style="display: block; margin: auto;" />
 
-------------------------------------------------------------------------
+***
 
 *This lesson was originally developed by members of the teaching team
 (Mary Piper, Radhika Khetani) at the [Harvard Chan Bioinformatics Core
