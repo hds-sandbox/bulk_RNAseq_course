@@ -1,5 +1,5 @@
 ---
-title: Contrast design
+title: Contrast designs
 summary: In this lesson we explain how create complex design formulas and contrasts
 date: 2023-01-17
 ---
@@ -15,96 +15,43 @@ date: 2023-01-17
     1.  Demonstrate the use of the design formula with simple and complex designs
     2.  Construct R code to execute the differential expression analysis workflow with DESeq2
 
-The final step in the differential expression analysis workflow is
-**fitting the raw counts to the NB model and performing the statistical
-test** for differentially expressed genes. In this step we essentially
-want to determine whether the mean expression levels of different sample
-groups are significantly different.
+The final step in the differential expression analysis workflow is **fitting the raw counts to the NB model and performing the statistical test** for differentially expressed genes. In this step we essentially want to determine whether the mean expression levels of different sample groups are significantly different.
 
-<img src="./img/07_extra_contrast_design/de_theory.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/de_theory.png" width="1109" style="display: block; margin: auto;" />
 
 *Image credit: Paul Pavlidis, UBC*
 
-The [DESeq2
-paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8)
-was published in 2014, but the package is continually updated and
-available for use in R through Bioconductor. It builds on good ideas for
-dispersion estimation and use of Generalized Linear Models from the
-[DSS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4005660/) and
-[edgeR](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2796818/) methods.
+The [DESeq2 paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8) was published in 2014, but the package is continually updated and available for use in R through Bioconductor. It builds on good ideas for dispersion estimation and use of Generalized Linear Models from the [DSS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4005660/) and [edgeR](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2796818/) methods.
 
-Differential expression analysis with DESeq2 involves multiple steps as
-displayed in the flowchart below in blue. Briefly, DESeq2 will model the
-raw counts, using normalization factors (size factors) to account for
-differences in library depth. Then, it will estimate the gene-wise
-dispersions and shrink these estimates to generate more accurate
-estimates of dispersion to model the counts. Finally, DESeq2 will fit
-the negative binomial model and perform hypothesis testing using the
-Wald test or Likelihood Ratio Test.
+Differential expression analysis with DESeq2 involves multiple steps as displayed in the flowchart below in blue. Briefly, DESeq2 will model the raw counts, using normalization factors (size factors) to account for differences in library depth. Then, it will estimate the gene-wise dispersions and shrink these estimates to generate more accurate estimates of dispersion to model the counts. Finally, DESeq2 will fit the negative binomial model and perform hypothesis testing using the Wald test or Likelihood Ratio Test.
 
-<img src="./img/07_extra_contrast_design/deseq_workflow1.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/deseq_workflow1.png" width="322" style="display: block; margin: auto;" />
 
-> **NOTE:** DESeq2 is actively maintained by the developers and
-> continuously being updated. As such, it is important that you note the
-> version you are working with. Recently, there have been some rather
-> **big changes implemented** that impact the output. To find out more
-> detail about the specific **modifications made to methods described in
-> the original 2014 paper**, take a look at [this section in the DESeq2
-> vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#methods-changes-since-the-2014-deseq2-paper).
->
-> Additional details on the statistical concepts underlying DESeq2 are
-> elucidated nicely in Rafael Irizarry’s
-> [materials](https://rafalab.github.io/pages/harvardx.html) for the EdX
-> course, “Data Analysis for the Life Sciences Series”. \## Running
-> DESeq2
+!!! tip
 
-Prior to performing the differential expression analysis, it is a good
-idea to know what **sources of variation** are present in your data,
-either by exploration during the QC and/or prior knowledge. Once you
-know the major sources of variation, you can remove them prior to
-analysis or control for them in the statistical model by including them
-in your **design formula**.
+    DESeq2 is actively maintained by the developers and continuously being updated. As such, it is important that you note the version you are working with. Recently, there have been some rather **big changes implemented** that impact the output. To find out more detail about the specific **modifications made to methods described in the original 2014 paper**, take a look at [this section in the DESeq2 vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#methods-changes-since-the-2014-deseq2-paper).
 
-### Design formula
+    Additional details on the statistical concepts underlying DESeq2 are elucidated nicely in Rafael Irizarry's [materials](https://rafalab.github.io/pages/harvardx.html) for the EdX course, "Data Analysis for the Life Sciences Series". \## Running DESeq2
 
-A design formula tells the statistical software the known sources of
-variation to control for, as well as, the factor of interest to test for
-during differential expression testing. For example, if you know that
-sex is a significant source of variation in your data, then `sex` should
-be included in your model. **The design formula should have all of the
-factors in your metadata that account for major sources of variation in
-your data. The last factor entered in the formula should be the
-condition of interest.**
+Prior to performing the differential expression analysis, it is a good idea to know what **sources of variation** are present in your data, either by exploration during the QC and/or prior knowledge. Once you know the major sources of variation, you can remove them prior to analysis or control for them in the statistical model by including them in your **design formula**.
+
+## Design formula
+
+A design formula tells the statistical software the known sources of variation to control for, as well as, the factor of interest to test for during differential expression testing. For example, if you know that sex is a significant source of variation in your data, then `sex` should be included in your model. **The design formula should have all of the factors in your metadata that account for major sources of variation in your data. The last factor entered in the formula should be the condition of interest.**
 
 For example, suppose you have the following metadata:
 
-<img src="./img/07_extra_contrast_design/metadata.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/metadata.png" width="270" style="display: block; margin: auto;" />
 
-If you want to examine the expression differences between `condition`,
-and you know that major sources of variation include `bloodtype` and
-`patient`, then your design formula would be:
+If you want to examine the expression differences between `condition`, and you know that major sources of variation include `bloodtype` and `patient`, then your design formula would be:
 
 `design = ~ bloodtype + patient + condition`
 
-The tilde (`~`) should always precede your factors and tells DESeq2 to
-model the counts using the following formula. Note the **factors
-included in the design formula need to match the column names in the
-metadata**.
+The tilde (`~`) should always precede your factors and tells DESeq2 to model the counts using the following formula. Note the **factors included in the design formula need to match the column names in the metadata**.
 
-In this tutorial we show a general and flexible way to define contrasts,
-and is often useful for more complex contrasts or when the design of the
-experiment is imbalanced (e.g. different number of replicates in each
-group). Although we focus on **DESeq2**, the approach can also be used
-with the other popular package **edgeR**.
+In this tutorial we show a general and flexible way to define contrasts, and is often useful for more complex contrasts or when the design of the experiment is imbalanced (e.g. different number of replicates in each group). Although we focus on **DESeq2**, the approach can also be used with the other popular package **edgeR**.
 
-Each section below covers a particular experimental design, from simpler
-to more complex ones. The first chunk of code in each section is to
-simulate data, which has no particular meaning and is only done in order
-to have a DESeqDataSet object with the right kind of variables for each
-example. In practice, users can ignore this step as they should have
-created a DESeqDataSet object from their own data following the
-[instructions in the
-vignette](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset).
+Each section below covers a particular experimental design, from simpler to more complex ones. The first chunk of code in each section is to simulate data, which has no particular meaning and is only done in order to have a DESeqDataSet object with the right kind of variables for each example. In practice, users can ignore this step as they should have created a DESeqDataSet object from their own data following the [instructions in the vignette](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset).
 
 ## One factor, two levels
 
@@ -130,8 +77,7 @@ colData(dds)
     ## sample5   treat  
     ## sample6   treat
 
-Our factor of interest is `condition` and so we define our design and
-run the DESeq model fitting routine:
+Our factor of interest is `condition` and so we define our design and run the DESeq model fitting routine:
 
 ``` r
 design(dds) <- ~ 1 + condition # or just `~ condition`
@@ -146,12 +92,9 @@ resultsNames(dds)
 
     ## [1] "Intercept"                  "condition_treat_vs_control"
 
-We can see that we have a coefficient for our `intercept` and
-coefficient for the effect of `treat` (i.e. differences between treat
-versus control).
+We can see that we have a coefficient for our `intercept` and coefficient for the effect of `treat` (i.e. differences between treat versus control).
 
-Using the more standard syntax, we can obtain the results for the effect
-of treat as such:
+Using the more standard syntax, we can obtain the results for the effect of treat as such:
 
 ``` r
 res1 <- results(dds, contrast = list("condition_treat_vs_control"))
@@ -188,10 +131,7 @@ res1
     ## gene999  0.000914882
     ## gene1000 0.087737235
 
-The above is a simple way to obtain the results of interest. But it is
-worth understanding how DESeq is getting to these results by looking at
-the model’s matrix. DESeq defines the model matrix using base R
-functionality:
+The above is a simple way to obtain the results of interest. But it is worth understanding how DESeq is getting to these results by looking at the model’s matrix. DESeq defines the model matrix using base R functionality:
 
 ``` r
 model.matrix(design(dds), colData(dds))
@@ -210,30 +150,15 @@ model.matrix(design(dds), colData(dds))
     ## attr(,"contrasts")$condition
     ## [1] "contr.treatment"
 
-We can see that R coded `condition` as a dummy variable, with an
-intercept (common to all samples) and a “conditiontreat” variable, which
-adds the effect of treat to samples 4-6.
+We can see that R coded `condition` as a dummy variable, with an intercept (common to all samples) and a "conditiontreat" variable, which adds the effect of treat to samples 4-6.
 
-We can actually set our contrasts in `DESeq2::results()` using a numeric
-vector. The way it works is to define a vector of “weights” for the
-coefficient(s) we want to test for. In this case, we have `(Intercept)`
-and `conditiontreat` as our coefficients (see model matrix above), and
-we want to test for the effect of treat, so our contrast vector would be
-`c(0, 1)`. In other words, we don’t care about the value of
-`(Intercept)` (so it has a weight of 0), and we’re only interested in
-the effect of treat (so we give it a weight of 1).
+We can actually set our contrasts in `DESeq2::results()` using a numeric vector. The way it works is to define a vector of "weights" for the coefficient(s) we want to test for. In this case, we have `(Intercept)` and `conditiontreat` as our coefficients (see model matrix above), and we want to test for the effect of treat, so our contrast vector would be `c(0, 1)`. In other words, we don’t care about the value of `(Intercept)` (so it has a weight of 0), and we’re only interested in the effect of treat (so we give it a weight of 1).
 
-In this case the design is very simple, so we could define our contrast
-vector “manually”. But for complex designs this can get more difficult
-to do, so it’s worth mentioning the general way in which we can define
-this. For any contrast of interest, we can follow three steps:
+In this case the design is very simple, so we could define our contrast vector "manually". But for complex designs this can get more difficult to do, so it’s worth mentioning the general way in which we can define this. For any contrast of interest, we can follow three steps:
 
--   Get the model matrix
--   Subset the matrix for each group of interest and calculate its
-    column means - this results in a vector of coefficients for each
-    group
--   Subtract the group vectors from each other according to the
-    comparison we’re interested in
+- Get the model matrix
+- Subset the matrix for each group of interest and calculate its column means - this results in a vector of coefficients for each group
+- Subtract the group vectors from each other according to the comparison we’re interested in
 
 Let’s see this example in action:
 
@@ -282,29 +207,24 @@ treat - control
     ##    (Intercept) conditiontreat 
     ##              0              1
 
-That last step is where we define our contrast vector, and we can give
-this directly to the `results` function:
+That last step is where we define our contrast vector, and we can give this directly to the `results` function:
 
 ``` r
 # get the results for this contrast
 res2 <- results(dds, contrast = treat - control)
 ```
 
-This gives us exactly the same results as before, which we can check for
-example by plotting the log-fold-changes between the first and second
-approach:
+This gives us exactly the same results as before, which we can check for example by plotting the log-fold-changes between the first and second approach:
 
 ``` r
 plot(res1$log2FoldChange, res2$log2FoldChange)
 ```
 
-<img src="./img/07_extra_contrast_design/contrast_res1.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res1.png" width="960" style="display: block; margin: auto;" />
 
 ## Recoding the design
 
-Often, we can use different model matrices that essentially correspond
-to the same design. For example, we could recode our design above by
-removing the intercept:
+Often, we can use different model matrices that essentially correspond to the same design. For example, we could recode our design above by removing the intercept:
 
 ``` r
 design(dds) <- ~ 0 + condition
@@ -314,12 +234,9 @@ resultsNames(dds)
 
     ## [1] "conditioncontrol" "conditiontreat"
 
-In this case we get a coefficient corresponding to the average
-expression in control and the average expression in the treat (rather
-than the *difference* between treat and control).
+In this case we get a coefficient corresponding to the average expression in control and the average expression in the treat (rather than the *difference* between treat and control).
 
-If we use the same contrast trick as before (using the model matrix), we
-can see the result is the same:
+If we use the same contrast trick as before (using the model matrix), we can see the result is the same:
 
 ``` r
 # get the model matrix
@@ -354,12 +271,9 @@ Again, the results are essentially the same:
 plot(res1$log2FoldChange, res3$log2FoldChange)
 ```
 
-<img src="./img/07_extra_contrast_design/contrast_res2.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res2.png" width="960" style="display: block; margin: auto;" />
 
-In theory there’s no difference between these two ways of defining our
-design. The design with an intercept is more common, but for the
-purposes of understanding what’s going on, it’s sometimes easier to look
-at models without intercept.
+In theory there’s no difference between these two ways of defining our design. The design with an intercept is more common, but for the purposes of understanding what’s going on, it’s sometimes easier to look at models without intercept.
 
 ## One factor, three levels
 
@@ -390,8 +304,7 @@ colData(dds)
     ## sample8    bloodO
     ## sample9    bloodO
 
-As in the previous example, we only have one factor of interest,
-`bloodtype`, and so we define our design and run the DESeq as before:
+As in the previous example, we only have one factor of interest, `bloodtype`, and so we define our design and run the DESeq as before:
 
 ``` r
 design(dds) <- ~ 1 + bloodtype
@@ -405,32 +318,25 @@ resultsNames(dds)
 
 We see that now we have 3 coefficients:
 
--   “Intercept” corresponds to bloodO bloodtype (our reference level)
--   “bloodtype_bloodA_vs_bloodO” corresponds to the difference between
-    the reference level and bloodA
--   “bloodtype_bloodB_vs_bloodO” corresponds to the difference between
-    the reference level and bloodB
+- "Intercept" corresponds to bloodO bloodtype (our reference level)
+- "bloodtype_bloodA_vs_bloodO" corresponds to the difference between the reference level and bloodA
+- "bloodtype_bloodB_vs_bloodO" corresponds to the difference between the reference level and bloodB
 
-We could obtain the difference between bloodO and any of the two
-bloodtypes easily:
+We could obtain the difference between bloodO and any of the two bloodtypes easily:
 
 ``` r
 res1_bloodA_bloodO <- results(dds, contrast = list("bloodtype_bloodA_vs_bloodO"))
 res1_bloodB_bloodO <- results(dds, contrast = list("bloodtype_bloodB_vs_bloodO"))
 ```
 
-For comparing bloodA vs bloodB, however, we need to compare two
-coefficients with each other to check whether they are themselves
-different (check the slide to see the illustration). This is how the
-standard DESeq syntax would be:
+For comparing bloodA vs bloodB, however, we need to compare two coefficients with each other to check whether they are themselves different (check the slide to see the illustration). This is how the standard DESeq syntax would be:
 
 ``` r
 res1_bloodA_bloodB <- results(dds, contrast = list("bloodtype_bloodA_vs_bloodO", 
                                                  "bloodtype_bloodB_vs_bloodO"))
 ```
 
-However, following our three steps detailed in the first section, we can
-define our comparisons from the design matrix:
+However, following our three steps detailed in the first section, we can define our comparisons from the design matrix:
 
 ``` r
 # define the model matrix
@@ -474,10 +380,9 @@ plot(res1_bloodB_bloodO$log2FoldChange, res2_bloodB_bloodO$log2FoldChange)
 plot(res1_bloodA_bloodB$log2FoldChange, res2_bloodA_bloodB$log2FoldChange)
 ```
 
-## A and B against O
+### A and B against O
 
-With this approach, we could even define a more unusual contrast, for
-example to find genes that differ between A and B against and O samples:
+With this approach, we could even define a more unusual contrast, for example to find genes that differ between A and B against and O samples:
 
 ``` r
 # define vector of coefficients for A_B samples
@@ -489,11 +394,7 @@ A_B - bloodO
     ##     (Intercept) bloodtypebloodA bloodtypebloodB 
     ##             0.0             0.5             0.5
 
-Notice the contrast vector in this case assigns a “weight” of 0.5 to
-each of `bloodtypebloodA` and `bloodtypebloodB`. This is equivalent to
-saying that we want to consider the average of bloodA and bloodB
-expression. In fact, we could have also defined our contrast vector like
-this:
+Notice the contrast vector in this case assigns a "weight" of 0.5 to each of `bloodtypebloodA` and `bloodtypebloodB`. This is equivalent to saying that we want to consider the average of bloodA and bloodB expression. In fact, we could have also defined our contrast vector like this:
 
 ``` r
 # average of bloodA and bloodB minus bloodO
@@ -510,10 +411,9 @@ To obtain our results, we use the `results()` function as before:
 res2_AB <- results(dds, contrast = A_B - bloodO)
 ```
 
-## Extra: why not define a new group in our design matrix?
+### Extra: why not define a new group in our design matrix?
 
-For this last example (A_B vs bloodO), we may have considered creating a
-new variable in our column data:
+For this last example (A_B vs bloodO), we may have considered creating a new variable in our column data:
 
 ``` r
 dds$A_B <- factor(dds$bloodtype %in% c("bloodA", "bloodB"))
@@ -547,10 +447,7 @@ resultsNames(dds)
 res1_A_B <- results(dds, contrast = list("A_B_TRUE_vs_FALSE"))
 ```
 
-However, in this model the gene dispersion is estimated together for
-bloodA and bloodB samples as if they were replicates of each other,
-which may result in inflated/deflated estimates. Instead, our approach
-above estimates the error within each of those groups.
+However, in this model the gene dispersion is estimated together for bloodA and bloodB samples as if they were replicates of each other, which may result in inflated/deflated estimates. Instead, our approach above estimates the error within each of those groups.
 
 To check the difference one could compare the two approaches visually:
 
@@ -560,7 +457,7 @@ plot(res1_A_B$log2FoldChange, res2_AB$log2FoldChange)
 abline(0, 1, col = "brown", lwd = 2)
 ```
 
-<img src="./img/07_extra_contrast_design/contrast_res3.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res3.png" width="960" style="display: block; margin: auto;" />
 
 ``` r
 # compare the errors between the two approaches
@@ -568,7 +465,7 @@ plot(res1_A_B$lfcSE, res2_AB$lfcSE)
 abline(0, 1, col = "brown", lwd = 2)
 ```
 
-<img src="./img/07_extra_contrast_design/contrast_res4.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res4.png" width="960" style="display: block; margin: auto;" />
 
 ## Two factors with interaction
 
@@ -603,10 +500,7 @@ colData(dds)
     ## sample11   treat      bloodA
     ## sample12   treat      bloodA
 
-This time we have two factors of interest, and we want to model both
-with an interaction (i.e. we assume that bloodA and bloodO samples may
-respond differently to treat/control). We define our design accordingly
-and fit the model:
+This time we have two factors of interest, and we want to model both with an interaction (i.e. we assume that bloodA and bloodO samples may respond differently to treat/control). We define our design accordingly and fit the model:
 
 ``` r
 design(dds) <- ~ 1 + bloodtype + condition + bloodtype:condition
@@ -617,9 +511,7 @@ resultsNames(dds)
     ## [1] "Intercept"                      "bloodtype_bloodA_vs_bloodO"    
     ## [3] "condition_treat_vs_control"     "bloodtypebloodA.conditiontreat"
 
-Because we have two factors and an interaction, the number of
-comparisons we can do is larger. Using our three-step approach from the
-model matrix, we do things exactly as we’ve been doing so far:
+Because we have two factors and an interaction, the number of comparisons we can do is larger. Using our three-step approach from the model matrix, we do things exactly as we’ve been doing so far:
 
 ``` r
 # get the model matrix
@@ -631,9 +523,7 @@ bloodA_control <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == 
 bloodA_treat <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "treat", ])
 ```
 
-We are now ready to define any contrast of interest from these vectors
-(for completeness we show the equivalent syntax using the coefficient’s
-names from DESeq).
+We are now ready to define any contrast of interest from these vectors (for completeness we show the equivalent syntax using the coefficient’s names from DESeq).
 
 bloodA vs bloodO (in the control):
 
@@ -680,9 +570,7 @@ res1 <- results(dds,
 res2 <- results(dds, contrast = list("bloodtypebloodA.conditiontreat"))
 ```
 
-In conclusion, although we can define these contrasts using DESeq
-coefficient names, it is somewhat more explicit (and perhaps intuitive?)
-what it is we’re comparing using matrix-based contrasts.
+In conclusion, although we can define these contrasts using DESeq coefficient names, it is somewhat more explicit (and perhaps intuitive?) what it is we’re comparing using matrix-based contrasts.
 
 ## Three factors, with nesting
 
@@ -718,13 +606,7 @@ colData(dds)
     ## sample23   treat      bloodA        B
     ## sample24   treat      bloodA        B
 
-Now we have three factors, but patient is *nested* within bloodtype
-(i.e. a patient is either bloodA or bloodO, it cannot be both).
-Therefore, bloodtype is a linear combination with patient (or, another
-way to think about it is that bloodtype is redundant with patient).
-Because of this, we will define our design without including
-“bloodtype”, although later we can compare groups of patient of the same
-bloodtype with each other.
+Now we have three factors, but patient is *nested* within bloodtype (i.e. a patient is either bloodA or bloodO, it cannot be both). Therefore, bloodtype is a linear combination with patient (or, another way to think about it is that bloodtype is redundant with patient). Because of this, we will define our design without including "bloodtype", although later we can compare groups of patient of the same bloodtype with each other.
 
 ``` r
 design(dds) <- ~ 1 + patient + condition + patient:condition
@@ -737,10 +619,7 @@ resultsNames(dds)
     ## [5] "condition_treat_vs_control" "patientB.conditiontreat"   
     ## [7] "patientC.conditiontreat"    "patientD.conditiontreat"
 
-Now it’s harder to define contrasts between groups of patient of the
-same bloodtype using DESeq’s coefficient names (although still
-possible). But using the model matrix approach, we do it in exactly the
-same way we have done so far!
+Now it’s harder to define contrasts between groups of patient of the same bloodtype using DESeq’s coefficient names (although still possible). But using the model matrix approach, we do it in exactly the same way we have done so far!
 
 Again, let’s define our groups from the model matrix:
 
@@ -754,10 +633,7 @@ bloodO_treat <- colMeans(mod_mat[dds$bloodtype == "bloodO" & dds$condition == "t
 bloodA_treat <- colMeans(mod_mat[dds$bloodtype == "bloodA" & dds$condition == "treat", ])
 ```
 
-It’s worth looking at some of these vectors, to see that they are
-composed of weighted coefficients from different patient. For example,
-for “bloodO” patient, we have equal contribution from “patientC” and
-“patientD”:
+It’s worth looking at some of these vectors, to see that they are composed of weighted coefficients from different patient. For example, for "bloodO" patient, we have equal contribution from "patientC" and "patientD":
 
 ``` r
 bloodO_control
@@ -770,8 +646,7 @@ bloodO_control
     ## patientC:conditiontreat patientD:conditiontreat 
     ##                     0.0                     0.0
 
-And so, when we define our contrasts, each patient will be correctly
-weighted:
+And so, when we define our contrasts, each patient will be correctly weighted:
 
 ``` r
 bloodO_treat - bloodO_control
@@ -784,9 +659,7 @@ bloodO_treat - bloodO_control
     ## patientC:conditiontreat patientD:conditiontreat 
     ##                     0.5                     0.5
 
-We can set our contrasts in exactly the same way as we did in the
-previous section (for completeness, we also give the contrasts using
-DESeq’s named coefficients).
+We can set our contrasts in exactly the same way as we did in the previous section (for completeness, we also give the contrasts using DESeq’s named coefficients).
 
 bloodA vs bloodO (in the control):
 
@@ -819,8 +692,7 @@ And so on, for other contrasts of interest…
 
 ## Extra: imbalanced design
 
-Let’s take our previous example, but drop one of the samples from the
-data, so that we only have 2 replicates for it.
+Let’s take our previous example, but drop one of the samples from the data, so that we only have 2 replicates for it.
 
 ``` r
 dds <- dds[, -1] # drop one of the patient C samples
@@ -942,17 +814,9 @@ bloodO_control
     ## patientC:conditiontreat patientD:conditiontreat 
     ##                     0.0                     0.0
 
-Notice that whereas before “patientC” and “patientD” had each a weight
-of 0.5, now they have different weights. That’s because for patientC
-there’s only 2 replicates. So, we have a total of 5 bloodtype O
-individuals in the control (2 from patient C and 3 from D). Therefore,
-when we calculate the average coefficients for bloodOs, we need to do it
-as 0.4 x patientC + 0.6 x patientD.
+Notice that whereas before "patientC" and "patientD" had each a weight of 0.5, now they have different weights. That’s because for patientC there’s only 2 replicates. So, we have a total of 5 bloodtype O individuals in the control (2 from patient C and 3 from D). Therefore, when we calculate the average coefficients for bloodOs, we need to do it as 0.4 x patientC + 0.6 x patientD.
 
-The nice thing about this approach is that we do not need to worry about
-any of this, the weights come from our `colMeans()` call automatically.
-And now, any contrasts that we make will take these weights into
-account:
+The nice thing about this approach is that we do not need to worry about any of this, the weights come from our `colMeans()` call automatically. And now, any contrasts that we make will take these weights into account:
 
 ``` r
 # bloodA vs bloodO (in the control)
@@ -978,12 +842,8 @@ bloodA_control - bloodO_control
     ## patientC:conditiontreat patientD:conditiontreat 
     ##                    -0.5                    -0.5
 
-***
+------------------------------------------------------------------------
 
-*Part of this lesson was originally developed by members of the teaching
-team (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan
-Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/).*
+*Part of this lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/).*
 
-*In addition, we would like to thank [Hugo
-Tavares](https://bioinfotraining.bio.cam.ac.uk/about) from the
-Bioinformatics Training Facility of the University of Cambridge.*
+*In addition, we would like to thank [Hugo Tavares](https://bioinfotraining.bio.cam.ac.uk/about) from the Bioinformatics Training Facility of the University of Cambridge.*

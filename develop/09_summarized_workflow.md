@@ -1,5 +1,5 @@
 ---
-title: Summarised workflow
+title: "Summary of DGE workflow"
 summary: You can use this lesson as a template for your own bulk RNAseq analysis
 date: 2023-01-17
 hide:
@@ -7,11 +7,8 @@ hide:
 ---
 
 # Summarised workflow
-    
-We have detailed the various steps in a differential expression analysis
-workflow, providing theory with example code. To provide a more succinct
-reference for the code needed to run a DGE analysis, we have summarized
-the steps in an analysis below:
+
+We have detailed the various steps in a differential expression analysis workflow, providing theory with example code. To provide a more succinct reference for the code needed to run a DGE analysis, we have summarized the steps in an analysis below:
 
 ## Libraries
 
@@ -41,8 +38,7 @@ data <- read_table("../Data/Mov10_full_counts.txt")
 meta <- read_table("../Data/Mov10_full_meta.txt")
 ```
 
-Check that the row names of the metadata equal the column names of the
-**raw counts** data
+Check that the row names of the metadata equal the column names of the **raw counts** data
 
 ``` r
 all(colnames(data)[-1] == meta$sample)
@@ -92,8 +88,7 @@ dds <- DESeqDataSetFromTximport(txi,
 
 ## Exploratory data analysis
 
-Prefiltering low count genes + PCA & hierarchical clustering -
-identifying outliers and sources of variation in the data:
+Prefiltering low count genes + PCA & hierarchical clustering - identifying outliers and sources of variation in the data:
 
 ### Prefiltering low count genes
 
@@ -149,8 +144,7 @@ pheatmap(rld_dist,
 
 ## Run DESeq2:
 
-**Optional step** - Re-create DESeq2 dataset if the design formula has
-changed after QC analysis in include other sources of variation using
+**Optional step** - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using
 
 ``` r
 # dds <- DESeqDataSetFromMatrix(data, colData = meta, design = ~ covariate + condition)
@@ -163,8 +157,7 @@ Run DEseq2
 dds <- DESeq(dds)
 ```
 
-**Optional step** - Output normalized counts to save as a file to access
-outside RStudio using
+**Optional step** - Output normalized counts to save as a file to access outside RStudio using
 
 ``` r
 normalized_counts <- counts(dds, normalized=TRUE)
@@ -223,9 +216,7 @@ sig_res <- filter(res_tbl,
 
 ## Visualize results: volcano plots, heatmaps, normalized counts plots of top genes, etc.
 
-Function to get gene_IDs based on gene names. The function will take as
-input a vector of gene names of interest, the tx2gene dataframe and the
-dds object that you analyzed.
+Function to get gene_IDs based on gene names. The function will take as input a vector of gene names of interest, the tx2gene dataframe and the dds object that you analyzed.
 
 ``` r
 lookup <- function(gene_name, tx2gene, dds){
