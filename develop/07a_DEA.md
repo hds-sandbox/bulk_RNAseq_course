@@ -80,7 +80,7 @@ These numbers should be identical to those we generated initially when we had ru
 colSums(counts(dds))
 ```
 
-!!! question "How do the numbers correlate with the size factor?"
+!!! info "How do the numbers correlate with the size factor?"
 
     We see that the larger size factors correspond to the samples with higher sequencing depth, which makes sense, because to generate our normalized counts we need to divide the counts by the size factors. This accounts for the differences in sequencing depth between samples.
 
@@ -92,7 +92,7 @@ colSums(counts(dds))
     colSums(counts(dds, normalized=T))
     ```
 
-!!! question "How do the values across samples compare with the total counts taken for each sample?"
+!!! info "How do the values across samples compare with the total counts taken for each sample?"
 
     You might have expected the counts to be the exact same across the samples after normalization. However, DESeq2 also accounts for RNA composition during the normalization procedure. By using the median ratio value for the size factor, DESeq2 should not be biased to a large number of counts sucked up by a few DE genes; however, this may lead to the size factors being quite different than what would be anticipated just based on sequencing depth.
 
@@ -122,7 +122,7 @@ For genes with moderate to high count values, the square root of dispersion will
 
 <img src="./img/07a_DEA/deseq_dispersion1.png" width="623" style="display: block; margin: auto;" />
 
-!!! question "How does the dispersion relate to our model?"
+!!! info "How does the dispersion relate to our model?"
 
     To accurately model sequencing counts, we need to generate accurate estimates of within-group variation (variation between replicates of the same sample group) for each gene. With only a few (3-6) replicates per group, the **estimates of variation for each gene are often unreliable**. 
 

@@ -267,7 +267,7 @@ RNAseq count data can be modeled using a **Poisson distribution**. this particul
 
 With RNA-Seq data, **a very large number of RNAs are represented and the probability of pulling out a particular transcript is very small**. Thus, it would be an appropriate situation to use the Poisson distribution. However, a unique property of this distribution is that the mean == variance. Realistically, with RNA-Seq data there is always some biological variation present across the replicates (within a sample class). Genes with larger average expression levels will tend to have larger observed variances across replicates.
 
-The model that fits best, given this type of variability observed for replicates, is the **Negative Binomial (NB) model**. Essentially, **the NB model is a good approximation for data where the mean \< variance**, as is the case with RNA-Seq count data.
+The model that fits best, given this type of variability observed for replicates, is the **Negative Binomial (NB) model**. Essentially, **the NB model is a good approximation for data where the mean < variance**, as is the case with RNA-Seq count data.
 
 ```{r, echo = FALSE, eval = TRUE}
 knitr::include_graphics("./img/05b_count_matrix/deseq_nb.png")
