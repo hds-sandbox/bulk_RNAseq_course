@@ -22,7 +22,7 @@ Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `
 
 ![](./img/04c_preprocessing_setup/chooseProject.png)
 
-Click on `Apps` on the left-side menu, and search for the application `Transcriptomics Sandbox` and click on it.
+Click on `Apps` on the left-side menu, and search for the application `nf-core rnaseq` and click on it.
 
 ![](./img/04c_preprocessing_setup/chooseTranscriptomics.png)
 
@@ -36,7 +36,7 @@ Then, `Import file from UCloud`:
 
 And select the `jobParameters.json` in:
 
-- `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `Scripts` -\> `ucloud_analysis_setup` -\> `jobParameters.json`
+- `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `Scripts` -\> `ucloud_preprocessing_setup` -\> `jobParameters.json`
 
 !!! warning 
     **Make sure that the hard-drive icon says `sandbox_bulkRNASeq`!!**
@@ -50,56 +50,48 @@ Now, wait some time until the screen looks like the figure below. It usually tak
 
 ![](./img/04c_preprocessing_setup/startApp.png)
 
-Now, click on `open interface` on the top right-hand side of the screen. You will start Rstudio through your browser!
+Now, click on `open interface` on the top right-hand side of the screen. You will start terminal session through your browser!
 
-On the lower right side of Rstudio, where you see the file explorer, there shoud be a folder `bulk_RNAseq_course`. Here you will find the materials of the course, but it is a "read only" file. In order to have a copy for your own purposes, we will use a script. Go to the **Terminal** tab on the top left of the Rstudio session and copy-paste this command:
-
-`./bulk_RNAseq_course/Scripts/ucloud_analysis_setup/ucloud_setup.sh`
+`./bulk_RNAseq_course/Scripts/ucloud_preprocessing_setup/ucloud_setup.sh`
 
 ![](./img/04c_preprocessing_setup/copyMaterial.png)
 
-Now there should be another folder in the file explorer called `introduction_bulkRNAseq_analysis`. This is the folder you should use from now on.
 
-![](./img/04c_preprocessing_setup/courseMaterial.png)
 
-Now you can go back to the **Console** tab. You are ready to start analysing your data!
+## Understanding the pipeline options
+
+
+
+## Restarting a failed run
+
+The nf-core pipelines are not implemented well enough in UCloud. Ideally we would be using docker or singularity to fetch all the required software to run the pipeline, but we are stuck to using Conda, which is prone to errors. Sometimes you will get an error like:
+
+```
+Error: unable to create conda environment
+```
+
+This error is often fixed by just resuming the run using the `-resume` argument:
+
+```
+nextflow run ~/nf-core-rnaseq-3.6/workflow/ -work-dir /work/preprocessing/work -params-file /work/sequencing_data/Scripts/nf-params_salmon.json --max_cpus $CORES -profile conda​ -resume
+```
 
 ## Stopping the app
 
-When you are done, go on `Runs` in uCloud, and choose your app if it is still running. Then you will be able to stop it from using resources.
+Once the pipeline is done, go on `Runs` in uCloud and stop it from using more resources than necessary! This will help to keep the courses running for other people.
 
 ![](./img/04c_preprocessing_setup/stopRun.png)
 
-## Saved work
+## Saved results
 
-After running a first work session, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *Transcriptomics Sandbox*, which will contain all the jobs you have run with the Transcriptomics Sandbox app. Inside this folder, you will find your folder named after the job name you gave in the previous step.
+After finishing the job, everything that the pipeline has created will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *nf-core rnaseq*, which will contain all the jobs you have run with the nf-core app. Inside this folder, you will find the results folder named after the job name you gave when you submitted the job.
 
 1. Your material will be saved in a volume with your username, that you should be able to see under the menu `Files`. 
 
 ![](./img/04c_preprocessing_setup/savedWork1.png)
 
-2. Go to `Jobs → Transcriptomics Sandbox → job_name → introduction_bulkRNAseq_analysis` 
+1. Go to `Jobs → nf-core rnaseq → job_name → results` 
 
 ![](./img/04c_preprocessing_setup/savedWork2.png)
  
-## Restarting the Rstudio session
-
-If you want to keep working on your previous results, you can restart an Rstudio session following these steps:
-
-Click on `Apps` on the left-side menu, and look for the application `Transcriptomics Sandbox` and click on it.
-
-![](./img/04c_preprocessing_setup/chooseTranscriptomics.png)
-
-You will be met again with a series of possible parameters to choose. You have to assign again the `Import parameters` file as before.
-
-- `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `Scripts` -\> `ucloud_analysis_setup` -\> `jobParameters.json`
-
-![](./img/04c_preprocessing_setup/importParameters.png)
-
-In *"Select folders to use"*, add the folder with the results of your previous job:
-
--   Go to `Member Files: your_username → Jobs → Transcriptomics Sandbox → job_name → introduction_bulkRNAseq_analysis`, click "Use."
-
-![](./img/04c_preprocessing_setup/restartJob.png)
-
-You are ready to run the app by clicking on the button on the right column of the screen (`submit`). After opening the Rstudio interface, you should be able to access the folder `introduction_bulkRNAseq_analysis`, where you will find your course notebooks and results from your previous work!
+Now you have access to the full results of your pipeline! As explained in the [previous lesson](04b_pipelines.md), the nf-core rnaseq workflow will create a MultiQC report summarizing most of the steps into a single and beautiful html file that is interactive and explorable. In addition, there will be a folder with the results of the individual QC steps as well as the alignment and quantification results. Take your time and check it all out!

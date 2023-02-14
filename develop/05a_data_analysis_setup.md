@@ -62,7 +62,7 @@ Now there should be another folder in the file explorer called `introduction_bul
 
 Now you can go back to the **Console** tab. You are ready to start analysing your data!
 
-##Stopping the app
+## Stopping the app
 
 When you are done, go on `Runs` in uCloud, and choose your app if it is still running. Then you will be able to stop it from using resources.
 

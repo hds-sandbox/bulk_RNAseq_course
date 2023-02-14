@@ -79,7 +79,7 @@ extra_javascript:
 
 plugins:
   - search
-
+  - mkdocs-video # embed videos to the docs
   # minify HTML of a page before it is written to disk
   - minify:
       minify_html: true
