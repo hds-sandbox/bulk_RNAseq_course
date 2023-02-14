@@ -258,6 +258,8 @@ There are several options to skip various steps within the workflow.
 *   `--skip_multiqc`: Skip MultiQC.
 *   `--skip_qc`: Skip all QC steps except for MultiQC.
 
+### Understanding the results folder
+
 ***
 
 *Parts of this lesson have been taken from [Wikipedia](https://en.wikipedia.org/wiki/Pipeline_%28software%29), the [Nextflow webpage](https://www.nextflow.io/) and the [nf-core project webpage](https://nf-co.re/).*
