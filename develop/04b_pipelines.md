@@ -367,7 +367,7 @@ Also, depending on the `--aligner` option you can either find the quantification
 `star_rsem/log/`
 *   `*.log`: STAR alignment report containing the mapping results summary.
 
-**7. `{Pseudoaligner}**
+**7. `{Pseudoaligner}`**
 
 This is the same output as the `star_salmon/salmon` folder.
 
