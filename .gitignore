@@ -1,12 +1,12 @@
-# History files
-.Rhistory
-.Rapp.history
+B# History files
+*.Rhistory
+*.Rapp.history
 
 # Session Data files
-.RData
+*.RData
 
 # User-specific files
-.Ruserdata
+*.Ruserdata
 
 # Example code in package build process
 *-Ex.R
@@ -41,3 +41,10 @@ vignettes/*.pdf
 # Other
 .gitignore
 *.DS_Store
+**/tmp
+*.docx
+old/
+Data/raw
+Results/
+Data/Data.zip
+Slides/

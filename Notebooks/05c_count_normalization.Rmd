@@ -1,0 +1,213 @@
+---
+title: "Count normalization with DESeq2"
+author: "You!"
+date: '`r Sys.Date()`'
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_format='all',
+                        output_dir='./')})
+output:
+  # To create PDF report, uncomment below
+  #pdf_document:
+  #  toc: yes  
+  html_document:
+    theme: yeti # nice theme for the webpage
+    toc: yes # table of contents
+    toc_float: yes # table of contents "floats" in the document
+    df_print: paged # data frames are interactive
+    dev: png # what format do you want for the figures?
+---
+
+```{r knitr, include = FALSE}
+DOCNAME = knitr::current_input()
+DOCNAME = gsub(DOCNAME, pattern = ".Rmd", replacement = "", fixed = T)
+knitr::opts_chunk$set(autodep        = TRUE,
+                      cache          = FALSE,
+                      echo           = TRUE,
+                      error          = FALSE,
+                      fig.align      = "center",
+                      fig.path       = paste0("./img/", DOCNAME, "/"), #images will be put in this folder, under the notebook name
+                      message        = FALSE,
+                      warning        = FALSE,
+                      eval           = TRUE)
+```
+
+```{r setup, include = FALSE, echo = FALSE}
+# DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
+# This chunk is ONLY necessary if you want to knit this document into a pdf!!
+library(tidyverse)
+library(DESeq2)
+library(tximport)
+
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+meta <- read_csv("../Data/samplesheet.csv")
+dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
+tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
+files <- file.path(dir, meta$sample, "quant.sf")
+names(files) <- meta$sample
+txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
+```
+
+
+Approximate time: 40 minutes
+
+## Learning Objectives 
+
+* Become familiar with the `DESeqDataSet` object 
+* Understand how to normalize counts using DESeq2
+
+## Normalization
+
+The first step in the DE analysis workflow is count normalization, which is necessary to make accurate comparisons of gene expression between samples. Let's try to run an easy example!
+
+***
+
+**Exercise 1**
+
+Determine the normalized (median of ratios) counts for your gene of interest, PD1, given the raw counts and size factors below. 
+
+NOTE: You will need to run the code below to generate the raw counts dataframe (PD1) and the size factor vector (size_factors), then use these objects to determine the normalized counts values:
+
+```{r}
+# Raw counts for PD1
+PD1 <- t(c(21, 58, 17, 97, 83, 10)) %>% 
+  as_tibble() %>%
+  rename_all(~paste0("Sample", 1:6))
+
+
+# Size factors for each sample
+size_factors <- c(1.32, 0.70, 1.04, 1.27, 1.11, 0.85)
+```
+
+
+```{r}
+# your code here:
+
+```
+
+***
+
+## Count normalization of Mov10 dataset using DESeq2
+
+Now that we know the theory of count normalization, we will normalize the counts for the Mov10 dataset using DESeq2. This requires a few steps:
+
+1. Ensure the row names of the metadata dataframe are present and in the same order as the column names of the counts dataframe.
+2. Create a `DESeqDataSet` object
+3. Generate the normalized counts
+
+### 1. Match the metadata and counts data
+
+We should always make sure that we have sample names that match between the two files, and that the samples are in the right order. DESeq2 will output an error if this is not the case. Since we built our `txi` object from our metadata, everything should be OK.
+
+```{r}
+### Check that sample names match in both files
+all(colnames(txi$counts) %in% meta$sample)
+all(colnames(txi$counts) == meta$sample)
+```
+
+If your data did not match, you could use the `match()` function to rearrange them to be matching. `match()` function will take two arguments and find in which order the indexes of the second argument match the first argument.
+
+```{r}
+a <- c("a","b","c")
+b <- c("b","c","a")
+
+reorder <- match(a,b)
+reorder
+
+b[reorder]
+```
+
+***
+
+**Exercise 2**	
+
+Suppose we had sample names matching in the txi object and metadata file, but they were out of order. Write the line(s) of code required make the `meta_random` dataframe with rows ordered such that they were identical to the column names of the `txi`.
+
+```{r}
+# randomize metadata rownames
+meta_random <- meta[sample(1:nrow(meta)),]
+```
+
+```{r}
+# your code here
+```
+
+*** 
+
+### 2. Create DESEq2 object
+
+Let's start by creating the `DESeqDataSet` object, and then we can talk a bit more about what is stored inside it. To create the object, we will need the **txi** object and the **metadata** table as input (`colData` argument). We will also need to specify a **design formula**. The design formula specifies which column(s) of our metadata we want to use for statistical testing and modeling (more about that later!). For our dataset we only have one column we are interested in, which is `condition`. This column has three factor levels, which tells DESeq2 that for each gene we want to evaluate gene expression change with respect to these different levels.
+
+**Our count matrix input is stored in the `txi` list object**. So we need to specify that using the `DESeqDataSetFromTximport()` function, which will extract the counts component and round the values to the nearest whole number.
+
+```{r}
+# colData argument requires rownames in order to assess matching sample names
+# meta is a tibble object from tidyverse, so we neeed to add rownames.
+# If you do not do this and the samples do not match, you will add wrong info!
+
+dds <- DESeqDataSetFromTximport(txi,
+                                   colData = meta %>% column_to_rownames("sample"), 
+                              design = ~ condition)
+```
+
+> **NOTE:** If you did not create pseudocounts, but a count matrix from aligned BAM files and tools such as `featurecounts`, you would want to use the `DESeqDataSetFromMatrix()` function.
+
+```{r, eval=FALSE}
+## DO NOT RUN!
+## Create DESeq2Dataset object from traditional count matrix
+dds <- DESeqDataSetFromMatrix(countData = "../Data/Mov10_full_counts.txt", 
+                              colData = meta %>% column_to_rownames("sample"), 
+                              design = ~ sampletype)
+```
+
+You can use DESeq-specific functions to access the different slots and retrieve information, if you wish. For example, suppose we wanted the original count matrix we would use `counts()`:
+
+```{r}
+head(counts(dds))
+```
+
+As we go through the workflow we will use the relevant functions to check what information gets stored inside our object.
+
+#### Pre-filtering
+
+While it is not necessary to pre-filter low count genes before running the DESeq2 functions, there are two reasons which make pre-filtering useful: 
+
+- By removing rows in which there are very few reads, we reduce the memory size of the dds data object, and we increase the speed of the transformation and testing functions within DESeq2. 
+- It can also improve visualizations, as features with no information for differential expression are not plotted.
+
+Here we perform a minimal pre-filtering to keep only rows that have at least 10 reads total. 
+```{r}
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+```
+
+
+### 3. Generate the Mov10 normalized counts
+
+The next step is to normalize the count data in order to be able to make fair gene comparisons between samples.
+
+To perform the **median of ratios method** of normalization, DESeq2 has a single `estimateSizeFactors()` function that will generate size factors for us. We will use the function in the example below, but **in a typical RNA-seq analysis this step is automatically performed by the `DESeq()` function**, which we will see later. 
+
+```{r}
+dds <- estimateSizeFactors(dds)
+```
+
+By assigning the results back to the `dds` object we are filling in the slots of the `DESeqDataSet` object with the appropriate information. We can take a look at the normalization factor applied to each sample using:
+
+```{r}
+sizeFactors(dds)
+```
+
+Now, to retrieve the normalized counts matrix from `dds`, we use the `counts()` function and add the argument `normalized=TRUE`.
+
+```{r}
+normalized_counts <- counts(dds, normalized=TRUE)
+head(normalized_counts)
+```
+
+We can save this normalized data matrix to file for later use:
+
+```{r}
+write.table(normalized_counts, file="../Results/normalized_counts.txt", sep="\t", quote=F)
+```

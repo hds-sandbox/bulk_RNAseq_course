@@ -1,14 +1,29 @@
-site_name: 'Bulk RNAseq data analysis - an introductory course'
+site_name: 'Bulk RNAseq data analysis'
 nav:
     - 'Course Introduction': index.md
-    - 'Data Explanation': data_explanation.md
-    - 'Installation': installation.md
-    - 'Preprocessing': preprocessing.md
-    - 'Exploratory Analysis': exploratory_analysis.md
-    - 'Differential Expression': DEA.md
-    - 'Complex designs': contrast_designs.md
-    - 'Functional Analysis': functional_analysis.md
+    - 'Experimental planning': 02_experimental_planning.md
+    - 'Data Explanation': 03_data_explanation.md
+    - 'Preprocessing':
+        - 'Preprocessing steps': 04a_preprocessing.md
+        - 'Nextflow and nf-core pipelines': 04b_pipelines.md
+        - 'UCloud setup': 04c_preprocessing_setup.md
+    - 'Analysing RNAseq counts':
+        - 'Ucloud setup': 05a_data_analyis_setup.md
+        - 'Count matrix': 05b_count_matrix.md
+        - 'Normalization': 05c_count_normalization.md
+    - 'Exploratory Analysis': 06_exploratory_analysis.md
+    - 'Differential Expression': 
+        - 'Design formula': 07a_contrast_design.md
+        - 'DESeq2': 07b_DEA.md
+        - 'Hypothesis testing': 07c_hypothesis_testing.md
+        - 'Visualization': 07d_DEA_visualization.md
+    - 'Functional Analysis': 
+        - 'Gene annotation': 08a_FA_genomic_annotation.md
+        - 'Over representation analysis': 08b_FA_overrepresentation.md
+        - 'Class scoring': 08c_FA_GSEA.md
+    - 'Summarized workflow': 09_summarized_workflow.md
     
+use_directory_urls: false
 docs_dir: develop
 site_dir: docs
 plugins:
@@ -16,14 +31,14 @@ extra_css:
     - extra.css
 theme: 
     name: material
-    #logo: 'img/logo.png'
+    logo: img/sandbox1.png
+    favicon: img/sandbox1.png
+    palette:
+      primary: grey
+      accent: cyan
 markdown_extensions:
-  # - pymdownx.tabbed
-  # - pymdownx.superfences
-  # - admonition
-  # - pymdownx.details
-  # - attr_list
-  # - pymdownx.arithmatex:
-  #     generic: true
-  # - pymdownx.tasklist:
-  #     custom_checkbox: true
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences
+extra:
+  homepage: https://hds-sandbox.github.io/

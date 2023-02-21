@@ -1,0 +1,9 @@
+sample	condition
+Mov10_kd_2	MOV10_knockdown
+Mov10_kd_3	MOV10_knockdown
+Mov10_oe_1	MOV10_overexpression
+Mov10_oe_2	MOV10_overexpression
+Mov10_oe_3	MOV10_overexpression
+Control_1	control
+Control_2	control
+Control_3	control

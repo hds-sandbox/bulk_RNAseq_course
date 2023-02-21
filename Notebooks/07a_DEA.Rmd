@@ -1,0 +1,155 @@
+---
+title: "Gene-level differential expression analysis with DESeq2"
+author: "You!"
+date: '`r Sys.Date()`'
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_format='all',
+                        output_dir='./')})
+output:
+  # To create PDF report, uncomment below
+  #pdf_document:
+  #  toc: yes  
+  html_document:
+    theme: yeti # nice theme for the webpage
+    toc: yes # table of contents
+    toc_float: yes # table of contents "floats" in the document
+    df_print: paged # data frames are interactive
+    dev: png # what format do you want for the figures?
+---
+
+```{r knitr, include = FALSE}
+DOCNAME = knitr::current_input()
+DOCNAME = gsub(DOCNAME, pattern = ".Rmd", replacement = "", fixed = T)
+knitr::opts_chunk$set(autodep        = TRUE,
+                      cache          = FALSE,
+                      echo           = TRUE,
+                      error          = FALSE,
+                      fig.align      = "center",
+                      fig.path       = paste0("./img/", DOCNAME, "/"), #images will be put in this folder, under the notebook name
+                      message        = FALSE,
+                      warning        = FALSE,
+                      eval           = TRUE)
+```
+
+```{r setup, include = FALSE, echo = FALSE}
+# DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
+# This chunk is ONLY necessary if you want to knit this document into a pdf!!
+library(tidyverse)
+library(DESeq2)
+library(tximport)
+
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+meta <- read_csv("../Data/samplesheet.csv")
+dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
+tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
+files <- file.path(dir, meta$sample, "quant.sf")
+names(files) <- meta$sample
+txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
+dds <- DESeqDataSetFromTximport(txi,
+                                   colData = meta %>% column_to_rownames("sample"), 
+                              design = ~ condition)
+keep <- rowSums(counts(dds)) > 0
+dds <- dds[keep,]
+```
+
+Approximate time: 60 minutes
+
+## Learning Objectives 
+
+* Explain the different steps involved in running `DESeq()`
+* Examine size factors and understand the source of differences
+* Inspect gene-level dispersion estimates 
+* Recognize the importance of dispersion during differential expression analysis
+
+
+## DESeq2 differential gene expression analysis workflow
+
+Previously, we created the DESeq2 object using the appropriate design formula.
+
+```{r, eval = FALSE}
+# DO NOT RUN
+
+# Create dds object
+dds <- DESeqDataSetFromTximport(txi,
+                                colData = meta %>% column_to_rownames("sample"), 
+                                design = ~ condition)
+
+# Filter genes with 0 counts
+keep <- rowSums(counts(dds)) > 0
+dds <- dds[keep,]
+```
+
+Then, to run the entire differential expression analysis workflow, we use a single call to the function `DESeq()`. 
+```{r}
+## Run analysis
+dds <- DESeq(dds)
+```
+
+And with that we completed the entire workflow for the differential gene expression analysis with DESeq2! The `DESeq()` function performs a default analysis through the following steps:
+
+1. Estimation of size factors: `estimateSizeFactors()`
+2. Estimation of dispersion: `estimateDispersions()`
+3. Negative Binomial GLM fitting and Wald statistics: `nbinomWaldTest()`
+
+### Step 1: Estimate size factors
+
+The first step in the differential expression analysis is to estimate the size factors, which is exactly what we already did to normalize the raw counts.
+Let's take a quick look at size factor values we have for each sample:
+
+```{r}
+## Check the size factors
+sizeFactors(dds)
+```
+ 
+These numbers should be identical to those we generated initially when we had run the function `estimateSizeFactors(dds)`. Take a look at the total number of reads for each sample:
+
+```{r}
+## Total number of raw counts per sample
+colSums(counts(dds))
+```
+
+*How do the numbers correlate with the size factor?*
+
+We see that the larger size factors correspond to the samples with higher sequencing depth, which makes sense, because to generate our normalized counts we need to divide the counts by the size factors. This accounts for the differences in sequencing depth between samples.
+
+Now take a look at the total depth after normalization using:
+
+```{r}
+## Total number of normalized counts per sample
+colSums(counts(dds, normalized=T))
+```
+
+*How do the values across samples compare with the total counts taken for each sample?*
+
+You might have expected the counts to be the exact same across the samples after normalization. However, DESeq2 also accounts for RNA composition during the normalization procedure. By using the median ratio value for the size factor, DESeq2 should not be biased to a large number of counts sucked up by a few DE genes; however, this may lead to the size factors being quite different than what would be anticipated just based on sequencing depth.
+
+### Step 2: Estimate gene-wise dispersion
+
+Let's take a look at the dispersion estimates for our MOV10 data. First, we will use the function `estimateDispersions()`.
+
+```{r}
+dds <- estimateDispersions(dds)
+```
+
+We can check the values using the `dispersion()` function and plotting it with the `plotDispEsts()` function:
+
+```{r}
+head(dispersions(dds))
+## Plot dispersion estimates
+plotDispEsts(dds)
+```
+
+***
+
+**Exercise 1**
+
+Given the dispersion plot below, would you have any concerns regarding the fit of your data to the model? 
+	
+- If not, what aspects of the plot makes you feel confident about your data?
+- If so, what are your concerns? What would you do to address them?
+
+```{r, echo = FALSE, eval = TRUE}
+knitr::include_graphics("./img/07a_DEA/exercise_dispersion.png")
+```
