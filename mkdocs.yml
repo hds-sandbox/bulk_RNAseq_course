@@ -1,6 +1,6 @@
 # Project information
-site_name: Bulk RNAseq data analysis
-site_url: https://github.com/hds-sandbox/bulk_RNAseq_course # This should be nothing cause we build the webpage from local
+site_name: 'Bulk RNAseq data analysis'
+site_url: 'https://hds-sandbox.github.io/bulk_RNAseq_course/' # This should be the final hosting url
 site_author: Jose Alejandro Romero Herrera
 site_description: >-
   This course is an introduction for how to approach bulk RNAseq data, starting from the sequencing reads. 
