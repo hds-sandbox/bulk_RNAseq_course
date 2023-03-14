@@ -65,8 +65,8 @@ theme:
     text: Roboto
     code: Roboto Mono
   
-  favicon: images/favicon.png
-  logo: images/logo.png
+  favicon: img/favicon.png
+  logo: img/logo.png
 
 # Changes to website colours and image parameters
 extra_css:
