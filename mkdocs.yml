@@ -1,6 +1,6 @@
 # Project information
 site_name: Bulk RNAseq data analysis
-site_url: "" # This should be nothing cause we build the webpage from local
+site_url: https://github.com/hds-sandbox/bulk_RNAseq_course # This should be nothing cause we build the webpage from local
 site_author: Jose Alejandro Romero Herrera
 site_description: >-
   This course is an introduction for how to approach bulk RNAseq data, starting from the sequencing reads. 
@@ -19,7 +19,6 @@ theme:
   # url: https://squidfunk.github.io/mkdocs-material/
 
   name: material
-  custom_dir: overrides
 
   # Necessary for search to work properly
   include_search_page: false
@@ -36,8 +35,8 @@ theme:
     - navigation.indexes
     # - navigation.instant
     # - navigation.prune
-    - navigation.footer
     - navigation.sections
+    - navigation.footer
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.top
@@ -65,9 +64,9 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-
-  favicon: img/favicon.png
-  logo: img/logo.png
+  
+  favicon: images/favicon.png
+  logo: images/logo.png
 
 # Changes to website colours and image parameters
 extra_css:
@@ -79,11 +78,15 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 plugins:
+  - tags:
+      tags_file: keywords.md # Keywords file to use for mkdocs tags
+  - bibtex:
+      bib_file: references.bib # Reference file in bibtex format
   - search
   - mkdocs-video # embed videos to the docs
-  # minify HTML of a page before it is written to disk
-  - minify:
+  - minify:   # minify HTML of a page before it is written to disk
       minify_html: true
+  - mkdocs-jupyter
 
 # Analytics and social media
 extra:
@@ -96,7 +99,7 @@ extra:
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/ucph_heads
   homepage: http://hds-sandbox.github.io/ 
-  
+
 # Extensions
 
 markdown_extensions:
@@ -121,9 +124,12 @@ markdown_extensions:
   - pymdownx.critic # useful for marking .md file without changes to html  
   - pymdownx.caret # improved functionality for caret symbol  
   - pymdownx.details # collapsable elements that hide content  
-  - pymdownx.emoji: 
-      emoji_generator: !!python/name:materialx.emoji.to_svg  
-      emoji_index: !!python/name:materialx.emoji.twemoji  
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+      options:
+        custom_icons:
+          - overrides/.icons
   - pymdownx.highlight: # code highlighting  
       anchor_linenums: true  
   - pymdownx.inlinehilite # inline code highlight  
@@ -139,10 +145,12 @@ markdown_extensions:
 
 # Extra configs
 use_directory_urls: false
-docs_dir: develop
-site_dir: docs
+docs_dir: develop # source md files should be saved in the develop folder
+site_dir: docs # built webpage will be created in the docs folder
 
 # Page tree
+# Include your page titles and associating .md files here
+
 nav:
   - 'Course Introduction': index.md
   - 'Experimental planning': 02_experimental_planning.md
