@@ -2,35 +2,38 @@
 
 {% block site_meta %}
 <script type="application/ld+json" >
+{
+  "@context": "https://schema.org",
+  "@id": "https://hds-sandbox.github.io/bulk_RNAseq_course/",
+  "@type": "Course",
+  "coursePrerequisites": [
+    "Knowledge of R, Rstudio and Rmarkdown",
+    "Basic knowledge of RNAseq technology",
+    "Basic knowledge of data science and statistics such as PCA, clustering and statistical testing"
+  ],
+  "dct:conformsTo": "https://bioschemas.org/profiles/Course/1.0-RELEASE",
+  "description": "This workshop includes a tutorial on how to approach RNAseq data, starting from your sequencing reads (fastq files). Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the Harvard Chan Bioinformatics Core (HBC), a collection of modified tutorials from the DESeq2, R language vignettes and the nf-core rnaseq pipeline.",
+  "isBasedOn": [
+    "https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html",
+    "https://nf-co.re/rnaseq",
+    "https://github.com/hbctraining/Intro-to-rnaseq-hpc-salmon-flipped"
+  ],
+  "keywords": "bioinformatics, rnaseq, bulk, R",
+  "license": {
+    "@id": "https://creativecommons.org/licenses/by/4.0/",
+    "@type": "CreativeWork"
+  },
+  "mentions": [
     {
-      "@context": "https://schema.org",
-      "@id": "https://hds-sandbox.github.io/bulk_RNAseq_course/",
-      "@type": "TrainingMaterial",
-      "dct:conformsTo": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
-      "description": "This workshop includes a tutorial on how to approach RNAseq data, starting from your sequencing reads (fastq files). Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the Harvard Chan Bioinformatics Core (HBC), a collection of modified tutorials from the DESeq2, R language vignettes and the nf-core rnaseq pipeline.",
-      "keywords": [
-        "bioinformatics, RNAseq, bulk, NGS"
-      ],
-      "learningResourceType": [
-        "e-Learning"
-      ],
-      "license": [
-        {
-          "@id": "https://creativecommons.org/licenses/by/4.0/",
-          "@type": "CreativeWork"
-        }
-      ],
-      "mentions": [
-        {
-          "@id": "10.5281/zenodo.7660225",
-          "@type": "Thing"
-        },
-        {
-          "@id": "10.5281/zenodo.7565997",
-          "@type": "Thing"
-        }
-      ],
-      "name": "Introduction to bulk RNAseq analysis workshop"
+      "@id": "10.5281/zenodo.7660225",
+      "@type": "Thing"
+    },
+    {
+      "@id": "10.5281/zenodo.7565997",
+      "@type": "Thing"
     }
-    </script >
+  ],
+  "name": "Introduction to bulk RNAseq analysis workshop"
+}
+</script >
 {% endblock %}
