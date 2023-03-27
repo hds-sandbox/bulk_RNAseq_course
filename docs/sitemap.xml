@@ -2,117 +2,117 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/index.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/02_experimental_planning.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/03_data_explanation.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/04a_preprocessing.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/04b_pipelines.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/04c_preprocessing_setup.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/05a_data_analysis_setup.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/05b_count_matrix.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/05c_count_normalization.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/06_exploratory_analysis.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/07_extra_contrast_design.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/07a_DEA.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/07b_hypothesis_testing.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/07c_DEA_visualization.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/08a_FA_genomic_annotation.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/08b_FA_overrepresentation.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/08c_FA_GSEA.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/09_summarized_workflow.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/contributors.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/empty.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/keywords.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/rmd/modify_md.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/keywords.html</loc>
-         <lastmod>2023-03-15</lastmod>
+         <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
