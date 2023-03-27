@@ -33,18 +33,13 @@ This workshop material includes a tutorial on how to approach RNAseq data, start
 <!-- Format: [author name](link to author page){ .md-button } -->
 <h4>Authors</h4>
 
-[José Alejandro Romero Herrera](https://www.linkedin.com/in/jose-alejandro-romero-herrera/){ .md-button }
-[Adrija Kalvisa](https://www.linkedin.com/in/adrija-kalvisa/){ .md-button }
-[Diana Andrejeva](https://www.linkedin.com/in/diana-andrejeva-766058155/){ .md-button }
-[Henrike Zschach](https://www.linkedin.com/in/henrikezschach/){ .md-button }
-[Jennifer Bartell](https://www.linkedin.com/in/jagbartell/){ .md-button }
-[Samuele Soraggi](https://www.linkedin.com/in/samuelesoraggi/){ .md-button }
+[cards cols="6"(./develop/cards/cards.yaml)]
 
 <hr>
 
 <!-- OVERVIEW OF COURSE -->
 !!! abstract "Overview"
-    &#128172; **Syllabus:**   
+    :book: **Syllabus:**   
 
     1.  Course introduction  
     2.  Experimental planning   
@@ -57,14 +52,23 @@ This workshop material includes a tutorial on how to approach RNAseq data, start
         4.  Functional analysis 
     6.  Summarized workflow  
 
-    &#128368; **Total Time Estimation:** 8 hours  
+    :clock: **Total Time Estimation:** 8 hours  
 
-    &#128193; **Supporting Materials:**  
+    :file_folder: **Supporting Materials:**  
     Workshop slides with theory on bulk RNAseq can be found in this [zenodo repository](https://zenodo.org/record/7565963).
 
+    :man_technologist: **Target Audience:** PhD, MsC, etc.
+    [comment]: # (Property in Bioschema: audience)
 
-    &#128203; **License:** [Tutorial Content is licensed under Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/)
-   
+    :woman_student: **Level:** Beginner/Intermediate/Advanced
+    [comment]: # (Property in Bioschema: educationalLevel)
+
+    :lock: **License:** [Apache license v2.0] (http://www.apache.org/licenses/)
+    [comment]: # (Property in Biochema: licence)
+    
+    :coin: **Funding:** This project was funded by the Novo Nordisk Fonden (NNF20OC0063268).
+    [comment]: # Funding by NNF and others
+
 !!! warning "Course Requirements"
     - Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop [R basics](https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022)
     - Basic knowledge of RNAseq technology
