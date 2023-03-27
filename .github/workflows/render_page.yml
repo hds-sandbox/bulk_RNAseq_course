@@ -12,5 +12,5 @@ jobs:
         with:
           python-version: 3.x
       - run: |
-          pip install mkdocs-material mkdocs-bibtex neoteroi-mkdocs mkdocs-video mkdocs-minify-plugin
+          pip install mkdocs-material mkdocs-bibtex neoteroi-mkdocs mkdocs-video mkdocs-minify-plugin mkdocs-jupyter
           mkdocs gh-deploy --force
