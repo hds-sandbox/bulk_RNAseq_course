@@ -52,22 +52,23 @@ This workshop material includes a tutorial on how to approach RNAseq data, start
         4.  Functional analysis 
     6.  Summarized workflow  
 
-    :clock: **Total Time Estimation:** 8 hours  
+    :clock: **Total Time Estimation:** 8 hours
+    [comment]: # (No Property in Bioschema)
 
-    :file_folder: **Supporting Materials:**  
-    Workshop slides with theory on bulk RNAseq can be found in this [zenodo repository](https://zenodo.org/record/7565963).
-
+    :file_folder: **Supporting Materials:** Workshop slides with theory on bulk RNAseq can be found in this [zenodo repository](https://zenodo.org/record/7565963).  
+    [comment]: # (Property in Bioschema: audience)
+    
     :man_technologist: **Target Audience:** PhD, MsC, etc.
     [comment]: # (Property in Bioschema: audience)
-
+    
     :woman_student: **Level:** Beginner/Intermediate/Advanced
     [comment]: # (Property in Bioschema: educationalLevel)
-
-    :lock: **License:** [Apache license v2.0] (http://www.apache.org/licenses/)
+    
+    :lock: **License:** [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/legalcode)
     [comment]: # (Property in Biochema: licence)
     
     :coin: **Funding:** This project was funded by the Novo Nordisk Fonden (NNF20OC0063268).
-    [comment]: # Funding by NNF and others
+    [comment]: # (Funding by NNF and others)
 
 !!! warning "Course Requirements"
     - Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop [R basics](https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022)
