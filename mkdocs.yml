@@ -150,6 +150,7 @@ markdown_extensions:
 use_directory_urls: false
 docs_dir: develop # source md files should be saved in the develop folder
 site_dir: docs # built webpage will be created in the docs folder
+copyright: CC-BY-SA 4.0 license
 
 # Page tree
 # Include your page titles and associating .md files here
