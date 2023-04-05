@@ -1,4 +1,4 @@
-B# History files
+# History files
 *.Rhistory
 *.Rapp.history
 
@@ -43,8 +43,7 @@ vignettes/*.pdf
 *.DS_Store
 **/tmp
 *.docx
-old/
-Data/raw
 Results/
-Data/Data.zip
 Slides/
+zenodo/
+Data
