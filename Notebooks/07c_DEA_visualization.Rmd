@@ -45,9 +45,9 @@ library(ggrepel)
 library(tximport)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-meta <- read_csv("../Data/samplesheet.csv")
-dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
-tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
+meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
+dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
+tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 files <- file.path(dir, meta$sample, "quant.sf")
 names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
@@ -218,7 +218,7 @@ In addition to plotting subsets, we could also extract the normalized values of 
 ```{r}
 ### Extract normalized expression for significant genes from the OE and control samples
 ### also get gene name
-norm_OEsig <- normalized_counts %>% select(gene, starts_with("Control"), starts_with("Mov10_oe")) 
+norm_OEsig <- normalized_counts %>% select(gene, starts_with("Control"), starts_with("Mov10_oe"))  %>%
   dplyr::filter(gene %in% sigOE$gene)  
 ```
 
