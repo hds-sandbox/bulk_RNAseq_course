@@ -63,13 +63,24 @@ We have detailed the various steps in a differential expression analysis workflo
 
 Load data and metadata
 ```{r}
-data <- read_table("../Data/Mov10_full_counts.txt") 
+data <- read_table("../Data/Mov10_counts_traditional.txt") 
 
-meta <- read_table("../Data/Mov10_full_meta.txt")
+meta <- read_csv("../Data/samplesheet.csv")
 ```
 Check that the row names of the metadata equal the column names of the **raw counts** data
+
 ```{r}
+### Check that sample names match in both files
+all(colnames(data)[-1] %in% meta$sample)
 all(colnames(data)[-1] == meta$sample)
+```
+
+Reorder meta rows so it matches count data colnames
+```{r}
+reorder <- match(colnames(data)[-1],meta$sample)
+reorder
+
+meta <- meta[reorder,] 
 ```
 
 Create DESeq2Dataset object
@@ -85,12 +96,12 @@ dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbo
 Load samplesheet with all our metadata from our pipeline
 ```{r}
 # Load data, metadata and tx2gene and create a txi object
-meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
+meta <- read_csv("../Data/samplesheet.csv")
 ```
 
 Create a list of salmon results
 ```{r}
-dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
+dir <- "../Data/salmon"
 tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
 
 # Get all salmon results files
@@ -112,7 +123,7 @@ dds <- DESeqDataSetFromTximport(txi,
 
 ## Exploratory data analysis 
 
-Prefiltering low count genes + PCA & hierarchical clustering - identifying outliers and sources of variation in the data:
+Pre-filtering low count genes + PCA & hierarchical clustering - identifying outliers and sources of variation in the data:
 
 ### Prefiltering low count genes
 ```{r}
@@ -147,7 +158,7 @@ rld_dist <- as.matrix(dist(t(assay(rld)))) #distances are computed by rows, so w
 Plot heatmap of correlations
 ```{r cor_heatmap}
 pheatmap(rld_cor, 
-         annotation = meta %>% column_to_rownames("sample") %>% select("condition"))
+         annotation = meta %>% column_to_rownames("sample") %>% dplyr::select("condition"))
 ```
 
 Plot heatmap of distances with a new color range
@@ -156,7 +167,7 @@ heat.colors <- brewer.pal(6, "Blues") # Colors from the RColorBrewer package (on
 heat.colors <- colorRampPalette(heat.colors)(100) # Interpolate 100 colors
 
 pheatmap(rld_dist, 
-         annotation = meta %>% column_to_rownames("sample") %>% select("condition"),
+         annotation = meta %>% column_to_rownames("sample") %>% dplyr::select("condition"),
          color = heat.colors)
 ```
 
@@ -223,7 +234,7 @@ res_tbl <- res %>%
   as_tibble()
 
 # Subset the significant results
-sig_res <- filter(res_tbl, 
+sig_res <- dplyr::filter(res_tbl, 
                   padj < padj.cutoff)
 ```
 
@@ -233,8 +244,8 @@ Function to get gene_IDs based on gene names. The function will take as input a 
 
 ```{r}
 lookup <- function(gene_name, tx2gene, dds){
-  hits <- tx2gene %>% select(gene_symbol, gene_ID) %>% distinct() %>% 
-    filter(gene_symbol %in% gene_name & gene_ID %in% rownames(dds))
+  hits <- tx2gene %>% dplyr::select(gene_symbol, gene_ID) %>% distinct() %>% 
+    dplyr::filter(gene_symbol %in% gene_name & gene_ID %in% rownames(dds))
   return(hits)
 }
 

@@ -202,8 +202,8 @@ While gene IDs are unique and traceable, it is hard for us humans to memorize a 
 The function will take as input a vector of gene names of interest, the tx2gene dataframe and the dds object that you analyzed
 ```{r}
 lookup <- function(gene_name, tx2gene, dds){
-  hits <- tx2gene %>% select(gene_symbol, gene_ID) %>% distinct() %>% 
-    filter(gene_symbol %in% gene_name & gene_ID %in% rownames(dds))
+  hits <- tx2gene %>% dplyr::select(gene_symbol, gene_ID) %>% distinct() %>% 
+    dplyr::filter(gene_symbol %in% gene_name & gene_ID %in% rownames(dds))
   return(hits)
 }
 
@@ -218,7 +218,7 @@ In addition to plotting subsets, we could also extract the normalized values of 
 ```{r}
 ### Extract normalized expression for significant genes from the OE and control samples
 ### also get gene name
-norm_OEsig <- normalized_counts %>% select(gene, starts_with("Control"), starts_with("Mov10_oe"))  %>%
+norm_OEsig <- normalized_counts %>% dplyr::select(gene, starts_with("Control"), starts_with("Mov10_oe"))  %>%
   dplyr::filter(gene %in% sigOE$gene)  
 ```
 
@@ -229,7 +229,7 @@ Now let's draw the heatmap using `pheatmap`:
 pheatmap(norm_OEsig %>% column_to_rownames("gene"), 
          cluster_rows = T, 
          show_rownames = F,
-         annotation = meta %>% column_to_rownames(var = "sample") %>% select("condition"), 
+         annotation = meta %>% column_to_rownames(var = "sample") %>% dplyr::select("condition"), 
          border_color = NA, 
          fontsize = 10, 
          scale = "row", 

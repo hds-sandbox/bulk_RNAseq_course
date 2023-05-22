@@ -194,7 +194,7 @@ Now, let's plot the heatmap!
 library(pheatmap)
 
 pheatmap(sampleDistMatrix, annotation_col = meta %>% column_to_rownames("sample") %>% 
-           select(condition)) # we only want to use the condition column as an annotation
+           dplyr::select(condition)) # we only want to use the condition column as an annotation
 ```
 
 When you plot using `pheatmap()` the hierarchical clustering information is used to place similar samples together and this information is represented by the tree structure along the axes. The `annotation` argument accepts a dataframe as input, in our case it is the `meta` data frame. 
@@ -219,7 +219,7 @@ heat.colors <- colorRampPalette(heat.colors)(100) # Interpolate 100 colors
 
 
 ```{r custom_heatmap}
-pheatmap(sampleDistMatrix, annotation = meta %>% column_to_rownames("sample") %>% select("condition"), 
+pheatmap(sampleDistMatrix, annotation = meta %>% column_to_rownames("sample") %>% dplyr::select("condition"), 
          color = heat.colors, border_color=NA, fontsize = 10, 
          fontsize_row = 10, height=20)
 ```       
