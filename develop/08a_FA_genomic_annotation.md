@@ -1,7 +1,7 @@
 ---
 title: Genomic annotations for functional analyses
 summary: In this lesson we explain how create annotate your genes with metadata from databases
-date: 2023-01-17
+date: 2023-07-04
 ---
 
 # Genomic annotations
@@ -255,7 +255,7 @@ annotations_ahb$entrezid <- map(annotations_ahb$entrezid,1) %>%  unlist()
     ```r
     human_orgdb <- query(ah, c("Homo sapiens", "OrgDb"))
     human_orgdb <- human_ens[[length(human_ens)]]
-    annotations_orgdb <- select(human_orgdb, res_tableOE_tb$gene, c("SYMBOL", "GENENAME",         "ENTREZID"), "ENSEMBL")
+    annotations_orgdb <- select(human_orgdb, res_tableOE_tb$gene, c("SYMBOL", "GENENAME", "ENTREZID"), "ENSEMBL")
     ```
 
     We would find that multiple mapping entries would be automatically reduced to one-to-one. We would also find that more than half of the input genes do not return any annotations. This is because the OrgDb family of database are primarily based on mapping using Entrez Gene identifiers. Since our data is based on Ensembl mappings, using the OrgDb would result in a loss of information.
@@ -334,7 +334,7 @@ We can see that the `grch37` object already contains all the information we want
 
 ``` r
 ## Re-run this code if you are unsure that you have the right table
-res_tableOE <- lfcShrink(dds, coef = "sampletype_MOV10_overexpression_vs_control")
+res_tableOE <- lfcShrink(dds, coef = "condition_MOV10_overexpression_vs_control")
 res_tableOE_tb <- res_tableOE %>%
     data.frame() %>%
     rownames_to_column(var="gene") %>% 
@@ -358,9 +358,48 @@ Our data is now ready to use for functional analysis! We have all the ids necess
     - Create a new `res_ids` object using the `annotables` package with the human build grch38. **NOTE** call it `res_ids_grch38`!
     - What are the differences between the `res_id_ahb`object and the `res_ids_grch38`?
 
+??? question "**Solution to Exercise 1**"
+
+    ```r
+    ids_grch38 <- grch38 %>% dplyr::filter(ensgene %in% rownames(res_tableOE))
+
+    res_ids_grch38 <- inner_join(res_tableOE_tb, ids_grch38, by=c("gene"="ensgene"))
+      
+    head(res_ids_grch38)
+    ```
+
+    Let's compare it to the `res_ids_ahb` object
+
+
+    ```r
+    head(res_ids_ahb)
+    ```
+
+    We can see that `res_id_ahb` contains less columns, but this is because we selected fewer columns in our previous steps. What about the the sizes of these tables?
+
+
+    ```r
+    nrow(res_ids_ahb)
+    nrow(res_ids_grch38)
+    nrow(res_tableOE_tb)
+    ```
+
+    We see that there is a difference in the number of genes. So what is happening? The gene IDs that we have in our count data are from the genome version grch37, and we are trying to match it to annotations from the more updated version grch38. There will be genes that are missing just because of the version. Then we have also removed duplicated gene names in our `annotation_ahb` object, which may contain different gene IDs. So we may have deleted some gene IDs that are not matching anymore with our results table. In any case, we should always annotate our genes with the version of the reference genome we used for alignment and quantification!
+
 !!! question "**Exercise 2**"
 
     Annotate the results of your DEA for knockdown vs control 
+
+
+    ```r
+    ## Return the IDs for the gene symbols in the DE results
+    ids <- grch37 %>% dplyr::filter(ensgene %in% rownames(res_tableKD))
+
+    ## Merge the IDs with the results 
+    res_ids_KD <- inner_join(res_tableKD_tb, ids, by=c("gene"="ensgene"))
+
+    head(res_ids_KD)
+    ```
 
 ------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 ---
 title: "Log Fold Shrinkage and DEA visualizations"
 summary: In this lesson we explain how visualize DEA results using log fold shrinkage
-date: 2023-01-17
+date: 2023-07-04
 knit: (function(inputFile, encoding) { 
       rmarkdown::render(inputFile,
                         encoding=encoding,
@@ -149,9 +149,13 @@ knitr::include_graphics("./img/07c_DEA_visualization/MA_plot.png")
 
 In addition to the comparison described above, this plot allows us to evaluate the magnitude of fold changes and how they are distributed relative to mean expression. Generally, we would expect to see significant genes across the full range of expression levels. 
 
-!!! exercise "**Exercise 1**" 
+!!! question "**Exercise 1**" 
 
     Why are there genes with high mean and big log2 fold changes, but are not statistically significant?"
+
+??? question "**Solution to Exercise 1**"
+
+    Because their expression values are very dispersed, and so their p-value will be very high.
 
 ### Plotting significant DE genes
 
@@ -218,6 +222,23 @@ lookup <- function(gene_name, tx2gene, dds){
 }
 
 lookup(gene_name = "MOV10", tx2gene = tx2gene, dds = dds)
+```
+
+On the other hand, we can add the information from our tx2gene table, since it has the gene name!
+
+```{r}
+tx2gene
+```
+
+However, we see that the table has many duplicates per gene, due to the fact that a gene may have several transcripts IDs associated to it. Since our results table has gene IDs, it is important to remove transcript information and remove duplicated rows before merging the information.
+
+We remove the transcript ID column and duplicated rows from the tx2gene table using tidyverse syntax. We merge the tables using the `merge` function, which has many options for merging. Since our tables have different column names for the gene ID variable, we provide them with the `by.x` and `by.y` arguments. We also want to keep all of our results, so we use the argument `all.x` as well.
+
+```{r}
+res_tableOE_tb <- merge(res_tableOE_tb, tx2gene %>% select(-transcript_ID) %>% distinct(),
+                        by.x = "gene", by.y = "gene_ID", all.x = T)
+
+res_tableOE_tb
 ```
 
 ### Heatmap
@@ -304,7 +325,7 @@ res_tableOE_tb <- res_tableOE_tb %>% mutate(genelabels = "")
 res_tableOE_tb <- res_tableOE_tb %>% arrange(padj)
 
 ## Populate the gene labels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes
-res_tableOE_tb$genelabels[1:10] <- as.character(res_tableOE_tb$gene[1:10])
+res_tableOE_tb$genelabels[1:10] <- as.character(res_tableOE_tb$gene_symbol[1:10])
 
 head(res_tableOE_tb)
 ```
@@ -345,6 +366,84 @@ DEGreport::degPlotWide(dds = dds, genes = row.names(res)[1:5], group = "conditio
 !!! question "**Exercise 2**"
 
     Create visualizations of the results from your DEA between Mov10 knockdown samples and control samples.
+    
+??? question "**Solution to Exercise 2**"
+
+    Our KD results are saved in this table. However, we will want to use the LFC shrunken values
+    
+    ```{r}
+    # Normal results
+    res_tableKD_unshrunken <- res_tableKD
+    
+    # Shrunken values
+    res_tableKD <- lfcShrink(dds, coef="condition_MOV10_knockdown_vs_control", type="apeglm")
+    ```
+    
+    We can plot a MAplot:
+    
+    ```{r}
+    plotMA(res_tableKD, ylim=c(-2,2))
+    ```
+    
+    And continue with a volcano plot and a heatmap. But first, let's merge our results with with our tx2gene table:
+    
+    ```{r}
+    res_tableKD_tb <- merge(res_tableKD_tb, tx2gene %>% select(-transcript_ID) %>% distinct(),
+                            by.x = "gene", by.y = "gene_ID", all.x = T)
+    
+    res_tableKD_tb
+    ```
+    
+    Volcano plot with top 10 genes:
+    
+    ```{r}
+    ## Create an empty column to indicate which genes to label
+    res_tableKD_tb <- res_tableKD_tb %>% mutate(genelabels = "")
+    
+    ## Sort by padj values 
+    res_tableKD_tb <- res_tableKD_tb %>% arrange(padj)
+    
+    ## Populate the gene labels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes
+    res_tableKD_tb$genelabels[1:10] <- as.character(res_tableKD_tb$gene_symbol[1:10])
+    
+    head(res_tableKD_tb)
+    ```
+    
+    ```{r}
+    ggplot(res_tableKD_tb, aes(x = log2FoldChange, y = -log10(padj))) +
+      geom_point(aes(colour = threshold_OE)) +
+      geom_text_repel(aes(label = genelabels)) +
+      ggtitle("Mov10 overexpression") +
+      xlab("log2 fold change") + 
+      ylab("-log10 adjusted p-value") +
+      theme(legend.position = "none",
+            plot.title = element_text(size = rel(1.5), hjust = 0.5),
+            axis.title = element_text(size = rel(1.25))) 
+    ```
+    
+    Heatmap of DE genes for KD vs control:
+    
+    ```{r}
+    # Extract normalized expression for significant genes from the KD and control samples
+    # also get gene name
+    norm_KDsig <- normalized_counts %>% select(gene, starts_with("Control"), starts_with("Mov10_kd")) 
+      dplyr::filter(gene %in% sigKD$gene)  
+    ```
+    
+    Now let's draw the heatmap using `pheatmap`:
+    
+    ```{r}
+    # Run pheatmap using the metadata data frame for the annotation
+    pheatmap(norm_KDsig %>% column_to_rownames("gene"), 
+             cluster_rows = T, 
+             show_rownames = F,
+             annotation = meta %>% column_to_rownames(var = "sample") %>% select("condition"), 
+             border_color = NA, 
+             fontsize = 10, 
+             scale = "row", 
+             fontsize_row = 10, 
+             height = 20)
+    ```
 
 ***
 

@@ -1,7 +1,7 @@
 ---
 title: Functional class scoring
 summary: In this lesson we explain how to run functional analysis on your results using Class Scoring methods
-date: 2023-01-17
+date: 2023-07-04
 ---
 
 # Functional class scoring
@@ -193,9 +193,70 @@ There are other gene sets available for GSEA analysis in clusterProfiler (Diseas
 
     -   Do you find anything interesting?
 
+??? question "**Solution to Exercise 1**"
+
+    ```r
+    gseaDO <- gseDO(foldchanges, pvalueCutoff = 1)
+
+    head(gseaDO)
+    ```
+
+    We see now very similar results to our overrepresentation analysis. This is due to the fact that we have quite big lists of differentially expressed genes. GSEA analysis are most useful when your gene lists are low and normal overrepresentation analysis will perform very poorly.
+
 !!! question "**Exercise 2**"
 
     Run an GSE on the results of the DEA for knockdown vs control samples. Remember to use the annotated results!
+
+??? question "**Solution to Exercise 2**"
+
+    We need to prepare our values for GSEA:
+
+
+    ```r
+    # Remove any NA values (reduces the data by quite a bit) and duplicates
+    res_entrez_KD <- dplyr::filter(res_ids_KD, entrez != "NA" & duplicated(entrez)==F)
+    ```
+
+    Finally, extract and name the fold changes:
+
+
+    ```r
+    # Extract the foldchanges
+    foldchanges_KD <- res_entrez_KD$log2FoldChange
+
+    # Name each fold change with the corresponding Entrez ID
+    names(foldchanges_KD) <- res_entrez_KD$entrez
+    ```
+
+    Next we need to order the fold changes in decreasing order. To do this we'll use the `sort()` function, which takes a vector as input. This is in contrast to Tidyverse's `arrange()`, which requires a data frame.
+
+
+    ```r
+    ## Sort fold changes in decreasing order
+    foldchanges_KD <- sort(foldchanges_KD, decreasing = TRUE)
+
+    head(foldchanges_KD)
+    ```
+
+    Ne we can perform GSEA. This is an example for GO term analysis
+
+
+    ```r
+    gseaGO <- gseGO(geneList = foldchanges, 
+                  OrgDb = org.Hs.eg.db, 
+                  ont = 'BP', 
+                  minGSSize = 20, 
+                  pvalueCutoff = 0.05,
+                  verbose = FALSE) 
+
+    gseaGO_results <- gseaGO@result
+    head(gseaGO_results)
+    ```
+
+
+    ```r
+    gseaplot(gseaGO, geneSetID = gseaGO_results$ID[1], title = gseaGO_results$Description[1])
+    ```
 
 ## Other Tools
 

@@ -1,7 +1,7 @@
 ---
 title: Count normalization with DESeq2
 summary: In this lesson we explain how to normalize bulk RNAseq count matrices
-date: 2023-01-17
+date: 2023-07-04
 ---
 
 # Normalization
@@ -174,6 +174,22 @@ SampleB median ratio = 0.77
     size_factors <- c(1.32, 0.70, 1.04, 1.27, 1.11, 0.85)
     ```
 
+??? question "**Solution to Exercise 1**"
+
+    Let's check first what is PD1
+
+
+    ```r
+    PD1
+    ```
+
+    Since we have the size factors per sample, we only need to divide our PD1 counts by the size factors!
+
+
+    ```r
+    PD1/size_factors
+    ```
+
 ## Count normalization of Mov10 dataset using DESeq2
 
 Now that we know the theory of count normalization, we will normalize the counts for the Mov10 dataset using DESeq2. This requires a few steps:
@@ -212,6 +228,47 @@ b[reorder]
     ```r
     # randomize metadata rownames
     meta_random <- meta[sample(1:nrow(meta)),]
+    ```
+
+??? question "**Solution to Exercise 2**"
+
+    Let's check now meta_random order:
+
+
+    ```r
+    meta_random
+    ```
+
+    We can see that it is all scrambled. We want the rows of `meta_random` to be the same order as the columns of the `txi@counts` object (which is not, as you can see below):
+
+
+    ```r
+    ### Check that sample names match in both files
+    all(colnames(txi$counts) %in% meta_random$sample) # are all samples in our metadata?
+    all(colnames(txi$counts) == meta_random$sample) # are all samples in the same order?
+    ```
+
+    Let's use the match function. First we find the order that `meta_random$sample` should be to match the columns of `txi@counts`:
+
+
+    ```r
+    reorder <- match(colnames(txi$counts),meta_random$sample)
+    reorder
+    ```
+
+    Finally, we change the order of the rows of meta_random:
+
+
+    ```r
+    meta_random <- meta_random[reorder,]
+    meta_random
+    ```
+
+    And confirm:
+
+
+    ```r
+    all(colnames(txi$counts) == meta_random$sample) # are all samples in the same order?
     ```
 
 ### 2. Create DESEq2 object
@@ -304,7 +361,7 @@ normalized_counts <- counts(dds, normalized=TRUE)
 We can save this normalized data matrix to file for later use:
 
 ``` r
-write.table(normalized_counts, file="/work/introduction_bulkRNAseq_analysis/Results/normalized_counts.txt", sep="\t", quote=F)
+write.table(normalized_counts, file="/work/Intro_to_bulkRNAseq/Results/normalized_counts.txt", sep="\t", quote=F)
 ```
 
 !!! warning

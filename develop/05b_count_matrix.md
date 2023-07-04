@@ -1,8 +1,24 @@
 ---
 title: The RNAseq count matrix
 summary: In this lesson we explain the attributes of bulk RNAseq count data
-date: 2023-01-17
+date: 2023-07-4
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_format='all',
+                        output_dir='./develop/')})
+output:
+  github_document: 
+     preserve_yaml: TRUE
+     html_preview: FALSE
+     pandoc_args: [
+      "--wrap", "none" # this is needed to not break admonitions
+    ]
 ---
+
+The RNAseq count matrix
+================
+2023-07-4
 
 # Differential gene expression (DGE) analysis overview
 
@@ -30,10 +46,10 @@ In the next few lessons, we will walk you through an **end-to-end gene-level RNA
 Before we get into the details of the analysis, let’s get started by opening up RStudio and setting up a new project for this analysis.
 
 1.  Go to the `File` menu and select `New Project`.
-2.  In the `New Project` window, choose `Existing Directory`. Then, choose `introduction_bulkRNAseq_analysis` as your project working directory.
+2.  In the `New Project` window, choose `Existing Directory`. Then, choose `Intro_to_bulkRNAseq` as your project working directory.
 3.  The new project should automatically open in RStudio.
 
-To check whether or not you are in the correct working directory, use `getwd()`. The path `/work/introduction_bulkRNAseq_analysis` should be returned to you in the console. When finished your working directory should now look similar to this:
+To check whether or not you are in the correct working directory, use `getwd()`. The path `/work/Intro_to_bulkRNAseq` should be returned to you in the console. When finished your working directory should now look similar to this:
 
 <img src="./img/05b_count_matrix/settingup.png" width="1634" style="display: block; margin: auto;" />
 
@@ -41,7 +57,7 @@ To check whether or not you are in the correct working directory, use `getwd()`.
 
 - In the folder `Results` you will save the results of your scripts, analysis and tests.
 
-To avoid copying the original dataset for each student (very inefficient) the dataset is contained inside the shared folder `/work/introduction_bulkRNAseq_analysis/Data/`. Do not attempt to modify this folder, as it might mess up the files for the rest of your colleagues.
+To avoid copying the original dataset for each student (very inefficient) the dataset is contained inside the shared folder `/work/Intro_to_bulkRNAseq/Data/`.
 
 Now you can open the first practical session: `05b_count_matrix.Rmd`
 
@@ -65,7 +81,7 @@ For the sake of reproducibility, we will be using the backup results from our pr
 
 ``` r
 # Tabulated separated files can be opened using the read_table() function.
-read_table("/work/sequencing_data/Preprocessing_backup/results_salmon/salmon/Control_1/quant.sf", ) %>% head()
+read_table("/work/Intro_to_bulkRNAseq/Data/salmon/Control_1/quant.sf", ) %>% head()
 ```
 
 For each transcript that was assayed in the reference, we have:
@@ -86,7 +102,7 @@ We will use the `samplesheet.csv` file that we use to process our raw reads, sin
 
 ``` r
 # Load metadata
-meta <- read_csv("../Data/samplesheet.csv")
+meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
 
 # View metadata
 meta
@@ -96,7 +112,7 @@ Using the samples column, we can create all the paths needed:
 
 ``` r
 # Directory where salmon files are. You can change this path to the results of your own analysis
-dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon"
+dir <- "/work/Intro_to_bulkRNAseq/Data"
 
 # List all directories containing quant.sf files using the samplename column of metadata
 files <- file.path(dir,"salmon", meta$sample, "quant.sf")
@@ -109,7 +125,7 @@ files
 Our Salmon files were generated with transcript sequences listed by Ensembl IDs, but `tximport` needs to know **which genes these transcripts came from**. We will use annotation table the that was created in our workflow, called `tx2gene.txt`.
 
 ``` r
-tx2gene <- read_table("/work/sequencing_data/Preprocessing_backup/results_salmon/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 tx2gene %>% head()
 ```
 
@@ -159,7 +175,7 @@ There are a lot of rows with no gene expression at all.
 sum(rowSums(data) == 0)
 ```
 
-Let’s take them out
+Let’s take them out!
 
 ``` r
 keep <- rowSums(data) > 0

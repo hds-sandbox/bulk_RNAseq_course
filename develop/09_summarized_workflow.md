@@ -1,5 +1,5 @@
 ---
-title: "Summary of DGE workflow"
+title: Summary of DGE workflow
 summary: You can use this lesson as a template for your own bulk RNAseq analysis
 date: 2023-01-17
 hide:
@@ -58,13 +58,13 @@ Load samplesheet with all our metadata from our pipeline
 
 ``` r
 # Load data, metadata and tx2gene and create a txi object
-meta <- read_csv("../Data/samplesheet.csv")
+meta <- read_csv("/work/Intro_bulkRNAseq/Data/samplesheet.csv")
 ```
 
 Create a list of salmon results
 
 ``` r
-dir <- "/work/sequencing_data/Preprocessing_backup/results_salmon/salmon"
+dir <- "/work/Intro_bulkRNAseq/Data/salmon"
 tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
 
 # Get all salmon results files

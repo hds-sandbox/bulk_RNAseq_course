@@ -1,7 +1,7 @@
 ---
 title: Hypothesis testing with DESeq2
 summary: In this lesson we explain how DESeq2 perform statistical tests 
-date: 2023-01-17
+date: 2023-07-04
 ---
 
 # DESeq2: Model fitting and Hypothesis testing
@@ -136,15 +136,6 @@ Since our ‘full’ model only has one factor (`sampletype`), the ‘reduced’
     knitr::include_graphics("./img/07b_hypothesis_testing/lrt_time_yesdiff.png")
     ```
 
-!!! question "**Exercise 1**"
-
-    You are studying brain maturation and growth patterns in mouse cortex and have obtained RNA-seq data for a total of 31 mice. These samples were acquired at 9 developmental stages during the postnatal period of 2-40 days of growth, with at least three replicates at each stage. You also have sex information for these mice (16 males and 15 females).
-
-    1.  What is an appropriate hypothesis test if you are testing for expression differences across the developmental stages?
-    2.  Provide the line of code used to create the `dds` object.
-    3.  Provide the line of code used to run DESeq2.
-    4.  The results of the differential expression analysis run identifies a group of genes that spike in expression between the first and second timepoints with no change in expression thereafter. How would we go about obtaining fold changes for these genes?
-
 ## Multiple test correction
 
 Regardless of whether we use the Wald test or the LRT, each gene that has been tested will be associated with a p-value. It is this result which we use to determine which genes are considered significantly differentially expressed. However, **we cannot use the p-value directly.**
@@ -227,7 +218,23 @@ To start, we want to evaluate **expression changes between the MOV10 overexpress
 
     ```r
     ## your code here
-    contrast_oe <- 
+    #contrast_oe <- 
+    ```
+
+??? question "**Solution to Exercise 1**"
+
+    First let's check the metadata:
+
+
+    ```r
+    meta
+    ```
+
+    Since we have only given the `condition` column in the design formula, the first element should be `condition`. The second element is the condition we are interested, `MOV10_overexpression` and our base level is `control`
+
+
+    ```r
+    contrast_oe <- c("condition", "MOV10_overexpression", "control")
     ```
 
 !!! warning "Does it matter what I choose to be my base level?"
@@ -432,6 +439,51 @@ Now that we have extracted the significant results, we are ready for visualizati
     2.  Use contrast vector in the `results()` to extract a results table and store that to a variable called `res_tableKD`.
     3.  Using a p-adjusted threshold of 0.05 (`padj.cutoff < 0.05`), subset `res_tableKD` to report the number of genes that are up- and down-regulated in Mov10_knockdown compared to control.
     4.  How many genes are differentially expressed in the Knockdown compared to Control? How does this compare to the overexpression significant gene list (in terms of numbers)?
+
+??? question "**Solutions to Exercise 2**"
+
+    1. Contrast for knockdown vs control
+
+
+    ```r
+    contrast_kd <- c("condition", "MOV10_knockdown", "control")
+    ```
+
+    2. Extract results
+
+
+    ```r
+    res_tableKD <- results(dds, contrast = contrast_kd)
+    ```
+
+    3. Significant genes
+
+
+    ```r
+    padj.cutoff <- 0.05
+    sigKD <- res_tableKD %>% as_tibble(rownames = "gene") %>%
+      relocate(gene, .before = baseMean) %>% dplyr::filter(padj < padj.cutoff)
+    ```
+
+
+    ```r
+    sigKD
+    ```
+
+    4. Comparison against sigKD vs sigOE
+
+
+    ```r
+    nrow(sigKD) #number of significant genes in knockdown
+    nrow(sigOE) #number of significant genes in overexpression
+    ```
+
+
+    ```r
+    nrow(sigOE) - nrow(sigKD)
+    ```
+
+    sigOE has almost 2000 more genes that are differentially expressed!
 
 ------------------------------------------------------------------------
 

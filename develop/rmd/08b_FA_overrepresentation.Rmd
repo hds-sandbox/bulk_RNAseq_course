@@ -1,7 +1,7 @@
 ---
 title: Functional Analysis for RNA-seq
 summary: In this lesson we explain how to run functional analysis on your results using overrepresentation analysis
-date: 2023-01-17
+date: 2023-07-04
 knit: (function(inputFile, encoding) { 
       rmarkdown::render(inputFile,
                         encoding=encoding,
@@ -127,7 +127,7 @@ Some genes with less information may only be associated with general 'parent' te
 
 !!! tip
 
-More tips for working with GO can be found [here](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003343)
+    More tips for working with GO can be found [here](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003343)
 
 ## clusterProfiler
 
@@ -212,6 +212,53 @@ knitr::include_graphics("./img/08b_FA_overrepresentation/cluster_summary.png")
 !!! question  "**Exercise 1**"
 
     Create two new GO enrichment analyses one with UP and another for DOWN regulated genes for MOV10 overexpression.
+    
+??? question "**Solution to Exercise 1**""
+
+    1. Separate results into UP and DOWN regulated:
+    
+    ```{r}
+    sigOE_UP <- sigOE %>% filter(log2FoldChange > 0)
+    sigOE_DOWN <- sigOE %>% filter(log2FoldChange < 0)
+    ```
+    
+    2. Run overrepresentation:
+
+    UP regulated genes
+    ```{r}
+    ego_UP <- enrichGO(gene = sigOE_UP$gene, 
+                    universe = allOE_genes,
+                    keyType = "ENSEMBL",
+                    OrgDb = org.Hs.eg.db, 
+                    ont = "BP", 
+                    pAdjustMethod = "BH", 
+                    qvalueCutoff = 0.05, 
+                    readable = TRUE)
+    ```
+    
+    DOWN regulated genes
+    
+    ```{r}
+    ego_DOWN <- enrichGO(gene = sigOE_DOWN$gene, 
+                    universe = allOE_genes,
+                    keyType = "ENSEMBL",
+                    OrgDb = org.Hs.eg.db, 
+                    ont = "BP", 
+                    pAdjustMethod = "BH", 
+                    qvalueCutoff = 0.05, 
+                    readable = TRUE)
+    
+    ```
+    
+    3. Check results:
+    
+    ```{r}
+    head(ego_UP)
+    ```
+    
+    ```{r}
+    head(ego_DOWN)
+    ```
 
 ### Visualizing clusterProfiler results
 clusterProfiler has a variety of options for viewing the over-represented GO terms. We will explore the dotplot, enrichment plot, and the category netplot.
@@ -282,7 +329,6 @@ cnetplot(ego,
          vertex.label.font=6)
     ```
 
-
 ```{r, echo = FALSE, eval = TRUE} 
 knitr::include_graphics("./img/08b_FA_overrepresentation/cnetplot1.png")
 ``` 
@@ -315,10 +361,77 @@ knitr::include_graphics("./img/08b_FA_overrepresentation/cnetplot1.png")
 
     - Do you find anything interesting?
 
+??? question "**Solution to Exercise 2**"
+
+    For the DO, we need to use entrez IDs, instead of gene IDs
+    
+    All significantly regulated genes.
+    
+    ```{r}
+    edo <- enrichDO(sigOE$entrez, qvalueCutoff = 1)
+    head(edo)
+    ```
+    
+    UP significantly regulated genes
+    
+    ```{r}
+    edo_UP <- enrichDO(sigOE_UP$entrez)
+    head(edo_UP)
+    ```
+    
+    DOWN significantly regulated genes
+    
+    ```{r}
+    edo_DOWN <- enrichDO(sigOE_DOWN$entrez)
+    head(edo_DOWN)
+    ```
+    
+    Based on these results, we see that we cannot find Fragile X syndrome between the significant ones. However, if we dig a bit deeper, we find that many of these diseases overlap with the symptoms of Fragile X syndrome, such as muscular atrophia, physical disorders, intelectual disabilities, etc.
 
 !!! question "**Exercise 3**"
 
     Run an enrichment analysis on the results of the DEA for knockdown vs control samples. Remember to use the annotated results!
+
+??? question "**Solution to Exercise 3**"
+
+    Let's do a simple analysis as an example:
+    
+    ```{r}
+    ## Create background dataset for hypergeometric testing using all genes tested for significance in the results
+    allKD_genes <- dplyr::filter(res_ids_KD, !is.na(gene)) %>% 
+      pull(gene) %>% 
+      as.character()
+    
+    ## Extract significant results
+    sigKD <- dplyr::filter(res_ids_KD, padj < 0.05 & !is.na(gene))
+    
+    sigKD_genes <- sigKD %>% 
+      pull(gene) %>% 
+      as.character()
+    ```
+    
+    Now we can perform the GO enrichment analysis and save the results:
+    
+    ```{r}
+    ## Run GO enrichment analysis 
+    ego <- enrichGO(gene = sigKD_genes, 
+                    universe = allKD_genes,
+                    keyType = "ENSEMBL",
+                    OrgDb = org.Hs.eg.db, 
+                    ont = "BP", 
+                    pAdjustMethod = "BH", 
+                    qvalueCutoff = 0.05, 
+                    readable = TRUE)
+    ```
+    
+    
+    ```{r}
+    ## Output results from GO analysis to a table
+    cluster_summary <- data.frame(ego)
+    cluster_summary
+    
+    write.csv(cluster_summary, "../Results/clusterProfiler_Mov10kd.csv")
+    ```
 
 ***
 

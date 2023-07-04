@@ -1,7 +1,7 @@
 ---
 title: Exploratory analysis of bulk RNAseq
 summary: In this lesson we explain how to explore the relationships between samples using PCA and heatmaps
-date: 2023-01-17
+date: 2023-07-04
 ---
 
 # Exploratory Analysis and Quality Control
@@ -147,15 +147,45 @@ plotPCA(rld, intgroup="condition")
 
 <img src="./img/06_exploratory_analysis/pca_500.png" width="413" style="display: block; margin: auto;" />
 
-??? question "**Exercise 1**"
+!!! question "**Exercise 1**"
 
     By default `plotPCA()` uses the *top 500 most variable genes*. You can change this by adding the `ntop=` argument and specifying how many of the genes you want the function to consider. For example, try 1000 genes. Did the plot change a lot?
 
-??? question "**Exercise 2**"
+??? question "**Solution to Exercise 1**"
+
+Using the 1000 most variable genes, the plot does not change a lot:
+
+    ```r
+    plotPCA(rld, intgroup="condition", ntop = 1000)
+    ```
+
+    What about 2000 genes? It seems that the PCs have a bit different % variance explained:
+
+
+    ```r
+    plotPCA(rld, intgroup="condition", ntop = 2000)
+    ```
+
+    What about all genes? Not much change either!
+
+
+    ```r
+    plotPCA(rld, intgroup="condition", ntop = nrow(rld)) #nrow is number of rows and it equals to all genes!
+    ```
+
+    As you can see, most of the info comes from the top most variable genes. Since PCs are capturing the variation of our data, adding genes that are hardly variable makes any difference to the plot.
+
+!!! question "**Exercise 2**"
 
     1. What does the above plot tell you about the similarity of samples?
     2. Does it fit the expectation from the experimental design?
     3. What do you think the %variance information (in the axes titles) tell you about the data in the context of the PCA?
+
+??? question "**Solutions to Exercise 2**"
+
+    1. It shows that our replicates are very close to each other, and each group far from each other!
+    2. Yes, which is great!
+    3. It tells us how much is captured by each PC. In our case, PC1 already captures the differences between our conditions!
 
 #### Custom PCA plot
 
@@ -167,7 +197,7 @@ rld_mat <- assay(rld) # extract rlog count matrix
 pca <- prcomp(t(rld_mat)) # perform PCA on the transposed (t) matrix of data 
 ```
 
-To see what the PCA object contains we can use again the `attributes()` function
+To see what the PCA object contains we can use again the `attributes()` function.
 
 ``` r
 attributes(pca)
@@ -175,7 +205,7 @@ attributes(pca)
 
 You can check the `?prcomp()` for more information. The most important variables are: - sdev: standard deviation explained by each PC. - rotation: contribution of each gene to each PC. - x: PC values for each sample (we use this values for our plots).
 
-We can create a new object that contains all our metadata information and the PC values
+We can create a new object that contains all our metadata information and the PC values.
 
 ``` r
 df <- cbind(meta, pca$x) # Create data frame with metadata and PC3 and PC4 values for input to ggplot
@@ -186,7 +216,7 @@ df <- cbind(meta, pca$x) # Create data frame with metadata and PC3 and PC4 value
 ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = condition))
 ```
 
-If you want to add PC variation information to the plot we can fetch it using the summary() function and take the second row:
+If you want to add PC variation information to the plot we can fetch it using the `summary()` function and take the second row:
 
 ``` r
 summary(pca)
@@ -248,6 +278,26 @@ Overall, we observe pretty high correlations across the board ( \> 0.999) sugges
 !!! question "**Exercise 3**"
 
     Instead of using distances between expression patterns, check the Pearson correlation between samples using `cor()`. Use your rlog count matrix as an input.
+
+??? question "**Solution to Exercise 3**"
+
+    First, we get pearson correlations between our samples:
+
+
+    ```r
+    pearson <- cor(rld_mat) 
+    pearson
+    ```
+
+    As you can see, the result of cor for a matrix like `rld_mat` is a square matrix (rows are the same as columns). Each value is the Pearson correlation between a row and a column.
+
+    Then, we create the plot:
+
+
+    ```r
+    pheatmap(pearson, annotation_col = meta %>% column_to_rownames("sample") %>% 
+           dplyr::select(condition)) # we only want to use the condition column as an annotation
+    ```
 
 #### Custom heatmap
 
