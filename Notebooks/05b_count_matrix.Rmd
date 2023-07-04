@@ -93,10 +93,10 @@ Using the samples column, we can create all the paths needed:
 
 ```{r}
 # Directory where salmon files are. You can change this path to the results of your own analysis
-dir <- "/work/Intro_to_bulkRNAseq/Data"
+dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
 
 # List all directories containing quant.sf files using the samplename column of metadata
-files <- file.path(dir,"salmon", meta$sample, "quant.sf")
+files <- file.path(dir, meta$sample, "quant.sf")
 
 # Name the file list with the samplenames
 names(files) <- meta$sample
@@ -151,16 +151,17 @@ data <- txi$counts %>%
 ```
 
 There are a lot of rows with no gene expression at all.
+
 ```{r}
 sum(rowSums(data) == 0)
 ```
 
-Let's take them out
+Let's take them out.
+
 ```{r}
 keep <- rowSums(data) > 0
 data <- data[keep,]
 ```
-
 
 ## RNA-seq count distribution
 
@@ -204,6 +205,7 @@ With RNA-Seq data, **a very large number of RNAs are represented and the probabi
 The model that fits best, given this type of variability observed for replicates, is the **Negative Binomial (NB) model**. Essentially, **the NB model is a good approximation for data where the mean \< variance**, as is the case with RNA-Seq count data.
 
 Here we calculate the mean and the variance per gene for all columns and genes:
+
 ```{r}
 df <- data %>% 
   rowwise() %>% 
@@ -212,6 +214,7 @@ df <- data %>%
 ```
 
 Run the following code to plot the *mean versus variance* of each gene for our data:
+
 ```{r mean_vs_variance}
 ggplot(df) +
   geom_point(aes(x=mean_counts, y=variance_counts)) + 
@@ -219,4 +222,5 @@ ggplot(df) +
   scale_y_log10() +
   scale_x_log10()
 ```
+
 If the mean would be equal to the variance, the cloud of points would follow the straight red line.

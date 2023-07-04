@@ -33,7 +33,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       eval           = TRUE)
 ```
 
-```{r setup, include = FALSE, echo = FALSE}
+```{r, include = FALSE, echo = FALSE}
 # DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
 # This chunk is ONLY necessary if you want to knit this document into a pdf!!
 library(tidyverse)
@@ -112,7 +112,6 @@ Within R, there are many popular packages used for gene/transcript-level annotat
 |**[annotables](https://github.com/stephenturner/annotables)** | Gene-level feature information immediately available for the human and model organisms | super quick and easy gene ID conversion, biotype and coordinate information | static resource, not updated regularly | 
 |**[biomaRt](https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/biomaRt.html)** | An R package version of the Ensembl [BioMart online tool](http://www.ensembl.org/biomart/martview/70dbbbe3f1c5389418b5ea1e02d89af3)  | all Ensembl database information available, all organisms on Ensembl, wealth of information |  |
 
-
 ## AnnotationHub
 
 AnnotationHub is a wonderful resource for accessing genomic data or querying large collection of whole genome resources, including ENSEMBL, UCSC, ENCODE, Broad Institute, KEGG, NIH Pathway Interaction Database, etc. All of this information is stored and easily accessible by directly connecting to the database.
@@ -144,6 +143,7 @@ unique(ah$species) %>% head()
 ```
 
 In addition to species information, there is also additional information about the type of Data Objects and the Data Providers:
+
 ```{r}
 # Explore the types of Data Objects available
 unique(ah$rdataclass) %>% head()
@@ -159,7 +159,7 @@ Now that we know the types of information available from AnnotationHub we can qu
 human_ens <- query(ah, c("Homo sapiens", "EnsDb"))
 ```
 
-The query retrieves all **hits for the `EnsDb` objects**, and you will see that they are listed by the release number. The most current release for GRCh38 is Ensembl98 and AnnotationHub offers that as an option to use. However, if you look at options for older releases, for Homo sapiens it only goes back as far as Ensembl 87. This is fine if you are using GRCh38, however if you were using an older genome build like hg19/GRCh37, you would need to load the `EnsDb` package if available for that release or you might need to build your own with `ensembldb`.
+The query retrieves all **hits for the `EnsDb` objects**, and you will see that they are listed by the release number. The most current release for GRCh38 is Ensembl 109 and AnnotationHub offers that as an option to use. However, if you look at options for older releases, for Homo sapiens it only goes back as far as Ensembl 87. This is fine if you are using GRCh38, however if you were using an older genome build like hg19/GRCh37, you would need to load the `EnsDb` package if available for that release or you might need to build your own with `ensembldb`.
 
 ```{r}
 human_ens
@@ -213,13 +213,15 @@ annotations_ahb$entrezid <- map(annotations_ahb$entrezid,1) %>%  unlist()
 ```
 
 Let's take a look and see how many of our Ensembl identifiers have an associated gene symbol, and how many of them are unique:
-```{r}
-which(is.na(annotations_ahb$gene_name)) %>% length()
 
-which(duplicated(annotations_ahb$gene_name)) %>% length()
+```{r}
+sum(is.na(annotations_ahb$gene_name))
+
+sum(duplicated(annotations_ahb$gene_name))
 ```
 
 Let's identify the non-duplicated genes and only keep the ones that are not duplicated:
+
 ```{r}
 # Determine the indices for the non-duplicated genes
 non_duplicates_idx <- which(duplicated(annotations_ahb$gene_name) == FALSE)
@@ -238,16 +240,15 @@ Finally, it would be good to know **what proportion of the Ensembl identifiers m
 
 ```{r}
 # Determine how many of the Entrez column entries are NA
-which(is.na(annotations_ahb$entrezid)) %>%  length()
+which(is.na(annotations_ahb$entrezid)) %>% length()
 ```
 
 For the different steps in the functional analysis, we require Ensembl and Entrez IDs. We will use the gene annotations that we generated previously to merge with our differential expression results.
 
 ```{r}
 ## Merge the AnnotationHub dataframe with the results 
-res_ids_ahb <- left_join(res_tableOE_tb, annotations_ahb, by=c("gene"="gene_id"))    
+res_ids_ahb <- inner_join(res_tableOE_tb, annotations_ahb, by=c("gene"="gene_id"))    
 ```
-
 
 ### Using AnnotationHub to create a tx2gene file
 
@@ -283,7 +284,7 @@ We can see that the `grch37` object already contains all the information we want
 
 ```{r, eval = FALSE}
 ## Re-run this code if you are unsure that you have the right table
-res_tableOE <- lfcShrink(dds, coef = "sampletype_MOV10_overexpression_vs_control")
+res_tableOE <- lfcShrink(dds, coef = "condition_MOV10_overexpression_vs_control")
 res_tableOE_tb <- res_tableOE %>%
     data.frame() %>%
     rownames_to_column(var="gene") %>% 

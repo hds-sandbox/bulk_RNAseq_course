@@ -1,0 +1,8 @@
+{
+    "input": "/work/samplesheet.csv",
+    "outdir": "/work/preprocessing/results_traditional",
+    "genome": "GRCh37",
+    "aligner": "star_rsem",
+    "skip_bigwig": true,
+    "skip_deseq2_qc": true
+}

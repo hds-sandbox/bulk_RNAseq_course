@@ -33,7 +33,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       eval           = TRUE)
 ```
 
-```{r setup, include = FALSE, echo = FALSE}
+```{r, include = FALSE, echo = FALSE}
 # DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
 # This chunk is ONLY necessary if you want to knit this document into a pdf!!
 library(tidyverse)
@@ -68,7 +68,7 @@ ids <- grch37 %>% dplyr::filter(ensgene %in% rownames(res_tableOE))
 res_ids <- inner_join(res_tableOE_tb, ids, by=c("gene"="ensgene"))
 ```
 
-Approximate time: 60 minutes
+Approximate time: 45 minutes
 
 ## Learning Objectives:
 
@@ -133,6 +133,7 @@ write.csv(cluster_summary, "/work/Intro_to_bulkRNAseq/Results/clusterProfiler_Mo
 ```
 
 ***
+
 **Exercise 1**
 
 Create two new GO enrichment analyses one with UP and another for DOWN regulated genes for MOV10 overexpression.
@@ -170,7 +171,6 @@ OE_foldchanges <- sigOE$log2FoldChange
 names(OE_foldchanges) <- sigOE$gene
 ```
 
-
 ```{r cnetplot}
 ## Cnetplot details the genes associated with one or more terms - by default gives the top 5 significant terms (by padj)
 cnetplot(ego, 
@@ -179,7 +179,6 @@ cnetplot(ego,
          foldChange=OE_foldchanges, 
          vertex.label.font=6)
 ```
-
 
 ```{r}
 ## If some of the high fold changes are getting drowned out due to a large range, you could set a maximum fold change value

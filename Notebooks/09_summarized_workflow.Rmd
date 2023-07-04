@@ -62,11 +62,13 @@ We have detailed the various steps in a differential expression analysis workflo
 ### If you have a traditional raw count matrix
 
 Load data and metadata
+
 ```{r}
 data <- read_table("../Data/Mov10_counts_traditional.txt") 
 
 meta <- read_csv("../Data/samplesheet.csv")
 ```
+
 Check that the row names of the metadata equal the column names of the **raw counts** data
 
 ```{r}
@@ -76,6 +78,7 @@ all(colnames(data)[-1] == meta$sample)
 ```
 
 Reorder meta rows so it matches count data colnames
+
 ```{r}
 reorder <- match(colnames(data)[-1],meta$sample)
 reorder
@@ -84,22 +87,24 @@ meta <- meta[reorder,]
 ```
 
 Create DESeq2Dataset object
+
 ```{r}
 dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
                               colData = meta %>% column_to_rownames("sample"), 
                               design = ~ condition)
 ```
 
-
 ### If you have pseudocounts
 
 Load samplesheet with all our metadata from our pipeline
+
 ```{r}
 # Load data, metadata and tx2gene and create a txi object
 meta <- read_csv("../Data/samplesheet.csv")
 ```
 
 Create a list of salmon results
+
 ```{r}
 dir <- "../Data/salmon"
 tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
@@ -110,11 +115,13 @@ names(files) <- meta$sample
 ```
 
 Create txi object
+
 ```{r}
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
 ```
 
 Create dds object
+
 ```{r}
 dds <- DESeqDataSetFromTximport(txi,
                                    colData = meta %>% column_to_rownames("sample"), 
@@ -126,21 +133,26 @@ dds <- DESeqDataSetFromTximport(txi,
 Pre-filtering low count genes + PCA & hierarchical clustering - identifying outliers and sources of variation in the data:
 
 ### Prefiltering low count genes
+
 ```{r}
 keep <- rowSums(counts(dds)) > 0
 dds <- dds[keep,]
 ```
 
-### Rlog transformation
+### Rlog or vst transformation
+
 ```{r}
 # Transform counts for data visualization
 rld <- rlog(dds, 
             blind=TRUE)
+
+# vsd <- vst(dds, blind = TRUE)
 ```
 
 ### PCA
 
 Plot PCA
+
 ```{r PCA_plot}
 plotPCA(rld, 
         intgroup="condition")
@@ -149,6 +161,7 @@ plotPCA(rld,
 ### Heatmaps
 
 Extract the rlog matrix from the object
+
 ```{r}
 rld_mat <- assay(rld)
 rld_cor <- cor(rld_mat) # Pearson correlation betweeen samples
@@ -156,12 +169,14 @@ rld_dist <- as.matrix(dist(t(assay(rld)))) #distances are computed by rows, so w
 ```
 
 Plot heatmap of correlations
+
 ```{r cor_heatmap}
 pheatmap(rld_cor, 
          annotation = meta %>% column_to_rownames("sample") %>% dplyr::select("condition"))
 ```
 
 Plot heatmap of distances with a new color range
+
 ```{r dist_heatmap}
 heat.colors <- brewer.pal(6, "Blues") # Colors from the RColorBrewer package (only 6)
 heat.colors <- colorRampPalette(heat.colors)(100) # Interpolate 100 colors
@@ -180,12 +195,14 @@ pheatmap(rld_dist,
 ```
 
 Run DEseq2
+
 ```{r}
 # Run DESeq2 differential expression analysis
 dds <- DESeq(dds)
 ```
 
 **Optional step** - Output normalized counts to save as a file to access outside RStudio using 
+
 ```{r}
 normalized_counts <- counts(dds, normalized=TRUE)
 ```
@@ -193,6 +210,7 @@ normalized_counts <- counts(dds, normalized=TRUE)
 ## Check the fit of the dispersion estimates
 
 Plot dispersion estimates
+
 ```{r DispEsts_plot}
 plotDispEsts(dds)
 ``` 
@@ -200,6 +218,7 @@ plotDispEsts(dds)
 ## Create contrasts to perform Wald testing or the shrunken log2 fold changes between specific conditions
 
 Formal LFC calculation
+
 ```{r}
 # Specify contrast for comparison of interest
 contrast <- c("condition", "MOV10_overexpression", "control")
@@ -211,6 +230,7 @@ res <- results(dds,
 ```
 
 Shrinkage
+
 ```{r}
 # Get name of the contrast you would like to use
 resultsNames(dds)
@@ -253,16 +273,29 @@ lookup(gene_name = "MOV10", tx2gene = tx2gene, dds = dds)
 ```
 
 Plot expression for single gene
+
 ```{r counts_plot}
 plotCounts(dds, gene="ENSG00000155363", intgroup="condition")
 ```
 
+Function to annotate all your gene results
+
+```{r}
+res_tbl <- merge(res_tbl, tx2gene %>% select(-transcript_ID) %>% distinct(),
+                        by.x = "gene", by.y = "gene_ID", all.x = T)
+
+res_tbl
+
+```
+
 ### MAplot
+
 ```{r MAplot}
 plotMA(res)
 ```
 
 ### Volcano plot with labels (top N genes)
+
 ```{r}
 ## Obtain logical vector where TRUE values denote padj values < 0.05 and fold change > 1.5 in either direction
 res_tbl <- res_tbl %>% 
@@ -295,6 +328,7 @@ ggplot(res_tbl, aes(x = log2FoldChange, y = -log10(padj))) +
 ```
 
 ### Heatmap of differentially expressed genes
+
 ```{r}
 # filter significant results from normalized counts
 norm_sig <- normalized_counts %>% as_tibble(rownames = "gene") %>%
@@ -321,6 +355,7 @@ res_ids <- inner_join(res_tbl, ids, by=c("gene"="ensgene"))
 ```
 
 ### Perform enrichment analysis of GO terms (can be done as well with KEGG pathways)
+
 ```{r}
 # Create background dataset for hypergeometric testing using all genes tested for significance in the results
 all_genes <- dplyr::filter(res_ids, !is.na(gene)) %>% 
@@ -349,6 +384,7 @@ ego <- enrichplot::pairwise_termsim(ego)
 ```
 
 ### Visualize result
+
 ```{r enrichGO, fig.height=10, fig.width=5}
 dotplot(ego, showCategory=50)
 ```
@@ -376,6 +412,7 @@ cnetplot(ego,
 ```
 
 ### Perform GSEA analysis of KEGG pathways (can be done as well with GO terms)
+
 ```{r}
 # Extract entrez IDs. IDs should not be duplicated or NA
 res_entrez <- dplyr::filter(res_ids, entrez != "NA" & entrez != "NULL" & duplicated(entrez)==F)

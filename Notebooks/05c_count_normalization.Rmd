@@ -33,7 +33,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       eval           = TRUE)
 ```
 
-```{r setup, include = FALSE, echo = FALSE}
+```{r, include = FALSE, echo = FALSE}
 # DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
 # This chunk is ONLY necessary if you want to knit this document into a pdf!!
 library(tidyverse)
@@ -80,9 +80,9 @@ PD1 <- t(c(21, 58, 17, 97, 83, 10)) %>%
 size_factors <- c(1.32, 0.70, 1.04, 1.27, 1.11, 0.85)
 ```
 
+**Your code here:**
 
 ```{r}
-# your code here:
 
 ```
 
@@ -129,8 +129,10 @@ Suppose we had sample names matching in the txi object and metadata file, but th
 meta_random <- meta[sample(1:nrow(meta)),]
 ```
 
+**Your code here:**
+
 ```{r}
-# your code here
+
 ```
 
 *** 
@@ -158,7 +160,7 @@ dds <- DESeqDataSetFromTximport(txi,
 ## Create DESeq2Dataset object from traditional count matrix
 dds <- DESeqDataSetFromMatrix(countData = "/work/Intro_to_bulkRNAseq/Data/Mov10_counts_traditional.txt", 
                               colData = meta %>% column_to_rownames("sample"), 
-                              design = ~ sampletype)
+                              design = ~ condition)
 ```
 
 You can use DESeq-specific functions to access the different slots and retrieve information, if you wish. For example, suppose we wanted the original count matrix we would use `counts()`:
@@ -177,6 +179,7 @@ While it is not necessary to pre-filter low count genes before running the DESeq
 - It can also improve visualizations, as features with no information for differential expression are not plotted.
 
 Here we perform a minimal pre-filtering to keep only rows that have at least 10 reads total. 
+
 ```{r}
 keep <- rowSums(counts(dds)) >= 10
 dds <- dds[keep,]

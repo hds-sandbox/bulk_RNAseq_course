@@ -33,7 +33,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       eval           = TRUE)
 ```
 
-```{r setup, include = FALSE, echo = FALSE}
+```{r, include = FALSE, echo = FALSE}
 # DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
 # This chunk is ONLY necessary if you want to knit this document into a pdf!!
 library(tidyverse)
@@ -54,7 +54,7 @@ keep <- rowSums(counts(dds)) > 0
 dds <- dds[keep,]
 ```
 
-Approximate time: 60 minutes
+Approximate time: 15 minutes
 
 ## Learning Objectives 
 
@@ -62,7 +62,6 @@ Approximate time: 60 minutes
 * Examine size factors and understand the source of differences
 * Inspect gene-level dispersion estimates 
 * Recognize the importance of dispersion during differential expression analysis
-
 
 ## DESeq2 differential gene expression analysis workflow
 
@@ -81,7 +80,8 @@ keep <- rowSums(counts(dds)) > 0
 dds <- dds[keep,]
 ```
 
-Then, to run the entire differential expression analysis workflow, we use a single call to the function `DESeq()`. 
+Then, to run the entire differential expression analysis workflow, we use a single call to the function `DESeq()`.
+
 ```{r}
 ## Run analysis
 dds <- DESeq(dds)
@@ -96,6 +96,7 @@ And with that we completed the entire workflow for the differential gene express
 ### Step 1: Estimate size factors
 
 The first step in the differential expression analysis is to estimate the size factors, which is exactly what we already did to normalize the raw counts.
+
 Let's take a quick look at size factor values we have for each sample:
 
 ```{r}
@@ -140,6 +141,8 @@ head(dispersions(dds))
 ## Plot dispersion estimates
 plotDispEsts(dds)
 ```
+
+We can see that our estimated dispersions look quite good!
 
 ***
 

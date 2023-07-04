@@ -41,6 +41,10 @@ library(DESeq2)
 library(ggrepel)
 library(annotables)
 library(tximport)
+library(DOSE)
+library(pathview)
+library(clusterProfiler)
+library(org.Hs.eg.db)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
@@ -68,7 +72,7 @@ res_ids <- inner_join(res_tableOE_tb, ids, by=c("gene"="ensgene"))
 ```
 
 
-Approximate time: 60 minutes
+Approximate time: 30 minutes
 
 ## Learning Objectives:
 
@@ -129,7 +133,9 @@ head(gseaKEGG_results)
 
 > **NOTE:** The organisms with KEGG pathway information are listed [here](http://www.genome.jp/kegg/catalog/org_list.html).
 
-**How many pathways are enriched?** View the enriched pathways:
+**How many pathways are enriched?** 
+
+View the enriched pathways:
 
 ```{r}
 ## Write GSEA results to file
@@ -194,12 +200,12 @@ gseaplot(gseaGO, geneSetID = gseaGO_results$ID[1], title = gseaGO_results$Descri
 
 There are other gene sets available for GSEA analysis in clusterProfiler (Disease Ontology, Reactome pathways, etc.) You can check out this [link](https://yulab-smu.top/biomedical-knowledge-mining-book/) for more!
 
-------------------------------------------------------------------------
+***
 
 **Exercise 1**
 
-Run a Disease Ontology (DO) GSEA analysis using the `gseaDO()` function. **NOTE** the arguments are very similar to the previous examples.
+Run a Disease Ontology (DO) GSEA analysis using the `gseDO()` function. **NOTE** the arguments are very similar to the previous examples.
 
 -   Do you find anything interesting?
 
-------------------------------------------------------------------------
+***

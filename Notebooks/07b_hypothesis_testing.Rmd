@@ -33,7 +33,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       eval           = TRUE)
 ```
 
-```{r setup, include = FALSE, echo = FALSE}
+```{r, include = FALSE, echo = FALSE}
 # DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
 # This chunk is ONLY necessary if you want to knit this document into a pdf!!
 library(tidyverse)
@@ -56,7 +56,7 @@ dds <- estimateSizeFactors(dds)
 dds <- estimateDispersions(dds)
 ```
 
-Approximate time: 90 minutes
+Approximate time: 400 minutes
 
 ## Learning Objectives
 
@@ -118,35 +118,43 @@ In our dataset, we have three sample groups so we can make three possible pairwi
 2.  Control vs. Mov10 knockdown
 3.  Mov10 knockdown vs. Mov10 overexpression
 
-**We are really only interested in #1 and #2 from above**. When we initially created our `dds` object we had provided `~ sampletype` as our design formula, indicating that `sampletype` is our main factor of interest.
+**We are really only interested in #1 and #2 from above**. When we initially created our `dds` object we had provided `~ condition` as our design formula, indicating that `condition` is our main factor of interest.
 
 To indicate which two sample groups we are interested in comparing, we need to specify **contrasts**. The contrasts are used as input to the DESeq2 `results()` function to extract the desired results.
 
-Contrasts can be specified in three different ways (with the first method more commonly used):
+Contrasts can be specified in three different ways:
 
-1.  Contrasts can be supplied as a **character vector with exactly three elements**:
+1. One of the results from `resultsNames(dds)` and the `name` argument. This one is the simplest but it can also be very restricted:
+
+```{r, eval = FALSE}
+resultsNames(dds) # to see what names to use
+```
+
+```{r, eval = FALSE}
+results(dds, name = resultsNames(dds)[2]) # here we specify the second comparison from the list.
+```
+
+2.  Contrasts can be supplied as a **character vector with exactly three elements**:
+
+The first element `design_var`, is one of the variables you provided to the design formula on the `DESeqDataSetFromTximport()` function, when you first created the `dds` object. 
+
+The second element, `level_to_compare`, is your group of interest of the chosen variable. In our case it would be either MOV10 overexpressed samples or MOV10 knockdown samples. The group must match the name in your metadata.
+
+The last element, `base_level`, is, ofc, the base level for the comparison. This would be our control samples. Again, the name must match the name in your metadata!
 
 ```{r, eval = FALSE}
 # DO NOT RUN!
-contrast <- c("condition", "level_to_compare", "base_level")
+contrast <- c("design_var", "level_to_compare", "base_level")
 results(dds, contrast = contrast)
 ```
 
-2.  Contrasts can be given as a **list of 2 character vectors**: the names of the fold changes for the level of interest, and the names of the fold changes for the base level. These names should match identically to the elements of `resultsNames(object)`. *This method can be useful for combining interaction terms and main effects.*
+3.  Contrasts can be given as a **list of 2 character vectors**: the names of the fold changes for the level of interest, and the names of the fold changes for the base level. These names should match identically to the elements of `resultsNames(object)`. *This method can be useful for combining interaction terms and main effects.*
 
 ```{r, eval = FALSE}
 # DO NOT RUN!
 resultsNames(dds) # to see what names to use
-contrast <- list(resultsNames(dds)[1], resultsNames(dds)[2])
+contrast <- list(resultsNames(dds)[2], resultsNames(dds)[3])
 results(dds, contrast = contrast)
-```
-
-3. One of the results from `resultsNames(dds)` and the `name` argument. This one is the simplest but it can also be very restricted:
-
-```{r, eval = FALSE}
-# DO NOT RUN!
-resultsNames(dds) # to see what names to use
-results(dds, name = resultsNames(dds)[2])
 ```
 
 Alternatively, if you **only had two factor levels you could do nothing**:
@@ -163,9 +171,10 @@ To start, we want to evaluate **expression changes between the MOV10 overexpress
 
 Define contrasts for MOV10 overexpression using one of the two methods above.
 
+**Your code here** 
+
 ```{r}
-## Your code here 
-contrast_oe <- 
+
 ```
 
 ***

@@ -1,5 +1,5 @@
 {
-    "input": "/work/sequencing_data/merge/samplesheet.csv",
+    "input": "/work/samplesheet.csv",
     "outdir": "/work/preprocessing/results_salmon",
     "genome": "GRCh37",
     "pseudo_aligner": "salmon",
@@ -11,5 +11,6 @@
     "skip_bigwig": true,
     "skip_deseq2_qc": true,
     "skip_bbsplit": true,
-    "skip_alignment": true
-}/
+    "skip_alignment": true,
+    "extra_salmon_quant_args": "--gcBias"
+}

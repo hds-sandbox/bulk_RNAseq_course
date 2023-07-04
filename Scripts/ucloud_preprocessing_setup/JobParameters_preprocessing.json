@@ -3,7 +3,7 @@
     "request": {
         "application": {
             "name": "nf-core-rnaseq",
-            "version": "3.6-nfcore2.3.2"
+            "version": "3.11.2"
         },
         "product": {
             "id": "u1-standard-8",
@@ -16,16 +16,11 @@
             "interactive": {
                 "type": "boolean",
                 "value": true
-            },
-            "requirements": {
-                "path": "/82207/sequencing_data/Scripts/dependencies.sh",
-                "type": "file",
-                "readOnly": false
             }
         },
         "resources": [
             {
-                "path": "/82207/sequencing_data",
+                "path": "/778339",
                 "type": "file",
                 "readOnly": false
             }
@@ -47,6 +42,6 @@
     },
     "machineType": {
         "cpu": 8,
-        "memoryInGigs": 47
+        "memoryInGigs": 48
     }
 }

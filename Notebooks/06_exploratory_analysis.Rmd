@@ -1,5 +1,5 @@
 ---
-title: "Count normalization with DESeq2"
+title: "Exploratory analysis with DESeq2"
 author: "You!"
 date: '`r Sys.Date()`'
 knit: (function(inputFile, encoding) { 
@@ -33,7 +33,7 @@ knitr::opts_chunk$set(autodep        = TRUE,
                       eval           = TRUE)
 ```
 
-```{r setup, include = FALSE, echo = FALSE}
+```{r, include = FALSE, echo = FALSE}
 # DO NOT RUN IF YOU HAVE ALREADY RUN PREVIOUS NOTEBOOKS
 # This chunk is ONLY necessary if you want to knit this document into a pdf!!
 library(tidyverse)
@@ -54,7 +54,7 @@ keep <- rowSums(counts(dds)) > 0
 dds <- dds[keep,]
 ```
 
-Approximate time: 80 minutes
+Approximate time: 40 minutes
 
 ## Learning Objectives 
 
@@ -102,8 +102,10 @@ plotPCA(rld, intgroup="condition")
 
 By default `plotPCA()` uses the *top 500 most variable genes*. You can change this by adding the `ntop=` argument and specifying how many of the genes you want the function to consider. For example, try 1000 genes. Did the plot change a lot?
 
+**Your code here:**
+
 ```{r}
-# your code here
+
 ```
 
 ***
@@ -125,7 +127,9 @@ The `plotPCA()` function will only return the values for PC1 and PC2. If you wou
 rld_mat <- assay(rld) # extract rlog count matrix
 pca <- prcomp(t(rld_mat)) # perform PCA on the transposed (t) matrix of data 
 ```
-To see what the PCA object contains we can use again the `attributes()` function
+
+To see what the PCA object contains we can use again the `attributes()` function:
+
 ```{r}
 attributes(pca)
 ```
@@ -135,7 +139,8 @@ You can check the `?prcomp()` for more information. The most important variables
 - rotation: contribution of each gene to each PC.
 - x: PC values for each sample (we use this values for our plots)
 
-We can create a new object that contains all our metadata information and the PC values
+We can create a new object that contains all our metadata information and the PC values:
+
 ```{r}
 df <- cbind(meta, pca$x) # Create data frame with metadata and PC3 and PC4 values for input to ggplot
 ```
@@ -145,21 +150,21 @@ df <- cbind(meta, pca$x) # Create data frame with metadata and PC3 and PC4 value
 ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = condition))
 ```
 
-If you want to add PC variation information to the plot we can fetch it using the summary() function and take the second row
+If you want to add PC variation information to the plot we can fetch it using the summary() function and take the second row:
 
 ```{r}
 summary(pca)
 pca_var <- summary(pca)$importance[2,] # second row is stored in the object "importance"
 pca_var <- round(pca_var * 100, digits = 2) # make it percentage and round to 2 digits
 ```
-Finally, we can add it to our plot
+
+Finally, we can add it to our plot:
 
 ```{r}
 ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = condition)) + 
   xlab(paste0("PC3: ",pca_var["PC3"], "% variance")) + 
   ylab(paste0("PC4: ",pca_var["PC4"], "% variance")) 
 ```
-
 
 ### Hierarchical Clustering for the MOV10 dataset
 
@@ -178,14 +183,15 @@ sampleDistMatrix <- as.matrix(sampleDists)
 ```
 
 Let's take a look at the column and row names of the correlation matrix. 
+
 ```{r}
 ## check the output of sampleDistMatrix, make note of the row names and column names
 head(sampleDistMatrix)
 
 head(meta)
 ```
-You will notice that they match the names we have given our samples in the metadata data frame we started with. It is important that these match, so we can use the `annotation` argument below to plot a color block across the top. This block enables easy visualization of the hierarchical clustering.
 
+You will notice that they match the names we have given our samples in the metadata data frame we started with. It is important that these match, so we can use the `annotation` argument below to plot a color block across the top. This block enables easy visualization of the hierarchical clustering.
 
 Now, let's plot the heatmap!
 
@@ -203,8 +209,10 @@ When you plot using `pheatmap()` the hierarchical clustering information is used
 
 Instead of using distances between expression patterns, check the Pearson correlation between samples using `cor()`. Use your rlog count matrix as an input.
 
+**Your code here:**
+
 ```{r}
-#your code here
+
 ```
 
 **Extra**
@@ -217,7 +225,6 @@ heat.colors <- brewer.pal(6, "Blues") # Colors from the RColorBrewer package (on
 heat.colors <- colorRampPalette(heat.colors)(100) # Interpolate 100 colors
 ```
 
-
 ```{r custom_heatmap}
 pheatmap(sampleDistMatrix, annotation = meta %>% column_to_rownames("sample") %>% dplyr::select("condition"), 
          color = heat.colors, border_color=NA, fontsize = 10, 
@@ -226,7 +233,7 @@ pheatmap(sampleDistMatrix, annotation = meta %>% column_to_rownames("sample") %>
 
 You can check all the colors that RColorBrewer offers by using the following command: `display.brewer.all()`
 
-```{r RcolorBrewer_colors}
+```{r RcolorBrewer_colors, fig.height=10}
 display.brewer.all()
 ```
 
