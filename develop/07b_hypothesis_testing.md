@@ -158,7 +158,7 @@ DESeq2 helps reduce the number of genes tested by removing those genes unlikely 
 
 !!! info "So what does FDR \< 0.05 mean?"
 
-    By setting the FDR cutoff to < 0.05, we're saying that the proportion of false positives we expect amongst our differentially expressed genes is 5%. For example, if you call 500 genes as differentially expressed with an FDR cutoff of 0.05, you expect 25 of them to be false positives.
+    By setting the FDR cutoff to \< 0.05, we're saying that the proportion of false positives we expect amongst our differentially expressed genes is 5%. For example, if you call 500 genes as differentially expressed with an FDR cutoff of 0.05, you expect 25 of them to be false positives.
 
 ## Exploring Results (Wald test)
 
@@ -290,7 +290,7 @@ mcols(res_tableOE, use.names=T)
 - `pvalue`: Wald test p-value
 - `padj`: BH adjusted p-values
 
-## P-values
+## p-values
 
 The p-value is a probability value used to determine whether there is evidence to reject the null hypothesis. **A smaller p-value means that there is stronger evidence in favor of the alternative hypothesis**.
 
@@ -385,7 +385,7 @@ log2(normalized_counts_group1 / normalized_counts_group2)
 
 ## Summarizing results
 
-To summarize the results table, a handy function in DESeq2 is `summary()`. Confusingly it has the same name as the function used to inspect data frames. This function, when called with a DESeq results table as input, will summarize the results using a default threshold of padj \< 0.1. However, since we had set the `alpha` argument to 0.05 when creating our results table threshold: FDR \< 0.05 (padj/FDR is used even though the output says `p-value < 0.05`). Let’s start with the OE vs control results:
+To summarize the results table, a handy function in DESeq2 is `summary()`. Confusingly it has the same name as the function used to inspect data frames. This function, when called with a DESeq results table as input, will summarize the results using a default threshold of padj \< 0.1. However, since we had set the `alpha` argument to 0.05 when creating our results table threshold: FDR \< 0.05 (padj/FDR is used even though the output says `p-value \< 0.05`). Let’s start with the OE vs control results:
 
 ``` r
 ## Summarize results
@@ -437,7 +437,7 @@ Now that we have extracted the significant results, we are ready for visualizati
 
     1.  Create a contrast vector called `contrast_kd`.
     2.  Use contrast vector in the `results()` to extract a results table and store that to a variable called `res_tableKD`.
-    3.  Using a p-adjusted threshold of 0.05 (`padj.cutoff < 0.05`), subset `res_tableKD` to report the number of genes that are up- and down-regulated in Mov10_knockdown compared to control.
+    3.  Using a p-adjusted threshold of 0.05 (`padj.cutoff \< 0.05`), subset `res_tableKD` to report the number of genes that are up- and down-regulated in Mov10_knockdown compared to control.
     4.  How many genes are differentially expressed in the Knockdown compared to Control? How does this compare to the overexpression significant gene list (in terms of numbers)?
 
 ??? question "**Solutions to Exercise 2**"

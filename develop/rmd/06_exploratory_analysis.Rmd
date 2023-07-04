@@ -200,24 +200,24 @@ knitr::include_graphics("./img/06_exploratory_analysis/pca_500.png")
 
 ??? question "**Solution to Exercise 1**"
 
-  Using the 1000 most variable genes, the plot does not change a lot:
-
+    Using the 1000 most variable genes, the plot does not change a lot:
+    
     ```{r}
     plotPCA(rld, intgroup="condition", ntop = 1000)
     ```
-
+    
     What about 2000 genes? It seems that the PCs have a bit different % variance explained:
-
+    
     ```{r}
     plotPCA(rld, intgroup="condition", ntop = 2000)
     ```
-
+    
     What about all genes? Not much change either!
-
+    
     ```{r}
     plotPCA(rld, intgroup="condition", ntop = nrow(rld)) #nrow is number of rows and it equals to all genes!
     ```
-
+    
     As you can see, most of the info comes from the top most variable genes. Since PCs are capturing the variation of our data, adding genes that are hardly variable makes any difference to the plot.
 
 !!! question "**Exercise 2**"
@@ -332,21 +332,21 @@ Overall, we observe pretty high correlations across the board ( > 0.999) suggest
 ??? question "**Solution to Exercise 3**"
 
     First, we get pearson correlations between our samples:
-
+    
     ```{r}
     pearson <- cor(rld_mat) 
     pearson
     ```
-
+    
     As you can see, the result of cor for a matrix like `rld_mat` is a square matrix (rows are the same as columns). Each value is the Pearson correlation between a row and a column.
-
+    
     Then, we create the plot:
-
+    
     ```{r}
     pheatmap(pearson, annotation_col = meta %>% column_to_rownames("sample") %>% 
-           dplyr::select(condition)) # we only want to use the condition column as an annotation
+               dplyr::select(condition)) # we only want to use the condition column as an annotation
     ```
-    
+
 #### Custom heatmap
 
 There are many arguments and options for the `pheatmap()` function. You could, for example, change the color scale used, remove the dendograms, avoid clustering or even scale the values per row or per column.

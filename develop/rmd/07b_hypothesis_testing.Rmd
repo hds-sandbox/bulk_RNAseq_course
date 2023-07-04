@@ -167,7 +167,7 @@ Regardless of whether we use the Wald test or the LRT, each gene that has been t
 
 ### What does the p-value mean?
 
-A gene with a significance cut-off of p < 0.05, means there is a 5% chance it is a false positive. For example, if we test 20,000 genes for differential expression, at p < 0.05 we would expect to find 1,000 DE genes by chance. If we found 3000 genes to be differentially expressed total, roughly one third of our genes are false positives! We would not want to sift through our "significant" genes to identify which ones are true positives.
+A gene with a significance cut-off of p \< 0.05, means there is a 5% chance it is a false positive. For example, if we test 20,000 genes for differential expression, at p \< 0.05 we would expect to find 1,000 DE genes by chance. If we found 3000 genes to be differentially expressed total, roughly one third of our genes are false positives! We would not want to sift through our "significant" genes to identify which ones are true positives.
 
 Since each p-value is the result of a single test (single gene). The more genes we test, the more we inflate the false positive rate. **This is the multiple testing problem.**
 
@@ -181,9 +181,9 @@ There are a few common approaches for multiple test correction:
 
 DESeq2 helps reduce the number of genes tested by removing those genes unlikely to be significantly DE prior to testing, such as those with low number of counts and outlier samples ([see below](07b_hypothesis_testing.md#gene-level-filtering)). However, multiple test correction is also implemented to reduce the False Discovery Rate using an interpretation of the Benjamini-Hochberg procedure.
 
-!!! info "So what does FDR < 0.05 mean?"
+!!! info "So what does FDR \< 0.05 mean?"
 
-    By setting the FDR cutoff to < 0.05, we're saying that the proportion of false positives we expect amongst our differentially expressed genes is 5%. For example, if you call 500 genes as differentially expressed with an FDR cutoff of 0.05, you expect 25 of them to be false positives.
+    By setting the FDR cutoff to \< 0.05, we're saying that the proportion of false positives we expect amongst our differentially expressed genes is 5%. For example, if you call 500 genes as differentially expressed with an FDR cutoff of 0.05, you expect 25 of them to be false positives.
 
 ## Exploring Results (Wald test)
 
@@ -207,7 +207,7 @@ To indicate which two sample groups we are interested in comparing, we need to s
 
 Contrasts can be specified in three different ways:
 
-1.  Contrasts can be supplied as a **character vector with exactly three elements**: the name of the factor (of interest) in the design formula, the name of the two factors levels to compare. The factor level given last is the base level for the comparison. The syntax is given below:
+1. Contrasts can be supplied as a **character vector with exactly three elements**: the name of the factor (of interest) in the design formula, the name of the two factors levels to compare. The factor level given last is the base level for the comparison. The syntax is given below:
 
 ```{r, eval = FALSE}
 # DO NOT RUN!
@@ -215,7 +215,7 @@ contrast <- c("condition", "level_to_compare", "base_level")
 results(dds, contrast = contrast)
 ```
 
-2.  Contrasts can be given as a **list of 2 character vectors**: the names of the fold changes for the level of ineterest, and the names of the fold changes for the base level. These names should match identically to the elements of `resultsNames(object)`. *This method can be useful for combining interaction terms and main effects.*
+2. Contrasts can be given as a **list of 2 character vectors**: the names of the fold changes for the level of ineterest, and the names of the fold changes for the base level. These names should match identically to the elements of `resultsNames(object)`. *This method can be useful for combining interaction terms and main effects.*
 
 ```{r, eval = FALSE}
 # DO NOT RUN!
@@ -312,11 +312,11 @@ mcols(res_tableOE, use.names=T)
 -   `pvalue`: Wald test p-value
 -   `padj`: BH adjusted p-values
 
-## P-values
+## p-values
 
 The p-value is a probability value used to determine whether there is evidence to reject the null hypothesis. **A smaller p-value means that there is stronger evidence in favor of the alternative hypothesis**.
 
-**The `padj` column** in the results table represents the p-value adjusted for multiple testing, and is the most important column of the results. Typically, a threshold such as `padj` < 0.05 is a good starting point for identifying significant genes. The default method for **multiple test correction** in DESeq2 is the FDR. Other methods can be used with the `pAdjustMethod` argument in the `results()` function.
+**The `padj` column** in the results table represents the p-value adjusted for multiple testing, and is the most important column of the results. Typically, a threshold such as `padj` \< 0.05 is a good starting point for identifying significant genes. The default method for **multiple test correction** in DESeq2 is the FDR. Other methods can be used with the `pAdjustMethod` argument in the `results()` function.
 
 ### Gene-level filtering
 
@@ -392,7 +392,7 @@ res_tableOE %>%
 
 ## Fold changes
 
-Another important column in the results table, is the `log2FoldChange`. With large significant gene lists it can be hard to extract meaningful biological relevance. To help increase stringency, one can also **add a fold change threshold**. Keep in mind when setting that value that we are working with log2 fold changes, so a cutoff of `log2FoldChange` < 1 would translate to an actual fold change of 2.
+Another important column in the results table, is the `log2FoldChange`. With large significant gene lists it can be hard to extract meaningful biological relevance. To help increase stringency, one can also **add a fold change threshold**. Keep in mind when setting that value that we are working with log2 fold changes, so a cutoff of `log2FoldChange` \< 1 would translate to an actual fold change of 2.
 
 ??? info "An alternative approach to add the fold change threshold"
     
@@ -410,7 +410,7 @@ log2(normalized_counts_group1 / normalized_counts_group2)
 
 ## Summarizing results
 
-To summarize the results table, a handy function in DESeq2 is `summary()`. Confusingly it has the same name as the function used to inspect data frames. This function, when called with a DESeq results table as input, will summarize the results using a default threshold of padj < 0.1. However, since we had set the `alpha` argument to 0.05 when creating our results table threshold: FDR < 0.05 (padj/FDR is used even though the output says `p-value < 0.05`). Let's start with the OE vs control results:
+To summarize the results table, a handy function in DESeq2 is `summary()`. Confusingly it has the same name as the function used to inspect data frames. This function, when called with a DESeq results table as input, will summarize the results using a default threshold of padj \< 0.1. However, since we had set the `alpha` argument to 0.05 when creating our results table threshold: FDR \< 0.05 (padj/FDR is used even though the output says `p-value \< 0.05`). Let's start with the OE vs control results:
 
 ```{r}
 ## Summarize results
@@ -462,7 +462,7 @@ Now that we have extracted the significant results, we are ready for visualizati
 
     1.  Create a contrast vector called `contrast_kd`.
     2.  Use contrast vector in the `results()` to extract a results table and store that to a variable called `res_tableKD`.
-    3.  Using a p-adjusted threshold of 0.05 (`padj.cutoff < 0.05`), subset `res_tableKD` to report the number of genes that are up- and down-regulated in Mov10_knockdown compared to control.
+    3.  Using a p-adjusted threshold of 0.05 (`padj.cutoff \< 0.05`), subset `res_tableKD` to report the number of genes that are up- and down-regulated in Mov10_knockdown compared to control.
     4.  How many genes are differentially expressed in the Knockdown compared to Control? How does this compare to the overexpression significant gene list (in terms of numbers)?
 
 ??? question "**Solutions to Exercise 2**"

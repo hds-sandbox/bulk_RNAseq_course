@@ -153,7 +153,8 @@ plotPCA(rld, intgroup="condition")
 
 ??? question "**Solution to Exercise 1**"
 
-Using the 1000 most variable genes, the plot does not change a lot:
+    Using the 1000 most variable genes, the plot does not change a lot:
+
 
     ```r
     plotPCA(rld, intgroup="condition", ntop = 1000)
@@ -296,7 +297,7 @@ Overall, we observe pretty high correlations across the board ( \> 0.999) sugges
 
     ```r
     pheatmap(pearson, annotation_col = meta %>% column_to_rownames("sample") %>% 
-           dplyr::select(condition)) # we only want to use the condition column as an annotation
+               dplyr::select(condition)) # we only want to use the condition column as an annotation
     ```
 
 #### Custom heatmap

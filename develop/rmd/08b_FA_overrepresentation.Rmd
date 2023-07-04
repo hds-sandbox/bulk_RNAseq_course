@@ -213,7 +213,7 @@ knitr::include_graphics("./img/08b_FA_overrepresentation/cluster_summary.png")
 
     Create two new GO enrichment analyses one with UP and another for DOWN regulated genes for MOV10 overexpression.
     
-??? question "**Solution to Exercise 1**""
+??? question "**Solution to Exercise 1**"
 
     1. Separate results into UP and DOWN regulated:
     

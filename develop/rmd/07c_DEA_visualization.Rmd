@@ -124,7 +124,7 @@ normalized_counts <- counts(dds, normalized=T) %>%
 
 ### MA plot
 
-A plot that can be useful to exploring our results is the MA plot. The MA plot shows the **mean of the normalized counts versus the log2 fold changes for all genes tested**. The genes that are significantly DE are colored to be easily identified (adjusted p-value < 0.01 by default). This is also a great way to illustrate the effect of LFC shrinkage. The DESeq2 package offers a simple function to generate an MA plot. 
+A plot that can be useful to exploring our results is the MA plot. The MA plot shows the **mean of the normalized counts versus the log2 fold changes for all genes tested**. The genes that are significantly DE are colored to be easily identified (adjusted p-value \< 0.01 by default). This is also a great way to illustrate the effect of LFC shrinkage. The DESeq2 package offers a simple function to generate an MA plot. 
 
 **Let's start with the unshrunken results:**
 

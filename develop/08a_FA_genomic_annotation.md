@@ -390,6 +390,7 @@ Our data is now ready to use for functional analysis! We have all the ids necess
 
     Annotate the results of your DEA for knockdown vs control 
 
+??? question "**Solution to Exercise 2**"
 
     ```r
     ## Return the IDs for the gene symbols in the DE results

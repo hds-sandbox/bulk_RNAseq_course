@@ -176,7 +176,7 @@ write.csv(cluster_summary, "../Results/clusterProfiler_Mov10oe.csv")
 
     Create two new GO enrichment analyses one with UP and another for DOWN regulated genes for MOV10 overexpression.
 
-??? question "**Solution to Exercise 1**""
+??? question "**Solution to Exercise 1**"
 
     1. Separate results into UP and DOWN regulated:
 
