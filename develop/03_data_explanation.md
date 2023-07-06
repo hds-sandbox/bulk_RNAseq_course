@@ -1,7 +1,6 @@
 ---
 title: Introduction to the dataset
 summary: In this lesson we explain the dataset used for the workshop
-date: 2023-01-17
 hide:
   - navigation
 ---

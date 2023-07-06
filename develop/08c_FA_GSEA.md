@@ -1,7 +1,6 @@
 ---
 title: Functional class scoring
 summary: In this lesson we explain how to run functional analysis on your results using Class Scoring methods
-date: 2023-07-04
 ---
 
 # Functional class scoring

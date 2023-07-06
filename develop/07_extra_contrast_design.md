@@ -1,7 +1,6 @@
 ---
 title: Contrast designs
 summary: In this lesson we explain how create complex design formulas and contrasts
-date: 2023-01-17
 ---
 
 # Design formula and contrasts

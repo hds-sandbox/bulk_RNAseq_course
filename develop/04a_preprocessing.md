@@ -1,7 +1,6 @@
 ---
 title: Read preprocessing theory
 summary: In this lesson we explain theory behind read preprocessing
-date: 2023-01-17
 ---
 
 # From raw sequence reads to count matrix:<br/>the RNA-seq workflow

@@ -1,7 +1,6 @@
 ---
 title: nf-core pipelines
 summary: In this lesson we explain a community curated pipeline for bulk RNAseq preprocessing
-date: 2023-01-17
 ---
 
 # Automating your workflow: Nextflow and nf-core pipelines
@@ -25,6 +24,7 @@ In our case, a "preprocessing" pipeline consists on concatenating all the proces
 <p align="center">
 
 <img src="./img/04b_pipelines/nf-core-rnaseq_metro_map_grey.png"/>
+<figcaption>nf-core/rnaseq pipeline metro schematic.</figcaption>
 
 </p>
 
@@ -49,15 +49,15 @@ It doesn't aim to be another pipeline scripting language yet, but it is built ar
 In practice, this means that a Nextflow script is defined by composing many different processes. Each process can execute a given bioinformatics tool or scripting language, to which is added the ability to coordinate and synchronize the processes execution by simply specifying their inputs and outputs.
 
 ### Features
--   **Fast prototyping**: Nextflow allows you to write a computational pipeline by making it simpler to put together many different tasks. 
+- **Fast prototyping**: Nextflow allows you to write a computational pipeline by making it simpler to put together many different tasks. 
     You may reuse your existing scripts and tools and you don't need to learn a new language or API to start using it.
--   **Reproducibility**: Nextflow supports Docker and Singularity containers technology. 
+- **Reproducibility**: Nextflow supports Docker and Singularity containers technology. 
     This, along with the integration of the GitHub code sharing platform, allows you to write self-contained pipelines, manage versions and to rapidly reproduce any former configuration.
--   **Portable**: Nextflow provides an abstraction layer between your pipeline's logic and the execution layer, so that it can be executed on multiple platforms without it changing.
+- **Portable**: Nextflow provides an abstraction layer between your pipeline's logic and the execution layer, so that it can be executed on multiple platforms without it changing.
     It provides out of the box executors for GridEngine, SLURM, LSF, PBS, Moab and HTCondor batch schedulers and for Kubernetes, Amazon AWS, Google Cloud and Microsoft Azure platforms.
--   **Unified parallelism**: Nextflow is based on the dataflow programming model which greatly simplifies writing complex distributed pipelines.
+- **Unified parallelism**: Nextflow is based on the dataflow programming model which greatly simplifies writing complex distributed pipelines.
     Parallelisation is implicitly defined by the processes input and output declarations. The resulting applications are inherently parallel and can scale-up or scale-out, transparently, without having to adapt to a specific platform architecture.
--   **Continuous checkpoints**: All the intermediate results produced during the pipeline execution are automatically tracked.
+- **Continuous checkpoints**: All the intermediate results produced during the pipeline execution are automatically tracked.
     This allows you to resume its execution, from the last successfully executed step, no matter what the reason was for it stopping.
 
 ## The nf-core project
@@ -68,11 +68,12 @@ In practice, this means that a Nextflow script is defined by composing many diff
 
 </p>
 
-The [nf-core project](https://nf-co.re/) is a community effort to collect a curated set of analysis pipelines built using [Nextflow] (<https://www.nextflow.io/>), an incredibly powerful and flexible workflow language. This means that all the tools and steps used in your RNAseq workflow can be automated and easily reproduced by other researchers if necessary. In addition, if you use any of the nf-core pipelines, you will be sure that all the necessary tools are available to you in any computer platform (Cloud computing, HPC or your personal computer).
+The [nf-core project](https://nf-co.re/) is a community effort to collect a curated set of analysis pipelines built using [Nextflow](<https://www.nextflow.io/>), an incredibly powerful and flexible workflow language. This means that all the tools and steps used in your RNAseq workflow can be automated and easily reproduced by other researchers if necessary. In addition, if you use any of the nf-core pipelines, you will be sure that all the necessary tools are available to you in any computer platform (Cloud computing, HPC or your personal computer).
 
 <p align="center">
 
 <img src="./img/04b_pipelines/nf-core-rnaseq_metro_map_grey.png"/>
+<figcaption>nf-core/rnaseq pipeline metro schematic.</figcaption>
 
 </p>
 
@@ -80,9 +81,9 @@ The [RNAseq pipeline](https://nf-co.re/rnaseq) enables using many different tool
 
 ![type:video](https://youtube.com/embed/qMuUt8oVhHw)
 
-## nf-core/rnaseq: Usage for version 3.6
+## nf-core/rnaseq: Usage for version 3.11.2
 
-In this section, we will see some of the most important arguments that the pipeline uses to run a RNAseq preprocessing workflow. There are many more options for advanced users and we really encorage you to check them out at the [official webpage](https://nf-co.re/rnaseq/3.6/usage). Below you will find the arguments we will use for our own data.
+In this section, we will see some of the most important arguments that the pipeline uses to run a RNAseq preprocessing workflow. There are many more options for advanced users and we really encourage you to check them out at the [official webpage](https://nf-co.re/rnaseq/3.11.2/usage). Below you will find the arguments we will use for our own data.
 
 ### Running the pipeline
 
@@ -102,6 +103,7 @@ results         # Finished results (configurable, see below)
 .nextflow_log   # Log file from Nextflow
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
+
 !!! info
 
     - Options with a *single* hyphen are part of Nextflo, i.e. `-profile`.
@@ -130,21 +132,21 @@ They are loaded in sequence, so later profiles can overwrite earlier profiles.
 
 If `-profile` is not specified, the pipeline will run locally and expect all software to be installed and available on the `PATH`. This is *not* recommended.
 
-* `docker`
-    * A generic configuration profile to be used with [Docker](https://docker.com/)
-* `singularity`
-    * A generic configuration profile to be used with [Singularity](https://sylabs.io/docs/)
-* `podman`
-    * A generic configuration profile to be used with [Podman](https://podman.io/)
-* `shifter`
-    * A generic configuration profile to be used with [Shifter](https://nersc.gitlab.io/development/shifter/how-to-use/)
-* `charliecloud`
-    * A generic configuration profile to be used with [Charliecloud](https://hpc.github.io/charliecloud/)
-* `conda`
-    * A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker, Singularity, Podman, Shifter or Charliecloud.
-* `test`
-    * A profile with a complete configuration for automated testing
-    * Includes links to test data so needs no other parameters
+- `docker`
+    - A generic configuration profile to be used with [Docker](https://docker.com/)
+- `singularity`
+    - A generic configuration profile to be used with [Singularity](https://sylabs.io/docs/)
+- `podman`
+    - A generic configuration profile to be used with [Podman](https://podman.io/)
+- `shifter`
+    - A generic configuration profile to be used with [Shifter](https://nersc.gitlab.io/development/shifter/how-to-use/)
+- `charliecloud`
+    - A generic configuration profile to be used with [Charliecloud](https://hpc.github.io/charliecloud/)
+- `conda`
+    - A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker, Singularity, Podman, Shifter or Charliecloud.
+- `test`
+    - A profile with a complete configuration for automated testing
+    - Includes links to test data so needs no other parameters
 
 #### `-name`
 
@@ -160,7 +162,7 @@ You can also supply a run name to resume a specific run: `-resume [run-name]`. U
 
 It is a good idea to specify a pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
 
-First, go to the [nf-core/rnaseq releases page](https://github.com/nf-core/rnaseq/releases) and find the latest version number - numeric only (eg. `1.3.1`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`.
+First, go to the [nf-core/rnaseq releases page](https://github.com/nf-core/rnaseq/releases) and find the latest version number (numeric only), e.g., `1.3.1`. Then specify this when running the pipeline with `-r` (one hyphen), e.g., `-r 1.3.1`.
 
 This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future.
 
@@ -210,7 +212,7 @@ TREATMENT_REP3,AEG588A6_S6_L004_R1_001.fastq.gz,,reverse
 | `strandedness` | Sample strand-specificity. Must be one of `unstranded`, `forward` or `reverse`.                                                                                                        |
 
 !!! info
-    
+
     The `group` and `replicate` columns were replaced with a single `sample` column as of v3.1 of the pipeline. The `sample` column is essentially a concatenation of the `group` and `replicate` columns, however it now also offers more flexibility in instances where replicate information is not required e.g. when sequencing clinical samples. If all values of `sample` have the same number of underscores, fields defined by these underscore-separated names may be used in the PCA plots produced by the pipeline, to regain the ability to represent different groupings.
 
 #### Results folder
@@ -227,14 +229,16 @@ By default, the pipeline uses [STAR](https://github.com/alexdobin/STAR) (i.e. `-
 
 You also have the option to pseudo-align and quantify your data with [Salmon](https://salmon.readthedocs.io/en/latest/salmon.html) by providing the `--pseudo_aligner salmon` parameter. Salmon will then be run in addition to the standard alignment workflow defined by `--aligner`, mainly because it allows you to obtain QC metrics with respect to the genomic alignments. However, you can provide the `--skip_alignment` parameter if you would like to run Salmon in isolation.
 
+Two additional parameters `--extra_star_align_args` and `--extra_salmon_quant_args` were added in v3.10 of the pipeline that allow you to append any custom parameters to the STAR align and Salmon quant commands, respectively. Note, the `--seqBias` and `--gcBias` are not provided to Salmon quant by default so you can provide these via `--extra_salmon_quant_args '--seqBias --gcBias'` if required.
+
 #### Reference genome files
 
 The minimum reference genome requirements are a FASTA and GTF file, all other files required to run the pipeline can be generated from these files. However, it is more storage and compute friendly if you are able to re-use reference genome files as efficiently as possible. It is recommended to use the `--save_reference` parameter if you are using the pipeline to build new indices (e.g. those unavailable on [AWS iGenomes](https://nf-co.re/usage/reference_genomes)) so that you can save them somewhere locally. The index building step can be quite a time-consuming process and it permits their reuse for future runs of the pipeline to save disk space. You can then either provide the appropriate reference genome files on the command-line via the appropriate parameters (e.g. `--star_index '/path/to/STAR/index/'`) or via a custom config file.
 
-* If `--genome` is provided then the FASTA and GTF files (and existing indices) will be automatically obtained from AWS-iGenomes unless these have already been downloaded locally in the path specified by `--igenomes_base`.
-* If `--gff` is provided as input then this will be converted to a GTF file, or the latter will be used if both are provided.
-* If `--gene_bed` is not provided then it will be generated from the GTF file.
-* If `--additional_fasta` is provided then the features in this file (e.g. ERCC spike-ins) will be automatically concatenated onto both the reference FASTA file as well as the GTF annotation before building the appropriate indices.
+- If `--genome` is provided then the FASTA and GTF files (and existing indices) will be automatically obtained from AWS-iGenomes unless these have already been downloaded locally in the path specified by `--igenomes_base`.
+- If `--gff` is provided as input then this will be converted to a GTF file, or the latter will be used if both are provided.
+- If `--gene_bed` is not provided then it will be generated from the GTF file.
+- If `--additional_fasta` is provided then the features in this file (e.g. ERCC spike-ins) will be automatically concatenated onto both the reference FASTA file as well as the GTF annotation before building the appropriate indices.
 
 When using `--aligner star_rsem`, both the STAR and RSEM indices should be present in the path specified by `--rsem_index` (see [#568](https://github.com/nf-core/rnaseq/issues/568))
 
@@ -246,32 +250,33 @@ When using `--aligner star_rsem`, both the STAR and RSEM indices should be prese
 
 There are several options to skip various steps within the workflow.
 
-*   `--skip_bigwig`: Skip bigWig file creation
-*   `--skip_stringtie`: Skip StringTie.
-*   `--skip_fastqc`: Skip FastQC.
-*   `--skip_preseq`: Skip Preseq.
-*   `--skip_dupradar`: Skip dupRadar.
-*   `--skip_qualimap`: Skip Qualimap.
-*   `--skip_rseqc`: Skip RSeQC.
-*   `--skip_biotype_qc`: Skip additional featureCounts process for biotype QC.
-*   `--skip_deseq2_qc`: Skip DESeq2 PCA and heatmap plotting.
-*   `--skip_multiqc`: Skip MultiQC.
-*   `--skip_qc`: Skip all QC steps except for MultiQC.
+- `--skip_bigwig`: Skip bigWig file creation
+- `--skip_stringtie`: Skip StringTie.
+- `--skip_fastqc`: Skip FastQC.
+- `--skip_preseq`: Skip Preseq.
+- `--skip_dupradar`: Skip dupRadar.
+- `--skip_qualimap`: Skip Qualimap.
+- `--skip_rseqc`: Skip RSeQC.
+- `--skip_biotype_qc`: Skip additional featureCounts process for biotype QC.
+- `--skip_deseq2_qc`: Skip DESeq2 PCA and heatmap plotting.
+- `--skip_multiqc`: Skip MultiQC.
+- `--skip_qc`: Skip all QC steps except for MultiQC.
 
 ### Understanding the results folder
 
 The pipeline will save everything inside the `--outdir` folder. Inside it you will find different results. In this section we will go through the most relevant results for this workshop. If you are interested in the full documentation, visit the [nf-core rnaseq output docs](https://nf-co.re/rnaseq/3.6/output).
 
-**1. `pipeline_info`**
+#### 1. `pipeline_info`
 
 First, we will check the `pipeline_info` folder. [Nextflow](https://www.nextflow.io/docs/latest/tracing.html) provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.
 
 `pipeline_info/`
-*   Reports generated by Nextflow: `execution_report.html`, `execution_timeline.html`, `execution_trace.txt` and `pipeline_dag.dot`/`pipeline_dag.svg`.
-*   Reports generated by the pipeline: `pipeline_report.html`, `pipeline_report.txt` and `software_versions.yml`. The `pipeline_report*` files will only be present if the `--email` / `--email_on_fail` parameter's are used when running the pipeline.
-*   Reformatted samplesheet files used as input to the pipeline: `samplesheet.valid.csv`.
 
-**2. `genome`**
+- Reports generated by Nextflow: `execution_report.html`, `execution_timeline.html`, `execution_trace.txt` and `pipeline_dag.dot`/`pipeline_dag.svg`.
+- Reports generated by the pipeline: `pipeline_report.html`, `pipeline_report.txt` and `software_versions.yml`. The `pipeline_report*` files will only be present if the `--email` / `--email_on_fail` parameter's are used when running the pipeline.
+- Reformatted samplesheet files used as input to the pipeline: `samplesheet.valid.csv`.
+
+#### 2. `genome`
 
 A number of genome-specific files are generated by the pipeline because they are required for the downstream processing of the results. If the `--save_reference` parameter is provided then these will be saved in the `genome/` directory. It is recommended to use the `--save_reference` parameter if you are using the pipeline to build new indices so that you can save them somewhere locally. The index building step can be quite a time-consuming process and it permits their reuse for future runs of the pipeline to save disk space.
 
@@ -280,94 +285,107 @@ A number of genome-specific files are generated by the pipeline because they are
     If you have not selected `--save_reference`, you will instead get a README.txt file containing information about the reference that was used for the run.
 
 `genome/`
-*   `*.fa`, `*.gtf`, `*.gff`, `*.bed`, `.tsv`: If the `--save_reference` parameter is provided then all of the genome reference files will be placed in this directory
+
+- `*.fa`, `*.gtf`, `*.gff`, `*.bed`, `.tsv`: If the `--save_reference` parameter is provided then all of the genome reference files will be placed in this directory
   
 `genome/index/`
-*   `star/`: Directory containing STAR indices.
-*   `hisat2/`: Directory containing HISAT2 indices.
-*   `rsem/`: Directory containing STAR and RSEM indices.
-*   `salmon/`: Directory containing Salmon indices.
 
-**3. `multiqc`**
+- `star/`: Directory containing STAR indices.
+- `hisat2/`: Directory containing HISAT2 indices.
+- `rsem/`: Directory containing STAR and RSEM indices.
+- `salmon/`: Directory containing Salmon indices.
+
+#### 3. `multiqc`
 
 Results generated by MultiQC collate pipeline QC from supported tools i.e. FastQC, Cutadapt, SortMeRNA, STAR, RSEM, HISAT2, Salmon, SAMtools, Picard, RSeQC, Qualimap, Preseq and featureCounts. Additionally, various custom content has been added to the report to assess the output of dupRadar, DESeq2 and featureCounts biotypes, and to highlight samples failing a mimimum mapping threshold or those that failed to match the strand-specificity provided in the input samplesheet. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability.
 
 `multiqc/`
-*   `multiqc_report.html`: a standalone HTML file that can be viewed in your web browser.
-*   `multiqc_data/`: directory containing parsed statistics from the different tools used in the pipeline.
-*   `multiqc_plots/`: directory containing individual plots from the different tools used in the pipeline.
 
-**4. `fastqc`**
+- `multiqc_report.html`: a standalone HTML file that can be viewed in your web browser.
+- `multiqc_data/`: directory containing parsed statistics from the different tools used in the pipeline.
+- `multiqc_plots/`: directory containing individual plots from the different tools used in the pipeline.
+
+#### 4. `fastqc`
 
 The FastQC plots in this directory are generated relative to the raw, input reads. They may contain adapter sequence and regions of low quality.
 
 `fastqc/`
-*   `*_fastqc.html`: FastQC report containing quality metrics.
-*   `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
 
-**5. `trimgalore`**
+- `*_fastqc.html`: FastQC report containing quality metrics.
+- `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
+
+#### 5. `trimgalore`
 
 In this folder you will find your trimmed and filtered fastq files from TrimGalore, including its fastqc results!
 
 `trimgalore/`
-*   `*.fq.gz`: If `--save_trimmed` is specified, FastQ files **after** adapter trimming will be placed in this directory.
-*   `*_trimming_report.txt`: Log file generated by Trim Galore!.
+
+- `*.fq.gz`: If `--save_trimmed` is specified, FastQ files **after** adapter trimming will be placed in this directory.
+- `*_trimming_report.txt`: Log file generated by Trim Galore!.
 
 `trimgalore/fastqc/`
-*   `*_fastqc.html`: FastQC report containing quality metrics for read 1 (*and read2 if paired-end*) **after** adapter trimming.
-*   `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
 
-**6. `{Aligner}`**
+- `*_fastqc.html`: FastQC report containing quality metrics for read 1 (*and read2 if paired-end*) **after** adapter trimming.
+- `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
 
-Depending on the aligner that you use, this folder may change its contents. Generally, here you can find the aligned reads in `.bam` format, samtool stats, duplicated stats and different QC tools related to mapped reads.
+#### 6. `aligner`
+
+Depending on the aligner that you use, this folder may change its contents and name. Generally, here you can find the aligned reads in `.bam` format, samtool stats, duplicated stats and different QC tools related to mapped reads.
 
 Also, depending on the `--aligner` option you can either find the quantification results from either salmon (pseudoquantification) or rsem (traditional quantification, i.e., a count matrix)
 
 **From star_salmon**
 
 `star_salmon/`
-*   `*.Aligned.out.bam`: If `--save_align_intermeds` is specified the original BAM file containing read alignments to the reference genome will be placed in this directory.
+
+- `*.Aligned.out.bam`: If `--save_align_intermeds` is specified the original BAM file containing read alignments to the reference genome will be placed in this directory.
 
 `star_salmon/log/`
-*   `*.SJ.out.tab`: File containing filtered splice junctions detected after mapping the reads.
-*   `*.Log.final.out`: STAR alignment report containing the mapping results summary.
-*   `*.Log.out` and `*.Log.progress.out`: STAR log files containing detailed information about the run. Typically only useful for debugging purposes.
+
+- `*.SJ.out.tab`: File containing filtered splice junctions detected after mapping the reads.
+- `*.Log.final.out`: STAR alignment report containing the mapping results summary.
+- `*.Log.out` and `*.Log.progress.out`: STAR log files containing detailed information about the run. Typically only useful for debugging purposes.
 
 `star_salmon/salmon/`
-*   `salmon.merged.gene_counts.tsv`: Matrix of gene-level raw counts across all samples.
-*   `salmon.merged.gene_tpm.tsv`: Matrix of gene-level TPM values across all samples.
-*   `salmon.merged.gene_counts.rds`: RDS object that can be loaded in R that contains a [SummarizedExperiment](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html) container with the TPM (`abundance`), estimated counts (`counts`) and transcript length (`length`) in the assays slot for genes.
-*   `salmon.merged.gene_counts_scaled.tsv`: Matrix of gene-level scaled counts across all samples.
-*   `salmon.merged.gene_counts_scaled.rds`: RDS object that can be loaded in R that contains a [SummarizedExperiment](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html) container with the TPM (`abundance`), estimated counts (`counts`) and transcript length (`length`) in the assays slot for genes.
-*   `salmon.merged.gene_counts_length_scaled.tsv`: Matrix of gene-level length-scaled counts across all samples.
-*   `salmon.merged.gene_counts_length_scaled.rds`: RDS object that can be loaded in R that contains a [SummarizedExperiment](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html) container with the TPM (`abundance`), estimated counts (`counts`) and transcript length (`length`) in the assays slot for genes.
-*   `salmon.merged.transcript_counts.tsv`: Matrix of isoform-level raw counts across all samples.
-*   `salmon.merged.transcript_tpm.tsv`: Matrix of isoform-level TPM values across all samples.
-*   `salmon.merged.transcript_counts.rds`: RDS object that can be loaded in R that contains a [SummarizedExperiment](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html) container with the TPM (`abundance`), estimated counts (`counts`) and transcript length (`length`) in the assays slot for transcripts.
-*   `salmon_tx2gene.tsv`: Tab-delimited file containing gene to transcripts ids mappings.
+
+- `salmon.merged.gene_counts.tsv`: Matrix of gene-level raw counts across all samples.
+- `salmon.merged.gene_tpm.tsv`: Matrix of gene-level TPM values across all samples.
+- `salmon.merged.gene_counts.rds`: RDS object that can be loaded in R that contains a [SummarizedExperiment](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html) container with the TPM (`abundance`), estimated counts (`counts`) and transcript length (`length`) in the assays slot for genes.
+- `salmon.merged.gene_counts_scaled.tsv`: Matrix of gene-level scaled counts across all samples.
+- `salmon.merged.gene_counts_scaled.rds`: RDS object that can be loaded in R that contains a [SummarizedExperiment](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html) container with the TPM (`abundance`), estimated counts (`counts`) and transcript length (`length`) in the assays slot for genes.
+- `salmon.merged.gene_counts_length_scaled.tsv`: Matrix of gene-level length-scaled counts across all samples.
+- `salmon.merged.gene_counts_length_scaled.rds`: RDS object that can be loaded in R that contains a [SummarizedExperiment](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html) container with the TPM (`abundance`), estimated counts (`counts`) and transcript length (`length`) in the assays slot for genes.
+- `salmon.merged.transcript_counts.tsv`: Matrix of isoform-level raw counts across all samples.
+- `salmon.merged.transcript_tpm.tsv`: Matrix of isoform-level TPM values across all samples.
+- `salmon.merged.transcript_counts.rds`: RDS object that can be loaded in R that contains a [SummarizedExperiment](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html) container with the TPM (`abundance`), estimated counts (`counts`) and transcript length (`length`) in the assays slot for transcripts.
+- `salmon_tx2gene.tsv`: Tab-delimited file containing gene to transcripts ids mappings.
   
 `star_salmon/salmon/<SAMPLE>/`
-*   `logs/`: Contains the file `salmon_quant.log` giving a record of Salmon's quantification.
-*   `quant.genes.sf`: Salmon *gene*-level quantification of the sample, including feature length, effective length, TPM, and number of reads.
-*   `quant.sf`: Salmon *transcript*-level quantification of the sample, including feature length, effective length, TPM, and number of reads.
+
+- `logs/`: Contains the file `salmon_quant.log` giving a record of Salmon's quantification.
+- `quant.genes.sf`: Salmon *gene*-level quantification of the sample, including feature length, effective length, TPM, and number of reads.
+- `quant.sf`: Salmon *transcript*-level quantification of the sample, including feature length, effective length, TPM, and number of reads.
 
 **From star_rsem**
 
 `star_rsem/`
-*   `rsem.merged.gene_counts.tsv`: Matrix of gene-level raw counts across all samples.
-*   `rsem.merged.gene_tpm.tsv`: Matrix of gene-level TPM values across all samples.
-*   `rsem.merged.transcript_counts.tsv`: Matrix of isoform-level raw counts across all samples.
-*   `rsem.merged.transcript_tpm.tsv`: Matrix of isoform-level TPM values across all samples.
-*   `*.genes.results`: RSEM gene-level quantification results for each sample.
-*   `*.isoforms.results`: RSEM isoform-level quantification results for each sample.
+
+- `rsem.merged.gene_counts.tsv`: Matrix of gene-level raw counts across all samples.
+- `rsem.merged.gene_tpm.tsv`: Matrix of gene-level TPM values across all samples.
+- `rsem.merged.transcript_counts.tsv`: Matrix of isoform-level raw counts across all samples.
+- `rsem.merged.transcript_tpm.tsv`: Matrix of isoform-level TPM values across all samples.
+- `*.genes.results`: RSEM gene-level quantification results for each sample.
+- `*.isoforms.results`: RSEM isoform-level quantification results for each sample.
 
 `star_rsem/<SAMPLE>.stat/`
-*   `*.cnt`, `*.model`, `*.theta`: RSEM counts and statistics for each sample.
+
+- `*.cnt`, `*.model`, `*.theta`: RSEM counts and statistics for each sample.
 
 `star_rsem/log/`
-*   `*.log`: STAR alignment report containing the mapping results summary.
 
-**7. `{Pseudoaligner}`**
+- `*.log`: STAR alignment report containing the mapping results summary.
+
+#### 7. `pseudoaligner`
 
 This is the same output as the `star_salmon/salmon` folder.
 

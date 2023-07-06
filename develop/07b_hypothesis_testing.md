@@ -1,7 +1,6 @@
 ---
 title: Hypothesis testing with DESeq2
 summary: In this lesson we explain how DESeq2 perform statistical tests 
-date: 2023-07-04
 ---
 
 # DESeq2: Model fitting and Hypothesis testing

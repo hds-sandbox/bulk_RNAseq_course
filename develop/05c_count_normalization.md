@@ -1,7 +1,6 @@
 ---
 title: Count normalization with DESeq2
 summary: In this lesson we explain how to normalize bulk RNAseq count matrices
-date: 2023-07-04
 ---
 
 # Normalization

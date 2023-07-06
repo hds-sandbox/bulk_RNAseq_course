@@ -1,7 +1,6 @@
 ---
 title: "Log Fold Shrinkage and DEA visualizations"
 summary: In this lesson we explain how visualize DEA results using log fold shrinkage
-date: 2023-07-04
 ---
 
 # DEA Visualization and Log Fold Shrinkage

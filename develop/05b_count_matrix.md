@@ -1,24 +1,7 @@
 ---
 title: The RNAseq count matrix
 summary: In this lesson we explain the attributes of bulk RNAseq count data
-date: 2023-07-4
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./develop/')})
-output:
-  github_document: 
-     preserve_yaml: TRUE
-     html_preview: FALSE
-     pandoc_args: [
-      "--wrap", "none" # this is needed to not break admonitions
-    ]
 ---
-
-The RNAseq count matrix
-================
-2023-07-4
 
 # Differential gene expression (DGE) analysis overview
 

@@ -1,7 +1,6 @@
 ---
 title: Summary of DGE workflow
 summary: You can use this lesson as a template for your own bulk RNAseq analysis
-date: 2023-01-17
 hide:
   - navigation
 ---

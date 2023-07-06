@@ -1,7 +1,6 @@
 ---
 title: Experimental design considerations
 summary: This lesson explains several experimental design considerations before analysing bulk RNAseq data.
-date: 2023-01-17
 hide:
   - navigation
 ---

@@ -1,14 +1,13 @@
 ---
 title: Ucloud setup for data analysis
 summary: In this lesson we explain how to start an Rstudio session for data analysis
-date: 2023-01-17
 ---
 
 # Setup for teaching in uCloud
 
 !!! note "Section Overview"
 
-    &#128368; **Time Estimation:** X minutes  
+    &#128368; **Time Estimation:** 20 minutes  
 
     &#128172; **Learning Objectives:**    
 
@@ -38,29 +37,38 @@ And select the `jobParameters.json` in:
 
 !!! warning 
     **Make sure that the hard-drive icon says `sandbox_bulkRNASeq`!!**
-    ![](./img/04c_preprocessing_setup/importParameters3.png)
+
+    Otherwise, click on the down arrow (**&or;**) icon and search for the folder.
+
+    ![](./img/05a_preprocessing_setup/importParameters3.png)
+
+Let's take a look at the parameters we have chosen. We have given it a `Job name`, `Hours`, `Machine type` as well as a `Mandatory Parameter` `Select a module`. We have selected the module `Introduction to bulk RNAseq analysis in R`. This module will load the materials necessary to follow the next lessons. It will also contain a backup of the preprocessing results so that you may continue in case that your preprocessing did not work.
+
+![](./img/05a_data_analysis_setup/selectedParams.png)
+
+In order to add your own preprocessing results, go to `Select folders to use` and add the folder that contains the results of the pipeline. If you have not move them yet, they will be in your `Member Files`.
+
+![](./img/05a_data_analysis_setup/selectedParams2.png)
 
 You are ready to run the app by clicking on the button on the right column of the screen (`submit`).
 
-![](./img/05a_data_analysis_setup/submit.png)
+<p align="center">
+
+<img src="./img/05a_data_analysis_setup/submit.png" width="300"/>
+
+</p>
 
 Now, wait some time until the screen looks like the figure below. It usually takes a few minutes for everything to be ready and installed. You can always come back to this screen from the left menu Runs on uCloud, so that you can add extra time or stop the app if you will not use it.
 
-![](./img/05a_data_analysis_setup/startapp.png)
+![](./img/05a_data_analysis_setup/startApp.png)
 
 Now, click on `open interface` on the top right-hand side of the screen. You will start Rstudio through your browser!
 
-On the lower right side of Rstudio, where you see the file explorer, there shoud be a folder `bulk_RNAseq_course`. Here you will find the materials of the course, but it is a "read only" file. In order to have a copy for your own purposes, we will use a script. Go to the **Terminal** tab on the top left of the Rstudio session and copy-paste this command:
-
-`./bulk_RNAseq_course/Scripts/ucloud_analysis_setup/ucloud_setup.sh`
-
-![](./img/05a_data_analysis_setup/copyMaterial.png)
-
-Now there should be another folder in the file explorer called `introduction_bulkRNAseq_analysis`. This is the folder you should use from now on.
+On the lower right side of Rstudio, where you see the file explorer, there should be a folder `Intro_to_bulkRNAseq`. Here you will find the materials of the course. If you have added your own preprocessing results, they should also be there.
 
 ![](./img/05a_data_analysis_setup/courseMaterial.png)
 
-Now you can go back to the **Console** tab. You are ready to start analysing your data!
+You are ready to start analysing your data!
 
 ## Stopping the app
 
@@ -76,10 +84,10 @@ After running a first work session, everything that you have created, including 
 
 ![](./img/05a_data_analysis_setup/savedWork1.png)
 
-2. Go to `Jobs → Transcriptomics Sandbox → job_name → introduction_bulkRNAseq_analysis` 
+1. Go to `Jobs → Transcriptomics Sandbox → job_name → Intro_to_bulkRNAseq`
 
 ![](./img/05a_data_analysis_setup/savedWork2.png)
- 
+
 ## Restarting the Rstudio session
 
 If you want to keep working on your previous results, you can restart an Rstudio session following these steps:
@@ -88,15 +96,19 @@ Click on `Apps` on the left-side menu, and look for the application `Transcripto
 
 ![](./img/05a_data_analysis_setup/chooseTranscriptomics.png)
 
-You will be met again with a series of possible parameters to choose. You have to assign again the `Import parameters` file as before.
+You will be met again with a series of possible parameters to choose. You have to assign again the `Import parameters` file as before, or **you can click on one of your previous parameters**.
 
-- `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `Scripts` -\> `ucloud_analysis_setup` -\> `jobParameters.json`
+`sandbox_bulkRNASeq` -> `bulk_RNAseq_course` -> `Scripts` -> `ucloud_analysis_setup` -> `jobParameters.json`
 
-![](./img/05a_data_analysis_setup/importParameters.png)
+![](./img/05a_data_analysis_setup/importParameters4.png)
 
 In *"Select folders to use"*, add the folder with the results of your previous job:
 
--   Go to `Member Files: your_username → Jobs → Transcriptomics Sandbox → job_name → introduction_bulkRNAseq_analysis`, click "Use."
+Go to:
+
+ `Member Files: your_username` -> `Jobs` -> `Transcriptomics Sandbox` -> `job_name` -> `Intro_to_bulkRNAseq`
+ 
+Then, click "Use."
 
 ![](./img/05a_data_analysis_setup/restartJob.png)
 

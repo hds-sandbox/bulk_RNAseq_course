@@ -1,7 +1,6 @@
 ---
 title: "Gene-level differential expression analysis with DESeq2"
 summary: In this lesson we explain how DEA works in DESeq
-date: 2023-07-04
 ---
 
 # Differential expression analysis with DESeq2

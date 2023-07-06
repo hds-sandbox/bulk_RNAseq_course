@@ -1,7 +1,6 @@
 ---
 title: Genomic annotations for functional analyses
 summary: In this lesson we explain how create annotate your genes with metadata from databases
-date: 2023-07-04
 ---
 
 # Genomic annotations

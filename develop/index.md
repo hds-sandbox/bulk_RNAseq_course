@@ -1,7 +1,6 @@
 ---
 title: Introduction to bulk RNAseq analysis workshop
 summary: Index page, intro to course
-date: 2023-02-01
 hide:
   - navigation
   - toc
@@ -22,8 +21,6 @@ hide:
 <center>
 # Introduction to bulk RNAseq analysis
 </center>
-
-**Updated:** 17/01/2023
 
 This workshop material includes a tutorial on how to approach RNAseq data, starting from your sequencing reads (fastq files). Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), a collection of modified tutorials from the [DESeq2](https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html), R language vignettes and the [nf-core rnaseq pipeline](https://nf-co.re/rnaseq).
 

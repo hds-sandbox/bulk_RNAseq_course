@@ -2,19 +2,19 @@
   content: |
     [:custom-orcid:](https://orcid.org/0000-0002-4765-2087) [:simple-github:](https://github.com/joseale2310) [:simple-linkedin:](https://www.linkedin.com/in/jose-alejandro-romero-herrera/) <br>
     Data Scientist
-  image: https://avatars.githubusercontent.com/u/9451832?v=4
+  image: ./img/cards/jarh.jpeg
 
 - title: Diana <br> Andrejeva
   content: |
     [:simple-github:](https://github.com/andrejeva-d) [:simple-linkedin:](https://www.linkedin.com/in/diana-andrejeva-766058155/) <br>
     Data Scientist
-  image: https://avatars.githubusercontent.com/u/70897809?v=4
+  image: ./img/cards/diana_andrejeva.jpg
 
 - title: Henrike <br> Zschach
   content: |
     [:simple-github:](https://github.com/hezscha) [:simple-linkedin:](https://www.linkedin.com/in/henrikezschach/) <br>
     Data Scientist
-  image: https://heads.ku.dk/images/affiliations/henrike.jpeg
+  image: ./img/cards/henrike.jpeg
 
 - title: Adrija <br> Kalvisa
   content: |
@@ -32,4 +32,4 @@
   content: |
     [:custom-orcid:](https://orcid.org/0000-0003-2750-9678) [:simple-github:](https://github.com/jenbartell)<br>
     Project Coordinator and Data Scientist
-  image: https://heads.ku.dk/images/affiliations/Jennie2.jpg
+  image: ./img/cards/Jennie2.jpg

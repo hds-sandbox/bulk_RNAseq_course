@@ -1,7 +1,6 @@
 ---
 title: Exploratory analysis of bulk RNAseq
 summary: In this lesson we explain how to explore the relationships between samples using PCA and heatmaps
-date: 2023-07-04
 ---
 
 # Exploratory Analysis and Quality Control
