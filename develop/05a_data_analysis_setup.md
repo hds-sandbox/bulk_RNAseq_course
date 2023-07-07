@@ -40,7 +40,7 @@ And select the `jobParameters.json` in:
 
     Otherwise, click on the down arrow (**&or;**) icon and search for the folder.
 
-    ![](./img/05a_preprocessing_setup/importParameters3.png)
+    ![](./img/05a_data_analysis_setup/importParameters3.png)
 
 Let's take a look at the parameters we have chosen. We have given it a `Job name`, `Hours`, `Machine type` as well as a `Mandatory Parameter` `Select a module`. We have selected the module `Introduction to bulk RNAseq analysis in R`. This module will load the materials necessary to follow the next lessons. It will also contain a backup of the preprocessing results so that you may continue in case that your preprocessing did not work.
 
