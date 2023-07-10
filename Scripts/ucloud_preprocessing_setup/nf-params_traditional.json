@@ -1,7 +1,8 @@
 {
     "input": "/work/samplesheet.csv",
-    "outdir": "/work/preprocessing/results_traditional",
-    "genome": "GRCh37",
+    "outdir": "/work/preprocessing_traditional",
+    "fasta": "/work/778339/ref_genomes/human/GRCh38/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz",
+    "gtf": "/work/778339/ref_genomes/human/GRCh38/Homo_sapiens.GRCh38.109.gtf.gz",
     "aligner": "star_rsem",
     "skip_bigwig": true,
     "skip_deseq2_qc": true

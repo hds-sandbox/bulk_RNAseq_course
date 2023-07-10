@@ -1,7 +1,8 @@
 {
     "input": "/work/samplesheet.csv",
-    "outdir": "/work/preprocessing/results_salmon",
-    "genome": "GRCh37",
+    "outdir": "/work/preprocessing_salmon",
+    "fasta": "/work/778339/ref_genomes/human/GRCh38/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz",
+    "gtf": "/work/778339/ref_genomes/human/GRCh38/Homo_sapiens.GRCh38.109.gtf.gz",
     "pseudo_aligner": "salmon",
     "skip_stringtie": true,
     "skip_rseqc": true,
@@ -12,5 +13,6 @@
     "skip_deseq2_qc": true,
     "skip_bbsplit": true,
     "skip_alignment": true,
-    "extra_salmon_quant_args": "--gcBias"
+    "extra_salmon_quant_args": "--gcBias",
+    "save_reference": true
 }
