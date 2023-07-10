@@ -12,5 +12,6 @@
     "skip_biotype_qc": true,
     "skip_bigwig": true,
     "skip_deseq2_qc": true,
-    "extra_salmon_quant_args": "--gcBias"
+    "extra_salmon_quant_args": "--gcBias",
+    "save_reference": true
 }
