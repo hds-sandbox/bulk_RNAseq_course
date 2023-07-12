@@ -52,13 +52,13 @@ This workshop material includes a tutorial on how to approach RNAseq data, start
     :clock: **Total Time Estimation:** 8 hours
     [comment]: # (No Property in Bioschema)
 
-    :file_folder: **Supporting Materials:** Workshop slides with theory on bulk RNAseq can be found in this [zenodo repository](https://zenodo.org/record/7565963).  
+    :file_folder: **Supporting Materials:** Workshop slides with theory on bulk RNAseq can be found in this [zenodo repository](https://zenodo.org/record/8046218).  
     [comment]: # (Property in Bioschema: mentions)
     
     :man_technologist: **Target Audience:** PhD, MsC, etc.
     [comment]: # (Property in Bioschema: audience)
     
-    :woman_student: **Level:** Beginner/Intermediate/Advanced
+    :woman_student: **Level:** Beginner
     [comment]: # (Property in Bioschema: educationalLevel)
     
     :lock: **License:** [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/legalcode)
