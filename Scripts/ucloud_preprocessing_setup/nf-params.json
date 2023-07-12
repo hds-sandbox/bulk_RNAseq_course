@@ -5,6 +5,9 @@
     "pseudo_aligner": "salmon",
     "fasta": "/work/778339/ref_genomes/human/GRCh38/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz",
     "gtf": "/work/778339/ref_genomes/human/GRCh38/Homo_sapiens.GRCh38.109.gtf.gz",
+    "gene_bed": "/work/778339/ref_genomes/human/GRCh38/Homo_sapiens.GRCh38.109.bed",
+    "salmon_index": "/work/778339/ref_genomes/human/GRCh38/indexes/salmon",
+    "star_index": "/work/778339/ref_genomes/human/GRCh38/indexes/star",
     "skip_stringtie": true,
     "skip_rseqc": true,
     "skip_preseq": true,
@@ -12,6 +15,5 @@
     "skip_biotype_qc": true,
     "skip_bigwig": true,
     "skip_deseq2_qc": true,
-    "extra_salmon_quant_args": "--gcBias",
-    "save_reference": true
+    "extra_salmon_quant_args": "--gcBias"
 }
