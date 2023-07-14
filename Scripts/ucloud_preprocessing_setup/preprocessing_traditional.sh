@@ -12,7 +12,7 @@ file_path=$(find / -name "multiqc_report.html" 2>/dev/null)
 # Check if the file exists
 if [[ -n "$file_path" ]]; then
     # Clean run
-    nextflow clean
+    rm -r /work/work
     mv /work/nf-params_traditional.json /work/preprocessing_traditional/nf-params_traditional.json
 
 fi

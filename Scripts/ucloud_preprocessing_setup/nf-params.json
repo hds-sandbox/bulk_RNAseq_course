@@ -1,6 +1,6 @@
 {
     "input": "/work/samplesheet.csv",
-    "outdir": "/work/preprocessing_star_salmon",
+    "outdir": "/work/results_star_salmon",
     "aligner": "star_salmon",
     "pseudo_aligner": "salmon",
     "fasta": "/work/778339/ref_genomes/human/GRCh38/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz",

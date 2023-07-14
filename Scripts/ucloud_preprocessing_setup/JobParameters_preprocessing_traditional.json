@@ -1,0 +1,47 @@
+{
+    "siteVersion": 3,
+    "request": {
+        "application": {
+            "name": "nf-core-rnaseq",
+            "version": "3.11.2"
+        },
+        "product": {
+            "id": "u1-standard-16",
+            "category": "u1-standard",
+            "provider": "ucloud"
+        },
+        "name": "RNAseq preprocessing pipeline with salmon",
+        "replicas": 1,
+        "parameters": {
+            "interactive": {
+                "type": "boolean",
+                "value": true
+            }
+        },
+        "resources": [
+            {
+                "path": "/778339",
+                "type": "file",
+                "readOnly": false
+            }
+        ],
+        "timeAllocation": {
+            "hours": 8,
+            "minutes": 0,
+            "seconds": 0
+        },
+        "resolvedProduct": null,
+        "resolvedApplication": null,
+        "resolvedSupport": null,
+        "allowDuplicateJob": true,
+        "sshEnabled": false
+    },
+    "resolvedResources": {
+        "ingress": {
+        }
+    },
+    "machineType": {
+        "cpu": 16,
+        "memoryInGigs": 96
+    }
+}
