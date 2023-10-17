@@ -10,7 +10,7 @@
             "category": "u1-standard",
             "provider": "ucloud"
         },
-        "name": "RNAseq preprocessing pipeline with salmon",
+        "name": "RNAseq traditional preprocessing pipeline",
         "replicas": 1,
         "parameters": {
             "interactive": {
