@@ -60,7 +60,7 @@ You are ready to run the app by clicking on the button on the right column of th
 
 Now, wait some time until the screen looks like the figure below. It usually takes a few minutes for everything to be ready and installed. You can always come back to this screen from the left menu Runs on uCloud, so that you can add extra time or stop the app if you will not use it.
 
-![](./img/05a_data_analysis_setup/startApp.png)
+![](./img/05a_data_analysis_setup/startapp.png)
 
 Now, click on `open interface` on the top right-hand side of the screen. You will start Rstudio through your browser!
 

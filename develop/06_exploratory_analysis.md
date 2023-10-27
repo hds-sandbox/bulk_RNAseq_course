@@ -18,7 +18,7 @@ summary: In this lesson we explain how to explore the relationships between samp
 
 The next step in the DESeq2 workflow is QC, which includes sample-level and gene-level steps to perform QC checks on the count data to help us ensure that the samples/replicates look good.
 
-<img src="./img/06_exploratory_analysis/deseq_workflow_qc_2018.png" width="821" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/exploratory_analysis_workflow.png" style="display: block; margin: auto;" />
 
 ## Sample-level QC
 
@@ -30,11 +30,11 @@ A useful initial step in an RNA-seq analysis is often to assess overall similari
 
 To explore the similarity of our samples, we will be performing sample-level QC using Principal Component Analysis (PCA) and hierarchical clustering methods. These methods/tools allow us to check **how similar the replicates are to each other** (clustering) and **to make sure that the experimental condition is the major source of variation** in the data. Sample-level QC can also help identify any samples behaving like outliers; we can further explore any potential outliers to determine whether they need to be removed prior to DE analysis.
 
-<img src="./img/06_exploratory_analysis/sample_qc.png" width="1362" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/sample_qc.png" style="display: block; margin: auto;" />
 
 These unsupervised clustering methods are run using **log2 transformed normalized counts**. The log2 transformation **improves the sample distances for clustering visualization**, i.e., it reduces the impact of large outlier counts. Instead of using a classical log2 transform, we will be using the **regularized log transform** (rlog). This type of transformation helps to avoid any bias from the abundance of low-count genes; Note1 below explains this in more detail.
 
-<img src="./img/06_exploratory_analysis/rlog_transformation_new.png" width="2699" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/rlog_transformation_new.png" style="display: block; margin: auto;" />
 
 *Image adapted from "[Beginner’s guide to using the DESeq2 package](https://bioc.ism.ac.jp/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf)" by Love, Anders and Huber, 2014*
 
@@ -60,23 +60,23 @@ To better understand how it works, **please go through [this YouTube video from 
 
 We have an example dataset and a few associated PCA plots below to get a feel for how to interpret them. The metadata for the experiment is displayed below. The main condition of interest is `treatment`.
 
-<img src="./img/06_exploratory_analysis/example_metadata.png" width="802" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_metadata.png" style="display: block; margin: auto;" />
 
 When visualizing on PC1 and PC2, we don’t see the samples separate by `treatment`, so we decide to explore other sources of variation present in the data. We hope that we have included all possible known sources of variation in our metadata table, and we can use these factors to color the PCA plot.
 
-<img src="./img/06_exploratory_analysis/example_PCA_treatmentPC1.png" width="547" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_PCA_treatmentPC1.png" style="display: block; margin: auto;" />
 
 We start with the factor `cage`, but the `cage` factor does not seem to explain the variation on PC1 or PC2.
 
-<img src="./img/06_exploratory_analysis/example_PCA_cage.png" width="547" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_PCA_cage.png" style="display: block; margin: auto;" />
 
 Then, we color by the `sex` factor, which appears to separate samples on PC2. This is good information to take note of, as we can use it downstream to account for the variation due to sex in the model and regress it out.
 
-<img src="./img/06_exploratory_analysis/example_PCA_sex.png" width="547" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_PCA_sex.png" style="display: block; margin: auto;" />
 
 Next we explore the `strain` factor and find that it explains the variation on PC1.
 
-<img src="./img/06_exploratory_analysis/example_PCA_strain.png" width="547" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_PCA_strain.png" style="display: block; margin: auto;" />
 
 It’s great that we have been able to identify the sources of variation for both PC1 and PC2. By accounting for it in our model, we should be able to detect more genes differentially expressed due to `treatment`.
 
@@ -84,7 +84,7 @@ Worrisome about this plot is that we see two samples that do not cluster with th
 
 Still we haven’t found if `treatment` is a major source of variation after `strain` and `sex`. So, we explore PC3 and PC4 to see if `treatment` is driving the variation represented by either of these PCs.
 
-<img src="./img/06_exploratory_analysis/example_PCA_treatmentPC3.png" width="547" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/example_PCA_treatmentPC3.png" style="display: block; margin: auto;" />
 
 We find that the samples separate by `treatment` on PC3, and are optimistic about our DE analysis since our condition of interest, `treatment`, is separating on PC3 and we can regress out the variation driving PC1 and PC2.
 
@@ -94,7 +94,7 @@ Depending on how much variation is explained by the first few principal componen
 
 Hierarchical clustering is another method for identifying correlation patterns in a dataset and potential sample outliers. A heatmap displays **the correlation of gene expression for all pairwise combinations of samples** in the dataset. The hierarchical tree along the axes indicates which samples are more similar to each other, i.e. cluster together. The color blocks at the top indicate substructure in the data, and you would expect to see your replicates cluster together as a block for each sample group. Our expectation would be that the samples cluster together similar to the groupings we’ve observed in the PCA plot.
 
-<img src="./img/06_exploratory_analysis/heatmap_example.png" width="707" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/heatmap_example.png" style="display: block; margin: auto;" />
 
 !!! note
 
@@ -144,7 +144,7 @@ The function `plotPCA()` requires two arguments as input: a `DESeqTransform` obj
 plotPCA(rld, intgroup="condition")
 ```
 
-<img src="./img/06_exploratory_analysis/pca_500.png" width="413" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/pca_500.png" style="display: block; margin: auto;" />
 
 !!! question "**Exercise 1**"
 
@@ -271,7 +271,7 @@ pheatmap(sampleDistMatrix, annotation_col = meta %>% column_to_rownames("sample"
 
 When you plot using `pheatmap()` the hierarchical clustering information is used to place similar samples together and this information is represented by the tree structure along the axes. The `annotation` argument accepts a dataframe as input, in our case it is the `meta` data frame.
 
-<img src="./img/06_exploratory_analysis/pheatmap_salmon.png" width="832" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/pheatmap_salmon.png" style="display: block; margin: auto;" />
 
 Overall, we observe pretty high correlations across the board ( \> 0.999) suggesting no outlying sample(s). Also, similar to the PCA plot you see the samples clustering together by sample group. Together, these plots suggest to us that the data are of good quality and we have the green light to proceed to differential expression analysis.
 
@@ -321,6 +321,8 @@ You can check all the colors that RColorBrewer offers by using the following com
 display.brewer.all()
 ```
 
-------------------------------------------------------------------------
+![Rcolor brewer colors](./img/06_exploratory_analysis/rcolor_brewer_all.png)
+
+***
 
 *This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/).*

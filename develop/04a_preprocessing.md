@@ -5,7 +5,6 @@ summary: In this lesson we explain theory behind read preprocessing
 
 # From raw sequence reads to count matrix:<br/>the RNA-seq workflow
 
-
 !!! note "Section Overview"
 
     &#128368; **Time Estimation:** 40 minutes  
@@ -13,16 +12,18 @@ summary: In this lesson we explain theory behind read preprocessing
     &#128172; **Learning Objectives:**    
 
     1. Understand the different steps of the RNA-seq workflow, from RNA extraction to assessing the expression levels of genes.
-   
+
 To perform differential gene expression analysis (DEA), we need to start with a matrix of counts representing the levels of gene expression. It is important to understand how the count matrix is generated, before diving into the statistical analysis.
 
 In this lesson we will briefly discuss the RNA-processing pipeline for bulk RNA-seq, and the **different steps we take to go from raw sequencing reads to a gene expression count matrix**.
 
 <p align="center">
 
-<img src="./img/04a_preprocessing/workflow-salmon-DGE-alt2.png" width="600"/>
+<img src="./img/04a_preprocessing/RNAseq_pipeline.png" width="600"/>
 
 </p>
+
+*Typical RNAseq workflow*
 
 ## 1. RNA Extraction and library preparation
 
@@ -60,9 +61,9 @@ Sequencing of the cDNA libraries will generate **reads**. Reads correspond to th
 
 </p>
 
--   SE - Single end dataset =\> Only Read1
--   PE - Paired-end dataset =\> Read1 + Read2
-    -   PE can be 2 separate FastQ files or just one with interleaved pairs
+- SE - Single end dataset =\> Only Read1
+- PE - Paired-end dataset =\> Read1 + Read2
+    - PE can be 2 separate FastQ files or just one with interleaved pairs
 
 Generally, single-end sequencing is sufficient unless it is expected that the reads will match multiple locations on the genome (e.g. organisms with many paralogous genes), assemblies are being performed, or for splice isoform differentiation. On the other hand, paired-end sequencing helps resolve structural genome rearrangements e.g. insertions, deletions, or inversions. Furthermore, paired reads improve the alignment/assembly of reads from repetitive regions. The downside of this type of sequencing is that it may be twice as expensive.
 
@@ -74,17 +75,12 @@ Illumina sequencing technology uses a sequencing-by-synthesis approach. **To exp
 
 We have provided a brief explanation of the steps below:
 
-***Cluster growth***: The DNA fragments in the cDNA library are denatured and hybridized to the glass flowcell (adapter complementarity). Each fragment is then clonally amplified, forming a cluster of double-stranded DNA. This step is necessary to ensure that the sequencing signal will be strong enough to be detected/captured unambiguously for each base of each fragment.
-
--   **Number of clusters \~= Number of reads**
-
-***Sequencing:*** The sequencing of the fragment ends is based on fluorophore labelled dNTPs with reversible terminator elements. In each sequencing cycle, a base is incorporated into every cluster and excited by a laser.
-
-***Image acquisition:*** Each dNTP has a distinct excitatory signal emission which is captured by cameras.
-
-***Base calling:*** The Base calling program will then generate the sequence of bases, **i.e. reads**, for each fragment/cluster by assessing the images captured during the many sequencing cycles. In addition to calling the base in every position, the base caller will also report the certainty with which it was able to make the call (quality information).
-
--   **Number of sequencing cycles = Length of reads**
+1. ***Cluster growth***: The DNA fragments in the cDNA library are denatured and hybridized to the glass flowcell (adapter complementarity). Each fragment is then clonally amplified, forming a cluster of double-stranded DNA. This step is necessary to ensure that the sequencing signal will be strong enough to be detected/captured unambiguously for each base of each fragment.
+   **NOTE: Number of clusters \~= Number of reads**
+2. ***Sequencing:*** The sequencing of the fragment ends is based on fluorophore labelled dNTPs with reversible terminator elements. In each sequencing cycle, a base is incorporated into every cluster and excited by a laser.
+3. ***Image acquisition:*** Each dNTP has a distinct excitatory signal emission which is captured by cameras.
+4. ***Base calling:*** The Base calling program will then generate the sequence of bases, **i.e. reads**, for each fragment/cluster by assessing the images captured during the many sequencing cycles. In addition to calling the base in every position, the base caller will also report the certainty with which it was able to make the call (quality information).
+   **NOTE: Number of sequencing cycles = Length of reads**
 
 <p align="center">
 
@@ -92,7 +88,7 @@ We have provided a brief explanation of the steps below:
 
 </p>
 
-## 3. Quality control of raw sequencing data (FastQC)
+## 3. Quality control of raw sequencing data
 
 The raw reads obtained from the sequencer are stored as [**FASTQ files**](https://en.wikipedia.org/wiki/FASTQ_format). The FASTQ file format is the de facto file format for sequence reads generated from next-generation sequencing technologies.
 
@@ -114,15 +110,31 @@ Each FASTQ file is a text file which represents sequence readouts for a sample. 
 
 The main functions include:
 
--   Providing a quick overview to tell you in which areas there may be problems
--   Summary graphs and tables to quickly assess your data
--   Export of results to an HTML based permanent report
+- Providing a quick overview to tell you in which areas there may be problems
+- Summary graphs and tables to quickly assess your data
+- Export of results to an HTML based permanent report
 
-## 4. Quantify expression
+## 4. Read filtering and trimming
+
+## 5. Quality control of clean sequencing data
+
+## 6. Alignment
+
+## 7. Quality control of aligned reads
+
+As mentioned above, the differential gene expression analysis will use transcript/gene pseudocounts generated by Salmon. However, to perform some basic quality checks on the sequencing data, it is important to align the reads to the whole genome. Either STAR or HiSAT2 are able to perform this step and generate a [BAM](https://samtools.github.io/hts-specs/SAMv1.pdf) file that can be used for QC.
+
+A tool called [Qualimap](http://qualimap.bioinfo.cipf.es/doc_html/intro.html) **explores the features of aligned reads in the context of the genomic region they map to**, hence providing an overall view of the data quality (as an HTML file). Various quality metrics assessed by Qualimap include:
+
+- DNA or rRNA contamination
+- 5'-3' biases
+- Coverage biases
+
+## 8. Quantify expression
 
 Once we have explored the quality of our raw reads, we can move on to quantifying expression at the transcript level. The goal of this step is to **identify from which transcript each of the reads originated from and the total number of reads associated with each transcript**.
 
-Tools that have been found to be most accurate for this step in the analysis are referred to as **lightweight alignment tools**, which include: \* [Kallisto](https://pachterlab.github.io/kallisto/about), \* [Sailfish](http://www.nature.com/nbt/journal/v32/n5/full/nbt.2862.html) and \* [Salmon](https://combine-lab.github.io/salmon/)
+Tools that have been found to be most accurate for this step in the analysis are referred to as **lightweight alignment tools**, which include: [Kallisto](https://pachterlab.github.io/kallisto/about), [Sailfish](http://www.nature.com/nbt/journal/v32/n5/full/nbt.2862.html) and [Salmon](https://combine-lab.github.io/salmon/)
 
 Each of the tools in the list above work slightly differently from one another. However, common to all of them is that **they avoid base-to-base genomic alignment of the reads**. Genomic alignment is a step performed by older splice-aware alignment tools such as [STAR](https://academic.oup.com/bioinformatics/article/29/1/15/272537) and [HISAT2](https://daehwankimlab.github.io/hisat2/). In comparison to these tools, the lightweight alignment tools not only provide quantification estimates **much faster** (typically more than 20 times faster), but also [**improvements in precision**](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0734-x). Nonetheless, a recent [Nature article](https://www.nature.com/articles/s41598-020-76881-x) suggests that pseudoaligners have low accuracy compared to classic aligners.
 
@@ -134,17 +146,7 @@ Each of the tools in the list above work slightly differently from one another. 
 
 </p>
 
-## 5. Quality control of aligned sequence reads (STAR/Qualimap)
-
-As mentioned above, the differential gene expression analysis will use transcript/gene pseudocounts generated by Salmon. However, to perform some basic quality checks on the sequencing data, it is important to align the reads to the whole genome. Either STAR or HiSAT2 are able to perform this step and generate a [BAM](https://samtools.github.io/hts-specs/SAMv1.pdf) file that can be used for QC.
-
-A tool called [Qualimap](http://qualimap.bioinfo.cipf.es/doc_html/intro.html) **explores the features of aligned reads in the context of the genomic region they map to**, hence providing an overall view of the data quality (as an HTML file). Various quality metrics assessed by Qualimap include:
-
--   DNA or rRNA contamination
--   5'-3' biases
--   Coverage biases
-
-## 6. Quality control: aggregating results with MultiQC
+## 9. Aggregation of quality control checks
 
 Throughout the workflow we have performed various steps of quality checks on our data. You will need **to do this for every sample in your dataset**, making sure these metrics are consistent across the samples for a given experiment. Outlier samples should be flagged for further investigation and potential removal.
 

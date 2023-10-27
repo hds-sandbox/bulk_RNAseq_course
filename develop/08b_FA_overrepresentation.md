@@ -40,21 +40,25 @@ These databases typically **categorize genes into groups (gene sets)** based on 
 
 To determine whether any categories are over-represented, you can determine the probability of having the observed proportion of genes associated with a specific category in your gene list based on the proportion of genes associated with the same category in the background set (gene categorizations for the appropriate organism).
 
-<img src="./img/08b_FA_overrepresentation/go_proportions.png" width="848" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/gene_sets.png" style="display: block; margin: auto;" />
 
-<img src="./img/08b_FA_overrepresentation/go_proportions_table3.png" width="1825" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/overrepresentation_sets.png" style="display: block; margin: auto;" />
 
 The statistical test that will determine whether something is actually over-represented is the *Hypergeometric test*.
 
 ### Hypergeometric testing
 
-Using the example of the first functional category above, hypergeometric distribution is a probability distribution that describes the probability of 25 genes (k) being associated with "Functional category 1", for all genes in our gene list (n=1000), from a population of all of the genes in entire genome (N=13,000) which contains 35 genes (K) associated with "Functional category 1" \[[4](https://en.wikipedia.org/wiki/Hypergeometric_distribution)\].
+Using the example of the first functional category above, hypergeometric distribution is a probability distribution that describes the probability of 25 genes (k) being associated with "Functional category 1", for all genes in our gene list (n=1000), from a population of all of the genes in entire genome (N=23,000) which contains 35 genes (K) associated with "Functional category 1" [[4](https://en.wikipedia.org/wiki/Hypergeometric_distribution)].
+
+<img src="./img/08b_FA_overrepresentation/overrepresentation_tables/Slide2.png" style="display: block; margin: auto;" />
 
 The calculation of probability of k successes follows the formula:
 
-<img src="./img/08b_FA_overrepresentation/hypergeo.png" width="200" style="display: block; margin: auto;" />
+$$\Pr(X = k) = \frac{\binom{K}{k} \binom{N - K}{n-k}}{\binom{N}{n}}$$
 
-This test will result in an adjusted p-value (after multiple test correction) for each category tested.
+<img src="./img/08b_FA_overrepresentation/overrepresentation_tables/Slide1.png" style="display: block; margin: auto;" />
+
+This test will result in an adjusted p-value (after multiple test correction) for each category tested. 
 
 ## Gene Ontology project
 

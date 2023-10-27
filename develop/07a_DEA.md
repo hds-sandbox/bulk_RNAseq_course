@@ -40,11 +40,11 @@ dds <- DESeq(dds)
 
 And with that we completed the entire workflow for the differential gene expression analysis with DESeq2! The `DESeq()` function performs a default analysis through the following steps:
 
-1.  Estimation of size factors: `estimateSizeFactors()`
-2.  Estimation of dispersion: `estimateDispersions()`
-3.  Negative Binomial GLM fitting and Wald statistics: `nbinomWaldTest()`
+1. Estimation of size factors: `estimateSizeFactors()`
+2. Estimation of dispersion: `estimateDispersions()`
+3. Negative Binomial GLM fitting and Wald statistics: `nbinomWaldTest()`
 
-<img src="./img/07a_DEA/deseq2_workflow_separate.png" width="335" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/deseq_steps/Slide1.png" style="display: block; margin: auto;" />
 
 We will be taking a detailed look at each of these steps to better understand how DESeq2 is performing the statistical analysis and what metrics we should examine to explore the quality of our analysis.
 
@@ -52,15 +52,15 @@ We will be taking a detailed look at each of these steps to better understand ho
 
 The first step in the differential expression analysis is to estimate the size factors, which is exactly what we already did to normalize the raw counts.
 
-<img src="./img/07a_DEA/deseq2_workflow_separate_sf.png" width="336" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/deseq_steps/Slide2.png" style="display: block; margin: auto;" />
 
 DESeq2 will automatically estimate the size factors when performing the differential expression analysis. However, if you have already generated the size factors using `estimateSizeFactors()`, as we did earlier, then DESeq2 will use these values.
 
-To normalize the count data, DESeq2 calculates size factors for each sample using the *median of ratios method* discussed previously in the [‘Count normalization’](05c_count_normalization.md) lesson.
+To normalize the count data, DESeq2 calculates size factors for each sample using the *median of ratios method* discussed previously in the [Count normalization](05c_count_normalization.md) lesson.
 
 ### MOV10 DE analysis: examining the size factors
 
-Let’s take a quick look at size factor values we have for each sample:
+Let's take a quick look at size factor values we have for each sample:
 
 ``` r
 ## Check the size factors
@@ -99,18 +99,26 @@ colSums(counts(dds))
 
 The next step in the differential expression analysis is the estimation of gene-wise dispersions. Before we get into the details, we should have a good idea about what dispersion is referring to in DESeq2.
 
-<img src="./img/07a_DEA/deseq2_workflow_separate_dis.png" width="336" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/deseq_steps/Slide3.png" style="display: block; margin: auto;" />
 
 In RNA-seq count data, we know:
 
-1.  To determine differentially expressed genes, we need to identify genes that have significantly different mean expression between groups **given the variation within the groups** (between replicates).
-2.  The variation within group (between replicates) needs to account for the fact that variance increases with the mean expression, as shown in the plot below (each black dot is a gene).
+1. To determine differentially expressed genes, we need to identify genes that have significantly different mean expression between groups **given the variation within the groups** (between replicates).
+2. The variation within group (between replicates) needs to account for the fact that variance increases with the mean expression, as shown in the plot below (each black dot is a gene).
 
-<img src="./img/07a_DEA/deseq2_mean_vs_variance2.png" width="540" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/deseq_mean_vs_variance.png" style="display: block; margin: auto;" />
 
-**To accurately identify DE genes, DESeq2 needs to account for the relationship between the variance and mean.** We don’t want all of our DE genes to be genes with low counts because the variance is lower for lowly expressed genes.
+**To accurately identify DE genes, DESeq2 needs to account for the relationship between the variance and mean.** We don't want all of our DE genes to be genes with low counts because the variance is lower for lowly expressed genes.
 
-Instead of using variance as the measure of variation in the data (*since variance correlates with gene expression level*), DESeq2 uses a measure of variation called **dispersion, which accounts for a gene’s variance and mean expression level**. Dispersion is calculated by `Var = μ + α*μ^2`, where `α` = dispersion, `Var` = variance, and `μ` = mean, giving the relationship:
+Instead of using variance as the measure of variation in the data (*since variance correlates with gene expression level*), DESeq2 uses a measure of variation called **dispersion, which accounts for a gene's variance and mean expression level**. Dispersion is calculated by:
+
+$Var=\mu+\alpha*\mu^2$, where:
+
+- $\alpha$ = dispersion
+- $Var$ = variance
+- $\mu$ = mean
+
+Which results in the following relationship:
 
 |                           | Effect on dispersion |
 |:-------------------------:|:--------------------:|
@@ -119,7 +127,7 @@ Instead of using variance as the measure of variation in the data (*since varian
 
 For genes with moderate to high count values, the square root of dispersion will be equal to the coefficient of variation. So 0.01 dispersion means 10% variation around the mean expected across biological replicates. The dispersion estimates for genes with the same mean will differ only based on their variance. **Therefore, the dispersion estimates reflect the variance in gene expression for a given mean value.** In the plot below, each black dot is a gene, and the dispersion is plotted against the mean expression (across within-group replicates) for each gene.
 
-<img src="./img/07a_DEA/deseq_dispersion1.png" width="623" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/deseq_dispersion1.png" style="display: block; margin: auto;" />
 
 !!! info "How does the dispersion relate to our model?"
 
@@ -129,25 +137,19 @@ For genes with moderate to high count values, the square root of dispersion will
 
 !!! note "Note on estimating gene dispersion"
 
-DESeq2 estimates the dispersion for each gene separately, based on the gene’s expression level (mean counts of within-group replicates) and variance.
+    DESeq2 estimates the dispersion for each gene separately, based on the gene's expression level (mean counts of within-group replicates) and variance.
 
-## Step 3a: Fit curve to gene-wise dispersion estimates
+## Step 3: Fit and shrink gene-wise dispersion estimates
 
-The next step in the workflow is to fit a curve to the gene-wise dispersion estimates. The idea behind fitting a curve to the data is that different genes will have different scales of biological variability, but, across all genes, there will be a distribution of reasonable estimates of dispersion.
+The next step in the workflow is to fit a curve to the gene-wise dispersion estimates and then shrink those estimates towards the curve. The idea behind fitting a curve to the data is that different genes will have different scales of biological variability, but, across all genes, there will be a distribution of reasonable estimates of dispersion.
 
-<img src="./img/07a_DEA/deseq2_workflow_separate_fit.png" width="335" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/deseq_steps/Slide4.png" style="display: block; margin: auto;" />
 
 This curve is displayed as a red line in the figure below, which plots the estimate for the **expected dispersion value for genes of a given expression strength**. Each black dot is a gene with an associated mean expression level and maximum likelihood estimation (MLE) of the dispersion (Step 1).
 
-<img src="./img/07a_DEA/deseq_dispersion1.png" width="623" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/deseq_dispersion1.png" style="display: block; margin: auto;" />
 
-## Step 3b: Shrink gene-wise dispersion estimates toward the values predicted by the curve
-
-The next step in the workflow is to shrink the gene-wise dispersion estimates toward the expected dispersion values.
-
-<img src="./img/07a_DEA/deseq2_workflow_separate_shr.png" width="335" style="display: block; margin: auto;" />
-
-The curve allows for more accurate identification of differentially expressed genes when sample sizes are small, and the strength of the shrinkage for each gene depends on :
+After we fit the curve to the estimates, we can shrink the gene-wise dispersion estimates toward the expected dispersion values. Thanks to the curve we can identify more accurately differentially expressed genes when sample sizes are small, and the strength of the shrinkage for each gene depends on:
 
 - how close gene dispersions are from the curve
 - sample size (more samples = less shrinkage)
@@ -156,7 +158,7 @@ The curve allows for more accurate identification of differentially expressed ge
 
 Dispersion estimates that are slightly above the curve are also shrunk toward the curve for better dispersion estimation; however, genes with **extremely high dispersion values are not**. This is due to the likelihood that the gene does not follow the modeling assumptions and has higher variability than others for biological or technical reasons \[[1](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8)\]. Shrinking the values toward the curve could result in false positives, so these values are not shrunken. These genes are shown surrounded by blue circles below.
 
-<img src="./img/07a_DEA/deseq_dispersion2.png" width="1237" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/deseq_dispersion2.png" style="display: block; margin: auto;" />
 
 **This is a good plot to evaluate whether your data is a good fit for the DESeq2 model.** You expect your data to generally scatter around the curve, with the dispersion decreasing with increasing mean expression levels. If you see a cloud or different shapes, then you might want to explore your data more to see if you have contamination or outlier samples. Note how much shrinkage you get across the whole range of means in the `plotDispEsts()` plot for any experiment with low degrees of freedom.
 
@@ -164,22 +166,22 @@ Examples of **worrisome dispersion plots** are shown below:
 
 The plot below shows a cloud of dispersion values, which do not generally follow the curve. This would suggest a bad fit of the data to the model.
 
-<img src="./img/07a_DEA/bad_dispersion1.png" width="864" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/bad_dispersion1.png" style="display: block; margin: auto;" />
 
 The next plot shows the dispersion values initially decreasing, then increasing with larger expression values. The larger mean expression values should not have larger dispersions based on our expectations - we expect decreasing dispersions with increasing mean. This indicates that there is less variation for more highly expressed genes than expected. This also indicates that there could be an outlier sample or contamination present in our analysis.
 
-<img src="./img/07a_DEA/bad_dispersion2.png" width="1280" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/bad_dispersion2.png" style="display: block; margin: auto;" />
 
 ## MOV10 DE analysis: exploring the dispersion estimates and assessing model fit
 
-Let’s take a look at the dispersion estimates for our MOV10 data:
+Let's take a look at the dispersion estimates for our MOV10 data:
 
 ``` r
 ## Plot dispersion estimates
 plotDispEsts(dds)
 ```
 
-<img src="./img/07a_DEA/plotDispersion.png" width="571" style="display: block; margin: auto;" />
+<img src="./img/07a_DEA/plotDispersion.png" style="display: block; margin: auto;" />
 
 ??? note "Since we have a small sample size, for many genes we see quite a bit of shrinkage. Do you think our data are a good fit for the model?"
 
@@ -192,13 +194,13 @@ plotDispEsts(dds)
     - If not, what aspects of the plot makes you feel confident about your data?
     - If so, what are your concerns? What would you do to address them?
 
-    <img src="./img/07a_DEA/exercise_dispersion.png" width="1288" style="display: block; margin: auto;" />
+    <img src="./img/07a_DEA/exercise_dispersion.png" style="display: block; margin: auto;" />
 
 ??? question "**Solution to Exercise 1**"
 
     The plot looks really bad. The fitted line (red) is above the final dispersions, and there is a "rainfall" coming from the cloud of dispersions. This could mean that our original data has some sort of contamination or outlier, or that the count matrix is not a "raw" count matrix.
 
-------------------------------------------------------------------------
+***
 
 *This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/).*
 

@@ -21,10 +21,10 @@ Understanding the steps in the experimental process of RNA extraction and prepar
 
 These important considerations include:
 
-1.  Proper experiment **controls**
-2.  Number and type of **replicates**
-3.  Issues related to **confounding**
-4.  Addressing **batch effects**
+1. Proper experiment **controls**
+2. Number and type of **replicates**
+3. Issues related to **confounding**
+4. Addressing **batch effects**
 
 We will go over each of these considerations in detail, discussing best practice and optimal design.
 
@@ -34,8 +34,8 @@ We will go over each of these considerations in detail, discussing best practice
 
 There are different types of controls, but we will mainly see **positive** and **negative** controls:
 
--   **Negative**: The negative control is a variable or group of samples where no response is expected.
--   **Positive**: A positive control is a variable or group of samples that receives a treatment with a known positive result.
+- **Negative**: The negative control is a variable or group of samples where no response is expected.
+- **Positive**: A positive control is a variable or group of samples that receives a treatment with a known positive result.
 
 It is very important that you give serious thought about proper controls of your experiment so you can control as many sources of variation as possible. This will greatly strengthen the results of your experiment.
 
@@ -51,9 +51,8 @@ Experimental replicates can be performed as **technical replicates** or **biolog
 
 *Image credit: [Klaus B., EMBO J (2015) **34**: 2727-2730](https://dx.doi.org/10.15252%2Fembj.201592958)*
 
--   **Technical replicates:** use the same biological sample to repeat the technical or experimental steps in order to accurately measure technical variation and remove it during analysis.
-
--   **Biological replicates** use different biological samples of the same condition to measure the biological variation between samples.
+- **Technical replicates:** use the same biological sample to repeat the technical or experimental steps in order to accurately measure technical variation and remove it during analysis.
+- **Biological replicates** use different biological samples of the same condition to measure the biological variation between samples.
 
 In the days of microarrays, technical replicates were considered a necessity; however, with the current RNA-Seq technologies, technical variation is much lower than biological variation and **technical replicates are unnecessary**.
 
@@ -79,35 +78,35 @@ As the figure above illustrates, **biological replicates are of greater importan
 
 Replicates are almost always preferred to greater sequencing depth for bulk RNA-Seq. However, **guidelines depend on the experiment performed and the desired analysis**. Below we list some general guidelines for replicates and sequencing depth to help with experimental planning:
 
--   **General gene-level differential expression:**
+- **General gene-level differential expression:**
 
-    -   ENCODE guidelines suggest 30 million SE reads per sample (stranded).
-    -   15 million reads per sample is often sufficient, if there are a good number of replicates (\>3).
-    -   Spend money on more biological replicates, if possible.
-    -   Generally recommended to have read length \>= 50 bp
+    - ENCODE guidelines suggest 30 million SE reads per sample (stranded).
+    - 15 million reads per sample is often sufficient, if there are a good number of replicates (\>3).
+    - Spend money on more biological replicates, if possible.
+    - Generally recommended to have read length \>= 50 bp
 
--   **Gene-level differential expression with detection of lowly-expressed genes:**
+- **Gene-level differential expression with detection of lowly-expressed genes:**
 
-    -   Similarly benefits from replicates more than sequencing depth.
-    -   Sequence deeper with at least 30-60 million reads depending on level of expression (start with 30 million with a good number of replicates).
-    -   Generally recommended to have read length \>= 50 bp
+    - Similarly benefits from replicates more than sequencing depth.
+    - Sequence deeper with at least 30-60 million reads depending on level of expression (start with 30 million with a good number of replicates).
+    - Generally recommended to have read length \>= 50 bp
 
--   **Isoform-level differential expression:**
+- **Isoform-level differential expression:**
 
-    -   Of known isoforms, suggested to have a depth of at least 30 million reads per sample and paired-end reads.
-    -   Of novel isoforms should have more depth (\> 60 million reads per sample).
-    -   Choose biological replicates over paired/deeper sequencing.
-    -   Generally recommended to have read length \>= 50 bp, but longer is better as the reads will be more likely to cross exon junctions
-    -   Perform careful QC of RNA quality. Be careful to use high quality preparation methods and restrict analysis to high quality RIN \# samples.
+    - Of known isoforms, suggested to have a depth of at least 30 million reads per sample and paired-end reads.
+    - Of novel isoforms should have more depth (\> 60 million reads per sample).
+    - Choose biological replicates over paired/deeper sequencing.
+    - Generally recommended to have read length \>= 50 bp, but longer is better as the reads will be more likely to cross exon junctions
+    - Perform careful QC of RNA quality. Be careful to use high quality preparation methods and restrict analysis to high quality RIN \# samples.
 
--   **Other types of RNA analyses (intron retention, small RNA-Seq, etc.):**
+- **Other types of RNA analyses (intron retention, small RNA-Seq, etc.):**
 
-    -   Different recommendations depending on the analysis.
-    -   Almost always more biological replicates are better!
+    - Different recommendations depending on the analysis.
+    - Almost always more biological replicates are better!
 
 !!! info "What is coverage?"
 
-The factor used to estimate the depth of sequencing for genomes is "coverage" - how many times do the number of nucleotides sequenced "cover" the genome. This metric is not exact for genomes (whole genome sequencing), but it is good enough and is used extensively. However, the metric **does not work for transcriptomes** because even though you may know what % of the genome has transcriptional activity, the expression of the genes is highly variable.
+    The factor used to estimate the depth of sequencing for genomes is "coverage" - how many times do the number of nucleotides sequenced "cover" the genome. This metric is not exact for genomes (whole genome sequencing), but it is good enough and is used extensively. However, the metric **does not work for transcriptomes** because even though you may know what % of the genome has transcriptional activity, the expression of the genes is highly variable.
 
 ## Confounding variables
 
@@ -123,13 +122,12 @@ For example, we know that sex has large effects on gene expression, and if all o
 
 **To AVOID confounding:**
 
--   Ensure animals in each condition are all the **same sex, age, litter, and batch**, if possible.
-
--   If not possible, then ensure to split the animals equally between conditions
+- Ensure animals in each condition are all the **same sex, age, litter, and batch**, if possible.
+- If not possible, then ensure to split the animals equally between conditions
 
 <p align="center">
 
-<img src="./img/02_experimental_planning/non_confounded_design.png" width="400"/>
+<img src="./img/02_experimental_planning/non_confounded_design.png" width="500"/>
 
 </p>
 
@@ -149,25 +147,20 @@ To explore the issues generated by poor batch study design, they are highlighted
 
 ### How to know whether you have batches?
 
--   Were all RNA isolations performed on the same day?
-
--   Were all library preparations performed on the same day?
-
--   Did the same person perform the RNA isolation/library preparation for all samples?
-
--   Did you use the same reagents for all samples?
-
--   Did you perform the RNA isolation/library preparation in the same location?
+- Were all RNA isolations performed on the same day?
+- Were all library preparations performed on the same day?
+- Did the same person perform the RNA isolation/library preparation for all samples?
+- Did you use the same reagents for all samples?
+- Did you perform the RNA isolation/library preparation in the same location?
 
 If *any* of the answers is **'No'**, then you have batches.
 
-### Best practices regarding batches:
+### Best practices regarding batches
 
--   Design the experiment in a way to **avoid batches**, if possible.
+- Design the experiment in a way to **avoid batches**, if possible.
+- If unable to avoid batches:
 
--   If unable to avoid batches:
-
-    -   **Do NOT confound** your experiment by batch:
+    - **Do NOT confound** your experiment by batch:
 
 <p align="center">
 
@@ -177,7 +170,7 @@ If *any* of the answers is **'No'**, then you have batches.
 
 *Image credit: [Hicks SC, et al., bioRxiv (2015)](https://www.biorxiv.org/content/early/2015/08/25/025528)*
 
--   **DO** split replicates of the different sample groups across batches. The more replicates the better (definitely more than 2).
+- **DO** split replicates of the different sample groups across batches. The more replicates the better (definitely more than 2).
 
 <p align="center">
 
@@ -187,9 +180,8 @@ If *any* of the answers is **'No'**, then you have batches.
 
 *Image credit: [Hicks SC, et al., bioRxiv (2015)](https://www.biorxiv.org/content/early/2015/08/25/025528)*
 
--   **DO** make a balanced batch design. For example if you can only prepare a subset of samples in the lab on a given day, do not do 90% of samples on day 1 and the remaining 10% on day 2, aim for balance, 50% each day.
-
--   **DO** include batch information in your **experimental metadata**. During the analysis, we can regress out the variation due to batch if not confounded so it doesn't affect our results if we have that information.
+- **DO** make a balanced batch design. For example if you can only prepare a subset of samples in the lab on a given day, do not do 90% of samples on day 1 and the remaining 10% on day 2, aim for balance, 50% each day.
+- **DO** include batch information in your **experimental metadata**. During the analysis, we can regress out the variation due to batch if not confounded so it doesn't affect our results if we have that information.
 
 <p align="center">
 
@@ -199,7 +191,7 @@ If *any* of the answers is **'No'**, then you have batches.
 
 !!! warning "Warning on sample preparations"
 
-The sample preparation of cell line "biological" replicates "should be performed as independently as possible" (as batches), "meaning that cell culture media should be prepared freshly for each experiment, different frozen cell stocks and growth factor batches, etc. should be used [[2](http://paasp.net/accurate-design-of-in-vitro-experiments-why-does-it-matter/)]." However, preparation across all conditions should be performed at the same time.
+    The sample preparation of cell line "biological" replicates "should be performed as independently as possible" (as batches), "meaning that cell culture media should be prepared freshly for each experiment, different frozen cell stocks and growth factor batches, etc. should be used (read more about it [here](http://paasp.net/accurate-design-of-in-vitro-experiments-why-does-it-matter/))." However, preparation across all conditions should be performed at the same time.
 
 ***
 
