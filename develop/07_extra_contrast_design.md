@@ -1,9 +1,26 @@
 ---
 title: Contrast designs
 summary: In this lesson we explain how create complex design formulas and contrasts
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_format='all',
+                        output_dir='./develop/')})
+output:
+  github_document: 
+     preserve_yaml: TRUE
+     html_preview: FALSE
+     pandoc_args: [
+      "--wrap", "none" # this is needed to not break admonitions
+    ]
 ---
 
+Contrast designs
+================
+
 # Design formula and contrasts
+
+**Last updated:** *{{ git_revision_date_localized }}*
 
 !!! note "Section Overview"
 
@@ -16,7 +33,7 @@ summary: In this lesson we explain how create complex design formulas and contra
 
 The final step in the differential expression analysis workflow is **fitting the raw counts to the NB model and performing the statistical test** for differentially expressed genes. In this step we essentially want to determine whether the mean expression levels of different sample groups are significantly different.
 
-<img src="./img/07_extra_contrast_design/deseq_steps.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/de_theory.png" width="1109" style="display: block; margin: auto;" />
 
 *Image credit: Paul Pavlidis, UBC*
 
@@ -24,7 +41,7 @@ The [DESeq2 paper](https://genomebiology.biomedcentral.com/articles/10.1186/s130
 
 Differential expression analysis with DESeq2 involves multiple steps as displayed in the flowchart below in blue. Briefly, DESeq2 will model the raw counts, using normalization factors (size factors) to account for differences in library depth. Then, it will estimate the gene-wise dispersions and shrink these estimates to generate more accurate estimates of dispersion to model the counts. Finally, DESeq2 will fit the negative binomial model and perform hypothesis testing using the Wald test or Likelihood Ratio Test.
 
-<img src="./img/07_extra_contrast_design/deseq_steps.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/deseq_steps.png" width="1440" style="display: block; margin: auto;" />
 
 !!! tip
 
@@ -40,7 +57,7 @@ A design formula tells the statistical software the known sources of variation t
 
 For example, suppose you have the following metadata:
 
-<img src="./img/07_extra_contrast_design/metadata.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/metadata.png" width="270" style="display: block; margin: auto;" />
 
 If you want to examine the expression differences between `condition`, and you know that major sources of variation include `bloodtype` and `patient`, then your design formula would be:
 
@@ -219,7 +236,7 @@ This gives us exactly the same results as before, which we can check for example
 plot(res1$log2FoldChange, res2$log2FoldChange)
 ```
 
-<img src="./img/07_extra_contrast_design/contrast_res1.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res1.png" width="960" style="display: block; margin: auto;" />
 
 ## Recoding the design
 
@@ -270,7 +287,7 @@ Again, the results are essentially the same:
 plot(res1$log2FoldChange, res3$log2FoldChange)
 ```
 
-<img src="./img/07_extra_contrast_design/contrast_res2.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res2.png" width="960" style="display: block; margin: auto;" />
 
 In theory there's no difference between these two ways of defining our design. The design with an intercept is more common, but for the purposes of understanding what's going on, it's sometimes easier to look at models without intercept.
 
@@ -456,7 +473,7 @@ plot(res1_A_B$log2FoldChange, res2_AB$log2FoldChange)
 abline(0, 1, col = "brown", lwd = 2)
 ```
 
-<img src="./img/07_extra_contrast_design/contrast_res3.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res3.png" width="960" style="display: block; margin: auto;" />
 
 ``` r
 # compare the errors between the two approaches
@@ -464,7 +481,7 @@ plot(res1_A_B$lfcSE, res2_AB$lfcSE)
 abline(0, 1, col = "brown", lwd = 2)
 ```
 
-<img src="./img/07_extra_contrast_design/contrast_res4.png" style="display: block; margin: auto;" />
+<img src="./img/07_extra_contrast_design/contrast_res4.png" width="960" style="display: block; margin: auto;" />
 
 ## Two factors with interaction
 

@@ -7,6 +7,8 @@ hide:
 
 # Experimental design considerations
 
+**Last updated:** *{{ git_revision_date_localized }}*
+
 !!! note "Section Overview"
 
     &#128368; **Time Estimation:** 30 minutes  

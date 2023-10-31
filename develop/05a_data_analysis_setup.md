@@ -5,6 +5,8 @@ summary: In this lesson we explain how to start an Rstudio session for data anal
 
 # Setup for teaching in uCloud
 
+**Last updated:** *{{ git_revision_date_localized }}*
+
 !!! note "Section Overview"
 
     &#128368; **Time Estimation:** 20 minutes  

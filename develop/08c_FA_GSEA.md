@@ -1,9 +1,26 @@
 ---
 title: Functional class scoring
 summary: In this lesson we explain how to run functional analysis on your results using Class Scoring methods
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_format='all',
+                        output_dir='./develop/')})
+output:
+  github_document: 
+     preserve_yaml: TRUE
+     html_preview: FALSE
+     pandoc_args: [
+      "--wrap", "none" # this is needed to not break admonitions
+    ]
 ---
 
+Functional class scoring
+================
+
 # Functional class scoring
+
+**Last updated:** *{{ git_revision_date_localized }}*
 
 !!! note "Section Overview"
 
@@ -26,7 +43,7 @@ Functional class scoring (FCS) tools, such as [GSEA](https://www.pnas.org/conten
 
 <img src="./img/08c_FA_GSEA/gsea_theory.png" width="1000" style="display: block; margin: auto;" />
 
-The hypothesis of FCS methods is that although large changes in individual genes can have significant effects on pathways (and will be detected via ORA methods), weaker but coordinated changes in sets of functionally related genes (i.e., pathways) can also have significant effects. Thus, rather than setting an arbitrary threshold to identify ‘significant genes’, **all genes are considered** in the analysis. The gene-level statistics from the dataset are aggregated to generate a single pathway-level statistic and statistical significance of each pathway is reported. This type of analysis can be particularly helpful if the differential expression analysis only outputs a small list of significant DE genes.
+The hypothesis of FCS methods is that although large changes in individual genes can have significant effects on pathways (and will be detected via ORA methods), weaker but coordinated changes in sets of functionally related genes (i.e., pathways) can also have significant effects. Thus, rather than setting an arbitrary threshold to identify 'significant genes', **all genes are considered** in the analysis. The gene-level statistics from the dataset are aggregated to generate a single pathway-level statistic and statistical significance of each pathway is reported. This type of analysis can be particularly helpful if the differential expression analysis only outputs a small list of significant DE genes.
 
 ### Gene set enrichment analysis using clusterProfiler and Pathview
 
@@ -57,7 +74,7 @@ foldchanges <- res_entrez$log2FoldChange
 names(foldchanges) <- res_entrez$entrez
 ```
 
-Next we need to order the fold changes in decreasing order. To do this we’ll use the `sort()` function, which takes a vector as input. This is in contrast to Tidyverse’s `arrange()`, which requires a data frame.
+Next we need to order the fold changes in decreasing order. To do this we'll use the `sort()` function, which takes a vector as input. This is in contrast to Tidyverse's `arrange()`, which requires a data frame.
 
 ``` r
 ## Sort fold changes in decreasing order
@@ -68,13 +85,13 @@ head(foldchanges)
 
 #### Theory of GSEA
 
-Now we are ready to perform GSEA. The details regarding GSEA can be found in the [PNAS paper](https://www.pnas.org/content/102/43/15545) by Subramanian et al. We will describe briefly the steps outlined in the paper below:
+Now we are ready to perform GSEA. The details regarding GSEA can be found in the [PNAS paper](https://www.pnas.org/content/102/43/15545) by Subramanian et al. We will describe briefly the steps outlined in the paper below:
 
 <img src="./img/08c_FA_GSEA/gsea_overview.png" width="1280" style="display: block; margin: auto;" />
 
-***Image credit:** [Subramanian et al. Proceedings of the National Academy of Sciences Oct 2005, 102 (43) 15545-15550; DOI: 10.1073/pnas.0506580102](https://www.pnas.org/content/102/43/15545)*
+***Image credit:** [Subramanian et al. Proceedings of the National Academy of Sciences Oct 2005, 102 (43) 15545-15550; DOI: 10.1073/pnas.0506580102](https://www.pnas.org/content/102/43/15545)*
 
-This image describes the theory of GSEA, with the ‘gene set S’ showing the metric used (in our case, ranked log2 fold changes) to determine enrichment of genes in the gene set. The left-most image is representing this metric used for the GSEA analysis. The log2 fold changes for each gene in the ‘gene set S’ is shown as a line in the middle image. The large positive log2 fold changes are at the top of the gene set image, while the largest negative log2 fold changes are at the bottom of the gene set image. In the right-most image, the gene set is turned horizontally, underneath which is an image depicting the calculations involved in determining enrichment, as described below.
+This image describes the theory of GSEA, with the 'gene set S' showing the metric used (in our case, ranked log2 fold changes) to determine enrichment of genes in the gene set. The left-most image is representing this metric used for the GSEA analysis. The log2 fold changes for each gene in the 'gene set S' is shown as a line in the middle image. The large positive log2 fold changes are at the top of the gene set image, while the largest negative log2 fold changes are at the bottom of the gene set image. In the right-most image, the gene set is turned horizontally, underneath which is an image depicting the calculations involved in determining enrichment, as described below.
 
 ##### **Step 1:** Calculation of enrichment score:
 
@@ -88,7 +105,7 @@ The significance of the enrichment score is determined using permutation testing
 
 After all gene sets are tested, the enrichment scores are normalized for the size of the gene set, then the p-values are corrected for multiple testing.
 
-The GSEA output will yield the core genes in the gene sets that most highly contribute to the enrichment score. The genes output are generally the genes at or before the running sum reaches its maximum value (eg. the most influential genes driving the differences between conditions for that gene set).
+The GSEA output will yield the core genes in the gene sets that most highly contribute to the enrichment score. The genes output are generally the genes at or before the running sum reaches its maximum value (e.g. the most influential genes driving the differences between conditions for that gene set).
 
 #### Performing GSEA
 
@@ -110,7 +127,7 @@ head(gseaKEGG_results)
 
     The organisms with KEGG pathway information are listed [here](http://www.genome.jp/kegg/catalog/org_list.html).
 
-**How many pathways are enriched?** Let’s view the enriched pathways:
+**How many pathways are enriched?** Let's view the enriched pathways:
 
 ``` r
 ## Write GSEA results to file
@@ -281,13 +298,13 @@ msig_df <- data.frame(msig)
 
 <img src="./img/08c_FA_GSEA/pathway_analysis.png" width="500" style="display: block; margin: auto;" />
 
-Pathway topology analysis often takes into account gene interaction information along with the fold changes and adjusted p-values from differential expression analysis to identify dysregulated pathways. Depending on the tool, pathway topology tools explore how genes interact with each other (e.g. activation, inhibition, phosphorylation, ubiquitination, etc.) to determine the pathway-level statistics. Pathway topology-based methods utilize the number and type of interactions between gene product (our DE genes) and other gene products to infer gene function or pathway association.
+Pathway topology analysis often takes into account gene interaction information along with the fold changes and adjusted p-values from differential expression analysis to identify dysregulated pathways. Depending on the tool, pathway topology tools explore how genes interact with each other (e.g. activation, inhibition, phosphorylation, ubiquitination, etc.) to determine the pathway-level statistics. Pathway topology-based methods utilize the number and type of interactions between gene product (our DE genes) and other gene products to infer gene function or pathway association.
 
 For instance, the [SPIA (Signaling Pathway Impact Analysis)](http://bioconductor.org/packages/release/bioc/html/SPIA.html) tool can be used to integrate the lists of differentially expressed genes, their fold changes, and pathway topology to identify affected pathways.
 
 ### Co-expression clustering
 
-Co-expression clustering is often used to identify genes of novel pathways or networks by grouping genes together based on similar trends in expression. These tools are useful in identifying genes in a pathway, when their participation in a pathway and/or the pathway itself is unknown. These tools cluster genes with similar expression patterns to create ‘modules’ of co-expressed genes which often reflect functionally similar groups of genes. These ‘modules’ can then be compared across conditions or in a time-course experiment to identify any biologically relevant pathway or network information.
+Co-expression clustering is often used to identify genes of novel pathways or networks by grouping genes together based on similar trends in expression. These tools are useful in identifying genes in a pathway, when their participation in a pathway and/or the pathway itself is unknown. These tools cluster genes with similar expression patterns to create 'modules' of co-expressed genes which often reflect functionally similar groups of genes. These 'modules' can then be compared across conditions or in a time-course experiment to identify any biologically relevant pathway or network information.
 
 You can visualize co-expression clustering using heatmaps, which should be viewed as suggestive only; serious classification of genes needs better methods.
 

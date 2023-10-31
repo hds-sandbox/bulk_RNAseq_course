@@ -1,9 +1,26 @@
 ---
 title: Functional Analysis for RNA-seq
 summary: In this lesson we explain how to run functional analysis on your results using overrepresentation analysis
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_format='all',
+                        output_dir='./develop/')})
+output:
+  github_document: 
+     preserve_yaml: TRUE
+     html_preview: FALSE
+     pandoc_args: [
+      "--wrap", "none" # this is needed to not break admonitions
+    ]
 ---
 
+Functional Analysis for RNA-seq
+================
+
 # Functional analysis
+
+**Last updated:** *{{ git_revision_date_localized }}*
 
 !!! note "Section Overview"
 
@@ -19,14 +36,14 @@ summary: In this lesson we explain how to run functional analysis on your result
 The output of RNA-seq differential expression analysis is a list of significant differentially expressed genes (DEGs). To gain greater biological insight on the differentially expressed genes there are various analyses that can be done:
 
 - determine whether there is enrichment of known biological functions, interactions, or pathways
-- identify genes’ involvement in novel pathways or networks by grouping genes together based on similar trends
+- identify genes' involvement in novel pathways or networks by grouping genes together based on similar trends
 - use global changes in gene expression by visualizing all genes being significantly up- or down-regulated in the context of external interaction data
 
 Generally for any differential expression analysis, it is useful to interpret the resulting gene lists using freely available web- and R-based tools. While tools for functional analysis span a wide variety of techniques, they can loosely be categorized into three main types: over-representation analysis, functional class scoring, and pathway topology. See more [here](https://github.com/hbctraining/In-depth-NGS-Data-Analysis-Course/raw/master/resources/pathway_tools.pdf).
 
 <img src="./img/08b_FA_overrepresentation/pathway_analysis.png" width="500" style="display: block; margin: auto;" />
 
-The goal of functional analysis is to provide biological insight, so it’s necessary to analyze our results in the context of our experimental hypothesis: **FMRP and MOV10 associate and regulate the translation of a subset of RNAs**. Therefore, based on the authors’ hypothesis, we may expect the enrichment of processes/pathways related to **translation, splicing, and the regulation of mRNAs**, which we would need to validate experimentally.
+The goal of functional analysis is to provide biological insight, so it's necessary to analyze our results in the context of our experimental hypothesis: **FMRP and MOV10 associate and regulate the translation of a subset of RNAs**. Therefore, based on the authors' hypothesis, we may expect the enrichment of processes/pathways related to **translation, splicing, and the regulation of mRNAs**, which we would need to validate experimentally.
 
 !!! note
 
@@ -36,29 +53,27 @@ The goal of functional analysis is to provide biological insight, so it’s nece
 
 There are a plethora of functional enrichment tools that perform some type of "over-representation" analysis by querying databases containing information about gene function and interactions.
 
-These databases typically **categorize genes into groups (gene sets)** based on shared function, or involvement in a pathway, or presence in a specific cellular location, or other categorizations, e.g. functional pathways, etc. Essentially, known genes are binned into categories that have been consistently named (controlled vocabulary) based on how the gene has been annotated functionally. These categories are independent of any organism, however each organism has distinct categorizations available.
+These databases typically **categorize genes into groups (gene sets)** based on shared function, or involvement in a pathway, or presence in a specific cellular location, or other categorizations, e.g. functional pathways, etc. Essentially, known genes are binned into categories that have been consistently named (controlled vocabulary) based on how the gene has been annotated functionally. These categories are independent of any organism, however each organism has distinct categorizations available.
 
 To determine whether any categories are over-represented, you can determine the probability of having the observed proportion of genes associated with a specific category in your gene list based on the proportion of genes associated with the same category in the background set (gene categorizations for the appropriate organism).
 
-<img src="./img/08b_FA_overrepresentation/gene_sets.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/gene_sets.png" width="1440" style="display: block; margin: auto;" />
 
-<img src="./img/08b_FA_overrepresentation/overrepresentation_sets.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/overrepresentation_sets.png" width="1440" style="display: block; margin: auto;" />
 
 The statistical test that will determine whether something is actually over-represented is the *Hypergeometric test*.
 
 ### Hypergeometric testing
 
-Using the example of the first functional category above, hypergeometric distribution is a probability distribution that describes the probability of 25 genes (k) being associated with "Functional category 1", for all genes in our gene list (n=1000), from a population of all of the genes in entire genome (N=23,000) which contains 35 genes (K) associated with "Functional category 1" [[4](https://en.wikipedia.org/wiki/Hypergeometric_distribution)].
+Using the example of the first functional category above, hypergeometric distribution is a probability distribution that describes the probability of 25 genes (k) being associated with "Functional category 1", for all genes in our gene list (n=1000), from a population of all of the genes in entire genome (N=23,000) which contains 35 genes (K) associated with "Functional category 1" \[[4](https://en.wikipedia.org/wiki/Hypergeometric_distribution)\].
 
-<img src="./img/08b_FA_overrepresentation/overrepresentation_tables/Slide2.png" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/overrepresentation_tables/Slide2.png" width="1440" style="display: block; margin: auto;" />
 
 The calculation of probability of k successes follows the formula:
 
-$$\Pr(X = k) = \frac{\binom{K}{k} \binom{N - K}{n-k}}{\binom{N}{n}}$$
+$$\Pr(X = k) = \frac{\binom{K}{k} \binom{N - K}{n-k}}{\binom{N}{n}}$$ <img src="./img/08b_FA_overrepresentation/overrepresentation_tables/Slide1.png" width="1440" style="display: block; margin: auto;" />
 
-<img src="./img/08b_FA_overrepresentation/overrepresentation_tables/Slide1.png" style="display: block; margin: auto;" />
-
-This test will result in an adjusted p-value (after multiple test correction) for each category tested. 
+This test will result in an adjusted p-value (after multiple test correction) for each category tested.
 
 ## Gene Ontology project
 
@@ -70,7 +85,7 @@ One of the most widely-used categorizations is the **Gene Ontology (GO)** establ
 
 The [Gene Ontology Consortium](http://geneontology.org/page/go-consortium-contributors-list) maintains the GO terms, and these GO terms are incorporated into gene annotations in many of the popular repositories for animal, plant, and microbial genomes.
 
-Tools that investigate enrichment of biological functions or interactions often use the Gene Ontology (GO) categorizations, i.e. the GO terms to determine whether any have significantly modified representation in a given list of genes. Therefore, to best use and interpret the results from these functional analysis tools, it is helpful to have a good understanding of the GO terms themselves and their organization.
+Tools that investigate enrichment of biological functions or interactions often use the Gene Ontology (GO) categorizations, i.e. the GO terms to determine whether any have significantly modified representation in a given list of genes. Therefore, to best use and interpret the results from these functional analysis tools, it is helpful to have a good understanding of the GO terms themselves and their organization.
 
 ### GO Ontologies
 
@@ -80,19 +95,21 @@ To describe the roles of genes and gene products, GO terms are organized into th
 - **Molecular function:** represents the biochemical activity of the gene product, such activities could include "ligand", "GTPase", and "transporter".
 - **Cellular component:** refers to the location in the cell of the gene product. Cellular components could include "nucleus", "lysosome", and "plasma membrane".
 
-Each GO term has a term name (e.g. **DNA repair**) and a unique term accession number (**<GO:0005125>**), and a single gene product can be associated with many GO terms, since a single gene product "may function in several processes, contain domains that carry out diverse molecular functions, and participate in multiple alternative interactions with other proteins, organelles or locations in the cell". See more [here](https://github.com/hbctraining/In-depth-NGS-Data-Analysis-Course/raw/master/resources/go_terms.pdf).
+Each GO term has a term name (e.g. **DNA repair**) and a unique term accession number (**<GO:0005125>**), and a single gene product can be associated with many GO terms, since a single gene product "may function in several processes, contain domains that carry out diverse molecular functions, and participate in multiple alternative interactions with other proteins, organelles or locations in the cell". See more [here](https://github.com/hbctraining/In-depth-NGS-Data-Analysis-Course/raw/master/resources/go_terms.pdf).
 
 ### GO term hierarchy
 
 Some gene products are well-researched, with vast quantities of data available regarding their biological processes and functions. However, other gene products have very little data available about their roles in the cell.
 
-For example, the protein, "p53", would contain a wealth of information on it’s roles in the cell, whereas another protein might only be known as a "membrane-bound protein" with no other information available.
+For example, the protein, "p53", would contain a wealth of information on it's roles in the cell, whereas another protein might only be known as a "membrane-bound protein" with no other information available.
 
-The GO ontologies were developed to describe and query biological knowledge with differing levels of information available. To do this, GO ontologies are loosely hierarchical, ranging from general, ‘parent’, terms to more specific, ‘child’ terms. The GO ontologies are "loosely" hierarchical since ‘child’ terms can have multiple ‘parent’ terms.
+The GO ontologies were developed to describe and query biological knowledge with differing levels of information available. To do this, GO ontologies are loosely hierarchical, ranging from general, 'parent', terms to more specific, 'child' terms. The GO ontologies are "loosely" hierarchical since 'child' terms can have multiple 'parent' terms.
 
-Some genes with less information may only be associated with general ‘parent’ terms or no terms at all, while other genes with a lot of information be associated with many terms.
+Some genes with less information may only be associated with general 'parent' terms or no terms at all, while other genes with a lot of information be associated with many terms.
 
-![Nature Reviews Cancer 7, 23-34 (January 2007)](./img/08b_FA_overrepresentation/go_heirarchy.jpg)
+<img src="./img/08b_FA_overrepresentation/go_heirarchy.jpg" width="755" style="display: block; margin: auto;" />
+
+*From Nature Reviews Cancer 7, 23-34 (January 2007)*
 
 !!! tip
 

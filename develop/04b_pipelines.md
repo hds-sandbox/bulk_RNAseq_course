@@ -5,6 +5,8 @@ summary: In this lesson we explain a community curated pipeline for bulk RNAseq 
 
 # Automating your workflow: Nextflow and nf-core pipelines
 
+**Last updated:** *{{ git_revision_date_localized }}*
+
 !!! note "Section Overview"
 
     &#128368; **Time Estimation:** X minutes  

@@ -1,7 +1,6 @@
 ---
 title: Functional Analysis for RNA-seq
 summary: In this lesson we explain how to run functional analysis on your results using overrepresentation analysis
-date: 2023-07-04
 knit: (function(inputFile, encoding) { 
       rmarkdown::render(inputFile,
                         encoding=encoding,
@@ -32,6 +31,8 @@ knitr::opts_chunk$set(autodep        = TRUE,
 
 # Functional analysis
 
+**Last updated:** *{{ git_revision_date_localized }}*
+
 !!! note "Section Overview"
 
     &#128368; **Time Estimation:** 120 minutes  
@@ -46,16 +47,16 @@ knitr::opts_chunk$set(autodep        = TRUE,
 The output of RNA-seq differential expression analysis is a list of significant differentially expressed genes (DEGs). To gain greater biological insight on the differentially expressed genes there are various analyses that can be done:
 
 - determine whether there is enrichment of known biological functions, interactions, or pathways
-- identify genes' involvement in novel pathways or networks by grouping genes together based on similar trends
+- identify genes’ involvement in novel pathways or networks by grouping genes together based on similar trends
 - use global changes in gene expression by visualizing all genes being significantly up- or down-regulated in the context of external interaction data
 
-Generally for any differential expression analysis, it is useful to interpret the resulting gene lists using freely available web- and R-based tools.  While tools for functional analysis span a wide variety of techniques, they can loosely be categorized into three main types: over-representation analysis, functional class scoring, and pathway topology. See more [here](https://github.com/hbctraining/In-depth-NGS-Data-Analysis-Course/raw/master/resources/pathway_tools.pdf). 
+Generally for any differential expression analysis, it is useful to interpret the resulting gene lists using freely available web- and R-based tools. While tools for functional analysis span a wide variety of techniques, they can loosely be categorized into three main types: over-representation analysis, functional class scoring, and pathway topology. See more [here](https://github.com/hbctraining/In-depth-NGS-Data-Analysis-Course/raw/master/resources/pathway_tools.pdf).
 
 ```{r, echo = FALSE, eval = TRUE}
 knitr::include_graphics("./img/08b_FA_overrepresentation/pathway_analysis.png")
 ```
 
-The goal of functional analysis is to provide biological insight, so it's necessary to analyze our results in the context of our experimental hypothesis: **FMRP and MOV10 associate and regulate the translation of a subset of RNAs**. Therefore, based on the authors' hypothesis, we may expect the enrichment of processes/pathways related to **translation, splicing, and the regulation of mRNAs**, which we would need to validate experimentally.
+The goal of functional analysis is to provide biological insight, so it’s necessary to analyze our results in the context of our experimental hypothesis: **FMRP and MOV10 associate and regulate the translation of a subset of RNAs**. Therefore, based on the authors’ hypothesis, we may expect the enrichment of processes/pathways related to **translation, splicing, and the regulation of mRNAs**, which we would need to validate experimentally.
 
 !!! note
 
@@ -65,28 +66,33 @@ The goal of functional analysis is to provide biological insight, so it's necess
 
 There are a plethora of functional enrichment tools that perform some type of "over-representation" analysis by querying databases containing information about gene function and interactions.
 
-These databases typically **categorize genes into groups (gene sets)** based on shared function, or involvement in a pathway, or presence in a specific cellular location, or other categorizations, e.g. functional pathways, etc. Essentially, known genes are binned into categories that have been consistently named (controlled vocabulary) based on how the gene has been annotated functionally. These categories are independent of any organism, however each organism has distinct categorizations available.
+These databases typically **categorize genes into groups (gene sets)** based on shared function, or involvement in a pathway, or presence in a specific cellular location, or other categorizations, e.g. functional pathways, etc. Essentially, known genes are binned into categories that have been consistently named (controlled vocabulary) based on how the gene has been annotated functionally. These categories are independent of any organism, however each organism has distinct categorizations available.
 
-To determine whether any categories are over-represented, you can determine the probability of having the observed proportion of genes associated with a specific category in your gene list based on the proportion of genes associated with the same category in the background set (gene categorizations for the appropriate organism). 
+To determine whether any categories are over-represented, you can determine the probability of having the observed proportion of genes associated with a specific category in your gene list based on the proportion of genes associated with the same category in the background set (gene categorizations for the appropriate organism).
 
 ```{r, echo = FALSE, eval = TRUE}
-knitr::include_graphics("./img/08b_FA_overrepresentation/go_proportions.png")
+knitr::include_graphics("./img/08b_FA_overrepresentation/gene_sets.png")
 ```
   
 ```{r, echo = FALSE, eval = TRUE}  
-knitr::include_graphics("./img/08b_FA_overrepresentation/go_proportions_table3.png")
+knitr::include_graphics("./img/08b_FA_overrepresentation/overrepresentation_sets.png")
 ```
   
 The statistical test that will determine whether something is actually over-represented is the *Hypergeometric test*.
 
 ### Hypergeometric testing
 
-Using the example of the first functional category above, hypergeometric distribution is a probability distribution that describes the probability of 25 genes (k) being associated with "Functional category 1", for all genes in our gene list (n=1000), from a population of all of the genes in entire genome (N=13,000) which contains 35 genes (K) associated with "Functional category 1" [[4](https://en.wikipedia.org/wiki/Hypergeometric_distribution)].
+Using the example of the first functional category above, hypergeometric distribution is a probability distribution that describes the probability of 25 genes (k) being associated with "Functional category 1", for all genes in our gene list (n=1000), from a population of all of the genes in entire genome (N=23,000) which contains 35 genes (K) associated with "Functional category 1" [[4](https://en.wikipedia.org/wiki/Hypergeometric_distribution)].
+
+```{r, echo = FALSE, eval = TRUE}  
+knitr::include_graphics("./img/08b_FA_overrepresentation/overrepresentation_tables/Slide2.png")
+```
 
 The calculation of probability of k successes follows the formula:
 
+$$\Pr(X = k) = \frac{\binom{K}{k} \binom{N - K}{n-k}}{\binom{N}{n}}$$
 ```{r, echo = FALSE, eval = TRUE}  
-knitr::include_graphics("./img/08b_FA_overrepresentation/hypergeo.png")
+knitr::include_graphics("./img/08b_FA_overrepresentation/overrepresentation_tables/Slide1.png")
 ```
 
 This test will result in an adjusted p-value (after multiple test correction) for each category tested.
@@ -123,7 +129,11 @@ The GO ontologies were developed to describe and query biological knowledge with
 
 Some genes with less information may only be associated with general 'parent' terms or no terms at all, while other genes with a lot of information be associated with many terms.
 
-![Nature Reviews Cancer 7, 23-34 (January 2007)](./img/08b_FA_overrepresentation/go_heirarchy.jpg)
+```{r, echo = FALSE, eval = TRUE}  
+knitr::include_graphics("./img/08b_FA_overrepresentation/go_heirarchy.jpg")
+```
+
+*From Nature Reviews Cancer 7, 23-34 (January 2007)*
 
 !!! tip
 

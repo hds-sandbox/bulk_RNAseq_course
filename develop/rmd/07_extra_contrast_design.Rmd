@@ -1,7 +1,6 @@
 ---
 title: Contrast designs
 summary: In this lesson we explain how create complex design formulas and contrasts
-date: 2023-01-17
 knit: (function(inputFile, encoding) { 
       rmarkdown::render(inputFile,
                         encoding=encoding,
@@ -32,6 +31,8 @@ knitr::opts_chunk$set(autodep        = TRUE,
 
 # Design formula and contrasts
 
+**Last updated:** *{{ git_revision_date_localized }}*
+
 !!! note "Section Overview"
 
     &#128368; **Time Estimation:** 40 minutes  
@@ -55,14 +56,14 @@ The [DESeq2 paper](https://genomebiology.biomedcentral.com/articles/10.1186/s130
 Differential expression analysis with DESeq2 involves multiple steps as displayed in the flowchart below in blue. Briefly, DESeq2 will model the raw counts, using normalization factors (size factors) to account for differences in library depth. Then, it will estimate the gene-wise dispersions and shrink these estimates to generate more accurate estimates of dispersion to model the counts. Finally, DESeq2 will fit the negative binomial model and perform hypothesis testing using the Wald test or Likelihood Ratio Test.
 
 ```{r, echo = FALSE, eval = TRUE}
-knitr::include_graphics("./img/07_extra_contrast_design/deseq_workflow1.png")
+knitr::include_graphics("./img/07_extra_contrast_design/deseq_steps.png")
 ```
 
 !!! tip
 
     DESeq2 is actively maintained by the developers and continuously being updated. As such, it is important that you note the version you are working with. Recently, there have been some rather **big changes implemented** that impact the output. To find out more detail about the specific **modifications made to methods described in the original 2014 paper**, take a look at [this section in the DESeq2 vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#methods-changes-since-the-2014-deseq2-paper).
 
-    Additional details on the statistical concepts underlying DESeq2 are elucidated nicely in Rafael Irizarry's [materials](https://rafalab.github.io/pages/harvardx.html) for the EdX course, "Data Analysis for the Life Sciences Series". \## Running DESeq2
+    Additional details on the statistical concepts underlying DESeq2 are elucidated nicely in Rafael Irizarry's [materials](https://rafalab.github.io/pages/harvardx.html) for the EdX course, "Data Analysis for the Life Sciences Series".
 
 Prior to performing the differential expression analysis, it is a good idea to know what **sources of variation** are present in your data, either by exploration during the QC and/or prior knowledge. Once you know the major sources of variation, you can remove them prior to analysis or control for them in the statistical model by including them in your **design formula**.
 
@@ -82,7 +83,7 @@ If you want to examine the expression differences between `condition`, and you k
 
 The tilde (`~`) should always precede your factors and tells DESeq2 to model the counts using the following formula. Note the **factors included in the design formula need to match the column names in the metadata**.
 
-In this tutorial we show a general and flexible way to define contrasts, and is often useful for more complex contrasts or when the design of the experiment is imbalanced (e.g. different number of replicates in each group). Although we focus on **DESeq2**, the approach can also be used with the other popular package **edgeR**.
+In this tutorial we show a general and flexible way to define contrasts, and is often useful for more complex contrasts or when the design of the experiment is imbalanced (e.g. different number of replicates in each group). Although we focus on **DESeq2**, the approach can also be used with the other popular package **edgeR**.
 
 Each section below covers a particular experimental design, from simpler to more complex ones. The first chunk of code in each section is to simulate data, which has no particular meaning and is only done in order to have a DESeqDataSet object with the right kind of variables for each example. In practice, users can ignore this step as they should have created a DESeqDataSet object from their own data following the [instructions in the vignette](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#the-deseqdataset).
 

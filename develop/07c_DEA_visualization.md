@@ -1,9 +1,26 @@
 ---
 title: "Log Fold Shrinkage and DEA visualizations"
 summary: In this lesson we explain how visualize DEA results using log fold shrinkage
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_format='all',
+                        output_dir='./develop/')})
+output:
+  github_document: 
+     preserve_yaml: TRUE
+     html_preview: FALSE
+     pandoc_args: [
+      "--wrap", "none" # this is needed to not break admonitions
+    ]
 ---
 
+Log Fold Shrinkage and DEA visualizations
+================
+
 # DEA Visualization and Log Fold Shrinkage
+
+**Last updated:** *{{ git_revision_date_localized }}*
 
 !!! note "Section Overview"
 
@@ -17,7 +34,7 @@ summary: In this lesson we explain how visualize DEA results using log fold shri
     4.  Create a volcano plot and MA plot to evaluate relationship among DGE statistics
     5.  Create a heatmap to illustrate expression changes of differentially expressed genes
 
-In the previous lessons, we learned about how to generate a table with Differentially Expressed genes
+In the previous lessons, we learned about how to generate a table with Differentially Expressed genes.
 
 ``` r
 # DO NOT RUN
@@ -53,7 +70,7 @@ res_tableOE_unshrunken <- res_tableOE
 res_tableOE <- lfcShrink(dds, coef="condition_MOV10_overexpression_vs_control", type="apeglm")
 ```
 
-Depending on the version of DESeq2 you are using the default **method for shrinkage estimation** will differ. The defaults can be changed by adding the argument `type` in the `lfcShrink()` function as we have above. For most recent versions of DESeq2, `type="normal"` is the default and was the only method in earlier versions. It has been shown that in most situations there are alternative methods that have [less bias than the ’normal\` method](https://bioconductor.org/packages/devel/bioc/vignettes/apeglm/inst/doc/apeglm.html), and therefore **we chose to use apeglm**.
+Depending on the version of DESeq2 you are using the default **method for shrinkage estimation** will differ. The defaults can be changed by adding the argument `type` in the `lfcShrink()` function as we have above. For most recent versions of DESeq2, `type="normal"` is the default and was the only method in earlier versions. It has been shown that in most situations there are alternative methods that have [less bias than the 'normal' method](https://bioconductor.org/packages/devel/bioc/vignettes/apeglm/inst/doc/apeglm.html), and therefore **we chose to use apeglm**.
 
 ??? info "More information on shrinkage"
 
@@ -83,7 +100,7 @@ First, we already have a metadata tibble.
 meta %>% head()
 ```
 
-Next, let’s bring in the `normalized_counts` object with our gene names.
+Next, let's bring in the `normalized_counts` object with our gene names.
 
 ``` r
 # DESeq2 creates a matrix when you use the counts() function
@@ -97,7 +114,7 @@ normalized_counts <- counts(dds, normalized=T) %>%
 
 A plot that can be useful to exploring our results is the MA plot. The MA plot shows the **mean of the normalized counts versus the log2 fold changes for all genes tested**. The genes that are significantly DE are colored to be easily identified (adjusted p-value \< 0.01 by default). This is also a great way to illustrate the effect of LFC shrinkage. The DESeq2 package offers a simple function to generate an MA plot.
 
-**Let’s start with the unshrunken results:**
+**Let's start with the unshrunken results:**
 
 ``` r
 # MA plot using unshrunken fold changes
@@ -174,9 +191,9 @@ theme(plot.title = element_text(hjust = 0.5))
 
 **Create a translator from gene names to gene IDs**
 
-While gene IDs are unique and traceable, it is hard for us humans to memorize a bunch of numbers. Let’s try to make a translator function that will give you possible gene IDs for a gene name. Then you can use this table to select one of the possible gene_IDs.
+While gene IDs are unique and traceable, it is hard for us humans to memorize a bunch of numbers. Let's try to make a translator function that will give you possible gene IDs for a gene name. Then you can use this table to select one of the possible gene_IDs.
 
-The function will take as input a vector of gene names of interest, the tx2gene dataframe and the dds object that you analyzed
+The function will take as input a vector of gene names of interest, the tx2gene dataframe and the dds object that you analyzed:
 
 ``` r
 lookup <- function(gene_name, tx2gene, dds){
@@ -216,7 +233,7 @@ norm_OEsig <- normalized_counts %>% select(gene, starts_with("Control"), starts_
   dplyr::filter(gene %in% sigOE$gene)  
 ```
 
-Now let’s draw the heatmap using `pheatmap`:
+Now let's draw the heatmap using `pheatmap`:
 
 ``` r
 # Run pheatmap using the metadata data frame for the annotation
@@ -308,7 +325,7 @@ ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
 
 ## Other visualization tools
 
-If you use the DESeq2 tool for differential expression analysis, the package ‘DEGreport’ can use the DESeq2 results output to make the top20 genes and the volcano plots generated above by writing a few lines of simple code. While you can customize the plots above, you may be interested in using the easier code. Below are examples of the code to create these plots:\*
+If you use the DESeq2 tool for differential expression analysis, the package 'DEGreport' can use the DESeq2 results output to make the top20 genes and the volcano plots generated above by writing a few lines of simple code. While you can customize the plots above, you may be interested in using the easier code. Below are examples of the code to create these plots:\*
 
 ``` r
 DEGreport::degPlot(dds = dds, res = res, n = 20, xs = "type", group = "condition") # dds object is output from DESeq2

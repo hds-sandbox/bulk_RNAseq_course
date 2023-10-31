@@ -1,9 +1,26 @@
 ---
 title: Genomic annotations for functional analyses
 summary: In this lesson we explain how create annotate your genes with metadata from databases
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_format='all',
+                        output_dir='./develop/')})
+output:
+  github_document: 
+     preserve_yaml: TRUE
+     html_preview: FALSE
+     pandoc_args: [
+      "--wrap", "none" # this is needed to not break admonitions
+    ]
 ---
 
+Genomic annotations for functional analyses
+================
+
 # Genomic annotations
+
+**Last updated:** *{{ git_revision_date_localized }}*
 
 !!! note "Section Overview"
 
@@ -56,13 +73,7 @@ Within R, there are many popular packages used for gene/transcript-level annotat
 
 ### Annotation tools: for accessing/querying annotations from a specific databases
 
-|                                                                   Tool                                                                   | Description                                                                                                                                            | Pros                                                                                        |                                                         Cons                                                         |
-|:----------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------:|
-|    **[org.Xx.eg.db](https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf)**     | Query gene feature information for the organism of interest                                                                                            | gene ID conversion, biotype and coordinate information                                      |                                          only latest genome build available                                          |
-|               **[EnsDb.Xx.vxx](http://bioconductor.org/packages/devel/bioc/vignettes/ensembldb/inst/doc/ensembldb.html)**                | Transcript and gene-level information directly fetched from Ensembl API (similar to TxDb, but with filtering ability and versioned by Ensembl release) | easy functions to extract features, direct filtering                                        |                    Not the most up-to-date annotations, more difficult to use than some packages                     |
-| **[TxDb.Xx.UCSC.hgxx.knownGene](https://bioconductor.org/packages/release/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.pdf)** | UCSC database for transcript and gene-level information or can create own *TxDb* from an SQLite database file using the *GenomicFeatures* package      | feature information, easy functions to extract features                                     | only available current and recent genome builds - can create your own, less up-to-date with annotations than Ensembl |
-|                                      **[annotables](https://github.com/stephenturner/annotables)**                                       | Gene-level feature information immediately available for the human and model organisms                                                                 | super quick and easy gene ID conversion, biotype and coordinate information                 |                                        static resource, not updated regularly                                        |
-|                  **[biomaRt](https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/biomaRt.html)**                   | An R package version of the Ensembl [BioMart online tool](http://www.ensembl.org/biomart/martview/70dbbbe3f1c5389418b5ea1e02d89af3)                    | all Ensembl database information available, all organisms on Ensembl, wealth of information |                                                                                                                      |
+{{ read_table('./assets/annotation_tools.tsv') }}
 
 ### Interface tools
 
@@ -159,7 +170,7 @@ unique(ah$rdataclass) %>% head()
 unique(ah$dataprovider) %>% head()
 ```
 
-Now that we know the types of information available from AnnotationHub we can query it for the information we want using the `query()` function. Let’s say we would like to **return the Ensembl `EnsDb` information for Human**. To return the records available, we need to use the terms as they are output from the `ah` object to extract the desired data.
+Now that we know the types of information available from AnnotationHub we can query it for the information we want using the `query()` function. Let's say we would like to **return the Ensembl `EnsDb` information for Human**. To return the records available, we need to use the terms as they are output from the `ah` object to extract the desired data.
 
 ``` r
 # Query AnnotationHub
@@ -223,7 +234,7 @@ transcripts(human_ens, return.type = "data.frame") %>% head()
 exons(human_ens, return.type = "data.frame") %>% head()
 ```
 
-To **obtain an annotation data frame** using AnnotationHub, we’ll use the `genes()` function, but only keep selected columns and filter out rows to keep those corresponding to our gene identifiers in our results file:
+To **obtain an annotation data frame** using AnnotationHub, we'll use the `genes()` function, but only keep selected columns and filter out rows to keep those corresponding to our gene identifiers in our results file:
 
 ``` r
 # Create a gene-level dataframe 
@@ -259,7 +270,7 @@ annotations_ahb$entrezid <- map(annotations_ahb$entrezid,1) %>%  unlist()
 
     We would find that multiple mapping entries would be automatically reduced to one-to-one. We would also find that more than half of the input genes do not return any annotations. This is because the OrgDb family of database are primarily based on mapping using Entrez Gene identifiers. Since our data is based on Ensembl mappings, using the OrgDb would result in a loss of information.
 
-Let’s take a look and see how many of our Ensembl identifiers have an associated gene symbol, and how many of them are unique:
+Let's take a look and see how many of our Ensembl identifiers have an associated gene symbol, and how many of them are unique:
 
 ``` r
 which(is.na(annotations_ahb$gene_name)) %>% length()
@@ -267,7 +278,7 @@ which(is.na(annotations_ahb$gene_name)) %>% length()
 which(duplicated(annotations_ahb$gene_name)) %>% length()
 ```
 
-Let’s identify the non-duplicated genes and only keep the ones that are not duplicated:
+Let's identify the non-duplicated genes and only keep the ones that are not duplicated:
 
 ``` r
 # Determine the indices for the non-duplicated genes
@@ -290,7 +301,7 @@ Finally, it would be good to know **what proportion of the Ensembl identifiers m
 which(is.na(annotations_ahb$entrezid)) %>%  length()
 ```
 
-That’s more than half of our genes! If we plan on using Entrez ID results for downstream analysis, we should definitely keep this in mind. If you look at some of the Ensembl IDs from our query that returned NA, these map to pseudogenes (i.e [ENSG00000265439](https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000265439;r=6:44209766-44210063;t=ENST00000580735)) or non-coding RNAs (i.e. [ENSG00000265425](http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000265425;r=18:68427030-68436918;t=ENST00000577835)). The discrepancy (which we can expect to observe) between databases is due to the fact that each implements its own different computational approaches for generating the gene builds.
+That's more than half of our genes! If we plan on using Entrez ID results for downstream analysis, we should definitely keep this in mind. If you look at some of the Ensembl IDs from our query that returned NA, these map to pseudogenes (i.e [ENSG00000265439](https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000265439;r=6:44209766-44210063;t=ENST00000580735)) or non-coding RNAs (i.e. [ENSG00000265425](http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000265425;r=18:68427030-68436918;t=ENST00000577835)). The discrepancy (which we can expect to observe) between databases is due to the fact that each implements its own different computational approaches for generating the gene builds.
 
 ### Using AnnotationHub to create our tx2gene file
 
@@ -312,11 +323,11 @@ To create our `tx2gene` file, we would need to use a combination of the methods 
  annotations <- inner_join(txdb, genedb)
 ```
 
-In this lesson our focus has been using annotation packages to extract information mainly just for gene ID conversion for the different tools that we use downstream. Many of the annotation packages we have presented have much more information than what we need for functional analysis and we have only just scratched the surface here. It’s good to know the capabilities of the tools we use, so we encourage you to spend some time exploring these packages to become more familiar with them.
+In this lesson our focus has been using annotation packages to extract information mainly just for gene ID conversion for the different tools that we use downstream. Many of the annotation packages we have presented have much more information than what we need for functional analysis and we have only just scratched the surface here. It's good to know the capabilities of the tools we use, so we encourage you to spend some time exploring these packages to become more familiar with them.
 
 ## Annotables package
 
-The *annotables* package is a super easy annotation package to use. It is not updated frequently, so it’s not great for getting the most up-to-date information for the current builds and does not have information for other organisms than human and mouse, but is a quick way to get annotation information.
+The *annotables* package is a super easy annotation package to use. It is not updated frequently, so it's not great for getting the most up-to-date information for the current builds and does not have information for other organisms than human and mouse, but is a quick way to get annotation information.
 
 ``` r
 # Install package
@@ -329,7 +340,7 @@ library(annotables)
 grch37
 ```
 
-We can see that the `grch37` object already contains all the information we want in a super easy way. Let’s annotate the results of our shrunken DEA for MOV10 overexpression:
+We can see that the `grch37` object already contains all the information we want in a super easy way. Let's annotate the results of our shrunken DEA for MOV10 overexpression:
 
 ``` r
 ## Re-run this code if you are unsure that you have the right table

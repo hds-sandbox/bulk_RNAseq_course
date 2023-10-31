@@ -5,6 +5,8 @@ summary: In this lesson we explain the attributes of bulk RNAseq count data
 
 # Differential gene expression (DGE) analysis overview
 
+**Last updated:** *{{ git_revision_date_localized }}*
+
 !!! note "Section Overview"
 
     &#128368; **Time Estimation:** 20 minutes  
@@ -20,7 +22,7 @@ The goal of RNA-seq is often to perform differential expression testing to deter
 
 To determine the expression levels of genes, our RNA-seq workflow followed the steps detailed in the image below.
 
-<img src="./img/05b_count_matrix/RNAseq_pipeline.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/RNAseq_pipeline.png" width="1440" style="display: block; margin: auto;" />
 
 All steps were performed using the [nf-core RNAseq pipeline](https://nf-co.re/rnaseq/3.11.2) in our [previous lesson](04a_preprocessing.md). The differential expression analysis and any downstream functional analysis are generally performed in R using R packages specifically designed for the complex statistical analyses required to determine whether genes are differentially expressed.
 
@@ -30,18 +32,18 @@ In the next few lessons, we will walk you through an **end-to-end gene-level RNA
 
 Before we get into the details of the analysis, let"s get started by opening up RStudio and setting up a new project for this analysis.
 
-1. Go to the `File` menu and select `New Project`.
-2. In the `New Project` window, choose `Existing Directory`. Then, choose `Intro_to_bulkRNAseq` as your project working directory.
-3. The new project should automatically open in RStudio.
+1.  Go to the `File` menu and select `New Project`.
+2.  In the `New Project` window, choose `Existing Directory`. Then, choose `Intro_to_bulkRNAseq` as your project working directory.
+3.  The new project should automatically open in RStudio.
 
 To check whether or not you are in the correct working directory, use `getwd()`. The path `/work/Intro_to_bulkRNAseq` should be returned to you in the console. When finished your working directory should now look similar to this:
 
-<img src="./img/05b_count_matrix/settingup.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/settingup.png" width="1634" style="display: block; margin: auto;" />
 
 - Inside the folder `Notebooks` you will find the scripts (in `Rmd` format) that we will follow during the sessions.
 - In the folder `Results` you will save the results of your scripts, analysis and tests.
 
-To avoid copying the original dataset for each student (very inefficient) the dataset is contained inside the shared folder `/work/Intro_to_bulkRNAseq/Data/`.
+To avoid copying the original dataset for each student (very inefficient) a backup of the preprocessing results is inside this folder `/work/Intro_to_bulkRNAseq/Data/`. You are also very welcome to use your own preprocessing results!
 
 Now you can open the first practical session: `05b_count_matrix.Rmd`
 
@@ -70,11 +72,11 @@ read_table("/work/Intro_to_bulkRNAseq/Data/salmon/Control_1/quant.sf", ) %>% hea
 
 For each transcript that was assayed in the reference, we have:
 
-1. The transcript identifier
-2. The transcript length (in bp)
-3. The effective length (described in detail below)
-4. TPM (transcripts per million), which is computed using the effective length
-5. The estimated read count ("pseudocount")
+1.  The transcript identifier
+2.  The transcript length (in bp)
+3.  The effective length (described in detail below)
+4.  TPM (transcripts per million), which is computed using the effective length
+5.  The estimated read count ("pseudocount")
 
 !!! note "What exactly is the effective length?"
 
@@ -115,7 +117,7 @@ tx2gene %>% head()
 
 **`tx2gene`** is a three-column **data frame linking transcript ID (column 1) to gene ID (column 2)** to gene symbol (column 3). We will take the first two columns as input to `tximport`. The **column names are not relevant, but the column order is (i.e transcript ID must be first).**
 
-Now we are ready to **run `tximport`**. The `tximport()` function imports transcript-level estimates from various external software (e.g. Salmon, Kallisto) and summarizes to the gene-level (default) or outputs transcript-level matrices. There are optional arguments to use the abundance estimates as they appear in the `quant.sf` files or to calculate alternative values.
+Now we are ready to **run `tximport`**. The `tximport()` function imports transcript-level estimates from various external software (e.g. Salmon, Kallisto) and summarizes to the gene-level (default) or outputs transcript-level matrices. There are optional arguments to use the abundance estimates as they appear in the `quant.sf` files or to calculate alternative values.
 
 For our analysis we **need non-normalized or "raw" count estimates at the gene-level for performing DESeq2 analysis**.
 
@@ -159,7 +161,7 @@ There are a lot of rows with no gene expression at all.
 sum(rowSums(data) == 0)
 ```
 
-Let"s take them out!
+Let's take them out!
 
 ``` r
 keep <- rowSums(data) > 0
@@ -170,21 +172,21 @@ data <- data[keep,]
 
 So, what does this count data actually represent? The count data used for differential expression analysis represents the number of sequence reads that originated from a particular gene. The higher the number of counts, the more reads associated with that gene, and the assumption that there was a higher level of expression of that gene in the sample.
 
-<img src="./img/05b_count_matrix/deseq_counts_overview.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deseq_counts_overview.png" width="1202" style="display: block; margin: auto;" />
 
-With differential expression analysis, we are looking for genes that change in expression between two or more groups (defined in the metadata) - case vs. control - correlation of expression with some variable or clinical outcome
+With differential expression analysis, we are looking for genes that change in expression between two or more groups (defined in the metadata) - case vs control - correlation of expression with some variable or clinical outcome
 
 **Why does it not work to identify differentially expressed gene by ranking the genes by how different they are between the two groups (based on fold change values)?**
 
-<img src="./img/05b_count_matrix/foldchange_heatmap.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/foldchange_heatmap.png" width="402" style="display: block; margin: auto;" />
 
 Genes that vary in expression level between groups of samples may do so solely as a consequence of the biological variable(s) of interest. However, this difference is often also related to extraneous effects, in fact, sometimes these effects exclusively account for the observed variation. The goal of differential expression analysis to determine the relative role of these effects, hence separating the "interesting" variance from the "uninteresting" variance.
 
-<img src="./img/05b_count_matrix/de_variation.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/de_variation.png" width="914" style="display: block; margin: auto;" />
 
 Although the mean expression levels between sample groups may appear to be quite different, it is possible that the difference is not actually significant. This is illustrated for "GeneA" expression between "untreated" and "treated" groups in the figure below. The mean expression level of geneA for the "treated" group is twice as large as for the "untreated" group, but the variation between replicates indicates that this may not be a significant difference. **We need to take into account the variation in the data (and where it might be coming from) when determining whether genes are differentially expressed.**
 
-<img src="./img/05b_count_matrix/de_norm_counts_var.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/de_norm_counts_var.png" width="829" style="display: block; margin: auto;" />
 
 Differential expression analysis is used to determine, for each gene, whether the differences in expression (counts) **between groups** is significant given the amount of variation observed **within groups** (replicates). To test for significance, we need an appropriate statistical model that accurately performs normalization (to account for differences in sequencing depth, etc.) and variance modeling (to account for few numbers of replicates and large dynamic expression range).
 
@@ -275,17 +277,17 @@ The model that fits best, given this type of variability observed for replicates
 
     Note that in the above figure, the variance across replicates tends to be greater than the mean (red line), especially for genes with large mean expression levels. *This is a good indication that our data do not fit the Poisson distribution and we need to account for this increase in variance using the Negative Binomial model (i.e. Poisson will underestimate variability leading to an increase in false positive DE genes).*
 
-## Improving mean estimates (i.e. reducing variance) with biological replicates
+## Improving mean estimates (i.e. reducing variance) with biological replicates
 
-The variance or scatter tends to reduce as we increase the number of biological replicates (*the distribution will approach the Poisson distribution with increasing numbers of replicates*), since standard deviations of averages are smaller than standard deviations of individual observations. **The value of additional replicates is that as you add more data (replicates), you get increasingly precise estimates of group means, and ultimately greater confidence in the ability to distinguish differences between sample classes (i.e. more DE genes).**
+The variance or scatter tends to reduce as we increase the number of biological replicates (*the distribution will approach the Poisson distribution with increasing numbers of replicates*), since standard deviations of averages are smaller than standard deviations of individual observations. **The value of additional replicates is that as you add more data (replicates), you get increasingly precise estimates of group means, and ultimately greater confidence in the ability to distinguish differences between sample classes (i.e. more DE genes).**
 
-The figure below illustrates the relationship between sequencing depth and number of replicates on the number of differentially expressed genes identified (from [Liu et al. (2013)](https://doi.org/10.1093/bioinformatics/btt688):
+The figure below illustrates the relationship between sequencing depth and number of replicates on the number of differentially expressed genes identified (from [Liu et al. (2013)](https://doi.org/10.1093/bioinformatics/btt688)):
 
-<img src="./img/05b_count_matrix/seqDepth_DEA.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/seqDepth_DEA.png" width="2426" style="display: block; margin: auto;" />
 
 Note that an **increase in the number of replicates tends to return more DE genes than increasing the sequencing depth**. Therefore, generally more replicates are better than higher sequencing depth, with the caveat that higher depth is required for detection of lowly expressed DE genes and for performing isoform-level differential expression. Generally, the minimum sequencing depth recommended is 20-30 million reads per sample, but we have seen good RNA-seq experiments with 10 million reads if there are a good number of replicates.
 
-<img src="./img/05b_count_matrix/de_replicates_img.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/de_replicates_img.png" width="390" style="display: block; margin: auto;" />
 
 ## Differential expression analysis workflow
 
@@ -293,13 +295,13 @@ To model counts appropriately when performing a differential expression analysis
 
 Many studies describing comparisons between these methods show that while there is some agreement, there is also much variability between tools. **Additionally, there is no one method that performs optimally under all conditions** **([Soneson and Dleorenzi, 2013](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-91), [Corchete et al, 2020](https://www.nature.com/articles/s41598-020-76881-x))**.
 
-<img src="./img/05b_count_matrix/deg_methods1.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deg_methods1.png" width="418" style="display: block; margin: auto;" />
 
-<img src="./img/05b_count_matrix/deg_methods2.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/deg_methods2.png" width="412" style="display: block; margin: auto;" />
 
 **We will be using [DESeq2](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8) for the DE analysis, and the analysis steps with DESeq2 are shown in the flowchart below in green**. DESeq2 first normalizes the count data to account for differences in library sizes and RNA composition between samples. Then, we will use the normalized counts to make some plots for QC at the gene and sample level. The final step is to use the appropriate functions from the DESeq2 package to perform the differential expression analysis.
 
-<img src="./img/05b_count_matrix/DESeq2_workflow.png" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/DESeq2_workflow.png" width="1440" style="display: block; margin: auto;" />
 
 We will go in-depth into each of these steps in the following lessons, but additional details and helpful suggestions regarding DESeq2 can be found in the [DESeq2 vignette](http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html). As you go through this workflow and questions arise, you can reference the vignette from within RStudio:
 
@@ -307,6 +309,6 @@ We will go in-depth into each of these steps in the following lessons, but addit
 
 This is very convenient, as it provides a wealth of information at your fingertips! Be sure to use this as you need during the workshop.
 
-***
+------------------------------------------------------------------------
 
 *This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/).*

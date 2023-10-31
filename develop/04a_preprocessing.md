@@ -5,6 +5,8 @@ summary: In this lesson we explain theory behind read preprocessing
 
 # From raw sequence reads to count matrix:<br/>the RNA-seq workflow
 
+**Last updated:** *{{ git_revision_date_localized }}*
+
 !!! note "Section Overview"
 
     &#128368; **Time Estimation:** 40 minutes  
@@ -114,15 +116,100 @@ The main functions include:
 - Summary graphs and tables to quickly assess your data
 - Export of results to an HTML based permanent report
 
+### Quality metrics
+
+Here you will find a list of metrics that FASTQC will calculate on your reads:
+
+1. **Phred Quality Scores**: Preprocessed reads are evaluated based on Phred quality scores. These scores represent the estimated probability of a base call being incorrect. Higher Phred scores indicate higher base-call accuracy.
+2. **Sequence Length Distribution**: QC tools assess the length distribution of the preprocessed reads. This helps in identifying any biases introduced during preprocessing, such as excessive shortening of reads.
+3. **Adapter Contamination**: Even after preprocessing, it's crucial to confirm that all adapter sequences have been successfully removed. Any remaining adapter contamination can adversely affect downstream analyses.
+4. **GC Content**: Evaluating the GC content of preprocessed reads helps in detecting biases that might have been introduced during library preparation or sequencing.
+5. **Duplicate Reads**: Preprocessed reads should be checked for duplicates. Duplicate reads can arise due to PCR amplification biases during library preparation.
+6. **K-mer Content**: QC tools can analyze the frequency distribution of k-mers (short sequences of length k). Deviations from the expected k-mer distribution may indicate biases or contamination.
+7. **Overall Sequence Quality**: A summary of the overall quality metrics, including mean Phred scores, per-base sequence quality, and sequence duplication levels, provides a comprehensive assessment of data quality.
+
 ## 4. Read filtering and trimming
+
+The reads in a FASTQ file may contain errors, low-quality bases and adapter sequences. To extract reliable biological information, it's crucial to preprocess or "clean" this data through trimming and filtering.
+
+Trimming involves the removal of low-quality bases from the ends of reads. Low-quality bases can arise due to various factors, such as limitations in the sequencing technology or degradation during sample preparation. Trimming helps to improve the overall quality of the data, which is essential for downstream analysis.
+
+Additionally, adapter sequences, which are short DNA sequences used in library preparation, can be mistakenly sequenced along with the target DNA. Trimming these adapters is necessary to ensure accurate alignment and subsequent analysis.
+
+Filtering is a broader process that involves the removal of reads that do not meet specific quality criteria. For example, reads with an excessive number of low-quality bases or those that are too short may be discarded. This step helps to retain high-confidence data for downstream analysis.
+
+Trimming and filtering are crucial steps in NGS data processing because they improve the accuracy and reliability of the data. Without these steps, subsequent analyses like genome assembly, variant calling, and transcript quantification can be severely affected. By reducing noise and removing artifacts, researchers can obtain a clearer and more accurate picture of the biological information encoded in the sequencing data.
+
+To trim and filter reads, we can use bioinformatics tools such as like [Cutadapt](https://cutadapt.readthedocs.io/en/stable/) and [Trim Galore](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/). They offer powerful and versatile functionalities for trimming and filtering raw sequencing reads, ensuring that only high-quality data is used for subsequent analyses.
+
+### Cutadapt
+
+[Cutadapt](https://cutadapt.readthedocs.io/en/stable/) is a widely-used and highly flexible tool designed specifically for removing adapter sequences from NGS reads. Adapter sequences can be introduced during library preparation and may subsequently be sequenced along with the target DNA or RNA. Cutadapt employs a sophisticated algorithm to accurately and efficiently identify and trim these adapters.
+
+Key features of Cutadapt include:
+
+1. Adapter Detection and Removal: Cutadapt can detect and remove adapters with high precision, even in cases where the adapter sequence is only partially known.
+2. Error-Tolerant Matching: It can perform error-tolerant matching, allowing it to handle cases where adapter sequences might have minor variations or mutations.
+3. Quality Trimming: Cutadapt can also perform quality trimming, which involves removing low-quality bases from the ends of reads. This feature helps in improving data quality.
+4. Batch Processing: It can process multiple files in a single run, making it efficient for handling large-scale datasets.
+5. Format Compatibility: Cutadapt supports various file formats commonly used in NGS, such as FASTQ and SAM.
+
+### Trim Galore
+
+[Trim Galore](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/) is a user-friendly wrapper script that combines the functionalities of Cutadapt with FastQC, to provide a streamlined solution for trimming and quality control of NGS data. It simplifies the preprocessing workflow by automating the process of running Cutadapt and generating quality reports through FastQC.
 
 ## 5. Quality control of clean sequencing data
 
+After preprocessing the reads, we assess again the quality and reliability of the sequencing reads. This QC step is essential to ensure that only high-quality data is used for downstream analyses. We will check that the quality metrics calculated on the raw reads have improved:
+
+- **Improved Quality**: Preprocessed reads typically exhibit higher quality scores and improved base call accuracy compared to raw reads. This is because preprocessing steps like adapter trimming and quality filtering remove low-quality bases and artifacts.
+- **Reduced Noise and Artifacts**: Preprocessing removes noise, such as adapter sequences, low-quality bases, and sequencing errors. This leads to cleaner data, enhancing the accuracy of downstream analyses.
+
 ## 6. Alignment
+
+After checking that the quality of our reads is adequate, we can proceed to aligning our sequencing reads to a reference genome. By doing this, we can identify variations, quantify gene expression levels and study other genomic features. For the purposes of this workshop, we are mostly interested in the ability to quantify gene expression levels for our differential expression analysis.
+
+Alignment is achieved by finding the best matching position in the reference genome for each read. This is a computationally intensive task due to the vast amount of data generated by NGS experiments. Alignment tools utilize various algorithms and techniques to efficiently perform this task, which can be mostly divided in two categories: traditional aligment and pseudoaligment.
+
+### Traditional alignment tools
+
+Traditional alignment consists in the process described above, matching your preprocessed reads to a reference genome. This process involves determining the genomic location from which each read originated. The result of the alignment will be a [SAM/BAM](https://samtools.github.io/hts-specs/SAMv1.pdf) file, which will contain information regarding the quality and the genomic position of the aligned read. 
+
+Below we will highlight some of the most common alignment algorithms:
+
+#### Bowtie2
+
+[Bowtie2](https://bowtie-bio.sourceforge.net/bowtie2/index.shtml) is a widely-used, ultra-fast alignment tool designed for aligning short reads (typically from Illumina platforms) to a reference genome. It employs a Burrows-Wheeler transform-based algorithm, which allows it to quickly and accurately align millions of reads. Bowtie is highly efficient, making it a popular choice for large-scale NGS projects.
+
+#### STAR
+
+[STAR](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) (Spliced Transcripts Alignment to a Reference) is a specialized alignment tool tailored for RNA-Seq data. It is designed to align reads to a reference genome, taking into account the splicing events that occur in eukaryotic genomes. STAR can align both short and long RNA-Seq reads, making it a versatile tool for gene expression analysis and transcriptome mapping.
+
+#### HISAT2
+
+[HISAT2](https://daehwankimlab.github.io/hisat2/) (Hierarchical Indexing for Spliced Alignment of Transcripts) is another prominent alignment tool widely used for aligning RNA-Seq reads to a reference genome. It employs a hierarchical indexing approach that enables efficient and accurate alignment, particularly in the presence of spliced alignments. HISAT2 is known for its speed and sensitivity, making it a popular choice for transcriptome analysis. It also offers the advantage of reduced memory usage compared to some other alignment tools, making it suitable for a wide range of computational environments. HISAT2's ability to accurately handle splice junctions makes it a valuable tool for studying alternative splicing events and other complex features of transcriptomes.
+
+### Pseudoalignment
+
+Pseudoalignment is a concept in computational biology and genomics that offers an alternative approach to traditional read alignment. Unlike traditional alignment, which involves finding the exact position of a read within a reference genome, pseudoalignment estimates the likelihood that a read originates from a specific transcript or set of transcripts without explicitly mapping it to the reference genome.
+
+Pseudoalignment tools, like Salmon and Kallisto, achieve this by building an index of transcript sequences rather than the entire genome. They use efficient algorithms to quickly determine which transcripts are likely to be the source of a given read. This approach significantly reduces the computational resources required for quantifying gene expression, as it circumvents the need to align every read to the entire genome. By focusing on transcripts, pseudoalignment provides a faster and more memory-efficient solution, making it especially advantageous for large-scale RNA-Seq studies and in situations where rapid quantification of gene expression levels is critical, such as in time-sensitive experiments or in scenarios with limited computational resources.
+
+Pseudoalignment is well-suited for studying gene expression in well-annotated genomes, where the transcriptome is relatively well-characterized, although not so great with other under-studied organisms. We will highlight a couple of these algorithms below.
+
+#### Salmon
+
+[Salmon](https://salmon.readthedocs.io/en/latest/salmon.html) uses a lightweight and rapid algorithm based on the concept of selective alignment. It directly quantifies transcript abundance without explicitly aligning reads to the reference genome. This makes Salmon especially efficient for large-scale RNA-Seq studies, where speed and accuracy are crucial.
+
+#### Kallisto
+
+Similar to Salmon, [Kallisto](https://pachterlab.github.io/kallisto/) employs a pseudoalignment strategy. It quantifies transcript abundance by estimating the compatibility of reads with known transcripts, bypassing the need for full alignment to the genome. This approach makes Kallisto extremely fast, making it an attractive choice for rapid and accurate gene expression quantification.
 
 ## 7. Quality control of aligned reads
 
-As mentioned above, the differential gene expression analysis will use transcript/gene pseudocounts generated by Salmon. However, to perform some basic quality checks on the sequencing data, it is important to align the reads to the whole genome. Either STAR or HiSAT2 are able to perform this step and generate a [BAM](https://samtools.github.io/hts-specs/SAMv1.pdf) file that can be used for QC.
+After aligning our reads, it is essential to perform some basic quality checks on the sequencing data. However, **this step is only possible if you align your reads using a traditional algorithm**, since pseudoaligment tools will not create a BAM file that can be checked for quality control.
+
+### Qualimap
 
 A tool called [Qualimap](http://qualimap.bioinfo.cipf.es/doc_html/intro.html) **explores the features of aligned reads in the context of the genomic region they map to**, hence providing an overall view of the data quality (as an HTML file). Various quality metrics assessed by Qualimap include:
 
@@ -130,15 +217,25 @@ A tool called [Qualimap](http://qualimap.bioinfo.cipf.es/doc_html/intro.html) **
 - 5'-3' biases
 - Coverage biases
 
+### dupRadar
+
+The [dupRadar[(https://bioconductor.org/packages/release/bioc/vignettes/dupRadar/inst/doc/dupRadar.html) package provides an assessment of the level of duplication of your reads, allowing you to distinguish PCR amplification artifacts from true biological signals.
+
+The number of reads per base assigned to a gene in an ideal RNA-Seq data set is expected to be proportional to the abundance of its transcripts in the sample. For lowly expressed genes we expect read duplication to happen rarely by chance, while for highly expressed genes - depending on the total sequencing depth - we expect read duplication to happen often.
+
+A good way to learn if a dataset is following this trend is by relating the normalized number of counts per gene (RPK, as a quantification of the gene expression) and the fraction represented by duplicated reads. For example, the plots below show very well how duplicates should look in a good experiment (left) compared to another experiment with duplication issues(right)
+
+![dupRadar example](../develop/img/04a_preprocessing/dupRadar.png)
+
 ## 8. Quantify expression
 
 Once we have explored the quality of our raw reads, we can move on to quantifying expression at the transcript level. The goal of this step is to **identify from which transcript each of the reads originated from and the total number of reads associated with each transcript**.
 
-Tools that have been found to be most accurate for this step in the analysis are referred to as **lightweight alignment tools**, which include: [Kallisto](https://pachterlab.github.io/kallisto/about), [Sailfish](http://www.nature.com/nbt/journal/v32/n5/full/nbt.2862.html) and [Salmon](https://combine-lab.github.io/salmon/)
+Quantification from BAM files is the traditional method of estimating gene expression levels. It involves aligning reads to a reference genome using tools like Bowtie, STAR, or HISAT2, and then counting the number of reads that map to each gene or transcript. This process relies on the generation of a BAM (Binary Alignment/Map) file, which records the alignment information for each read. Quantification tools like featureCounts or HTSeq then process the BAM file to count reads that align to each annotated gene.
 
-Each of the tools in the list above work slightly differently from one another. However, common to all of them is that **they avoid base-to-base genomic alignment of the reads**. Genomic alignment is a step performed by older splice-aware alignment tools such as [STAR](https://academic.oup.com/bioinformatics/article/29/1/15/272537) and [HISAT2](https://daehwankimlab.github.io/hisat2/). In comparison to these tools, the lightweight alignment tools not only provide quantification estimates **much faster** (typically more than 20 times faster), but also [**improvements in precision**](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0734-x). Nonetheless, a recent [Nature article](https://www.nature.com/articles/s41598-020-76881-x) suggests that pseudoaligners have low accuracy compared to classic aligners.
+Pseudoaligment tools such as Kallisto and Salmon they perform pseudoalignment and quantification in the same step by quickly mapping reads to a set of reference transcripts. This is done using an indexing strategy that efficiently assigns reads to potential transcript sources. Pseudoquantification is particularly fast and memory-efficient, making it ideal for large-scale transcriptome studies. It provides accurate estimates of transcript abundance, even in the presence of complex transcript structures.
 
-**We will use the expression estimates, often referred to as 'pseudocounts', obtained from [Salmon](https://combine-lab.github.io/salmon/)** as the starting point for the differential gene expression analysis.
+In this course, **we will use the expression estimates, often referred to as 'pseudocounts', obtained from [Salmon](https://combine-lab.github.io/salmon/)** as the starting point for the differential gene expression analysis.
 
 <p align="center">
 
