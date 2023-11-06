@@ -50,7 +50,7 @@ The main factors often considered during normalization are:
 
 - **Gene length:** Accounting for gene length is necessary for comparing expression between different genes within the same sample. In the example, *Gene 1* and *Gene 2* have similar levels of expression, but the number of reads mapped to *Gene 1* would be many more than the number mapped to *Gene 2* because *Gene 1* is longer.
 
-<img src="./img/05c_count_normalization/normalization_methods_length.png" width="1109" style="display: block; margin: auto;" />
+<img src="./img/05c_count_normalization/length_bias.png" style="display: block; margin: auto;" />
 
 - **GC-content**: Genomic features such as GC-content may result in a read count biases, as GC-rich and GC-poor fragments are under-represented in RNAseq experiments. This under-representation is attributed to the fact that fragments with high and low GC-content are not adequately amplified in a standard high throughput sequencing protocol and, subsequently, that the fragments are difficult to align (correctly) to reference genome, i.e. less unique, repeat regions, etc. ([Benjamini & Speed, 2012](https://academic.oup.com/nar/article/40/10/e72/2411059) and [Risso et al, 2011](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-480)).
 

@@ -72,7 +72,7 @@ The two parameters required are the **size factor, and the dispersion estimate**
 
 After the model is fit, coefficients are estimated for each sample group along with their standard error. The coefficients are the estimates for the **log2 fold changes**, and will be used as input for hypothesis testing.
 
-```{r}
+```{r, echo = FALSE, eval = TRUE}
 knitr::include_graphics("./img/07b_hypothesis_testing/deseq_steps_Slide6.png")
 ```
 
@@ -216,7 +216,7 @@ To indicate which two sample groups we are interested in comparing, we need to s
 
 Contrasts can be specified in three different ways:
 
-1. Contrasts can be supplied as a **character vector with exactly three elements**: the name of the factor (of interest) in the design formula, the name of the two factors levels to compare. The factor level given last is the base level for the comparison. The syntax is given below:
+1.Contrasts can be supplied as a **character vector with exactly three elements**: the name of the factor (of interest) in the design formula, the name of the two factors levels to compare. The factor level given last is the base level for the comparison. The syntax is given below:
 
 ```{r, eval = FALSE}
 # DO NOT RUN!
@@ -224,7 +224,7 @@ contrast <- c("condition", "level_to_compare", "base_level")
 results(dds, contrast = contrast)
 ```
 
-2. Contrasts can be given as a **list of 2 character vectors**: the names of the fold changes for the level of interest, and the names of the fold changes for the base level. These names should match identically to the elements of `resultsNames(object)`. *This method can be useful for combining interaction terms and main effects.*
+2.Contrasts can be given as a **list of 2 character vectors**: the names of the fold changes for the level of interest, and the names of the fold changes for the base level. These names should match identically to the elements of `resultsNames(object)`. *This method can be useful for combining interaction terms and main effects.*
 
 ```{r, eval = FALSE}
 # DO NOT RUN!
@@ -233,7 +233,7 @@ contrast <- list(resultsNames(dds)[1], resultsNames(dds)[2])
 results(dds, contrast = contrast)
 ```
 
-3. One of the results from `resultsNames(dds)` and the `name` argument. This one is the simplest but it can also be very restrictive:
+3.One of the results from `resultsNames(dds)` and the `name` argument. This one is the simplest but it can also be very restrictive:
 
 ```{r, eval = FALSE}
 # DO NOT RUN!
