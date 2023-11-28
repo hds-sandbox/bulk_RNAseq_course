@@ -48,8 +48,9 @@ library(org.Hs.eg.db)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
+meta$condition = factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
 dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 files <- file.path(dir, meta$sample, "quant.sf")
 names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
@@ -61,14 +62,14 @@ dds <- dds[keep,]
 
 dds <- DESeq(dds)
 
-res_tableOE <- lfcShrink(dds, coef = "condition_MOV10_overexpression_vs_control")
-res_tableOE_tb <- res_tableOE %>%
+res_tableCont <- lfcShrink(dds, coef = "condition_control_vs_vampirium")
+res_tableCont_tb <- res_tableCont %>%
     data.frame() %>%
     rownames_to_column(var="gene") %>% 
     as_tibble()
 
-ids <- grch37 %>% dplyr::filter(ensgene %in% rownames(res_tableOE)) 
-res_ids <- inner_join(res_tableOE_tb, ids, by=c("gene"="ensgene"))
+ids <- grch38 %>% dplyr::filter(ensgene %in% rownames(res_tableCont)) 
+res_ids <- inner_join(res_tableCont_tb, ids, by=c("gene"="ensgene"))
 ```
 
 
@@ -139,7 +140,7 @@ View the enriched pathways:
 
 ```{r}
 ## Write GSEA results to file
-write.csv(gseaKEGG_results, "/work/Intro_to_bulkRNAseq/Results/gseaOE_kegg.csv", quote=F)
+write.csv(gseaKEGG_results, "/work/Intro_to_bulkRNAseq/Results/gsea_Cont-Vamp_kegg.csv", quote=F)
 ```
 
 > ***NOTE:** We will all get different results for the GSEA because the permutations performed use random reordering. If we would like to use the same permutations every time we run a function (i.e. we would like the same results every time we run the function), then we could use the `set.seed(123456)` function prior to running. The input to `set.seed()` could be any number, but if you would want the same results, then you would need to use the same number as input.*
@@ -209,3 +210,7 @@ Run a Disease Ontology (DO) GSEA analysis using the `gseDO()` function. **NOTE**
 -   Do you find anything interesting?
 
 ***
+
+**Exercise 2**
+
+Run an GSE on the results of the DEA for Garlicum vs Vampirium samples. Remember to use the annotated results!

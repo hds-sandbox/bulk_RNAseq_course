@@ -62,7 +62,7 @@ For the sake of reproducibility, we will be using the backup results from our pr
 
 ```{r}
 # Tabulated separated files can be opened using the read_table() function.
-read_table("/work/Intro_to_bulkRNAseq/Data/salmon/Control_1/quant.sf", ) %>% head()
+read_table("/work/Intro_to_bulkRNAseq/Data/salmon/control_1/quant.sf") %>% head()
 ```
 
 For each transcript that was assayed in the reference, we have:
@@ -106,7 +106,7 @@ files
 Our Salmon files were generated with transcript sequences listed by Ensembl IDs, but `tximport` needs to know **which genes these transcripts came from**. We will use annotation table the that was created in our workflow, called `tx2gene.txt`.
 
 ```{r}
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 tx2gene %>% head()
 ```
 
@@ -207,10 +207,11 @@ The model that fits best, given this type of variability observed for replicates
 Here we calculate the mean and the variance per gene for all columns and genes:
 
 ```{r}
-df <- data %>% 
-  rowwise() %>% 
-  summarise(mean_counts = mean(c_across(everything())), 
-                            variance_counts = var(c_across(everything())))
+means <- rowMeans(data, na.rm = TRUE)
+variances <- rowVars(as.matrix(data), na.rm = TRUE)
+
+# Create a new dataframe 'df' to store the results
+df <- data.frame(rownames = rownames(data), mean_counts = means, variance_counts = variances)
 ```
 
 Run the following code to plot the *mean versus variance* of each gene for our data:

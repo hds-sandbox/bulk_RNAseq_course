@@ -43,12 +43,11 @@ library(tximport)
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
 dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 files <- file.path(dir, meta$sample, "quant.sf")
 names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
 ```
-
 
 Approximate time: 40 minutes
 
@@ -88,9 +87,9 @@ size_factors <- c(1.32, 0.70, 1.04, 1.27, 1.11, 0.85)
 
 ***
 
-## Count normalization of Mov10 dataset using DESeq2
+## Count normalization of the Vampirium dataset using DESeq2
 
-Now that we know the theory of count normalization, we will normalize the counts for the Mov10 dataset using DESeq2. This requires a few steps:
+Now that we know the theory of count normalization, we will normalize the counts for the Vampirium dataset using DESeq2. This requires a few steps:
 
 1. Ensure the row names of the metadata dataframe are present and in the same order as the column names of the counts dataframe.
 2. Create a `DESeqDataSet` object
@@ -141,6 +140,21 @@ meta_random <- meta[sample(1:nrow(meta)),]
 
 Let's start by creating the `DESeqDataSet` object, and then we can talk a bit more about what is stored inside it. To create the object, we will need the **txi** object and the **metadata** table as input (`colData` argument). We will also need to specify a **design formula**. The design formula specifies which column(s) of our metadata we want to use for statistical testing and modeling (more about that later!). For our dataset we only have one column we are interested in, which is `condition`. This column has three factor levels, which tells DESeq2 that for each gene we want to evaluate gene expression change with respect to these different levels.
 
+**It is very important to establish beforehand which sample type will be our "base" or "reference" level.** If nothing is changed, DESeq2 will assume that our reference samples will be the first sample type (in alphabetical order). You can check this using the `factor()` function.
+
+```{r}
+factor(meta$condition)
+```
+
+While in a normal experiment we would use control samples as our reference, in our case we are interested in both checking the differences between control vs. vampirium and garlicum vs. vampirium. Thus, it would be much more convenient to reorganize our factor base level to `vampirium`. We can do this also with the `factor()` function, using the `levels = ` argument.
+
+```{r}
+meta$condition = factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
+factor(meta$condition)
+```
+
+We can see now that vampirium is the first factor! Meaning that it will be interpreted by DESeq as our reference sample type.
+
 **Our count matrix input is stored in the `txi` list object**. So we need to specify that using the `DESeqDataSetFromTximport()` function, which will extract the counts component and round the values to the nearest whole number.
 
 ```{r}
@@ -152,13 +166,14 @@ dds <- DESeqDataSetFromTximport(txi,
                                    colData = meta %>% column_to_rownames("sample"), 
                               design = ~ condition)
 ```
+> **NOTE:** The warning from the chunk before is telling us that we have setup our vampirium samples as reference, instead of control! This is exactly what we wanted.
 
 > **NOTE:** If you did not create pseudocounts, but a count matrix from aligned BAM files and tools such as `featurecounts`, you would want to use the `DESeqDataSetFromMatrix()` function.
 
 ```{r, eval=FALSE}
 ## DO NOT RUN!
 ## Create DESeq2Dataset object from traditional count matrix
-dds <- DESeqDataSetFromMatrix(countData = "/work/Intro_to_bulkRNAseq/Data/Mov10_counts_traditional.txt", 
+dds <- DESeqDataSetFromMatrix(countData = "/work/Intro_to_bulkRNAseq/Data/Vampirium_counts_traditional.tsv", 
                               colData = meta %>% column_to_rownames("sample"), 
                               design = ~ condition)
 ```
@@ -186,7 +201,7 @@ dds <- dds[keep,]
 ```
 
 
-### 3. Generate the Mov10 normalized counts
+### 3. Generate the Vampirium normalized counts
 
 The next step is to normalize the count data in order to be able to make fair gene comparisons between samples.
 

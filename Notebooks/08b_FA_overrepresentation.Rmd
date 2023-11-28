@@ -44,8 +44,9 @@ library(tximport)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
+meta$condition = factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
 dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 files <- file.path(dir, meta$sample, "quant.sf")
 names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
@@ -58,14 +59,14 @@ dds <- dds[keep,]
 
 dds <- DESeq(dds)
 
-res_tableOE <- lfcShrink(dds, coef = "condition_MOV10_overexpression_vs_control")
-res_tableOE_tb <- res_tableOE %>%
+res_tableCont <- lfcShrink(dds, coef = "condition_control_vs_vampirium")
+res_tableCont_tb <- res_tableCont %>%
     data.frame() %>%
     rownames_to_column(var="gene") %>% 
     as_tibble()
 
-ids <- grch37 %>% dplyr::filter(ensgene %in% rownames(res_tableOE)) 
-res_ids <- inner_join(res_tableOE_tb, ids, by=c("gene"="ensgene"))
+ids <- grch38 %>% dplyr::filter(ensgene %in% rownames(res_tableCont)) 
+res_ids <- inner_join(res_tableCont_tb, ids, by=c("gene"="ensgene"))
 ```
 
 Approximate time: 45 minutes
@@ -96,14 +97,14 @@ To perform the over-representation analysis, we need a list of background genes 
 
 ```{r}
 ## Create background dataset for hypergeometric testing using all genes tested for significance in the results
-allOE_genes <- dplyr::filter(res_ids, !is.na(gene)) %>% 
+allCont_genes <- dplyr::filter(res_ids, !is.na(gene)) %>% 
   pull(gene) %>% 
   as.character()
 
 ## Extract significant results
-sigOE <- dplyr::filter(res_ids, padj < 0.05 & !is.na(gene))
+sigCont <- dplyr::filter(res_ids, padj < 0.05 & !is.na(gene))
 
-sigOE_genes <- sigOE %>% 
+sigCont_genes <- sigCont %>% 
   pull(gene) %>% 
   as.character()
 ```
@@ -112,8 +113,8 @@ Now we can perform the GO enrichment analysis and save the results:
 
 ```{r}
 ## Run GO enrichment analysis 
-ego <- enrichGO(gene = sigOE_genes, 
-                universe = allOE_genes,
+ego <- enrichGO(gene = sigCont_genes, 
+                universe = allCont_genes,
                 keyType = "ENSEMBL",
                 OrgDb = org.Hs.eg.db, 
                 ont = "BP", 
@@ -129,14 +130,14 @@ Let's check the results:
 cluster_summary <- data.frame(ego)
 cluster_summary
 
-write.csv(cluster_summary, "/work/Intro_to_bulkRNAseq/Results/clusterProfiler_Mov10oe.csv")
+write.csv(cluster_summary, "/work/Intro_to_bulkRNAseq/Results/clusterProfiler_Cont-Vamp.csv")
 ```
 
 ***
 
 **Exercise 1**
 
-Create two new GO enrichment analyses one with UP and another for DOWN regulated genes for MOV10 overexpression.
+Create two new GO enrichment analyses one with UP and another for DOWN regulated genes for Control vs Vampirium.
 
 ***
 
@@ -147,7 +148,7 @@ The **dotplot** shows the number of genes associated with the first 50 terms (si
 
 ```{r enrichGO_dotplot, fig.height= 10, fig.width=5}
 ## Dotplot 
-dotplot(ego, showCategory=50)
+dotplot(ego, showCategory=20)
 ```
 
 The next plot is the **enrichment GO plot**, which shows the relationship between the top 50 most significantly enriched GO terms (padj.), by grouping similar terms together. Before creating the plot, we will need to obtain the similarity between terms using the `pairwise_termsim()` function ([instructions for emapplot](https://rdrr.io/github/GuangchuangYu/enrichplot/man/emapplot.html)). In the enrichment plot, the color represents the p-values relative to the other displayed terms (brighter red is more significant), and the size of the terms represents the number of genes that are significant from our list.
@@ -166,9 +167,9 @@ Finally, the **category netplot** shows the relationships between the genes asso
 
 ```{r}
 ## To color genes by log2 fold changes, we need to extract the log2 fold changes from our results table creating a named vector
-OE_foldchanges <- sigOE$log2FoldChange
+OE_foldchanges <- sigCont$log2FoldChange
 
-names(OE_foldchanges) <- sigOE$gene
+names(OE_foldchanges) <- sigCont$gene
 ```
 
 ```{r cnetplot}
@@ -217,5 +218,11 @@ cnetplot(ego2,
 Run a Disease Ontology (DO) overrepresentation analysis using the `enrichDO()` function. **NOTE** the arguments are very similar to the previous examples. 
 
 - Do you find anything interesting?
+
+***
+
+**Exercise 3**
+
+Run an enrichment analysis on the results of the DEA for Garlicum vs Vampirium samples. Remember to use the annotated results!
 
 ***

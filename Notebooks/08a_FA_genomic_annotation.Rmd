@@ -42,8 +42,9 @@ library(tximport)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
+meta$condition = factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
 dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 files <- file.path(dir, meta$sample, "quant.sf")
 names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
@@ -55,8 +56,8 @@ dds <- dds[keep,]
 
 dds <- DESeq(dds)
 
-res_tableOE <- lfcShrink(dds, coef = "condition_MOV10_overexpression_vs_control")
-res_tableOE_tb <- res_tableOE %>%
+res_tableCont <- lfcShrink(dds, coef = "condition_control_vs_vampirium")
+res_tableCont_tb <- res_tableCont %>%
     data.frame() %>%
     rownames_to_column(var="gene") %>% 
     as_tibble()
@@ -195,7 +196,7 @@ To **obtain an annotation data frame** using AnnotationHub, we'll use the `genes
 # Create a gene-level dataframe 
 annotations_ahb <- genes(human_ens, return.type = "data.frame")  %>%
   dplyr::select(gene_id, gene_name, entrezid, gene_biotype, description) %>% 
-  dplyr::filter(gene_id %in% res_tableOE_tb$gene)
+  dplyr::filter(gene_id %in% res_tableCont_tb$gene)
 ```
 
 This dataframe looks like it should be fine as it is, but we look a little closer we will notice that the column containing Entrez identifiers is a list, and in fact there are many Ensembl identifiers that map to more than one Entrez identifier!
@@ -247,7 +248,7 @@ For the different steps in the functional analysis, we require Ensembl and Entre
 
 ```{r}
 ## Merge the AnnotationHub dataframe with the results 
-res_ids_ahb <- inner_join(res_tableOE_tb, annotations_ahb, by=c("gene"="gene_id"))    
+res_ids_ahb <- inner_join(res_tableCont_tb, annotations_ahb, by=c("gene"="gene_id"))    
 ```
 
 ### Using AnnotationHub to create a tx2gene file
@@ -277,15 +278,15 @@ The *annotables* package is a super easy annotation package to use. It is not up
 
 ```{r}
 library(annotables)
-grch37
+grch38
 ```
 
-We can see that the `grch37` object already contains all the information we want in a super easy way. Let's annotate the results of our shrunken DEA for MOV10 overexpression:
+We can see that the `grch37` object already contains all the information we want in a super easy way. Let's annotate the results of our shrunken DEA for our Control vs Vampirium comparison:
 
 ```{r, eval = FALSE}
 ## Re-run this code if you are unsure that you have the right table
-res_tableOE <- lfcShrink(dds, coef = "condition_MOV10_overexpression_vs_control")
-res_tableOE_tb <- res_tableOE %>%
+res_tableCont <- lfcShrink(dds, coef = "condition_control_vs_vampirium")
+res_tableCont_tb <- res_tableCont %>%
     data.frame() %>%
     rownames_to_column(var="gene") %>% 
     as_tibble()
@@ -293,10 +294,10 @@ res_tableOE_tb <- res_tableOE %>%
 
 ```{r}
 ## Return the IDs for the gene symbols in the DE results
-ids <- grch37 %>% dplyr::filter(ensgene %in% rownames(res_tableOE))
+ids <- grch38 %>% dplyr::filter(ensgene %in% rownames(res_tableCont))
 
 ## Merge the IDs with the results 
-res_ids <- inner_join(res_tableOE_tb, ids, by=c("gene"="ensgene"))
+res_ids <- inner_join(res_tableCont_tb, ids, by=c("gene"="ensgene"))
 
 head(res_ids)
 ```
@@ -307,7 +308,13 @@ Our data is now ready to use for functional analysis! We have all the ids necess
 
 **Exercise 1**
 
-- Create a new `res_ids` object using the `annotables` package with the human build grch38. **NOTE** call it `res_ids_grch38`!
-- What are the differences between the `res_id_ahb`object and the `res_ids_grch38`?
+- Create a new `res_ids` object using the `annotables` package with the human build grch37. **NOTE** call it `res_ids_grch37`!
+- What are the differences between the `res_id_ahb`object and the `res_ids_grch37`?
+
+***
+
+**Exercise 2**
+
+Annotate the results of your DEA for Garlicum vs Vampirium with grch38.
 
 ***

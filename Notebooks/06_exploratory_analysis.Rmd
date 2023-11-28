@@ -42,8 +42,9 @@ library(tximport)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
+meta$condition = factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
 dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 files <- file.path(dir, meta$sample, "quant.sf")
 names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
@@ -63,11 +64,11 @@ Approximate time: 40 minutes
 * Interpret different examples of PCA plots
 * Evaluate sample quality using PCA and hierarchical clustering 
 
-## Mov10 quality assessment and exploratory analysis using DESeq2	
+## Vampirium quality assessment and exploratory analysis using DESeq2	
 
-Now that we have a good understanding of the QC steps normally employed for RNA-seq, let's implement them for the Mov10 dataset we are going to be working with.
+Now that we have a good understanding of the QC steps normally employed for RNA-seq, let's implement them for the Vampirium dataset we are going to be working with.
 
-### Transform normalized counts for the MOV10 dataset
+### Transform normalized counts for the Vampirium dataset
 
 **To improve the distances/clustering for the PCA and hierarchical clustering visualization methods**, we need to moderate the variance across the mean by applying the rlog transformation to the normalized counts. 
 
@@ -83,7 +84,7 @@ The `blind=TRUE` argument is to make sure that the `rlog()` function does not ta
 
 The `rlog()` function returns a `DESeqTransform` object, another type of DESeq-specific object. The reason you don't just get a matrix of transformed values is because all of the parameters (i.e. size factors) that went into computing the rlog transform are stored in that object. We use this object to plot the PCA and hierarchical clustering figures for quality assessment.
 
-### Principal component analysis (PCA) for the MOV10 dataset
+### Principal component analysis (PCA) for the Vampirium dataset
 
 We are now ready for the QC steps, let's start with PCA!
 
@@ -135,9 +136,9 @@ attributes(pca)
 ```
 
 You can check the `?prcomp()` for more information. The most important variables are: 
-- sdev: standard deviation explained by each PC.
-- rotation: contribution of each gene to each PC.
-- x: PC values for each sample (we use this values for our plots)
+- `sdev`: standard deviation explained by each PC.
+- `rotation`: contribution of each gene to each PC.
+- `x`: PC values for each sample (we use this values for our plots)
 
 We can create a new object that contains all our metadata information and the PC values:
 
@@ -166,7 +167,7 @@ ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = condition)) +
   ylab(paste0("PC4: ",pca_var["PC4"], "% variance")) 
 ```
 
-### Hierarchical Clustering for the MOV10 dataset
+### Hierarchical Clustering for the Vampirium dataset
 
 There is no built-in function in DESeq2 for plotting the heatmap for displaying the pairwise correlation or distances between all the samples and the hierarchical clustering information; we will use the `pheatmap()` function from the `pheatmap` package. This function cannot use the `DESeqTransform` object as input, but requires a matrix or dataframe. So, the first thing to do is retrieve that information from the `rld` object using a function called `assay()`.
 
