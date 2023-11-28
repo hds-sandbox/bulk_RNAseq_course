@@ -131,17 +131,11 @@ Since our "full" model only has one factor (`sampletype`), the "reduced" model (
 
     This analysis will not return genes where the treatment effect does not change over time, even though the genes may be differentially expressed between groups at a particular time point, as shown in the figure below:
 
-
-    ```r
-    knitr::include_graphics("./img/07b_hypothesis_testing/lrt_time_nodiff.png")
-    ```
+    <img src="./img/07b_hypothesis_testing/lrt_time_nodiff.png" width="358" style="display: block; margin: auto;" />
 
     The significant DE genes will represent those genes that have differences in the effect of treatment over time, an example is displayed in the figure below:
 
-
-    ```r
-    knitr::include_graphics("./img/07b_hypothesis_testing/lrt_time_yesdiff.png")
-    ```
+    <img src="./img/07b_hypothesis_testing/lrt_time_yesdiff.png" width="358" style="display: block; margin: auto;" />
 
 ## Multiple test correction
 

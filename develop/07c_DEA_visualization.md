@@ -115,7 +115,7 @@ plotMA(res_tableCont, ylim=c(-2,2))
 
 On the left you have the unshrunken fold change values plotted and you can see the abundance of scatter for the lowly expressed genes. That is, many of these genes exhibit very high fold changes. After shrinkage, we see the fold changes are much smaller estimates.
 
-<img src="./img/07c_DEA_visualization/maplot_unshrunken.png" width="400" style="display: block; margin: auto auto auto 0;" /><img src="./img/07c_DEA_visualization/MA_plot.png" width="400" style="display: block; margin: auto auto auto 0;" />
+<img src="./img/07c_DEA_visualization/maplot_unshrunken.png" width="1344" style="display: block; margin: auto auto auto 0;" /><img src="./img/07c_DEA_visualization/MA_plot.png" width="1344" style="display: block; margin: auto auto auto 0;" />
 
 In addition to the comparison described above, this plot allows us to evaluate the magnitude of fold changes and how they are distributed relative to mean expression. Generally, we would expect to see significant genes across the full range of expression levels.
 
@@ -140,7 +140,7 @@ To pick out a specific gene of interest to plot, for example TSPAN7 (ID ENSG0000
 plotCounts(dds, gene="ENSG00000156298", intgroup="condition") 
 ```
 
-<img src="./img/07c_DEA_visualization/topgen_plot.png" width="754" style="display: block; margin: auto;" />
+<img src="./img/07c_DEA_visualization/countPlot.png" width="1344" style="display: block; margin: auto;" />
 
 !!! info
 
@@ -172,7 +172,7 @@ theme(plot.title = element_text(hjust = 0.5))
 
     Note that in the plot below (code above), we are using `geom_text_repel()` from the `ggrepel` package to label our individual points on the plot.
 
-<img src="./img/07c_DEA_visualization/plotCounts_ggrepel.png" width="927" style="display: block; margin: auto auto auto 0;" />
+<img src="./img/07c_DEA_visualization/custom_countPlot.png" width="1344" style="display: block; margin: auto auto auto 0;" />
 
 **Create a translator from gene names to gene IDs**
 
@@ -233,7 +233,7 @@ pheatmap(norm_Contsig %>% column_to_rownames("gene"),
          height = 20)
 ```
 
-<img src="./img/07c_DEA_visualization/pheatmap_aug2020.png" width="623" style="display: block; margin: auto auto auto 0;" />
+<img src="./img/07c_DEA_visualization/sigCont_heatmap.png" width="1344" style="display: block; margin: auto auto auto 0;" />
 
 !!! note
 
@@ -271,7 +271,7 @@ ggplot(res_tableCont_tb) +
         axis.title = element_text(size = rel(1.25)))  
 ```
 
-<img src="./img/07c_DEA_visualization/volcano_plot_1.png" width="754" style="display: block; margin: auto auto auto 0;" />
+<img src="./img/07c_DEA_visualization/volcano_plot_1.png" width="1344" style="display: block; margin: auto auto auto 0;" />
 
 **Checking the top DE genes**
 
@@ -306,7 +306,7 @@ ggplot(res_tableCont_tb, aes(x = log2FoldChange, y = -log10(padj))) +
         axis.title = element_text(size = rel(1.25))) 
 ```
 
-<img src="./img/07c_DEA_visualization/volcano_plot_2.png" width="754" style="display: block; margin: auto auto auto 0;" />
+<img src="./img/07c_DEA_visualization/volcano_plot_2.png" width="1344" style="display: block; margin: auto auto auto 0;" />
 
 ## Other visualization tools
 

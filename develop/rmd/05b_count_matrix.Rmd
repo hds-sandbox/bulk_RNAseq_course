@@ -142,7 +142,7 @@ files
 Our Salmon files were generated with transcript sequences listed by Ensembl IDs, but `tximport` needs to know **which genes these transcripts came from**. We will use annotation table the that was created in our workflow, called `tx2gene.txt`.
 
 ```{r}
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 tx2gene %>% head()
 ```
 

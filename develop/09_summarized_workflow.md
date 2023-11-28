@@ -7,6 +7,8 @@ hide:
 
 # Summarised workflow
 
+**Last updated:** *{{ git_revision_date_localized }}*
+
 We have detailed the various steps in a differential expression analysis workflow, providing theory with example code. To provide a more succinct reference for the code needed to run a DGE analysis, we have summarized the steps in an analysis below:
 
 ## Libraries
@@ -32,9 +34,10 @@ library(RColorBrewer)
 Load data and metadata
 
 ``` r
-data <- read_table("../Data/Mov10_full_counts.txt") 
+data <- read_table("../Data/Vampirium_counts_traditional.tsv") 
 
-meta <- read_table("../Data/Mov10_full_meta.txt")
+meta <- read_table("../Data/samplesheet.csv")
+meta$condition <- factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
 ```
 
 Check that the row names of the metadata equal the column names of the **raw counts** data
@@ -58,6 +61,7 @@ Load samplesheet with all our metadata from our pipeline
 ``` r
 # Load data, metadata and tx2gene and create a txi object
 meta <- read_csv("/work/Intro_bulkRNAseq/Data/samplesheet.csv")
+meta$condition <- factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
 ```
 
 Create a list of salmon results
@@ -176,7 +180,7 @@ Formal LFC calculation
 
 ``` r
 # Specify contrast for comparison of interest
-contrast <- c("condition", "MOV10_overexpression", "control")
+contrast <- c("condition", "control", "vampirium")
 
 # Output results of Wald test for contrast
 res <- results(dds, 
@@ -192,7 +196,7 @@ resultsNames(dds)
 
 # Shrink the log2 fold changes to be more accurate
 res <- lfcShrink(dds, 
-                 coef = "condition_MOV10_overexpression_vs_control", 
+                 coef = "condition_control_vs_vampirium", 
                  type = "apeglm")
 ```
 
@@ -224,13 +228,13 @@ lookup <- function(gene_name, tx2gene, dds){
   return(hits)
 }
 
-lookup(gene_name = "MOV10", tx2gene = tx2gene, dds = dds)
+lookup(gene_name = "TSPAN7", tx2gene = tx2gene, dds = dds)
 ```
 
 Plot expression for single gene
 
 ``` r
-plotCounts(dds, gene="ENSG00000155363", intgroup="condition")
+plotCounts(dds, gene="ENSG00000156298", intgroup="condition")
 ```
 
 ### MAplot
@@ -295,7 +299,7 @@ pheatmap(norm_sig,
 ### Annotate with `annotables`
 
 ``` r
-ids <- grch37 %>% dplyr::filter(ensgene %in% res_tbl$gene) 
+ids <- grch38 %>% dplyr::filter(ensgene %in% res_tbl$gene) 
 res_ids <- inner_join(res_tbl, ids, by=c("gene"="ensgene"))
 ```
 

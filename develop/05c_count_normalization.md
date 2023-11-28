@@ -272,6 +272,21 @@ Bioconductor software packages often define and use a custom class within R for 
 
 Let's start by creating the `DESeqDataSet` object, and then we can talk a bit more about what is stored inside it. To create the object, we will need the **txi** object and the **metadata** table as input (`colData` argument). We will also need to specify a **design formula**. The design formula specifies which column(s) of our metadata we want to use for statistical testing and modeling (more about that later!). For our dataset we only have one column we are interested in, which is `condition`. This column has three factor levels, which tells DESeq2 that for each gene we want to evaluate gene expression change with respect to these different levels.
 
+**It is very important to establish beforehand which sample type will be our "base" or "reference" level.** If nothing is changed, DESeq2 will assume that our reference samples will be the first sample type (in alphabetical order). You can check this using the `factor()` function.
+
+``` r
+factor(meta$condition)
+```
+
+While in a normal experiment we would use control samples as our reference, in our case we are interested in both checking the differences between control vs. vampirium and garlicum vs. vampirium. Thus, it would be much more convinient to reorganize our factor base level to `vampirium`. We can do this also with the `factor()` function, using the `levels =` argument.
+
+``` r
+meta$condition = factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
+factor(meta$condition)
+```
+
+We can see now that vampirium is the first factor! Meaning that it will be interpreted by DESeq as our reference sample type.
+
 **Our count matrix input is stored in the `txi` list object**. So we need to specify that using the `DESeqDataSetFromTximport()` function, which will extract the counts component and round the values to the nearest whole number.
 
 ``` r
@@ -283,6 +298,10 @@ dds <- DESeqDataSetFromTximport(txi,
                                    colData = meta %>% column_to_rownames("sample"), 
                               design = ~ condition)
 ```
+
+??? note "Control is not reference level warning"
+
+    The warning from the chunk before is telling us that we have setup our vampirium samples as reference, instead of control! This is exactly what we wanted.
 
 ??? note "Starting from a traditional count matrix"
 

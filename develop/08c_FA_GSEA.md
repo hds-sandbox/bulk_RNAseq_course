@@ -1,22 +1,7 @@
 ---
 title: Functional class scoring
 summary: In this lesson we explain how to run functional analysis on your results using Class Scoring methods
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./develop/')})
-output:
-  github_document: 
-     preserve_yaml: TRUE
-     html_preview: FALSE
-     pandoc_args: [
-      "--wrap", "none" # this is needed to not break admonitions
-    ]
 ---
-
-Functional class scoring
-================
 
 # Functional class scoring
 
@@ -36,8 +21,6 @@ Functional class scoring
 Over-representation analysis is only a single type of functional analysis method that is available for teasing apart the biological processes important to your condition of interest. Other types of analyses can be equally important or informative, including functional class scoring methods.
 
 <img src="./img/08c_FA_GSEA/pathway_analysis.png" width="500" style="display: block; margin: auto;" />
-
-## Functional class scoring
 
 Functional class scoring (FCS) tools, such as [GSEA](https://www.pnas.org/content/102/43/15545), most often use the gene-level statistics or log2 fold changes for all genes from the differential expression results, then look to see whether gene sets for particular biological pathways are enriched among the large positive or negative fold changes.
 
@@ -133,7 +116,7 @@ head(gseaKEGG_results)
 ## Write GSEA results to file
 View(gseaKEGG_results)
 
-write.csv(gseaKEGG_results, "../Results/gseaOE_kegg.csv", quote=F)
+write.csv(gseaKEGG_results, "../Results/gseaCont-Vamp_kegg.csv", quote=F)
 ```
 
 !!! warning
@@ -221,7 +204,7 @@ There are other gene sets available for GSEA analysis in clusterProfiler (Diseas
 
 !!! question "**Exercise 2**"
 
-    Run an GSE on the results of the DEA for knockdown vs control samples. Remember to use the annotated results!
+    Run an GSE on the results of the DEA for Garlicum vs Vampirium samples. Remember to use the annotated results!
 
 ??? question "**Solution to Exercise 2**"
 
@@ -230,7 +213,7 @@ There are other gene sets available for GSEA analysis in clusterProfiler (Diseas
 
     ```r
     # Remove any NA values (reduces the data by quite a bit) and duplicates
-    res_entrez_KD <- dplyr::filter(res_ids_KD, entrez != "NA" & duplicated(entrez)==F)
+    res_entrez_Gar <- dplyr::filter(res_ids_Gar, entrez != "NA" & duplicated(entrez)==F)
     ```
 
     Finally, extract and name the fold changes:
@@ -238,10 +221,10 @@ There are other gene sets available for GSEA analysis in clusterProfiler (Diseas
 
     ```r
     # Extract the foldchanges
-    foldchanges_KD <- res_entrez_KD$log2FoldChange
+    foldchanges_Gar <- res_entrez_Gar$log2FoldChange
 
     # Name each fold change with the corresponding Entrez ID
-    names(foldchanges_KD) <- res_entrez_KD$entrez
+    names(foldchanges_Gar) <- res_entrez_Gar$entrez
     ```
 
     Next we need to order the fold changes in decreasing order. To do this we'll use the `sort()` function, which takes a vector as input. This is in contrast to Tidyverse's `arrange()`, which requires a data frame.
@@ -249,16 +232,16 @@ There are other gene sets available for GSEA analysis in clusterProfiler (Diseas
 
     ```r
     ## Sort fold changes in decreasing order
-    foldchanges_KD <- sort(foldchanges_KD, decreasing = TRUE)
+    foldchanges_Gar <- sort(foldchanges_Gar, decreasing = TRUE)
 
-    head(foldchanges_KD)
+    head(foldchanges_Gar)
     ```
 
     Ne we can perform GSEA. This is an example for GO term analysis
 
 
     ```r
-    gseaGO <- gseGO(geneList = foldchanges, 
+    gseaGO <- gseGO(geneList = foldchanges_Gar, 
                   OrgDb = org.Hs.eg.db, 
                   ont = 'BP', 
                   minGSSize = 20, 

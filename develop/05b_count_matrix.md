@@ -38,7 +38,7 @@ Before we get into the details of the analysis, let"s get started by opening up 
 
 To check whether or not you are in the correct working directory, use `getwd()`. The path `/work/Intro_to_bulkRNAseq` should be returned to you in the console. When finished your working directory should now look similar to this:
 
-<img src="./img/05b_count_matrix/settingup.png" width="1634" style="display: block; margin: auto;" />
+<img src="./img/05b_count_matrix/settingup.png" width="878" style="display: block; margin: auto;" />
 
 - Inside the folder `Notebooks` you will find the scripts (in `Rmd` format) that we will follow during the sessions.
 - In the folder `Results` you will save the results of your scripts, analysis and tests.
@@ -111,7 +111,7 @@ files
 Our Salmon files were generated with transcript sequences listed by Ensembl IDs, but `tximport` needs to know **which genes these transcripts came from**. We will use annotation table the that was created in our workflow, called `tx2gene.txt`.
 
 ``` r
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 tx2gene %>% head()
 ```
 
@@ -273,7 +273,7 @@ The model that fits best, given this type of variability observed for replicates
       scale_x_log10()
     ```
 
-    <img src="./img/05b_count_matrix/deseq_mean_vs_variance.png" width="829" style="display: block; margin: auto;" />
+    <img src="./img/05b_count_matrix/deseq_mean_vs_variance.png" width="1344" style="display: block; margin: auto;" />
 
     Note that in the above figure, the variance across replicates tends to be greater than the mean (red line), especially for genes with large mean expression levels. *This is a good indication that our data do not fit the Poisson distribution and we need to account for this increase in variance using the Negative Binomial model (i.e. Poisson will underestimate variability leading to an increase in false positive DE genes).*
 

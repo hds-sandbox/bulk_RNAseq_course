@@ -172,8 +172,7 @@ plotCounts(dds, gene="ENSG00000156298", intgroup="condition")
 ```
 
 ```{r, echo = FALSE, eval = TRUE}
-## CHANGE THIS PLOT
-knitr::include_graphics("./img/07c_DEA_visualization/topgen_plot.png")
+knitr::include_graphics("./img/07c_DEA_visualization/countPlot.png")
 ```
 
 !!! info
@@ -207,8 +206,7 @@ theme(plot.title = element_text(hjust = 0.5))
     Note that in the plot below (code above), we are using `geom_text_repel()` from the `ggrepel` package to label our individual points on the plot.
 
 ```{r, echo = FALSE, eval = TRUE, fig.align='left'}
-##CHANGE PLOT!
-knitr::include_graphics("./img/07c_DEA_visualization/plotCounts_ggrepel.png")
+knitr::include_graphics("./img/07c_DEA_visualization/custom_countPlot.png")
 ```
 
 **Create a translator from gene names to gene IDs**
@@ -271,8 +269,7 @@ pheatmap(norm_Contsig %>% column_to_rownames("gene"),
 ```
 
 ```{r, echo = FALSE, eval = TRUE, fig.align='left'}
-## CHANGE PLOT!
-knitr::include_graphics("./img/07c_DEA_visualization/pheatmap_aug2020.png")   
+knitr::include_graphics("./img/07c_DEA_visualization/sigCont_heatmap.png")   
 ```
 
 !!! note

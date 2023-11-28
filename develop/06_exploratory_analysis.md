@@ -146,7 +146,7 @@ The function `plotPCA()` requires two arguments as input: a `DESeqTransform` obj
 plotPCA(rld, intgroup="condition")
 ```
 
-<img src="./img/06_exploratory_analysis/pca_500.png" width="413" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/pca_500.png" width="1344" style="display: block; margin: auto;" />
 
 !!! question "**Exercise 1**"
 
@@ -234,6 +234,10 @@ ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = condition)) +
   ylab(paste0("PC4: ",pca_var["PC4"], "% variance")) 
 ```
 
+``` r
+knitr::include_graphics("./img/06_exploratory_analysis/custom_PCA.png")
+```
+
 ### Hierarchical Clustering for the Vampirium dataset
 
 There is no built-in function in DESeq2 for plotting the heatmap for displaying the pairwise correlation or distances between all the samples and the hierarchical clustering information; we will use the `pheatmap()` function from the `pheatmap` package. This function cannot use the `DESeqTransform` object as input, but requires a matrix or dataframe. So, the first thing to do is retrieve that information from the `rld` object using a function called `assay()`.
@@ -273,7 +277,7 @@ pheatmap(sampleDistMatrix, annotation_col = meta %>% column_to_rownames("sample"
 
 When you plot using `pheatmap()` the hierarchical clustering information is used to place similar samples together and this information is represented by the tree structure along the axes. The `annotation` argument accepts a dataframe as input, in our case it is the `meta` data frame.
 
-<img src="./img/06_exploratory_analysis/pheatmap_salmon.png" width="832" style="display: block; margin: auto;" />
+<img src="./img/06_exploratory_analysis/pheatmap_salmon.png" width="1344" style="display: block; margin: auto;" />
 
 Overall, we observe pretty high correlations across the board (\> 0.999) suggesting no outlying sample(s). Also, similar to the PCA plot you see the samples clustering together by sample group. Together, these plots suggest to us that the data are of good quality and we have the green light to proceed to differential expression analysis.
 
@@ -323,10 +327,6 @@ You can check all the colors that RColorBrewer offers by using the following com
 display.brewer.all()
 ```
 
-``` r
-knitr::include_graphics("./img/06_exploratory_analysis/rcolor_brewer_all.png")
-```
-
-------------------------------------------------------------------------
+<img src="./img/06_exploratory_analysis/rcolor_brewer_all.png" width="768" style="display: block; margin: auto;" /> \*\*\*
 
 *This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/).*

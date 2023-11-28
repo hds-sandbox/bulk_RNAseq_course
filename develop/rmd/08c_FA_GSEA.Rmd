@@ -48,16 +48,14 @@ Over-representation analysis is only a single type of functional analysis method
 
 ```{r, echo = FALSE, eval = TRUE} 
 knitr::include_graphics("./img/08c_FA_GSEA/pathway_analysis.png")
-``` 
-
-## Functional class scoring
+```
 
 Functional class scoring (FCS) tools, such as [GSEA](https://www.pnas.org/content/102/43/15545), most often use the gene-level statistics or log2 fold changes for all genes from the differential expression results, then look to see whether gene sets for particular biological pathways are enriched among the large positive or negative fold changes. 
 
 ```{r, echo = FALSE, eval = TRUE} 
 knitr::include_graphics("./img/08c_FA_GSEA/gsea_theory.png")
-``` 
-  
+```
+
 The hypothesis of FCS methods is that although large changes in individual genes can have significant effects on pathways (and will be detected via ORA methods), weaker but coordinated changes in sets of functionally related genes (i.e., pathways) can also have significant effects.  Thus, rather than setting an arbitrary threshold to identify 'significant genes', **all genes are considered** in the analysis. The gene-level statistics from the dataset are aggregated to generate a single pathway-level statistic and statistical significance of each pathway is reported. This type of analysis can be particularly helpful if the differential expression analysis only outputs a small list of significant DE genes. 
 
 ### Gene set enrichment analysis using clusterProfiler and Pathview
@@ -165,7 +163,7 @@ gseaplot(gseaKEGG, geneSetID = gseaKEGG_results$ID[1], title = gseaKEGG_results$
 ```
 
 ```{r, echo = FALSE, eval = TRUE} 
-knitr::include_graphics(paste0("./img/08c_FA_GSEA/gsea_kegg_",gseaKEGG_results$ID[1],".png"))
+knitr::include_graphics(paste0("./img/08c_FA_GSEA/gsea_kegg_hsa03040.png"))
 ```
 
 In this plot, the lines in plot represent the genes in the gene set, and where they occur among the log2 fold changes. The largest positive log2 fold changes are on the left-hand side of the plot, while the largest negative log2 fold changes are on the right. The top plot shows the magnitude of the log2 fold changes for each gene, while the bottom plot shows the running sum, with the enrichment score peaking at the red dotted line (which is among the negative log2 fold changes).
@@ -182,7 +180,7 @@ pathview(gene.data = foldchanges,
 ```
 
 ```{r, echo = FALSE, eval = TRUE} 
-knitr::include_graphics(paste0("./img/08c_FA_GSEA/",gseaKEGG_results$ID[1],".pathview.png"))
+knitr::include_graphics(paste0("./img/08c_FA_GSEA/hsa03040.pathview.png"))
 ```
 
 !!! tip "Printing out Pathview images for all significant pathways"

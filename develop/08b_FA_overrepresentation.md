@@ -1,22 +1,7 @@
 ---
 title: Functional Analysis for RNA-seq
 summary: In this lesson we explain how to run functional analysis on your results using overrepresentation analysis
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./develop/')})
-output:
-  github_document: 
-     preserve_yaml: TRUE
-     html_preview: FALSE
-     pandoc_args: [
-      "--wrap", "none" # this is needed to not break admonitions
-    ]
 ---
-
-Functional Analysis for RNA-seq
-================
 
 # Functional analysis
 
@@ -43,7 +28,7 @@ Generally for any differential expression analysis, it is useful to interpret th
 
 <img src="./img/08b_FA_overrepresentation/pathway_analysis.png" width="500" style="display: block; margin: auto;" />
 
-The goal of functional analysis is to provide biological insight, so it's necessary to analyze our results in the context of our experimental hypothesis: **FMRP and MOV10 associate and regulate the translation of a subset of RNAs**. Therefore, based on the authors' hypothesis, we may expect the enrichment of processes/pathways related to **translation, splicing, and the regulation of mRNAs**, which we would need to validate experimentally.
+The goal of functional analysis is to provide biological insight, so it's necessary to analyze our results in the context of our experimental hypothesis: **What is the function of the genes dysregulated by Vampirium?**. Therefore, based on the authors' hypothesis and observations, we may expect the enrichment of processes/pathways related to **blood production and behaviour control**, which we would need to validate experimentally.
 
 !!! note
 
@@ -71,7 +56,7 @@ Using the example of the first functional category above, hypergeometric distrib
 
 The calculation of probability of k successes follows the formula:
 
-$$\Pr(X = k) = \frac{\binom{K}{k} \binom{N - K}{n-k}}{\binom{N}{n}}$$ <img src="./img/08b_FA_overrepresentation/overrepresentation_tables/Slide1.png" width="1440" style="display: block; margin: auto;" />
+$$Pr(X = k) = \frac{\binom{K}{k} \binom{N - K}{n-k}}{\binom{N}{n}}$$ <img src="./img/08b_FA_overrepresentation/overrepresentation_tables/Slide1.png" width="1440" style="display: block; margin: auto;" />
 
 This test will result in an adjusted p-value (after multiple test correction) for each category tested.
 
@@ -135,14 +120,14 @@ To perform the over-representation analysis, we need a list of background genes 
 
 ``` r
 ## Create background dataset for hypergeometric testing using all genes tested for significance in the results
-allOE_genes <- dplyr::filter(res_ids, !is.na(gene)) %>% 
+allCont_genes <- dplyr::filter(res_ids, !is.na(gene)) %>% 
   pull(gene) %>% 
   as.character()
 
 ## Extract significant results
-sigOE <- dplyr::filter(res_ids, padj < 0.05 & !is.na(gene))
+sigCont <- dplyr::filter(res_ids, padj < 0.05 & !is.na(gene))
 
-sigOE_genes <- sigOE %>% 
+sigCont_genes <- sigCont %>% 
   pull(gene) %>% 
   as.character()
 ```
@@ -151,8 +136,8 @@ Now we can perform the GO enrichment analysis and save the results:
 
 ``` r
 ## Run GO enrichment analysis 
-ego <- enrichGO(gene = sigOE_genes, 
-                universe = allOE_genes,
+ego <- enrichGO(gene = sigCont_genes, 
+                universe = allCont_genes,
                 keyType = "ENSEMBL",
                 OrgDb = org.Hs.eg.db, 
                 ont = "BP", 
@@ -174,10 +159,10 @@ ego <- enrichGO(gene = sigOE_genes,
 cluster_summary <- data.frame(ego)
 cluster_summary
 
-write.csv(cluster_summary, "../Results/clusterProfiler_Mov10oe.csv")
+write.csv(cluster_summary, "../Results/clusterProfiler_Cont-Vamp.csv")
 ```
 
-<img src="./img/08b_FA_overrepresentation/cluster_summary.png" width="600" style="display: block; margin: auto;" />
+{{ read_csv('./assets/clusterProfiler_Cont-Vamp.csv') }}
 
 !!! tip
 
@@ -194,7 +179,7 @@ write.csv(cluster_summary, "../Results/clusterProfiler_Mov10oe.csv")
 
 !!! question "**Exercise 1**"
 
-    Create two new GO enrichment analyses one with UP and another for DOWN regulated genes for MOV10 overexpression.
+    Create two new GO enrichment analyses one with UP and another for DOWN regulated genes for Control vs Vampirium.
 
 ??? question "**Solution to Exercise 1**"
 
@@ -202,8 +187,8 @@ write.csv(cluster_summary, "../Results/clusterProfiler_Mov10oe.csv")
 
 
     ```r
-    sigOE_UP <- sigOE %>% filter(log2FoldChange > 0)
-    sigOE_DOWN <- sigOE %>% filter(log2FoldChange < 0)
+    sigCont_UP <- sigCont %>% filter(log2FoldChange > 0)
+    sigCont_DOWN <- sigCont %>% filter(log2FoldChange < 0)
     ```
 
     2. Run overrepresentation:
@@ -211,8 +196,8 @@ write.csv(cluster_summary, "../Results/clusterProfiler_Mov10oe.csv")
     UP regulated genes
 
     ```r
-    ego_UP <- enrichGO(gene = sigOE_UP$gene, 
-                    universe = allOE_genes,
+    ego_UP <- enrichGO(gene = sigCont_UP$gene, 
+                    universe = allCont_genes,
                     keyType = "ENSEMBL",
                     OrgDb = org.Hs.eg.db, 
                     ont = "BP", 
@@ -225,8 +210,8 @@ write.csv(cluster_summary, "../Results/clusterProfiler_Mov10oe.csv")
 
 
     ```r
-    ego_DOWN <- enrichGO(gene = sigOE_DOWN$gene, 
-                    universe = allOE_genes,
+    ego_DOWN <- enrichGO(gene = sigCont_DOWN$gene, 
+                    universe = allCont_genes,
                     keyType = "ENSEMBL",
                     OrgDb = org.Hs.eg.db, 
                     ont = "BP", 
@@ -251,14 +236,14 @@ write.csv(cluster_summary, "../Results/clusterProfiler_Mov10oe.csv")
 
 clusterProfiler has a variety of options for viewing the over-represented GO terms. We will explore the dotplot, enrichment plot, and the category netplot.
 
-The **dotplot** shows the number of genes associated with the first 50 terms (size) and the p-adjusted values for these terms (color). This plot displays the top 50 GO terms by gene ratio (# genes related to GO term / total number of sig genes), not p-adjusted value.
+The **dotplot** shows the number of genes associated with the first terms (size) and the p-adjusted values for these terms (color). This plot displays the top 20 GO terms by gene ratio (# genes related to GO term / total number of sig genes), not p-adjusted value.
 
 ``` r
 ## Dotplot 
-dotplot(ego, showCategory=50)
+dotplot(ego, showCategory=20)
 ```
 
-<img src="./img/08b_FA_overrepresentation/mov10oe_dotplot.png" width="1200" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/cont_vs_vamp_dotplot.png" width="960" style="display: block; margin: auto;" />
 
 The next plot is the **enrichment GO plot**, which shows the relationship between the top 50 most significantly enriched GO terms (padj.), by grouping similar terms together. Before creating the plot, we will need to obtain the similarity between terms using the `pairwise_termsim()` function [instructions for emapplot](https://rdrr.io/github/GuangchuangYu/enrichplot/man/emapplot.html). In the enrichment plot, the color represents the p-values relative to the other displayed terms (brighter red is more significant), and the size of the terms represents the number of genes that are significant from our list.
 
@@ -272,7 +257,7 @@ ego <- enrichplot::pairwise_termsim(ego)
 emapplot(ego, showCategory = 50)
 ```
 
-<img src="./img/08b_FA_overrepresentation/emapplot.png" width="1479" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/emapplot.png" width="1344" style="display: block; margin: auto;" />
 
 Finally, the **category netplot** shows the relationships between the genes associated with the top five most significant GO terms and the fold changes of the significant genes associated with these terms (color). The size of the GO terms reflects the pvalues of the terms, with the more significant terms being larger. This plot is particularly useful for hypothesis generation in identifying genes that may be important to several of the most affected processes.
 
@@ -282,9 +267,9 @@ Finally, the **category netplot** shows the relationships between the genes asso
 
 ``` r
 # To color genes by log2 fold changes, we need to extract the log2 fold changes from our results table creating a named vector
-OE_foldchanges <- sigOE$log2FoldChange
+Cont_foldchanges <- sigCont$log2FoldChange
 
-names(OE_foldchanges) <- sigOE$gene
+names(Cont_foldchanges) <- sigCont$gene
 ```
 
 ``` r
@@ -292,7 +277,7 @@ names(OE_foldchanges) <- sigOE$gene
 cnetplot(ego, 
          categorySize="pvalue", 
          showCategory = 5, 
-         foldChange=OE_foldchanges, 
+         foldChange=Cont_foldchanges, 
          vertex.label.font=6)
 ```
 
@@ -302,8 +287,8 @@ cnetplot(ego,
 
 
     ```r
-    OE_foldchanges <- ifelse(OE_foldchanges > 2, 2, OE_foldchanges)
-    OE_foldchanges <- ifelse(OE_foldchanges < -2, -2, OE_foldchanges)
+    Cont_foldchanges <- ifelse(Cont_foldchanges > 2, 2, Cont_foldchanges)
+    Cont_foldchanges <- ifelse(Cont_foldchanges < -2, -2, Cont_foldchanges)
     ```
 
 
@@ -311,11 +296,11 @@ cnetplot(ego,
     cnetplot(ego, 
          categorySize="pvalue", 
          showCategory = 5, 
-         foldChange=OE_foldchanges, 
+         foldChange=Cont_foldchanges, 
          vertex.label.font=6)
     ```
 
-<img src="./img/08b_FA_overrepresentation/cnetplot1.png" width="1800" style="display: block; margin: auto;" />
+<img src="./img/08b_FA_overrepresentation/cnetplot1.png" width="1344" style="display: block; margin: auto;" />
 
 !!! tip
 
@@ -331,12 +316,12 @@ cnetplot(ego,
     # Plotting terms of interest
     cnetplot(ego2, 
          categorySize="pvalue", 
-         foldChange=OE_foldchanges, 
+         foldChange=Cont_foldchanges, 
          showCategory = 5, 
          vertex.label.font=6)
     ```
 
-    <img src="./img/08b_FA_overrepresentation/cnetplot-2.png" width="1800" style="display: block; margin: auto;" />
+    <img src="./img/08b_FA_overrepresentation/cnetplot-2.png" width="1344" style="display: block; margin: auto;" />
 
 !!! question "**Exercise 2**"
 
@@ -352,7 +337,7 @@ cnetplot(ego,
 
 
     ```r
-    edo <- enrichDO(sigOE$entrez, qvalueCutoff = 1)
+    edo <- enrichDO(sigCont$entrez, qvalueCutoff = 1)
     head(edo)
     ```
 
@@ -360,7 +345,7 @@ cnetplot(ego,
 
 
     ```r
-    edo_UP <- enrichDO(sigOE_UP$entrez)
+    edo_UP <- enrichDO(sigCont_UP$entrez)
     head(edo_UP)
     ```
 
@@ -368,7 +353,7 @@ cnetplot(ego,
 
 
     ```r
-    edo_DOWN <- enrichDO(sigOE_DOWN$entrez)
+    edo_DOWN <- enrichDO(sigCont_DOWN$entrez)
     head(edo_DOWN)
     ```
 
@@ -376,7 +361,7 @@ cnetplot(ego,
 
 !!! question "**Exercise 3**"
 
-    Run an enrichment analysis on the results of the DEA for knockdown vs control samples. Remember to use the annotated results!
+    Run an enrichment analysis on the results of the DEA for Garlicum vs Vampirium samples. Remember to use the annotated results!
 
 ??? question "**Solution to Exercise 3**"
 
@@ -385,14 +370,14 @@ cnetplot(ego,
 
     ```r
     ## Create background dataset for hypergeometric testing using all genes tested for significance in the results
-    allKD_genes <- dplyr::filter(res_ids_KD, !is.na(gene)) %>% 
+    allGar_genes <- dplyr::filter(res_ids_Gar, !is.na(gene)) %>% 
       pull(gene) %>% 
       as.character()
 
     ## Extract significant results
-    sigKD <- dplyr::filter(res_ids_KD, padj < 0.05 & !is.na(gene))
+    sigGar <- dplyr::filter(res_ids_Gar, padj < 0.05 & !is.na(gene))
 
-    sigKD_genes <- sigKD %>% 
+    sigGar_genes <- sigGar %>% 
       pull(gene) %>% 
       as.character()
     ```
@@ -402,8 +387,8 @@ cnetplot(ego,
 
     ```r
     ## Run GO enrichment analysis 
-    ego <- enrichGO(gene = sigKD_genes, 
-                    universe = allKD_genes,
+    ego <- enrichGO(gene = sigGar_genes, 
+                    universe = allGar_genes,
                     keyType = "ENSEMBL",
                     OrgDb = org.Hs.eg.db, 
                     ont = "BP", 
@@ -419,7 +404,7 @@ cnetplot(ego,
     cluster_summary <- data.frame(ego)
     cluster_summary
 
-    write.csv(cluster_summary, "../Results/clusterProfiler_Mov10kd.csv")
+    write.csv(cluster_summary, "../Results/clusterProfiler_Gar-Vamp.csv")
     ```
 
 ------------------------------------------------------------------------

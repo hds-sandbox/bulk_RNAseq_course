@@ -35,9 +35,9 @@ Then, `Import file from UCloud`:
 
 And select the `jobParameters.json` in:
 
-- `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `Scripts` -\> `ucloud_analysis_setup` -\> `jobParameters.json`
+- `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `jobParameters.json`
 
-!!! warning 
+!!! warning
     **Make sure that the hard-drive icon says `sandbox_bulkRNASeq`!!**
 
     Otherwise, click on the down arrow (**&or;**) icon and search for the folder.
@@ -100,7 +100,7 @@ Click on `Apps` on the left-side menu, and look for the application `Transcripto
 
 You will be met again with a series of possible parameters to choose. You have to assign again the `Import parameters` file as before, or **you can click on one of your previous parameters**.
 
-`sandbox_bulkRNASeq` -> `bulk_RNAseq_course` -> `Scripts` -> `ucloud_analysis_setup` -> `jobParameters.json`
+`sandbox_bulkRNASeq` -> `bulk_RNAseq_course` -> `jobParameters.json`
 
 ![](./img/05a_data_analysis_setup/importParameters4.png)
 
@@ -114,4 +114,4 @@ Then, click "Use."
 
 ![](./img/05a_data_analysis_setup/restartJob.png)
 
-You are ready to run the app by clicking on the button on the right column of the screen (`submit`). After opening the Rstudio interface, you should be able to access the folder `introduction_bulkRNAseq_analysis`, where you will find your course notebooks and results from your previous work!
+You are ready to run the app by clicking on the button on the right column of the screen (`submit`). After opening the Rstudio interface, you should be able to access the folder `Intro_to_bulkRNAseq`, where you will find your course notebooks and results from your previous work!

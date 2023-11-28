@@ -192,7 +192,6 @@ plotPCA(rld, intgroup="condition")
 ```
 
 ```{r, echo = FALSE, eval = TRUE}
-###CHANGE PICTURE!
 knitr::include_graphics("./img/06_exploratory_analysis/pca_500.png")
 ```
 
@@ -280,6 +279,10 @@ Finally, we can add it to our plot
 ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = condition)) + 
   xlab(paste0("PC3: ",pca_var["PC3"], "% variance")) + 
   ylab(paste0("PC4: ",pca_var["PC4"], "% variance")) 
+```
+
+```{r}
+knitr::include_graphics("./img/06_exploratory_analysis/custom_PCA.png")
 ```
 
 ### Hierarchical Clustering for the Vampirium dataset
@@ -371,7 +374,7 @@ You can check all the colors that RColorBrewer offers by using the following com
 display.brewer.all()
 ```
 
-```{r}
+```{r, echo = FALSE, eval = TRUE}
 knitr::include_graphics("./img/06_exploratory_analysis/rcolor_brewer_all.png")
 ```
 ***
