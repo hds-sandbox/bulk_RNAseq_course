@@ -1,22 +1,7 @@
 ---
 title: Contrast designs
 summary: In this lesson we explain how create complex design formulas and contrasts
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./develop/')})
-output:
-  github_document: 
-     preserve_yaml: TRUE
-     html_preview: FALSE
-     pandoc_args: [
-      "--wrap", "none" # this is needed to not break admonitions
-    ]
 ---
-
-Contrast designs
-================
 
 # Design formula and contrasts
 

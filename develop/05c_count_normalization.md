@@ -1,22 +1,7 @@
 ---
 title: Count normalization with DESeq2
 summary: In this lesson we explain how to normalize bulk RNAseq count matrices
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./develop/')})
-output:
-  github_document: 
-     preserve_yaml: TRUE
-     html_preview: FALSE
-     pandoc_args: [
-      "--wrap", "none" # this is needed to not break admonitions
-    ]
 ---
-
-Count normalization with DESeq2
-================
 
 # Normalization
 
@@ -48,9 +33,9 @@ The main factors often considered during normalization are:
 
     In the figure above, each red rectangle represents a read aligned to a gene. Reads connected by dashed lines connect a read spanning an intron.
 
-- **Gene length:** Accounting for gene length is necessary for comparing expression between different genes within the same sample. In the example, *Gene 1* and *Gene 2* have similar levels of expression, but the number of reads mapped to *Gene 1* would be many more than the number mapped to *Gene 2* because *Gene 1* is longer.
+- **Gene length:** Accounting for gene length is necessary for comparing expression between different genes within the same sample. In the example, *Gene 2* and *Gene 3* have similar levels of expression, but the number of reads mapped to *Gene 2* would be many more than the number mapped to *Gene 3* because *Gene 2* is longer.
 
-<img src="./img/05c_count_normalization/length_bias.png" style="display: block; margin: auto;" />
+<img src="./img/05c_count_normalization/length_bias.png" width="1440" style="display: block; margin: auto;" />
 
 - **GC-content**: Genomic features such as GC-content may result in a read count biases, as GC-rich and GC-poor fragments are under-represented in RNAseq experiments. This under-representation is attributed to the fact that fragments with high and low GC-content are not adequately amplified in a standard high throughput sequencing protocol and, subsequently, that the fragments are difficult to align (correctly) to reference genome, i.e. less unique, repeat regions, etc. ([Benjamini & Speed, 2012](https://academic.oup.com/nar/article/40/10/e72/2411059) and [Risso et al, 2011](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-480)).
 
@@ -200,9 +185,9 @@ SampleB median ratio = 0.77
     PD1/size_factors
     ```
 
-## Count normalization of Mov10 dataset using DESeq2
+## Count normalization of the Vampirium dataset using DESeq2
 
-Now that we know the theory of count normalization, we will normalize the counts for the Mov10 dataset using DESeq2. This requires a few steps:
+Now that we know the theory of count normalization, we will normalize the counts for the Vampirium dataset using DESeq2. This requires a few steps:
 
 1.  Ensure the row names of the metadata dataframe are present and in the same order as the column names of the counts dataframe.
 2.  Create a `DESeqDataSet` object
@@ -307,7 +292,7 @@ dds <- DESeqDataSetFromTximport(txi,
     ```r
     ## DO NOT RUN!
     ## Create DESeq2Dataset object from traditional count matrix
-    dds <- DESeqDataSetFromMatrix(countData = "../Data/Mov10_full_counts.txt", 
+    dds <- DESeqDataSetFromMatrix(countData = "../Data/Vampirium_counts_traditional.tsv", 
                               colData = meta %>% column_to_rownames("sample"), 
                               design = ~ condition)
     ```
@@ -342,7 +327,7 @@ keep <- rowSums(counts(dds)) >= 10
 dds <- dds[keep,]
 ```
 
-### 3. Generate the Mov10 normalized counts
+### 3. Generate the normalized counts
 
 The next step is to normalize the count data in order to be able to make fair gene comparisons between samples.
 

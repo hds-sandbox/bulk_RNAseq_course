@@ -63,7 +63,7 @@ knitr::include_graphics("./img/05c_count_normalization/library_size_bias.png")
 
     In the figure above, each red rectangle represents a read aligned to a gene. Reads connected by dashed lines connect a read spanning an intron.
 
-- **Gene length:** Accounting for gene length is necessary for comparing expression between different genes within the same sample. In the example, *Gene 1* and *Gene 2* have similar levels of expression, but the number of reads mapped to *Gene 1* would be many more than the number mapped to *Gene 2* because *Gene 1* is longer.
+- **Gene length:** Accounting for gene length is necessary for comparing expression between different genes within the same sample. In the example, *Gene 2* and *Gene 3* have similar levels of expression, but the number of reads mapped to *Gene 2* would be many more than the number mapped to *Gene 3* because *Gene 2* is longer.
     
 ```{r, echo = FALSE, eval = TRUE}
 knitr::include_graphics("./img/05c_count_normalization/length_bias.png")
@@ -218,9 +218,9 @@ SampleB median ratio = 0.77
     PD1/size_factors
     ```
 
-## Count normalization of Mov10 dataset using DESeq2
+## Count normalization of the Vampirium dataset using DESeq2
 
-Now that we know the theory of count normalization, we will normalize the counts for the Mov10 dataset using DESeq2. This requires a few steps:
+Now that we know the theory of count normalization, we will normalize the counts for the Vampirium dataset using DESeq2. This requires a few steps:
 
 1. Ensure the row names of the metadata dataframe are present and in the same order as the column names of the counts dataframe.
 2. Create a `DESeqDataSet` object
@@ -318,7 +318,7 @@ dds <- DESeqDataSetFromTximport(txi,
     ```{r, eval=FALSE}
     ## DO NOT RUN!
     ## Create DESeq2Dataset object from traditional count matrix
-    dds <- DESeqDataSetFromMatrix(countData = "../Data/Mov10_full_counts.txt", 
+    dds <- DESeqDataSetFromMatrix(countData = "../Data/Vampirium_counts_traditional.tsv", 
                               colData = meta %>% column_to_rownames("sample"), 
                               design = ~ condition)
     ```
@@ -353,7 +353,7 @@ keep <- rowSums(counts(dds)) >= 10
 dds <- dds[keep,]
 ```
 
-### 3. Generate the Mov10 normalized counts
+### 3. Generate the normalized counts
 
 The next step is to normalize the count data in order to be able to make fair gene comparisons between samples.
 

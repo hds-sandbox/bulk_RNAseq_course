@@ -1,9 +1,9 @@
 sample,fastq_1,fastq_2,strandedness,condition
-Control_3,778339/merge/Irrel_kd_3.fastq.gz,,unstranded,control
-Control_2,778339/merge/Irrel_kd_2.fastq.gz,,unstranded,control
-Control_1,778339/merge/Irrel_kd_1.fastq.gz,,unstranded,control
-Mov10_oe_3,778339/merge/Mov10_oe_3.fastq.gz,,unstranded,MOV10_overexpression
-Mov10_oe_2,778339/merge/Mov10_oe_2.fastq.gz,,unstranded,MOV10_overexpression
-Mov10_oe_1,778339/merge/Mov10_oe_1.fastq.gz,,unstranded,MOV10_overexpression
-Mov10_kd_3,778339/merge/Mov10_kd_3.fastq.gz,,unstranded,MOV10_knockdown
-Mov10_kd_2,778339/merge/Mov10_kd_2.fastq.gz,,unstranded,MOV10_knockdown
+control_3,778339/raw_reads/Control_3.fastq.gz,,unstranded,control
+control_2,778339/raw_reads/Control_2.fastq.gz,,unstranded,control
+control_1,778339/raw_reads/Control_1.fastq.gz,,unstranded,control
+vampirium_3,778339/raw_reads/Vampirium_3.fastq.gz,,unstranded,vampirum
+vampirium_2,778339/raw_reads/Vampirium_2.fastq.gz,,unstranded,vampirium
+vampirium_1,778339/raw_reads/Vampirium_1.fastq.gz,,unstranded,vampirium
+garlicum_3,778339/raw_reads/Garlicum_3.fastq.gz,,unstranded,garlicum
+garlicum_2,778339/raw_reads/Garlicum_2.fastq.gz,,unstranded,garlicum

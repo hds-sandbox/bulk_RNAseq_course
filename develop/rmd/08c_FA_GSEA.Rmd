@@ -150,7 +150,7 @@ head(gseaKEGG_results)
 ## Write GSEA results to file
 View(gseaKEGG_results)
 
-write.csv(gseaKEGG_results, "../Results/gseaOE_kegg.csv", quote=F)
+write.csv(gseaKEGG_results, "../Results/gseaCont-Vamp_kegg.csv", quote=F)
 ```
 
 !!! warning
@@ -165,7 +165,7 @@ gseaplot(gseaKEGG, geneSetID = gseaKEGG_results$ID[1], title = gseaKEGG_results$
 ```
 
 ```{r, echo = FALSE, eval = TRUE} 
-knitr::include_graphics("./img/08c_FA_GSEA/gsea_kegg_hsa03040.png")
+knitr::include_graphics(paste0("./img/08c_FA_GSEA/gsea_kegg_",gseaKEGG_results$ID[1],".png"))
 ```
 
 In this plot, the lines in plot represent the genes in the gene set, and where they occur among the log2 fold changes. The largest positive log2 fold changes are on the left-hand side of the plot, while the largest negative log2 fold changes are on the right. The top plot shows the magnitude of the log2 fold changes for each gene, while the bottom plot shows the running sum, with the enrichment score peaking at the red dotted line (which is among the negative log2 fold changes).
@@ -182,7 +182,7 @@ pathview(gene.data = foldchanges,
 ```
 
 ```{r, echo = FALSE, eval = TRUE} 
-knitr::include_graphics("./img/08c_FA_GSEA/hsa03040.pathview.png")
+knitr::include_graphics(paste0("./img/08c_FA_GSEA/",gseaKEGG_results$ID[1],".pathview.png"))
 ```
 
 !!! tip "Printing out Pathview images for all significant pathways"
@@ -241,7 +241,7 @@ There are other gene sets available for GSEA analysis in clusterProfiler (Diseas
     
 !!! question "**Exercise 2**"
 
-    Run an GSE on the results of the DEA for knockdown vs control samples. Remember to use the annotated results!
+    Run an GSE on the results of the DEA for Garlicum vs Vampirium samples. Remember to use the annotated results!
 
 ??? question "**Solution to Exercise 2**"
     
@@ -249,32 +249,32 @@ There are other gene sets available for GSEA analysis in clusterProfiler (Diseas
     
     ```{r}
     # Remove any NA values (reduces the data by quite a bit) and duplicates
-    res_entrez_KD <- dplyr::filter(res_ids_KD, entrez != "NA" & duplicated(entrez)==F)
+    res_entrez_Gar <- dplyr::filter(res_ids_Gar, entrez != "NA" & duplicated(entrez)==F)
     ```
     
     Finally, extract and name the fold changes:
     
     ```{r}
     # Extract the foldchanges
-    foldchanges_KD <- res_entrez_KD$log2FoldChange
+    foldchanges_Gar <- res_entrez_Gar$log2FoldChange
     
     # Name each fold change with the corresponding Entrez ID
-    names(foldchanges_KD) <- res_entrez_KD$entrez
+    names(foldchanges_Gar) <- res_entrez_Gar$entrez
     ```
     
     Next we need to order the fold changes in decreasing order. To do this we'll use the `sort()` function, which takes a vector as input. This is in contrast to Tidyverse's `arrange()`, which requires a data frame.
     
     ```{r}
     ## Sort fold changes in decreasing order
-    foldchanges_KD <- sort(foldchanges_KD, decreasing = TRUE)
+    foldchanges_Gar <- sort(foldchanges_Gar, decreasing = TRUE)
     
-    head(foldchanges_KD)
+    head(foldchanges_Gar)
     ```
 
     Ne we can perform GSEA. This is an example for GO term analysis
     
     ```{r}
-    gseaGO <- gseGO(geneList = foldchanges, 
+    gseaGO <- gseGO(geneList = foldchanges_Gar, 
                   OrgDb = org.Hs.eg.db, 
                   ont = 'BP', 
                   minGSSize = 20, 

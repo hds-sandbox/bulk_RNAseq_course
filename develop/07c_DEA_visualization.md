@@ -1,22 +1,7 @@
 ---
-title: "Log Fold Shrinkage and DEA visualizations"
+title: Log Fold Shrinkage and DEA visualizations
 summary: In this lesson we explain how visualize DEA results using log fold shrinkage
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./develop/')})
-output:
-  github_document: 
-     preserve_yaml: TRUE
-     html_preview: FALSE
-     pandoc_args: [
-      "--wrap", "none" # this is needed to not break admonitions
-    ]
 ---
-
-Log Fold Shrinkage and DEA visualizations
-================
 
 # DEA Visualization and Log Fold Shrinkage
 
@@ -38,9 +23,9 @@ In the previous lessons, we learned about how to generate a table with Different
 
 ``` r
 # DO NOT RUN
-res_tableOE <- results(dds, contrast=contrast_oe, alpha = 0.05)
+res_tableCont <- results(dds, contrast=contrast_cont, alpha = 0.05)
 
-head(res_tableOE)
+head(res_tableCont)
 ```
 
 The problem with these fold change estimates is that they are not entirely accurate as they do not account for the large dispersion we observe with low read counts. To address this, the **log2 fold changes need to be adjusted**.
@@ -58,16 +43,16 @@ LFC shrinkage uses **information from all genes** to generate more accurate esti
 
 In the figure above, we have an example using two genes: green gene and purple gene. For each gene the expression values are plotted for each sample in the two different mouse strains (C57BL/6J and DBA/2J). Both genes have the same mean values for the two sample groups, but the green gene has little within-group variation while the purple gene has high levels of variation. For the green gene with low within-group variation, the **unshrunken LFC estimate** (vertex of the green **solid line**) is very similar to the shrunken LFC estimate (vertex of the green dotted line). However, LFC estimates for the purple gene are quite different due to the high dispersion. So even though two genes can have similar normalized count values, they can have differing degrees of LFC shrinkage. Notice the **LFC estimates are shrunken toward the prior (black solid line)**.
 
-**Shrinking the log2 fold changes will not change the total number of genes that are identified as significantly differentially expressed.** The shrinkage of fold change is to help with downstream assessment of results. For example, if you wanted to subset your significant genes based on fold change for further evaluation, you may want to use shruken values. Additionally, for functional analysis tools such as GSEA which require fold change values as input you would want to provide shrunken values.
+**Shrinking the log2 fold changes will not change the total number of genes that are identified as significantly differentially expressed.** The shrinkage of fold change is to help with downstream assessment of results. For example, if you wanted to subset your significant genes based on fold change for further evaluation, you may want to use shrunken values. Additionally, for functional analysis tools such as GSEA which require fold change values as input you would want to provide shrunken values.
 
 To generate the shrunken log2 fold change estimates, you have to run an additional step on your results object (that we will create below) with the function `lfcShrink()`.
 
 ``` r
 # Save the unshrunken results to compare
-res_tableOE_unshrunken <- res_tableOE
+res_tableCont_unshrunken <- res_tableCont
 
 # Apply fold change shrinkage
-res_tableOE <- lfcShrink(dds, coef="condition_MOV10_overexpression_vs_control", type="apeglm")
+res_tableCont <- lfcShrink(dds, coef="condition_control_vs_vampirium", type="apeglm")
 ```
 
 Depending on the version of DESeq2 you are using the default **method for shrinkage estimation** will differ. The defaults can be changed by adding the argument `type` in the `lfcShrink()` function as we have above. For most recent versions of DESeq2, `type="normal"` is the default and was the only method in earlier versions. It has been shown that in most situations there are alternative methods that have [less bias than the 'normal' method](https://bioconductor.org/packages/devel/bioc/vignettes/apeglm/inst/doc/apeglm.html), and therefore **we chose to use apeglm**.
@@ -92,7 +77,7 @@ We will be working with three different data objects we have already created in 
 
 - Metadata for our samples (a dataframe): `meta`
 - Normalized expression data for every gene in each of our samples (a matrix): `normalized_counts`
-- Tibble versions of the DESeq2 results we generated in the last lesson: `res_tableOE_tb` and `res_tableKD_tb`
+- Tibble versions of the DESeq2 results we generated in the last lesson: `res_tableCont_tb` and `res_tableGar_tb`
 
 First, we already have a metadata tibble.
 
@@ -112,20 +97,20 @@ normalized_counts <- counts(dds, normalized=T) %>%
 
 ### MA plot
 
-A plot that can be useful to exploring our results is the MA plot. The MA plot shows the **mean of the normalized counts versus the log2 fold changes for all genes tested**. The genes that are significantly DE are colored to be easily identified (adjusted p-value < 0.01 by default). This is also a great way to illustrate the effect of LFC shrinkage. The DESeq2 package offers a simple function to generate an MA plot.
+A plot that can be useful to exploring our results is the MA plot. The MA plot shows the **mean of the normalized counts versus the log2 fold changes for all genes tested**. The genes that are significantly DE are colored to be easily identified (adjusted p-value \< 0.01 by default). This is also a great way to illustrate the effect of LFC shrinkage. The DESeq2 package offers a simple function to generate an MA plot.
 
 **Let's start with the unshrunken results:**
 
 ``` r
 # MA plot using unshrunken fold changes
-plotMA(res_tableOE_unshrunken, ylim=c(-2,2))
+plotMA(res_tableCont_unshrunken, ylim=c(-2,2))
 ```
 
 **And now the shrunken results:**
 
 ``` r
 # MA plot using shrunken fold changes
-plotMA(res_tableOE, ylim=c(-2,2))
+plotMA(res_tableCont, ylim=c(-2,2))
 ```
 
 On the left you have the unshrunken fold change values plotted and you can see the abundance of scatter for the lowly expressed genes. That is, many of these genes exhibit very high fold changes. After shrinkage, we see the fold changes are much smaller estimates.
@@ -148,11 +133,11 @@ One way to visualize results would be to simply plot the expression data for a h
 
 **Using DESeq2 `plotCounts()` to plot expression of a single gene**
 
-To pick out a specific gene of interest to plot, for example MOV10 (ID ENSG00000155363), we can use the `plotCounts()` from DESeq2. `plotCounts()` requires that the gene specified matches the original input to DESeq2.
+To pick out a specific gene of interest to plot, for example TSPAN7 (ID ENSG00000156298), we can use the `plotCounts()` from DESeq2. `plotCounts()` requires that the gene specified matches the original input to DESeq2.
 
 ``` r
 # Plot expression for single gene
-plotCounts(dds, gene="ENSG00000155363", intgroup="condition") 
+plotCounts(dds, gene="ENSG00000156298", intgroup="condition") 
 ```
 
 <img src="./img/07c_DEA_visualization/topgen_plot.png" width="754" style="display: block; margin: auto;" />
@@ -167,7 +152,7 @@ If you wish to change the appearance of this plot, we can save the output of `pl
 
 ``` r
 # Save plotcounts to a data frame object
-d <- plotCounts(dds, gene="ENSG00000155363", intgroup="condition", returnData=TRUE)
+d <- plotCounts(dds, gene="ENSG00000156298", intgroup="condition", returnData=TRUE)
 
 # What is the data output of plotCounts()?
 d %>% head()
@@ -179,7 +164,7 @@ ggplot(d, aes(x = condition, y = count, color = condition)) +
 geom_point(position=position_jitter(w = 0.1,h = 0)) +
 geom_text_repel(aes(label = rownames(d))) + 
 theme_bw() +
-ggtitle("MOV10") +
+ggtitle("TSPAN7") +
 theme(plot.title = element_text(hjust = 0.5))
 ```
 
@@ -202,7 +187,7 @@ lookup <- function(gene_name, tx2gene, dds){
   return(hits)
 }
 
-lookup(gene_name = "MOV10", tx2gene = tx2gene, dds = dds)
+lookup(gene_name = "TSPAN7", tx2gene = tx2gene, dds = dds)
 ```
 
 On the other hand, we can add the information from our tx2gene table, since it has the gene name!
@@ -216,10 +201,10 @@ However, we see that the table has many duplicates per gene, due to the fact tha
 We remove the transcript ID column and duplicated rows from the tx2gene table using tidyverse syntax. We merge the tables using the `merge` function, which has many options for merging. Since our tables have different column names for the gene ID variable, we provide them with the `by.x` and `by.y` arguments. We also want to keep all of our results, so we use the argument `all.x` as well.
 
 ``` r
-res_tableOE_tb <- merge(res_tableOE_tb, tx2gene %>% select(-transcript_ID) %>% distinct(),
+res_tableCont_tb <- merge(res_tableCont_tb, tx2gene %>% select(-transcript_ID) %>% distinct(),
                         by.x = "gene", by.y = "gene_ID", all.x = T)
 
-res_tableOE_tb
+res_tableCont_tb
 ```
 
 ### Heatmap
@@ -227,17 +212,17 @@ res_tableOE_tb
 In addition to plotting subsets, we could also extract the normalized values of *all* the significant genes and plot a heatmap of their expression using `pheatmap()`.
 
 ``` r
-# Extract normalized expression for significant genes from the OE and control samples
+# Extract normalized expression for significant genes from the vampirium and control samples
 # also get gene name
-norm_OEsig <- normalized_counts %>% select(gene, starts_with("Control"), starts_with("Mov10_oe")) 
-  dplyr::filter(gene %in% sigOE$gene)  
+norm_Contsig <- normalized_counts %>% select(gene, starts_with("control"), starts_with("vampirium")) 
+  dplyr::filter(gene %in% sigCont$gene)  
 ```
 
 Now let's draw the heatmap using `pheatmap`:
 
 ``` r
 # Run pheatmap using the metadata data frame for the annotation
-pheatmap(norm_OEsig %>% column_to_rownames("gene"), 
+pheatmap(norm_Contsig %>% column_to_rownames("gene"), 
          cluster_rows = T, 
          show_rownames = F,
          annotation = meta %>% column_to_rownames(var = "sample") %>% select("condition"), 
@@ -267,17 +252,17 @@ To generate a volcano plot, we first need to have a column in our results data i
 ``` r
 ## Obtain logical vector where TRUE values denote padj values < 0.05 and fold change > 1.5 in either direction
 
-res_tableOE_tb <- res_tableOE_tb %>% 
-mutate(threshold_OE = padj < 0.05 & abs(log2FoldChange) >= 0.58)
+res_tableCont_tb <- res_tableCont_tb %>% 
+mutate(threshold_Cont = padj < 0.05 & abs(log2FoldChange) >= 0.58)
 ```
 
 Now we can start plotting. The `geom_point` object is most applicable, as this is essentially a scatter plot:
 
 ``` r
 ## Volcano plot
-ggplot(res_tableOE_tb) + 
-  geom_point(aes(x = log2FoldChange, y = -log10(padj), colour = threshold_OE)) +
-  ggtitle("Mov10 overexpression") +
+ggplot(res_tableCont_tb) + 
+  geom_point(aes(x = log2FoldChange, y = -log10(padj), colour = threshold_Cont)) +
+  ggtitle("Control vs Vampirium") +
   xlab("log2 fold change") + 
   ylab("-log10 adjusted p-value") +
   #scale_y_continuous(limits = c(0,50)) +
@@ -292,28 +277,28 @@ ggplot(res_tableOE_tb) +
 
 This is a great way to get an overall picture of what is going on, but what if we also wanted to know where the top 10 genes (lowest padj) in our DE list are located on this plot? We could label those dots with the gene name on the Volcano plot using `geom_text_repel()`.
 
-First, we need to order the res_tableOE tibble by `padj`, and add an additional column to it, to include on those gene names we want to use to label the plot.
+First, we need to order the res_tableCont tibble by `padj`, and add an additional column to it, to include on those gene names we want to use to label the plot.
 
 ``` r
 ## Create an empty column to indicate which genes to label
-res_tableOE_tb <- res_tableOE_tb %>% mutate(genelabels = "")
+res_tableCont_tb <- res_tableCont_tb %>% mutate(genelabels = "")
 
 ## Sort by padj values 
-res_tableOE_tb <- res_tableOE_tb %>% arrange(padj)
+res_tableCont_tb <- res_tableCont_tb %>% arrange(padj)
 
 ## Populate the gene labels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes
-res_tableOE_tb$genelabels[1:10] <- as.character(res_tableOE_tb$gene_symbol[1:10])
+res_tableCont_tb$genelabels[1:10] <- as.character(res_tableCont_tb$gene_symbol[1:10])
 
-head(res_tableOE_tb)
+head(res_tableCont_tb)
 ```
 
 Next, we plot it as before with an additional layer for `geom_text_repel()` wherein we can specify the column of gene labels we just created.
 
 ``` r
-ggplot(res_tableOE_tb, aes(x = log2FoldChange, y = -log10(padj))) +
-  geom_point(aes(colour = threshold_OE)) +
+ggplot(res_tableCont_tb, aes(x = log2FoldChange, y = -log10(padj))) +
+  geom_point(aes(colour = threshold_Cont)) +
   geom_text_repel(aes(label = genelabels)) +
-  ggtitle("Mov10 overexpression") +
+  ggtitle("Control vs Vampirium") +
   xlab("log2 fold change") + 
   ylab("-log10 adjusted p-value") +
   theme(legend.position = "none",
@@ -340,36 +325,36 @@ DEGreport::degPlotWide(dds = dds, genes = row.names(res)[1:5], group = "conditio
 
 !!! question "**Exercise 2**"
 
-    Create visualizations of the results from your DEA between Mov10 knockdown samples and control samples.
+    Create visualizations of the results from your DEA between Garlicum samples and Vampirium samples.
 
 ??? question "**Solution to Exercise 2**"
 
-    Our KD results are saved in this table. However, we will want to use the LFC shrunken values
+    Our Garlicum results are saved in this table. However, we will want to use the LFC shrunken values
 
 
     ```r
     # Normal results
-    res_tableKD_unshrunken <- res_tableKD
+    res_tableGar_unshrunken <- res_tableGar
 
     # Shrunken values
-    res_tableKD <- lfcShrink(dds, coef="condition_MOV10_knockdown_vs_control", type="apeglm")
+    res_tableGar <- lfcShrink(dds, coef="condition_garlicum_vs_vampirium", type="apeglm")
     ```
 
     We can plot a MAplot:
 
 
     ```r
-    plotMA(res_tableKD, ylim=c(-2,2))
+    plotMA(res_tableGar, ylim=c(-2,2))
     ```
 
     And continue with a volcano plot and a heatmap. But first, let's merge our results with with our tx2gene table:
 
 
     ```r
-    res_tableKD_tb <- merge(res_tableKD_tb, tx2gene %>% select(-transcript_ID) %>% distinct(),
+    res_tableGar_tb <- merge(res_tableGar_tb, tx2gene %>% select(-transcript_ID) %>% distinct(),
                             by.x = "gene", by.y = "gene_ID", all.x = T)
 
-    res_tableKD_tb
+    res_tableGar_tb
     ```
 
     Volcano plot with top 10 genes:
@@ -377,23 +362,23 @@ DEGreport::degPlotWide(dds = dds, genes = row.names(res)[1:5], group = "conditio
 
     ```r
     ## Create an empty column to indicate which genes to label
-    res_tableKD_tb <- res_tableKD_tb %>% mutate(genelabels = "")
+    res_tableGar_tb <- res_tableGar_tb %>% mutate(genelabels = "")
 
     ## Sort by padj values 
-    res_tableKD_tb <- res_tableKD_tb %>% arrange(padj)
+    res_tableGar_tb <- res_tableGar_tb %>% arrange(padj)
 
     ## Populate the gene labels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes
-    res_tableKD_tb$genelabels[1:10] <- as.character(res_tableKD_tb$gene_symbol[1:10])
+    res_tableGar_tb$genelabels[1:10] <- as.character(res_tableGar_tb$gene_symbol[1:10])
 
-    head(res_tableKD_tb)
+    head(res_tableGar_tb)
     ```
 
 
     ```r
-    ggplot(res_tableKD_tb, aes(x = log2FoldChange, y = -log10(padj))) +
-      geom_point(aes(colour = threshold_OE)) +
+    ggplot(res_tableGar_tb, aes(x = log2FoldChange, y = -log10(padj))) +
+      geom_point(aes(colour = threshold_Cont)) +
       geom_text_repel(aes(label = genelabels)) +
-      ggtitle("Mov10 overexpression") +
+      ggtitle("Garlicum vs Vampirium") +
       xlab("log2 fold change") + 
       ylab("-log10 adjusted p-value") +
       theme(legend.position = "none",
@@ -401,14 +386,14 @@ DEGreport::degPlotWide(dds = dds, genes = row.names(res)[1:5], group = "conditio
             axis.title = element_text(size = rel(1.25))) 
     ```
 
-    Heatmap of DE genes for KD vs control:
+    Heatmap of DE genes for Vampirium vs Garlicum:
 
 
     ```r
-    # Extract normalized expression for significant genes from the KD and control samples
+    # Extract normalized expression for significant genes from the vampirium and garlicum samples
     # also get gene name
-    norm_KDsig <- normalized_counts %>% select(gene, starts_with("Control"), starts_with("Mov10_kd")) 
-      dplyr::filter(gene %in% sigKD$gene)  
+    norm_Garsig <- normalized_counts %>% select(gene, starts_with("garlicum"), starts_with("vampirium")) 
+      dplyr::filter(gene %in% sigGar$gene)  
     ```
 
     Now let's draw the heatmap using `pheatmap`:
@@ -416,7 +401,7 @@ DEGreport::degPlotWide(dds = dds, genes = row.names(res)[1:5], group = "conditio
 
     ```r
     # Run pheatmap using the metadata data frame for the annotation
-    pheatmap(norm_KDsig %>% column_to_rownames("gene"), 
+    pheatmap(norm_Garsig %>% column_to_rownames("gene"), 
              cluster_rows = T, 
              show_rownames = F,
              annotation = meta %>% column_to_rownames(var = "sample") %>% select("condition"), 

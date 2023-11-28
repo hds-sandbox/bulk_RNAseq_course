@@ -98,7 +98,7 @@ For the sake of reproducibility, we will be using the backup results from our pr
 
 ```{r}
 # Tabulated separated files can be opened using the read_table() function.
-read_table("/work/Intro_to_bulkRNAseq/Data/salmon/Control_1/quant.sf", ) %>% head()
+read_table("/work/Intro_to_bulkRNAseq/Data/salmon/control_1/quant.sf", ) %>% head()
 ```
 
 For each transcript that was assayed in the reference, we have:
@@ -148,7 +148,7 @@ tx2gene %>% head()
 
 **`tx2gene`** is a three-column **data frame linking transcript ID (column 1) to gene ID (column 2)** to gene symbol (column 3). We will take the first two columns as input to `tximport`. The **column names are not relevant, but the column order is (i.e transcript ID must be first).**
 
-Now we are ready to **run `tximport`**. The `tximport()` function imports transcript-level estimates from various external software (e.g. Salmon, Kallisto) and summarizes to the gene-level (default) or outputs transcript-level matrices. There are optional arguments to use the abundance estimates as they appear in the `quant.sf` files or to calculate alternative values.
+Now we are ready to **run `tximport`**. The `tximport()` function imports transcript-level estimates from various external software (e.g. Salmon, Kallisto) and summarizes to the gene-level (default) or outputs transcript-level matrices. There are optional arguments to use the abundance estimates as they appear in the `quant.sf` files or to calculate alternative values.
 
 For our analysis we **need non-normalized or "raw" count estimates at the gene-level for performing DESeq2 analysis**.
 

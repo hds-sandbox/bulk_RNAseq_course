@@ -67,7 +67,7 @@ For the sake of reproducibility, we will be using the backup results from our pr
 
 ``` r
 # Tabulated separated files can be opened using the read_table() function.
-read_table("/work/Intro_to_bulkRNAseq/Data/salmon/Control_1/quant.sf", ) %>% head()
+read_table("/work/Intro_to_bulkRNAseq/Data/salmon/control_1/quant.sf", ) %>% head()
 ```
 
 For each transcript that was assayed in the reference, we have:

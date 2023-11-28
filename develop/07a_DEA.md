@@ -1,22 +1,7 @@
 ---
-title: "Gene-level differential expression analysis with DESeq2"
+title: Gene-level differential expression analysis with DESeq2
 summary: In this lesson we explain how DEA works in DESeq
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./develop/')})
-output:
-  github_document: 
-     preserve_yaml: TRUE
-     html_preview: FALSE
-     pandoc_args: [
-      "--wrap", "none" # this is needed to not break admonitions
-    ]
 ---
-
-Gene-level differential expression analysis with DESeq2
-================
 
 # Differential expression analysis with DESeq2
 
@@ -75,7 +60,7 @@ DESeq2 will automatically estimate the size factors when performing the differen
 
 To normalize the count data, DESeq2 calculates size factors for each sample using the *median of ratios method* discussed previously in the [count normalization](05c_count_normalization.md) lesson.
 
-### MOV10 DE analysis: examining the size factors
+### Vampirium DE analysis: examining the size factors
 
 Let's take a quick look at size factor values we have for each sample:
 
@@ -84,9 +69,9 @@ Let's take a quick look at size factor values we have for each sample:
 sizeFactors(dds)
 ```
 
-    Irrel_kd_1 Irrel_kd_2 Irrel_kd_3 Mov10_kd_2 Mov10_kd_3 Mov10_oe_1 Mov10_oe_2 
+    control_1 control_2 control_3 garlicum_2 garlicum_3 vampirium_1 vampirium_2 
      1.1149694  0.9606733  0.7492240  1.5633640  0.9359695  1.2262649  1.1405026 
-    Mov10_oe_3 
+    vampirium_3 
      0.6542030 
 
 These numbers should be identical to those we generated initially when we had run the function `estimateSizeFactors(dds)`. Take a look at the total number of reads for each sample:
@@ -189,9 +174,9 @@ The next plot shows the dispersion values initially decreasing, then increasing 
 
 <img src="./img/07a_DEA/bad_dispersion2.png" width="1280" style="display: block; margin: auto;" />
 
-## MOV10 DE analysis: exploring the dispersion estimates and assessing model fit
+## Vampirium DE analysis: exploring the dispersion estimates and assessing model fit
 
-Let's take a look at the dispersion estimates for our MOV10 data:
+Let's take a look at the dispersion estimates for our Vampirium data:
 
 ``` r
 ## Plot dispersion estimates

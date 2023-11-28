@@ -37,7 +37,7 @@ Then, `Import file from UCloud`:
 
 And select the `jobParameters_preprocessing.json` in:
 
-`sandbox_bulkRNASeq` -\> `sequencing_data` -\> `Scripts` -\> `jobParameters_preprocessing.json`
+`sandbox_bulkRNASeq` -\> `sequencing_data` -\> `Scripts` -\> `ucloud_preprocessing_setup` -\> `jobParameters_preprocessing.json`
 
 !!! warning
     **Make sure that the hard-drive icon says `sequencing_data`!!**
@@ -89,7 +89,7 @@ The `tmux` command will start a virtual command line session that is **recoverab
 We can finally start the run! Type in the command:
 
 ```bash
-bash 778339/Scripts/preprocessing.sh
+bash 778339/Scripts/preprocessing_salmon.sh
 ```
 
 ![](./img/04c_preprocessing_setup/startRun.png)
@@ -98,15 +98,30 @@ This will run a small bash script that will start the nf-core pipeline. It is us
 
 ![](./img/04c_preprocessing_setup/nf-core_start.png)
 
-Inside the `preprocessing.sh` script you will find:
+Inside the `preprocessing_salmon.sh` script you will find:
 
 ```bash
-cp /work/778339/samplesheet.csv /work/samplesheet.csv
+cp /work/778339/raw_reads/samplesheet.csv /work/samplesheet.csv
+cp /work/778339/Scripts/ucloud_preprocessing_setup/nf-params_salmon.json /work/nf-params_salmon.json
 cd /work
-nextflow run nf-core/rnaseq -r 3.11.2 -params-file /work/778339/Scripts/nf-params.json -profile conda --max_cpus 8 --max_memory 40GB
+
+nextflow run nf-core/rnaseq -r 3.11.2 -params-file /work/nf-params_salmon.json -profile conda --max_cpus 8 --max_memory 40GB
+
+# Search for the last file created by the pipeline, the multiqc_report, recursively
+file_path=$(find /work/preprocessing_results_salmon -name "multiqc_report.html" 2>/dev/null)
+
+# Check if the file exists
+if [[ -n "$file_path" ]]; then
+    # Clean run if the pipeline is completed
+    rm -r /work/work
+    mv /work/nf-params_salmon.json /work/preprocessing_results_salmon/nf-params_salmon.json
+
+fi
 ```
 
 You see that we have copied the `samplesheet.csv` to the working directory `/work`. This is because the paths inside the `samplesheet.csv` for the fastq files of our samples are relative to the `/work` folder! **It is very important that the fastq paths inside this file matches properly to the paths inside your job!**
+
+We have also copied the nf-params.json file with all the options used in the pipeline, so that you can find and replicate easily this run in the future. Finally, we remove the nextflow `work` directory if the pipeline completes successfully. this will save quite a bit if storage in the future, since the nextflow `work` directory will accumulate over runs.
 
 Then we are making sure that we are inside the correct folder before starting the job using `cd /work`. We will see in the section below the arguments we used to run the pipeline:
 
@@ -125,7 +140,7 @@ While usually one would run an nf-core pipeline using `nextflow run nf-core/rnas
 Second, we have:
 
 ```
--params-file /work/778339/Scripts/nf-params.json
+-params-file /work/778339/nf-params.json
 ```
 
 The `-params-file` argument is another nextflow core argument that allows us to give the nf-core rnaseq pipeline arguments in a [json file](https://www.json.org/json-en.html), instead of creating an excessively long command. Writing the parameters this way allows for better reproducibility, since you can reuse the file in the future. Inside this file, we find the following arguments:
@@ -133,9 +148,9 @@ The `-params-file` argument is another nextflow core argument that allows us to 
 ```json
 {
     "input": "/work/samplesheet.csv",
-    "outdir": "/work/preprocessing/results_salmon",
-    "genome": "GRCh37",
-    "aligner": "star_salmon",
+    "outdir": "/work/preprocessing_results_salmon",
+    "fasta": "/work/778339/genomic_resources/homo_sapiens/GRCh38/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz",
+    "gtf": "/work/778339/genomic_resources/homo_sapiens/GRCh38/Homo_sapiens.GRCh38.109.MODIFIED.gtf.gz",
     "pseudo_aligner": "salmon",
     "skip_stringtie": true,
     "skip_rseqc": true,
@@ -144,6 +159,8 @@ The `-params-file` argument is another nextflow core argument that allows us to 
     "skip_biotype_qc": true,
     "skip_bigwig": true,
     "skip_deseq2_qc": true,
+    "skip_bbsplit": true,
+    "skip_alignment": true,
     "extra_salmon_quant_args": "--gcBias"
 }
 ```
@@ -160,9 +177,13 @@ As you can see, we have also provided an extra column called `condition` specify
 
 The `--outdir` parameter indicates where the results of the pipeline will be saved.
 
-**`--genome` parameter**
+**`--fasta` parameter**
 
-The `--genome` parameter indicates that we will be using the version "GRCh37" of the human genome (since we have human samples). We are using the previous version of the genome because there is a [slight issue](https://nf-co.re/usage/reference_genomes) with the version "GRCh38" used in the [AWS iGenomes](https://nf-co.re/usage/reference_genomes) repository.
+Path to FASTA reference genome file.
+
+**`--gtf` parameter**
+
+Path to GTF annotation file that contains genomic region information.
 
 **`--pseudo_aligner` argument**
 
@@ -224,7 +245,7 @@ After finishing the job, everything that the pipeline has created will be saved 
 
 ![](./img/04c_preprocessing_setup/savedWork1.png)
 
-1. Go to `Jobs` -> `nf-core: rnaseq` -> `job_name` -> `results_salmon`
+1. Go to `Jobs` -> `nf-core: rnaseq` -> `job_name` -> `preprocessing_results_salmon`
 
 ![](./img/04c_preprocessing_setup/savedWork2.png)
 

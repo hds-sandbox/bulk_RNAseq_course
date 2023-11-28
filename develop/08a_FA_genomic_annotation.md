@@ -1,22 +1,7 @@
 ---
 title: Genomic annotations for functional analyses
 summary: In this lesson we explain how create annotate your genes with metadata from databases
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./develop/')})
-output:
-  github_document: 
-     preserve_yaml: TRUE
-     html_preview: FALSE
-     pandoc_args: [
-      "--wrap", "none" # this is needed to not break admonitions
-    ]
 ---
-
-Genomic annotations for functional analyses
-================
 
 # Genomic annotations
 

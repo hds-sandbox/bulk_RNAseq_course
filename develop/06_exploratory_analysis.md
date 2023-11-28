@@ -1,22 +1,7 @@
 ---
 title: Exploratory analysis of bulk RNAseq
 summary: In this lesson we explain how to explore the relationships between samples using PCA and heatmaps
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./develop/')})
-output:
-  github_document: 
-     preserve_yaml: TRUE
-     html_preview: FALSE
-     pandoc_args: [
-      "--wrap", "none" # this is needed to not break admonitions
-    ]
 ---
-
-Exploratory analysis of bulk RNAseq
-================
 
 # Exploratory Analysis and Quality Control
 
@@ -117,11 +102,11 @@ Hierarchical clustering is another method for identifying correlation patterns i
 
     In the example above, we see a clustering of wild-type (Wt) and knock-down (KD) cell line samples and we **would be quite concerned** that the 'Wt_3' and 'KD_3' samples are not clustering with the other replicates. Furthermore, since the majority of genes are not differentially expressed, we observe that the samples generally have high correlations with each other (values higher than 0.80). In this case, samples with correlations below 0.80 may indicate an outlier in your data and/or sample contamination. N.B It is important to stress that these is no universal cut-off for what is a good/bad correlation/distance score, it depends on the particular dataset.
 
-## Mov10 quality assessment and exploratory analysis using DESeq2
+## Vampirium quality assessment and exploratory analysis using DESeq2
 
-Now that we have a good understanding of the QC steps normally employed for RNA-seq, let's implement them for the Mov10 dataset we are going to be working with.
+Now that we have a good understanding of the QC steps normally employed for RNA-seq, let's implement them for the Vampirium dataset we are going to be working with.
 
-### Transform normalized counts for the MOV10 dataset
+### Transform normalized counts for the Vampirium dataset
 
 **To improve the distances/clustering for the PCA and hierarchical clustering visualization methods**, we need to moderate the variance across the mean by applying the rlog transformation to the normalized counts.
 
@@ -148,7 +133,7 @@ The `rlog()` function returns a `DESeqTransform` object, another type of DESeq-s
     vsd <- vst(dds, blind = TRUE)
     ```
 
-### Principal component analysis (PCA) for the MOV10 dataset
+### Principal component analysis (PCA) for the Vampirium dataset
 
 We are now ready for the QC steps, let's start with PCA!
 
@@ -249,7 +234,7 @@ ggplot(df) + geom_point(aes(x=PC3, y=PC4, color = condition)) +
   ylab(paste0("PC4: ",pca_var["PC4"], "% variance")) 
 ```
 
-### Hierarchical Clustering for the MOV10 dataset
+### Hierarchical Clustering for the Vampirium dataset
 
 There is no built-in function in DESeq2 for plotting the heatmap for displaying the pairwise correlation or distances between all the samples and the hierarchical clustering information; we will use the `pheatmap()` function from the `pheatmap` package. This function cannot use the `DESeqTransform` object as input, but requires a matrix or dataframe. So, the first thing to do is retrieve that information from the `rld` object using a function called `assay()`.
 

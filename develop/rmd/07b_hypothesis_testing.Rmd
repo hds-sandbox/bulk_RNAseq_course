@@ -111,9 +111,9 @@ An alternative to pair-wise comparisons is to **analyze all levels of a factor a
 
     The **Wald test** evaluates whether a gene's expression is up- or down-regulated in one group compared to another, while the LRT **identifies genes that are changing in expression in any combination across the different sample groups**. For example:
 
-    -   Gene expression is equal between Control and Overexpression, but is less in Knockdown
-    -   Gene expression of Overexpression is lower than Control and Control is lower than Knockdown
-    -   Gene expression of Knockdown is equal to Control, but less than Overexpression.
+    -   Gene expression is equal between Control and Vampirium, but is less in Garlicum
+    -   Gene expression of Vampirium is lower than Control and Control is lower than Garlicum
+    -   Gene expression of Garlicum is equal to Control, but less than Vampirium.
 
     Using LRT, we are evaluating the **null hypothesis that the full model fits just as well as the reduced model**. If we reject the null hypothesis, this suggests that there is a significant amount of variation explained by the full model (and our main factor of interest), therefore the gene is differentially expressed across the different levels. Generally, this test will result in a larger number of genes than the individual pair-wise comparisons. However, while the LRT is a test of significance for differences of any level of the factor, one should not expect it to be exactly equal to the union of sets of genes using Wald tests (although we do expect a majority overlap).
 
@@ -206,9 +206,9 @@ By default DESeq2 uses the Wald test to identify genes that are differentially e
 
 In our dataset, we have three sample groups so we can make three possible pairwise comparisons:
 
-1. Control vs. Mov10 overexpression
-2. Control vs. Mov10 knockdown
-3. Mov10 knockdown vs. Mov10 overexpression
+1. Control vs. Vampirium
+2. Garlicum vs. Vampirium
+3. Garlicum vs. Control
 
 **We are really only interested in 1 and 2 from above**. When we initially created our `dds` object we had provided `~ condition` as our design formula, indicating that `sampletype` is our main factor of interest.
 
@@ -243,15 +243,15 @@ results(dds, name = resultsNames(dds)[2])
 
 Alternatively, if you **only had two factor levels you could do nothing** and not worry about specifying contrasts (i.e. `results(dds)`). In this case, DESeq2 will choose what your base factor level based on alphabetical order of the levels.
 
-To start, we want to evaluate **expression changes between the MOV10 overexpression samples and the control samples**. As such we will use the first method for specifying contrasts and create a character vector:
+To start, we want to evaluate **expression changes between the control samples and the vampirium samples**. As such we will use the first method for specifying contrasts and create a character vector:
 
 !!! question "**Exercise 1**"
 
-    Define contrasts for MOV10 overexpression using one of the two methods above.
+    Define contrasts for Vampirium samples using one of the two methods above.
 
     ```{r}
     ## your code here
-    #contrast_oe <- 
+    #contrast_cont <- 
     ```
 
 ??? question "**Solution to Exercise 1**"
@@ -262,10 +262,10 @@ To start, we want to evaluate **expression changes between the MOV10 overexpress
     meta
     ```
 
-    Since we have only given the `condition` column in the design formula, the first element should be `condition`. The second element is the condition we are interested, `MOV10_overexpression` and our base level is `control`.
+    Since we have only given the `condition` column in the design formula, the first element should be `condition`. The second element is the condition we are interested, `control` and our base level is `vampirium`.
 
     ```{r}
-    contrast_oe <- c("condition", "MOV10_overexpression", "control")
+    contrast_cont <- c("condition", "control", "vampirium")
     ```
 
 !!! warning "Does it matter what I choose to be my base level?"
@@ -283,8 +283,8 @@ Now that we have our contrast created, we can use it as input to the `results()`
 You will see we have the option to provide a wide array of arguments and tweak things from the defaults as needed. As we go through the lesson we will keep coming back to the help documentation to discuss some arguments that are good to know about.
 
 ```{r}
-## Extract results for MOV10 overexpression vs control
-res_tableOE <- results(dds, contrast=contrast_oe, alpha = 0.05)
+## Extract results for Control vs Vampirium samples
+res_tableCont <- results(dds, contrast=contrast_cont, alpha = 0.05)
 ```
 
 !!! warning
@@ -295,14 +295,14 @@ The results table that is returned to us is **a `DESeqResults` object**, which i
 
 ```{r}
 # Check what type of object is returned
-class(res_tableOE)
+class(res_tableCont)
 ```
 
 Now let's take a look at **what information is stored** in the results:
 
 ```{r}
 # What is stored in results?
-res_tableOE %>% 
+res_tableCont %>% 
   data.frame() %>% 
   head()
 ```
@@ -311,7 +311,7 @@ We have six columns of information reported for each gene (row). We can use the 
 
 ```{r}
 # Get information on each column in results
-mcols(res_tableOE, use.names=T)
+mcols(res_tableCont, use.names=T)
 ```
 
 - `baseMean`: mean of normalized counts for all samples
@@ -343,7 +343,7 @@ If within a row, all samples have zero counts there is no expression information
 
 ```{r}
 # Show genes with zero expression
-res_tableOE %>%
+res_tableCont %>%
   as_tibble(rownames = "gene") %>% 
   dplyr::filter(baseMean==0) %>%
   head()
@@ -359,7 +359,7 @@ The `DESeq()` function calculates, for every gene and for every sample, a diagno
 
 ```{r}
 # Show genes that have an extreme outlier
-res_tableOE %>% 
+res_tableCont %>% 
   as_tibble(rownames = "gene") %>% 
   dplyr::filter(is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
   head()
@@ -385,7 +385,7 @@ At a user-specified value (`alpha = 0.05`), DESeq2 evaluates the change in the n
 
 ```{r}
 # Filter genes below the low mean threshold
-res_tableOE %>% 
+res_tableCont %>% 
   as_tibble(rownames = "gene") %>% 
   dplyr::filter(!is.na(pvalue) & is.na(padj) & baseMean > 0) %>%
   head()
@@ -408,7 +408,7 @@ Another important column in the results table, is the `log2FoldChange`. With lar
     The `results()` function has an option to add a fold change threshold using the `lfcThreshold` argument. This method is more statistically motivated, and is recommended when you want a more confident set of genes based on a certain fold-change. It actually performs a statistical test against the desired threshold, by performing a two-tailed test for log2 fold changes greater than the absolute value specified. The user can change the alternative hypothesis using `altHypothesis` and perform two one-tailed tests as well. **This is a more conservative approach, so expect to retrieve a much smaller set of genes!**
 
     ```{r, eval = FALSE}
-    res_tableOE_LFC1 <- results(dds, contrast=contrast_oe, alpha = 0.05, lfcThreshold = 1)
+    res_tableCont_LFC1 <- results(dds, contrast=contrast_cont, alpha = 0.05, lfcThreshold = 1)
     ```
 
 The fold changes reported in the results table are the coefficients calculated in the GLM mentioned in the [previous section](#generalized-linear-model).
@@ -419,7 +419,7 @@ To summarize the results table, a handy function in DESeq2 is `summary()`. Confu
 
 ```{r}
 ## Summarize results
-summary(res_tableOE, alpha = 0.05)
+summary(res_tableCont, alpha = 0.05)
 ```
 
 In addition to the number of genes up- and down-regulated at the default threshold, **the function also reports the number of genes that were tested (genes with non-zero total read count), and the number of genes not included in multiple test correction due to a low mean count**.
@@ -437,77 +437,77 @@ We can easily subset the results table to only include those that are significan
 
 ```{r}
 # Create a tibble of results and add gene IDs to new object
-res_tableOE_tb <- res_tableOE %>%
+res_tableCont_tb <- res_tableCont %>%
   as_tibble(rownames = "gene") %>%
   relocate(gene, .before = baseMean)
 
-head(res_tableOE_tb)
+head(res_tableCont_tb)
 ```
 
 Now we can subset that table to only keep the significant genes using our pre-defined thresholds:
 
 ```{r}
 # Subset the tibble to keep only significant genes
-sigOE <- res_tableOE_tb %>%
+sigCont <- res_tableCont_tb %>%
   dplyr::filter(padj < padj.cutoff)
 ```
 
 ```{r}
 # Take a quick look at this tibble
-sigOE
+sigCont
 ```
 
 Now that we have extracted the significant results, we are ready for visualization!
 
 !!! question "**Exercise 2**"
 
-    **MOV10 Differential Expression Analysis: Control versus Knockdown**
+    **Vampirium Differential Expression Analysis: Garlicum versus Vampirium**
 
-    Now that we have results for the overexpression results, do the same for the **Control vs. Knockdown samples**.
+    Now that we have results for the Control vs Vampirium results, do the same for the **Garlicum vs Vampirium samples**.
 
-    1.  Create a contrast vector called `contrast_kd`.
-    2.  Use contrast vector in the `results()` to extract a results table and store that to a variable called `res_tableKD`.
-    3.  Using a p-adjusted threshold of 0.05 (`padj.cutoff < 0.05`), subset `res_tableKD` to report the number of genes that are up- and down-regulated in Mov10_knockdown compared to control.
-    4.  How many genes are differentially expressed in the Knockdown compared to Control? How does this compare to the overexpression significant gene list (in terms of numbers)?
+    1.  Create a contrast vector called `contrast_gar`.
+    2.  Use contrast vector in the `results()` to extract a results table and store that to a variable called `res_tableGar`.
+    3.  Using a p-adjusted threshold of 0.05 (`padj.cutoff < 0.05`), subset `res_tableGar` to report the number of genes that are up- and down-regulated in garlicum compared to vampirium.
+    4.  How many genes are differentially expressed in the Garlicum compared to Vampirium? How does this compare to the Control vs Vampirium significant gene list (in terms of numbers)?
 
 ??? question "**Solutions to Exercise 2**"
 
-    1. Contrast for knockdown vs control
+    1. Contrast for Garlicum vs Vampirium
 
     ```{r}
-    contrast_kd <- c("condition", "MOV10_knockdown", "control")
+    contrast_gar <- c("condition", "garlicum", "vampirium")
     ```
 
     2. Extract results
 
     ```{r}
-    res_tableKD <- results(dds, contrast = contrast_kd)
+    res_tableGar <- results(dds, contrast = contrast_gar)
     ```
 
     3. Significant genes
 
     ```{r}
     padj.cutoff <- 0.05
-    sigKD <- res_tableKD %>% as_tibble(rownames = "gene") %>%
+    sigGar <- res_tableGar %>% as_tibble(rownames = "gene") %>%
       relocate(gene, .before = baseMean) %>% dplyr::filter(padj < padj.cutoff)
     ```
 
     ```{r}
-    sigKD
+    sigGar
     ```
 
-    4. Comparison against sigKD vs sigOE
+    4. Comparison against sigGar vs sigCont
 
     ```{r}
-    nrow(sigKD) #number of significant genes in knockdown
-    nrow(sigOE) #number of significant genes in overexpression
+    nrow(sigGar) #number of significant genes in Garlicum vs Vampirium
+    nrow(sigCont) #number of significant genes in Control vs Vampirium
     ```
 
     ```{r}
-    nrow(sigOE) - nrow(sigKD)
+    nrow(sigCont) - nrow(sigGar)
     ```
 
-    sigOE has almost 2000 more genes that are differentially expressed!
+    sigCont has almost 2000 more genes that are differentially expressed!
 
 ***
 
