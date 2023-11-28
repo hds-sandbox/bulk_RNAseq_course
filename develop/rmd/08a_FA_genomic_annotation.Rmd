@@ -351,10 +351,10 @@ BiocManager::install("annotables")
 library(annotables)
 
 # Access previous build of annotations
-grch37
+grch38
 ```
 
-We can see that the `grch37` object already contains all the information we want in a super easy way. Let's annotate the results of our shrunken DEA for Control vs Vampirium:
+We can see that the `grch38` object already contains all the information we want in a super easy way. Let's annotate the results of our shrunken DEA for Control vs Vampirium:
 
 ```{r, eval = FALSE}
 ## Re-run this code if you are unsure that you have the right table
@@ -367,7 +367,7 @@ res_tableCont_tb <- res_tableCont %>%
 
 ```{r}
 ## Return the IDs for the gene symbols in the DE results
-ids <- grch37 %>% dplyr::filter(ensgene %in% rownames(res_tableCont))
+ids <- grch38 %>% dplyr::filter(ensgene %in% rownames(res_tableCont))
 
 ## Merge the IDs with the results 
 res_ids <- inner_join(res_tableCont_tb, ids, by=c("gene"="ensgene"))
@@ -379,17 +379,17 @@ Our data is now ready to use for functional analysis! We have all the ids necess
 
 !!! question "**Exercise 1**"
 
-    - Create a new `res_ids` object using the `annotables` package with the human build grch38. **NOTE** call it `res_ids_grch38`!
-    - What are the differences between the `res_id_ahb`object and the `res_ids_grch38`?
+    - Create a new `res_ids` object using the `annotables` package with the human build grch37. **NOTE** call it `res_ids_grch37`!
+    - What are the differences between the `res_id_ahb`object and the `res_ids_grch37`?
     
 ??? question "**Solution to Exercise 1**"
 
     ```{r}
-    ids_grch38 <- grch38 %>% dplyr::filter(ensgene %in% rownames(res_tableCont))
+    ids_grch37 <- grch37 %>% dplyr::filter(ensgene %in% rownames(res_tableCont))
     
-    res_ids_grch38 <- inner_join(res_tableCont_tb, ids_grch38, by=c("gene"="ensgene"))
+    res_ids_grch37 <- inner_join(res_tableCont_tb, ids_grch38, by=c("gene"="ensgene"))
       
-    head(res_ids_grch38)
+    head(res_ids_grch37)
     ```
     
     Let's compare it to the `res_ids_ahb` object
@@ -402,7 +402,7 @@ Our data is now ready to use for functional analysis! We have all the ids necess
     
     ```{r}
     nrow(res_ids_ahb)
-    nrow(res_ids_grch38)
+    nrow(res_ids_grch37)
     nrow(res_tableCont_tb)
     ```
     
@@ -410,13 +410,13 @@ Our data is now ready to use for functional analysis! We have all the ids necess
 
 !!! question "**Exercise 2**"
 
-    Annotate the results of your DEA for Garlicum vs Vampirium
+    Annotate the results of your DEA for Garlicum vs Vampirium with grch38.
 
 ??? question "**Solution to Exercise 2**"
 
     ```{r}
     ## Return the IDs for the gene symbols in the DE results
-    ids <- grch37 %>% dplyr::filter(ensgene %in% rownames(res_tableGar))
+    ids <- grch38 %>% dplyr::filter(ensgene %in% rownames(res_tableGar))
     
     ## Merge the IDs with the results 
     res_ids_Gar <- inner_join(res_tableGar_tb, ids, by=c("gene"="ensgene"))

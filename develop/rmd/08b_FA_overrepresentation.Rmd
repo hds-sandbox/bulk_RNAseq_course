@@ -281,6 +281,7 @@ dotplot(ego, showCategory=50)
 ```
 
 ```{r, echo = FALSE, eval = TRUE} 
+# CHANGE THIS PLOT
 knitr::include_graphics("./img/08b_FA_overrepresentation/cont_vs_vamp_dotplot.png")
 ``` 
   
@@ -296,7 +297,8 @@ ego <- enrichplot::pairwise_termsim(ego)
 emapplot(ego, showCategory = 50)
 ```
 
-```{r, echo = FALSE, eval = TRUE} 
+```{r, echo = FALSE, eval = TRUE}
+##CHANGE THIS PLOT
 knitr::include_graphics("./img/08b_FA_overrepresentation/emapplot.png")
 ``` 
   
@@ -340,6 +342,7 @@ cnetplot(ego,
     ```
 
 ```{r, echo = FALSE, eval = TRUE} 
+## CHANGE THIS PLOT
 knitr::include_graphics("./img/08b_FA_overrepresentation/cnetplot1.png")
 ``` 
 
@@ -362,6 +365,7 @@ knitr::include_graphics("./img/08b_FA_overrepresentation/cnetplot1.png")
     ```
 
     ```{r, echo = FALSE, eval = TRUE} 
+    #CHANGE THIS PLOT
     knitr::include_graphics("./img/08b_FA_overrepresentation/cnetplot-2.png")
     ``` 
 
