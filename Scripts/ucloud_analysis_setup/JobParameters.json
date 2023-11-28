@@ -3,7 +3,7 @@
     "request": {
         "application": {
             "name": "transcriptomics",
-            "version": "2023.03"
+            "version": "2023.11"
         },
         "product": {
             "id": "u1-standard-4",
