@@ -57,7 +57,7 @@ dds <- estimateSizeFactors(dds)
 dds <- estimateDispersions(dds)
 ```
 
-Approximate time: 400 minutes
+Approximate time: 40 minutes
 
 ## Learning Objectives
 
@@ -175,7 +175,7 @@ Define contrasts for Control vs Vampirium samples using one of the two methods a
 **Your code here** 
 
 ```{r}
-contrast_cont <- 
+contrast_cont <-
 ```
 
 ***

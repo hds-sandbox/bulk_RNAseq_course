@@ -64,7 +64,7 @@ We have detailed the various steps in a differential expression analysis workflo
 Load data and metadata
 
 ```{r}
-data <- read_table("../Data/Mov10_counts_traditional.txt") 
+data <- read_table("../Data/Vampirium_counts_traditional.tsv") 
 
 meta <- read_csv("../Data/samplesheet.csv")
 ```
@@ -73,14 +73,14 @@ Check that the row names of the metadata equal the column names of the **raw cou
 
 ```{r}
 ### Check that sample names match in both files
-all(colnames(data)[-1] %in% meta$sample)
-all(colnames(data)[-1] == meta$sample)
+all(colnames(data)[-c(1,2)] %in% meta$sample)
+all(colnames(data)[-c(1,2)] == meta$sample)
 ```
 
 Reorder meta rows so it matches count data colnames
 
 ```{r}
-reorder <- match(colnames(data)[-1],meta$sample)
+reorder <- match(colnames(data)[-c(1,2)],meta$sample)
 reorder
 
 meta <- meta[reorder,] 
@@ -89,7 +89,7 @@ meta <- meta[reorder,]
 Create DESeq2Dataset object
 
 ```{r}
-dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
+dds <- DESeqDataSetFromMatrix(countData = data %>% select(-gene_name) %>% column_to_rownames("gene_id") %>% mutate_all(as.integer), 
                               colData = meta %>% column_to_rownames("sample"), 
                               design = ~ condition)
 ```
@@ -164,7 +164,7 @@ Extract the rlog matrix from the object
 
 ```{r}
 rld_mat <- assay(rld)
-rld_cor <- cor(rld_mat) # Pearson correlation betweeen samples
+rld_cor <- cor(rld_mat) # Pearson correlation between samples
 rld_dist <- as.matrix(dist(t(assay(rld)))) #distances are computed by rows, so we need to transponse the matrix
 ```
 
@@ -221,7 +221,7 @@ Formal LFC calculation
 
 ```{r}
 # Specify contrast for comparison of interest
-contrast <- c("condition", "MOV10_overexpression", "control")
+contrast <- c("condition", "control", "vampirium")
 
 # Output results of Wald test for contrast
 res <- results(dds, 
@@ -237,7 +237,7 @@ resultsNames(dds)
 
 # Shrink the log2 fold changes to be more accurate
 res <- lfcShrink(dds, 
-                 coef = "condition_MOV10_overexpression_vs_control", 
+                 coef = "condition_vampirium_vs_control", 
                  type = "apeglm")
 ```
 
@@ -269,13 +269,13 @@ lookup <- function(gene_name, tx2gene, dds){
   return(hits)
 }
 
-lookup(gene_name = "MOV10", tx2gene = tx2gene, dds = dds)
+lookup(gene_name = "TSPAN7", tx2gene = tx2gene, dds = dds)
 ```
 
 Plot expression for single gene
 
 ```{r counts_plot}
-plotCounts(dds, gene="ENSG00000155363", intgroup="condition")
+plotCounts(dds, gene="ENSG00000156298", intgroup="condition")
 ```
 
 Function to annotate all your gene results
@@ -285,7 +285,6 @@ res_tbl <- merge(res_tbl, tx2gene %>% select(-transcript_ID) %>% distinct(),
                         by.x = "gene", by.y = "gene_ID", all.x = T)
 
 res_tbl
-
 ```
 
 ### MAplot
@@ -319,7 +318,7 @@ head(res_tbl)
 ggplot(res_tbl, aes(x = log2FoldChange, y = -log10(padj))) +
   geom_point(aes(colour = threshold)) +
   geom_text_repel(aes(label = genelabels)) +
-  ggtitle("Mov10 overexpression") +
+  ggtitle("Vampirium vs Control") +
   xlab("log2 fold change") + 
   ylab("-log10 adjusted p-value") +
   theme(legend.position = "none",
@@ -350,7 +349,7 @@ pheatmap(norm_sig,
 ### Annotate with `annotables`
 
 ```{r}
-ids <- grch37 %>% dplyr::filter(ensgene %in% res_tbl$gene) 
+ids <- grch38 %>% dplyr::filter(ensgene %in% res_tbl$gene) 
 res_ids <- inner_join(res_tbl, ids, by=c("gene"="ensgene"))
 ```
 
