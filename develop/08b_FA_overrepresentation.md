@@ -186,7 +186,7 @@ write.csv(cluster_summary, "../Results/clusterProfiler_Cont-Vamp.csv")
     1. Separate results into UP and DOWN regulated:
 
 
-    ```r
+    ``` r
     sigCont_UP <- sigCont %>% filter(log2FoldChange > 0)
     sigCont_DOWN <- sigCont %>% filter(log2FoldChange < 0)
     ```
@@ -195,7 +195,7 @@ write.csv(cluster_summary, "../Results/clusterProfiler_Cont-Vamp.csv")
 
     UP regulated genes
 
-    ```r
+    ``` r
     ego_UP <- enrichGO(gene = sigCont_UP$gene, 
                     universe = allCont_genes,
                     keyType = "ENSEMBL",
@@ -209,7 +209,7 @@ write.csv(cluster_summary, "../Results/clusterProfiler_Cont-Vamp.csv")
     DOWN regulated genes
 
 
-    ```r
+    ``` r
     ego_DOWN <- enrichGO(gene = sigCont_DOWN$gene, 
                     universe = allCont_genes,
                     keyType = "ENSEMBL",
@@ -223,12 +223,12 @@ write.csv(cluster_summary, "../Results/clusterProfiler_Cont-Vamp.csv")
     3. Check results:
 
 
-    ```r
+    ``` r
     head(ego_UP)
     ```
 
 
-    ```r
+    ``` r
     head(ego_DOWN)
     ```
 
@@ -286,13 +286,13 @@ cnetplot(ego,
     If some of the high fold changes are getting drowned out due to a large range, you could set a maximum fold change value
 
 
-    ```r
+    ``` r
     Cont_foldchanges <- ifelse(Cont_foldchanges > 2, 2, Cont_foldchanges)
     Cont_foldchanges <- ifelse(Cont_foldchanges < -2, -2, Cont_foldchanges)
     ```
 
 
-    ```r
+    ``` r
     cnetplot(ego, 
          categorySize="pvalue", 
          showCategory = 5, 
@@ -307,7 +307,7 @@ cnetplot(ego,
     If you are interested in significant processes that are **not** among the top five, you can subset your `ego` dataset to only display these processes:
 
 
-    ```r
+    ``` r
     # Subsetting the ego results without overwriting original `ego` variable
     ego2 <- ego
 
@@ -336,7 +336,7 @@ cnetplot(ego,
     All significantly regulated genes.
 
 
-    ```r
+    ``` r
     edo <- enrichDO(sigCont$entrez, qvalueCutoff = 1)
     head(edo)
     ```
@@ -344,7 +344,7 @@ cnetplot(ego,
     UP significantly regulated genes
 
 
-    ```r
+    ``` r
     edo_UP <- enrichDO(sigCont_UP$entrez)
     head(edo_UP)
     ```
@@ -352,12 +352,10 @@ cnetplot(ego,
     DOWN significantly regulated genes
 
 
-    ```r
+    ``` r
     edo_DOWN <- enrichDO(sigCont_DOWN$entrez)
     head(edo_DOWN)
     ```
-
-    Based on these results, we see that we cannot find Fragile X syndrome between the significant ones. However, if we dig a bit deeper, we find that many of these diseases overlap with the symptoms of Fragile X syndrome, such as muscular atrophia, physical disorders, intelectual disabilities, etc.
 
 !!! question "**Exercise 3**"
 
@@ -368,7 +366,7 @@ cnetplot(ego,
     Let's do a simple analysis as an example:
 
 
-    ```r
+    ``` r
     ## Create background dataset for hypergeometric testing using all genes tested for significance in the results
     allGar_genes <- dplyr::filter(res_ids_Gar, !is.na(gene)) %>% 
       pull(gene) %>% 
@@ -385,7 +383,7 @@ cnetplot(ego,
     Now we can perform the GO enrichment analysis and save the results:
 
 
-    ```r
+    ``` r
     ## Run GO enrichment analysis 
     ego <- enrichGO(gene = sigGar_genes, 
                     universe = allGar_genes,
@@ -399,7 +397,7 @@ cnetplot(ego,
 
 
 
-    ```r
+    ``` r
     ## Output results from GO analysis to a table
     cluster_summary <- data.frame(ego)
     cluster_summary

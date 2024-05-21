@@ -395,8 +395,6 @@ knitr::include_graphics("./img/08b_FA_overrepresentation/cnetplot1.png")
     edo_DOWN <- enrichDO(sigCont_DOWN$entrez)
     head(edo_DOWN)
     ```
-    
-    Based on these results, we see that we cannot find Fragile X syndrome between the significant ones. However, if we dig a bit deeper, we find that many of these diseases overlap with the symptoms of Fragile X syndrome, such as muscular atrophia, physical disorders, intelectual disabilities, etc.
 
 !!! question "**Exercise 3**"
 
