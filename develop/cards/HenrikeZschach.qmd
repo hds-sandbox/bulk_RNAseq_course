@@ -1,0 +1,8 @@
+---
+title: "Henrike Zschach"
+description: "Data Scientist"
+---
+
+![](../img/cards/henrike.jpeg){width=300}
+
+[![](LinkedIN.png){width=50}](https://dk.linkedin.com/in/henrikezschach)   [![](Github_black.png){width=50}](https://github.com/hezscha)

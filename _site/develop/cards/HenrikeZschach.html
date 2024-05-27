@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Data Scientist">
 
-<title>Bulk RNAseq data analysis</title>
+<title>Bulk RNAseq data analysis - Henrike Zschach</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,26 +24,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,67 +69,8 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-image','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../index.css">
 </head>
 
 <body class="nav-fixed">
@@ -140,10 +80,10 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../develop/img/logo.png" alt="" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../develop/img/logo.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Bulk RNAseq data analysis</span>
     </a>
   </div>
@@ -154,23 +94,23 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="../develop/index.html" aria-current="page"> 
+    <a class="nav-link" href="../../develop/index.html"> 
 <span class="menu-text">Introduction</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../develop/02_experimental_planning.html"> 
+    <a class="nav-link" href="../../develop/02_experimental_planning.html"> 
 <span class="menu-text">Experiment design</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../develop/04a_preprocessing.html"> 
+    <a class="nav-link" href="../../develop/04a_preprocessing.html"> 
 <span class="menu-text">Data processing</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../develop/05a_data_analysis_setup.html"> 
+    <a class="nav-link" href="../../develop/05a_data_analysis_setup.html"> 
 <span class="menu-text">Data analyses</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../develop/summary.html"> 
+    <a class="nav-link" href="../../develop/summary.html"> 
 <span class="menu-text">Workshop wrap-up</span></a>
   </li>  
 </ul>
@@ -189,205 +129,45 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Henrike Zschach</h1>
+</div>
+
+<div>
+  <div class="description">
+    Data Scientist
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><img src="../img/cards/henrike.jpeg" class="img-fluid" width="300"></p>
+<p><a href="https://dk.linkedin.com/in/henrikezschach"><img src="LinkedIN.png" class="img-fluid" width="50"></a> <a href="https://github.com/hezscha"><img src="Github_black.png" class="img-fluid" width="50"></a></p>
 
 
 
-
-<!--
-# Put above to hide navigation (left), toc (right) or footer (bottom)
-hide: navigation, toc or footer
-
-# You should hide the navigation if there are no subsections
-# You should hide the Table of Contents if there are no important titles
--->
-<section id="welcome-to-the-bulk-rna-seq-analysis-workshop" class="level1 hero-banner">
-<h1>Welcome to the bulk RNA-seq analysis workshop</h1>
-</section>
-<hr>
-<p>This workshop material includes a tutorial on how to approach RNAseq data, starting from your sequencing reads (fastq files). Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, a collection of modified tutorials from the <a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a>, R language vignettes and the <a href="https://nf-co.re/rnaseq">nf-core rnaseq pipeline</a>.</p>
-<hr>
-<div class="callout callout-style-default callout-note callout-titled" title="Course Overview">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Course Overview
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>📖 <strong>Syllabus:</strong></li>
-</ul>
-<ol type="1">
-<li>Course introduction<br>
-</li>
-<li>Experimental planning<br>
-</li>
-<li>Data explanation<br>
-</li>
-<li>Read reprocessing and preprocessing pipelines<br>
-</li>
-<li>Analysing RNAseq data
-<ol type="1">
-<li>RNAseq counts<br>
-</li>
-<li>Exploratory analysis<br>
-</li>
-<li>Differential Expression Analysis<br>
-</li>
-<li>Functional analysis</li>
-</ol></li>
-<li>Summarized workflow</li>
-</ol>
-<ul>
-<li>⏰ <strong>Total Time Estimation:</strong> 8 hours</li>
-<li>📁 <strong>Supporting Materials:</strong> Workshop slides with theory on bulk RNAseq can be found in this <a href="https://zenodo.org/record/8046218">zenodo repository</a>.</li>
-<li>👨‍💻 <strong>Target Audience:</strong> Ph.D., MSc, etc.</li>
-<li>👩‍🎓 <strong>Level:</strong> Beginner.</li>
-<li>🔒 <strong>License:</strong> <a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license.</a><br>
-</li>
-<li>💰 <strong>Funding:</strong> This project was funded by the Novo Nordisk Fonden (NNF20OC0063268).</li>
-</ul>
-</div>
-</div>
-<div class="callout callout-style-default callout-warning callout-titled" title="Course Requirements">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Course Requirements
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Knowledge of R, Rstudio and Rmarkdown. It is recommended that you have at least followed our workshop <a href="https://github.com/Center-for-Health-Data-Science/FromExceltoR_2022">R basics</a></li>
-<li>Basic knowledge of RNAseq technology</li>
-<li>Basic knowledge of data science and statistics such as PCA, clustering and statistical testing</li>
-</ul>
-</div>
-</div>
-<p>This workshop material includes a tutorial on how to approach RNAseq data, starting from your sequencing reads (fastq files). Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, a collection of modified tutorials from the <a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2</a>, R language vignettes and the <a href="https://nf-co.re/rnaseq">nf-core rnaseq pipeline</a>.</p>
-<p>The aim of this repository is to run a comprehensive but introductory workshop on bulk-RNAseq bioinformatic analyses. Each of the modules of this workshop is accompanied by a powerpoint slideshow explaining the steps and the theory behind a typical bioinformatics analysis (ideally with a teacher). Many of the slides are annotated with extra information and/or point to original sources for extra reading material.</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Course Goals">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Course Goals
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>By the end of this workshop, you should be able to analyse your own bulk RNAseq data:</p>
-<ul>
-<li>Preprocess your reads into a count matrix.</li>
-<li>Normalize your data.</li>
-<li>Explore your samples with PCAs and heatmaps.</li>
-<li>Perform Differential Expression Analysis.</li>
-<li>Annotate your results.</li>
-</ul>
-</div>
-</div>
-<section id="acknowledgements" class="level3">
-<h3 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h3>
-<p>We recognize the substantial contribution of José Alejandro Romero Herrera, a former team member, in developing the course material.</p>
-<ul>
-<li><a href="https://heads.ku.dk/">Center for Health Data Science</a>, University of Copenhagen.</li>
-<li><a href="https://bioinfotraining.bio.cam.ac.uk/about">Hugo Tavares</a>, Bioinformatics Training Facility, University of Cambridge.</li>
-<li><a href="https://renew.ku.dk/research/reseach-groups/serup-group/">Silvia Raineri</a>, Center for Stem Cell Medicine (reNew), University of Copenhagen.</li>
-<li><a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>, check out their <a href="https://github.com/hbctraining/DGE_workshop_salmon_online">github repo</a></li>
-<li><a href="https://nf-co.re/">nf-core community</a></li>
-</ul>
-</section>
-<section id="course-instructors" class="level3">
-<h3 class="anchored" data-anchor-id="course-instructors">Course Instructors</h3>
-<!-- AUTHORS  Format: [author name](link to author page){ .md-button } 
-<h4>Authors</h4>
-
-[cards cols="6"(./develop/cards/cards.yaml)]
--->
-
-
-
-</section>
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-5">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1716802294094" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
-<a href="../develop/cards/AdrijaKalvisa.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="https://www2.adm.ku.dk/selv/pls/prt_www40.hentindhold_cms?p_personid=645384" class="thumbnail-image card-img" style="height: 200px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Adrija Kalvisa
-</h5>
-<div class="card-text listing-description">
-Data Scientist
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1716371702600" data-listing-reading-time-sort="1" data-listing-word-count-sort="47">
-<a href="../develop/cards/AlbaMartinez.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="cards/alba.jpg" style="height: 200px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Alba Refoyo Martinez
-</h5>
-<div class="card-text listing-description">
-Data Scientist
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1716802238753" data-listing-reading-time-sort="1" data-listing-word-count-sort="4">
-<a href="../develop/cards/HenrikeZschach.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="img/cards/henrike.jpeg" style="height: 200px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Henrike Zschach
-</h5>
-<div class="card-text listing-description">
-Data Scientist
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="3" data-listing-file-modified-sort="1716803814985" data-listing-reading-time-sort="1" data-listing-word-count-sort="11">
-<a href="../develop/cards/thildeTerkelsen.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img src="img/cards/thilde.JPG" style="height: 200px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Thilde Bagger Terkelsen
-</h5>
-<div class="card-text listing-description">
-Data Scientist
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
