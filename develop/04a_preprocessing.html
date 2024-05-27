@@ -114,10 +114,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <a href="http://hds-sandbox.github.io/" class="navbar-brand navbar-brand-logo">
     <img src="../develop/img/logo.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="http://hds-sandbox.github.io/">
     <span class="navbar-title">Bulk RNAseq data analysis</span>
     </a>
   </div>
@@ -176,7 +176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -209,43 +209,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#rna-extraction-and-library-preparation" id="toc-rna-extraction-and-library-preparation" class="nav-link active" data-scroll-target="#rna-extraction-and-library-preparation">1. RNA Extraction and library preparation</a></li>
-  <li><a href="#sequencing-illumina" id="toc-sequencing-illumina" class="nav-link" data-scroll-target="#sequencing-illumina">2. Sequencing (Illumina)</a>
-  <ul class="collapse">
-  <li><a href="#sequencing-by-synthesis" id="toc-sequencing-by-synthesis" class="nav-link" data-scroll-target="#sequencing-by-synthesis">Sequencing-by-synthesis</a></li>
-  </ul></li>
-  <li><a href="#quality-control-of-raw-sequencing-data" id="toc-quality-control-of-raw-sequencing-data" class="nav-link" data-scroll-target="#quality-control-of-raw-sequencing-data">3. Quality control of raw sequencing data</a>
-  <ul class="collapse">
-  <li><a href="#quality-metrics" id="toc-quality-metrics" class="nav-link" data-scroll-target="#quality-metrics">Quality metrics</a></li>
-  </ul></li>
-  <li><a href="#read-filtering-and-trimming" id="toc-read-filtering-and-trimming" class="nav-link" data-scroll-target="#read-filtering-and-trimming">4. Read filtering and trimming</a>
-  <ul class="collapse">
-  <li><a href="#cutadapt" id="toc-cutadapt" class="nav-link" data-scroll-target="#cutadapt">Cutadapt</a></li>
-  <li><a href="#trim-galore" id="toc-trim-galore" class="nav-link" data-scroll-target="#trim-galore">Trim Galore</a></li>
-  </ul></li>
-  <li><a href="#quality-control-of-clean-sequencing-data" id="toc-quality-control-of-clean-sequencing-data" class="nav-link" data-scroll-target="#quality-control-of-clean-sequencing-data">5. Quality control of clean sequencing data</a></li>
-  <li><a href="#alignment" id="toc-alignment" class="nav-link" data-scroll-target="#alignment">6. Alignment</a>
-  <ul class="collapse">
-  <li><a href="#traditional-alignment-tools" id="toc-traditional-alignment-tools" class="nav-link" data-scroll-target="#traditional-alignment-tools">Traditional alignment tools</a></li>
-  <li><a href="#pseudoalignment" id="toc-pseudoalignment" class="nav-link" data-scroll-target="#pseudoalignment">Pseudoalignment</a></li>
-  </ul></li>
-  <li><a href="#quality-control-of-aligned-reads" id="toc-quality-control-of-aligned-reads" class="nav-link" data-scroll-target="#quality-control-of-aligned-reads">7. Quality control of aligned reads</a>
-  <ul class="collapse">
-  <li><a href="#qualimap" id="toc-qualimap" class="nav-link" data-scroll-target="#qualimap">Qualimap</a></li>
-  <li><a href="#dupradar" id="toc-dupradar" class="nav-link" data-scroll-target="#dupradar">dupRadar</a></li>
-  </ul></li>
-  <li><a href="#quantify-expression" id="toc-quantify-expression" class="nav-link" data-scroll-target="#quantify-expression">8. Quantify expression</a></li>
-  <li><a href="#aggregation-of-quality-control-checks" id="toc-aggregation-of-quality-control-checks" class="nav-link" data-scroll-target="#aggregation-of-quality-control-checks">9. Aggregation of quality control checks</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-right" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -254,7 +220,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page-right">
 
     
   
@@ -739,7 +705,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/hds-sandbox\.github\.io\/bulk_RNAseq_course\/");
+      var filterRegex = new RegExp("https:\/\/hds-sandbox\.github\.io\/bulk_RNAseq_course");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -1067,7 +1033,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
+<nav class="page-navigation column-page-right">
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
