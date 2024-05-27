@@ -1,9 +1,0 @@
-sample,fastq_1,fastq_2,strandedness,condition
-control_3,778339/raw_reads/Control_3.fastq.gz,,unstranded,control
-control_2,778339/raw_reads/Control_2.fastq.gz,,unstranded,control
-control_1,778339/raw_reads/Control_1.fastq.gz,,unstranded,control
-vampirium_3,778339/raw_reads/Vampirium_3.fastq.gz,,unstranded,vampirum
-vampirium_2,778339/raw_reads/Vampirium_2.fastq.gz,,unstranded,vampirium
-vampirium_1,778339/raw_reads/Vampirium_1.fastq.gz,,unstranded,vampirium
-garlicum_3,778339/raw_reads/Garlicum_3.fastq.gz,,unstranded,garlicum
-garlicum_2,778339/raw_reads/Garlicum_2.fastq.gz,,unstranded,garlicum

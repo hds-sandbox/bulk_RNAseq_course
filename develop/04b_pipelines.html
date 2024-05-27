@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Bulk RNAseq data analysis - Nextflow &amp; nf-core pipelines</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../develop/04c_preprocessing_setup.html" rel="next">
+<link href="../develop/04a_preprocessing.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../develop/img/logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Bulk RNAseq data analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/index.html"> 
+<span class="menu-text">Introduction</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/02_experimental_planning.html"> 
+<span class="menu-text">Experiment design</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../develop/04a_preprocessing.html" aria-current="page"> 
+<span class="menu-text">Data processing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/05a_data_analysis_setup.html"> 
+<span class="menu-text">Data analyses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/summary.html"> 
+<span class="menu-text">Workshop wrap-up</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/hds-sandbox"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/04b_pipelines.html">Nextflow &amp; nf-core pipelines</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/04a_preprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preprocessing steps</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/04b_pipelines.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Nextflow &amp; nf-core pipelines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/04c_preprocessing_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ucloud setup</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Nextflow &amp; nf-core pipelines</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled" title="Section Overview">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Section Overview
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>⏰ <strong>Time Estimation:</strong> 40 minutes</p>
+<p>💬 <strong>Learning Objectives:</strong></p>
+<ol type="1">
+<li>Understand what is a pipeline/workflow and the Nextflow language.</li>
+<li>Learn about existing automated workflows from the bioinformatics community.</li>
+<li>Learn how to use the nf-core pipeline for bulk RNAseq analysis.</li>
+</ol>
+</div>
+</div>
+<p><span style="font-size:30px;"> Automating your workflow: Nextflow and nf-core pipelines <span></span></span></p>
+<p>A pipeline consists of a chain of processing elements (processes, threads, coroutines, functions, etc.), arranged so that the output of each element is the input of the next; the name is by analogy to a physical pipeline. Narrowly speaking, a pipeline is linear and one-directional, though sometimes the term is applied to more general flows. For example, a primarily one-directional pipeline may have some communication in the other direction, known as a return channel or backchannel, or a pipeline may be fully bi-directional. Flows with one-directional tree and directed acyclic graph topologies behave similarly to (linear) pipelines– the lack of cycles makes them simple – and thus may be loosely referred to as “pipelines”.</p>
+<p>In our case, a “preprocessing” pipeline consists on concatenating all the processes explained in the previous lesson so that we have one continuous workflow from raw sequencing reads to a count matrix. For example, the RNASeq pipeline developed by the nf-core community (<a href="#the-nf-core-project">see below</a>).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./img/04b_pipelines/nf-core-rnaseq_metro_map_grey.png" class="img-fluid figure-img"></p>
+<figcaption>nf-core/rnaseq pipeline metro schematic.</figcaption>
+</figure>
+</div>
+<p>As you can see in the image above, each process, such as read trimming, QC, alignment, etc, are connected to each other. A workflow created in this way is ideal to reproduce analysis and makes the task of analysing RNAseq data much much easier.</p>
+<section id="nextflow-pipelines" class="level2">
+<h2 class="anchored" data-anchor-id="nextflow-pipelines">Nextflow pipelines</h2>
+<p><img src="./img/04b_pipelines/nextflow2014_no-bg.png" class="img-fluid" width="400"></p>
+<p><a href="https://www.nextflow.io/">Nextflow</a> is a bioinformatics workflow manager that enables the development of portable and reproducible workflows. It supports deploying workflows on a variety of execution platforms including local, HPC schedulers, AWS Batch, Google Cloud Life Sciences, and Kubernetes. Additionally, it provides support for manage your workflow dependencies through built-in support for Conda, Spack, Docker, Podman, Singularity, Modules, and more.</p>
+<p>With the rise of big data, techniques to analyse and run experiments on large datasets are increasingly necessary. Parallelization and distributed computing are the best ways to tackle this problem, but the tools commonly available to the bioinformatics community often lack good support for these techniques, or provide a model that fits badly with the specific requirements in the bioinformatics domain and, most of the time, require the knowledge of complex tools or low-level APIs.</p>
+<p>Nextflow framework is based on the dataflow programming model, which greatly simplifies writing parallel and distributed pipelines without adding unnecessary complexity and letting you concentrate on the flow of data, i.e.&nbsp;the functional logic of the application/algorithm.</p>
+<p>It doesn’t aim to be another pipeline scripting language yet, but it is built around the idea that the Linux platform is the lingua franca of data science, since it provides many simple command line and scripting tools, which by themselves are powerful, but when chained together facilitate complex data manipulations.</p>
+<p>In practice, this means that a Nextflow script is defined by composing many different processes. Each process can execute a given bioinformatics tool or scripting language, to which is added the ability to coordinate and synchronize the processes execution by simply specifying their inputs and outputs.</p>
+<section id="features" class="level3">
+<h3 class="anchored" data-anchor-id="features">Features</h3>
+<ul>
+<li><strong>Fast prototyping</strong>: Nextflow allows you to write a computational pipeline by making it simpler to put together many different tasks. You may reuse your existing scripts and tools and you don’t need to learn a new language or API to start using it.</li>
+<li><strong>Reproducibility</strong>: Nextflow supports Docker and Singularity containers technology. This, along with the integration of the GitHub code sharing platform, allows you to write self-contained pipelines, manage versions and to rapidly reproduce any former configuration.</li>
+<li><strong>Portable</strong>: Nextflow provides an abstraction layer between your pipeline’s logic and the execution layer, so that it can be executed on multiple platforms without it changing. It provides out of the box executors for GridEngine, SLURM, LSF, PBS, Moab and HTCondor batch schedulers and for Kubernetes, Amazon AWS, Google Cloud and Microsoft Azure platforms.</li>
+<li><strong>Unified parallelism</strong>: Nextflow is based on the dataflow programming model which greatly simplifies writing complex distributed pipelines. Parallelisation is implicitly defined by the processes input and output declarations. The resulting applications are inherently parallel and can scale-up or scale-out, transparently, without having to adapt to a specific platform architecture.</li>
+<li><strong>Continuous checkpoints</strong>: All the intermediate results produced during the pipeline execution are automatically tracked. This allows you to resume its execution, from the last successfully executed step, no matter what the reason was for it stopping.</li>
+</ul>
+</section>
+</section>
+<section id="the-nf-core-project" class="level2">
+<h2 class="anchored" data-anchor-id="the-nf-core-project">The nf-core project</h2>
+<p><img src="./img/04b_pipelines/nf-core-logo.svg" class="img-fluid" width="400"></p>
+<p>The <a href="https://nf-co.re/">nf-core project</a> is a community effort to collect a curated set of analysis pipelines built using <a href="https://www.nextflow.io/">Nextflow</a>, an incredibly powerful and flexible workflow language. This means that all the tools and steps used in your RNAseq workflow can be automated and easily reproduced by other researchers if necessary. In addition, if you use any of the nf-core pipelines, you will be sure that all the necessary tools are available to you in any computer platform (Cloud computing, HPC or your personal computer).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./img/04b_pipelines/nf-core-rnaseq_metro_map_grey.png" class="img-fluid figure-img"></p>
+<figcaption>nf-core/rnaseq pipeline metro schematic.</figcaption>
+</figure>
+</div>
+<p>The <a href="https://nf-co.re/rnaseq">RNAseq pipeline</a> enables using many different tools, such as STAR, RSEM, HISAT2 or Salmon, and allows quantification of gene/isoform counts and provides extensive quality control checks at each step of the workflow. We encourage your to take a look at the pipeline and its documentation if you need to preprocess your RNAseq reads from stratch, as well as checkout this introductory video.</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/qMuUt8oVhHw" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+</section>
+<section id="nf-corernaseq-usage-for-version-3.11.2" class="level2">
+<h2 class="anchored" data-anchor-id="nf-corernaseq-usage-for-version-3.11.2">nf-core/rnaseq: Usage for version 3.11.2</h2>
+<p>In this section, we will see some of the most important arguments that the pipeline uses to run a RNAseq preprocessing workflow. There are many more options for advanced users and we really encourage you to check them out at the <a href="https://nf-co.re/rnaseq/3.11.2/usage">official webpage</a>. Below you will find the arguments we will use for our own data.</p>
+<section id="running-the-pipeline" class="level3">
+<h3 class="anchored" data-anchor-id="running-the-pipeline">Running the pipeline</h3>
+<p>The typical command for running the pipeline is as follows:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="at">--input</span> samplesheet.csv <span class="at">--outdir</span> <span class="op">&lt;</span>OUTDIR<span class="op">&gt;</span> --genome GRCh37 <span class="at">-profile</span> docker</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will launch the pipeline with the <code>docker</code> configuration profile. See below for more information about profiles.</p>
+<p>Note that the pipeline will create the following files in your working directory:</p>
+<pre class="plaintext"><code>work            # Directory containing the nextflow working files
+results         # Finished results (configurable, see below)
+.nextflow_log   # Log file from Nextflow
+
+# Other nextflow hidden files, eg. history of pipeline runs and old logs.</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Options with a <em>single</em> hyphen are part of Nextflo, i.e.&nbsp;<code>-profile</code>.</li>
+<li>Pipeline specific parameters use a <em>double-hyphen</em>, i.e.&nbsp;<code>--input</code>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="core-nextflow-arguments" class="level3">
+<h3 class="anchored" data-anchor-id="core-nextflow-arguments">Core Nextflow arguments</h3>
+<section id="work-dir" class="level4">
+<h4 class="anchored" data-anchor-id="work-dir"><code>-work-dir</code></h4>
+<p>Use this parameter to choose a path where the <code>work</code> folder, which containing all the intermediary files from the pipeline, should be saved.</p>
+</section>
+<section id="profile" class="level4">
+<h4 class="anchored" data-anchor-id="profile"><code>-profile</code></h4>
+<p>Use this parameter to choose a configuration profile. Profiles can give configuration presets for different compute environments.</p>
+<p>Several generic profiles are bundled with the pipeline which instruct the pipeline to use software packaged using different methods (Docker, Singularity, Podman, Shifter, Charliecloud, Conda) - see below. When using Biocontainers, most of these software packaging methods pull Docker containers from quay.io e.g <a href="https://quay.io/repository/biocontainers/fastqc">FastQC</a> except for Singularity which directly downloads Singularity images via https hosted by the <a href="https://depot.galaxyproject.org/singularity/">Galaxy project</a> and Conda which downloads and installs software locally from <a href="https://bioconda.github.io/">Bioconda</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is highly recommended to use Docker or Singularity containers for full pipeline reproducibility, however when this is not possible, Conda is also supported.</p>
+</div>
+</div>
+<p>The pipeline also dynamically loads configurations from <a href="https://github.com/nf-core/configs">https://github.com/nf-core/configs</a> when it runs, making multiple config profiles for various institutional clusters available at run time. For more information and to see if your system is available in these configs please see the <a href="https://github.com/nf-core/configs#documentation">nf-core/configs documentation</a>.</p>
+<p>Note that multiple profiles can be loaded, for example: <code>-profile test,docker</code> - the order of arguments is important! They are loaded in sequence, so later profiles can overwrite earlier profiles.</p>
+<p>If <code>-profile</code> is not specified, the pipeline will run locally and expect all software to be installed and available on the <code>PATH</code>. This is <em>not</em> recommended.</p>
+<ul>
+<li><code>docker</code>
+<ul>
+<li>A generic configuration profile to be used with <a href="https://docker.com/">Docker</a></li>
+</ul></li>
+<li><code>singularity</code>
+<ul>
+<li>A generic configuration profile to be used with <a href="https://sylabs.io/docs/">Singularity</a></li>
+</ul></li>
+<li><code>podman</code>
+<ul>
+<li>A generic configuration profile to be used with <a href="https://podman.io/">Podman</a></li>
+</ul></li>
+<li><code>shifter</code>
+<ul>
+<li>A generic configuration profile to be used with <a href="https://nersc.gitlab.io/development/shifter/how-to-use/">Shifter</a></li>
+</ul></li>
+<li><code>charliecloud</code>
+<ul>
+<li>A generic configuration profile to be used with <a href="https://hpc.github.io/charliecloud/">Charliecloud</a></li>
+</ul></li>
+<li><code>conda</code>
+<ul>
+<li>A generic configuration profile to be used with <a href="https://conda.io/docs/">Conda</a>. Please only use Conda as a last resort i.e.&nbsp;when it’s not possible to run the pipeline with Docker, Singularity, Podman, Shifter or Charliecloud.</li>
+</ul></li>
+<li><code>test</code>
+<ul>
+<li>A profile with a complete configuration for automated testing</li>
+<li>Includes links to test data so needs no other parameters</li>
+</ul></li>
+</ul>
+</section>
+<section id="name" class="level4">
+<h4 class="anchored" data-anchor-id="name"><code>-name</code></h4>
+<p>Use this parameter to give a unique name to the run. This name cannot be used again for another run in the same folder. This is very useful to track different runs since otherwise Nextflow will assign a random unique name to the run.</p>
+</section>
+<section id="resume" class="level4">
+<h4 class="anchored" data-anchor-id="resume"><code>-resume</code></h4>
+<p>Specify this when restarting a pipeline. Nextflow will used cached results from any pipeline steps where the inputs are the same, continuing from where it got to previously. You can also supply a run name to resume a specific run: <code>-resume [run-name]</code>. Use the <code>nextflow log</code> command to show previous run names.</p>
+</section>
+<section id="r" class="level4">
+<h4 class="anchored" data-anchor-id="r"><code>-r</code></h4>
+<p>It is a good idea to specify a pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you’ll be running the same version of the pipeline, even if there have been changes to the code since.</p>
+<p>First, go to the <a href="https://github.com/nf-core/rnaseq/releases">nf-core/rnaseq releases page</a> and find the latest version number (numeric only), e.g., <code>1.3.1</code>. Then specify this when running the pipeline with <code>-r</code> (one hyphen), e.g., <code>-r 1.3.1</code>.</p>
+<p>This version number will be logged in reports when you run the pipeline, so that you’ll know what you used when you look back in the future.</p>
+</section>
+</section>
+<section id="rnaseq-pipeline-arguments" class="level3">
+<h3 class="anchored" data-anchor-id="rnaseq-pipeline-arguments">RNAseq pipeline arguments</h3>
+<section id="samplesheet-input" class="level4">
+<h4 class="anchored" data-anchor-id="samplesheet-input">Samplesheet input</h4>
+<p>You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row as shown in the examples below.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">--input</span> <span class="st">'[path to samplesheet file]'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Multiple runs of the same sample</strong></p>
+<p>The <code>sample</code> identifiers have to be the same when you have re-sequenced the same sample more than once e.g.&nbsp;to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:</p>
+<pre class="plaintext" style="font-size: 85%;"><code>sample,fastq_1,fastq_2,strandedness
+CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz,unstranded
+CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz,unstranded
+CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz,unstranded</code></pre>
+<p><strong>Full samplesheet</strong></p>
+<p>The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 4 columns to match those defined in the table below.</p>
+<p>A final samplesheet file consisting of both single- and paired-end data may look something like the one below. This is for 6 samples, where <code>TREATMENT_REP3</code> has been sequenced twice.</p>
+<pre class="plaintext" style="font-size: 85%;"><code>sample,fastq_1,fastq_2,strandedness
+CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz,forward
+CONTROL_REP2,AEG588A2_S2_L002_R1_001.fastq.gz,AEG588A2_S2_L002_R2_001.fastq.gz,forward
+CONTROL_REP3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz,forward
+TREATMENT_REP1,AEG588A4_S4_L003_R1_001.fastq.gz,,reverse
+TREATMENT_REP2,AEG588A5_S5_L003_R1_001.fastq.gz,,reverse
+TREATMENT_REP3,AEG588A6_S6_L003_R1_001.fastq.gz,,reverse
+TREATMENT_REP3,AEG588A6_S6_L004_R1_001.fastq.gz,,reverse</code></pre>
+<table class="table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 92%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sample</code></td>
+<td>Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (<code>_</code>).</td>
+</tr>
+<tr class="even">
+<td><code>fastq_1</code></td>
+<td>Full path to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension “.fastq.gz” or “.fq.gz”.</td>
+</tr>
+<tr class="odd">
+<td><code>fastq_2</code></td>
+<td>Full path to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension “.fastq.gz” or “.fq.gz”.</td>
+</tr>
+<tr class="even">
+<td><code>strandedness</code></td>
+<td>Sample strand-specificity. Must be one of <code>unstranded</code>, <code>forward</code> or <code>reverse</code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>group</code> and <code>replicate</code> columns were replaced with a single <code>sample</code> column as of v3.1 of the pipeline. The <code>sample</code> column is essentially a concatenation of the <code>group</code> and <code>replicate</code> columns, however it now also offers more flexibility in instances where replicate information is not required e.g.&nbsp;when sequencing clinical samples. If all values of <code>sample</code> have the same number of underscores, fields defined by these underscore-separated names may be used in the PCA plots produced by the pipeline, to regain the ability to represent different groupings.</p>
+</div>
+</div>
+</section>
+<section id="results-folder" class="level4">
+<h4 class="anchored" data-anchor-id="results-folder">Results folder</h4>
+<p>The output directory where the results of the pipeline will be saved.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">--outdir</span> <span class="st">'[path to output]'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="alignment-options" class="level4">
+<h4 class="anchored" data-anchor-id="alignment-options">Alignment options</h4>
+<p>By default, the pipeline uses <a href="https://github.com/alexdobin/STAR">STAR</a> (i.e.&nbsp;<code>--aligner star_salmon</code>) to map the raw FastQ reads to the reference genome, project the alignments onto the transcriptome and to perform the downstream BAM-level quantification with <a href="https://salmon.readthedocs.io/en/latest/salmon.html">Salmon</a>. STAR is fast but requires a lot of memory to run, typically around 38GB for the Human GRCh37 reference genome. Since the <a href="https://github.com/deweylab/RSEM">RSEM</a> (i.e.&nbsp;<code>--aligner star_rsem</code>) workflow in the pipeline also uses STAR you should use the <a href="https://ccb.jhu.edu/software/hisat2/index.shtml">HISAT2</a> aligner (i.e.&nbsp;<code>--aligner hisat2</code>) if you have memory limitations.</p>
+<p>You also have the option to pseudo-align and quantify your data with <a href="https://salmon.readthedocs.io/en/latest/salmon.html">Salmon</a> by providing the <code>--pseudo_aligner salmon</code> parameter. Salmon will then be run in addition to the standard alignment workflow defined by <code>--aligner</code>, mainly because it allows you to obtain QC metrics with respect to the genomic alignments. However, you can provide the <code>--skip_alignment</code> parameter if you would like to run Salmon in isolation.</p>
+<p>Two additional parameters <code>--extra_star_align_args</code> and <code>--extra_salmon_quant_args</code> were added in v3.10 of the pipeline that allow you to append any custom parameters to the STAR align and Salmon quant commands, respectively. Note, the <code>--seqBias</code> and <code>--gcBias</code> are not provided to Salmon quant by default so you can provide these via <code>--extra_salmon_quant_args '--seqBias --gcBias'</code> if required.</p>
+</section>
+<section id="reference-genome-files" class="level4">
+<h4 class="anchored" data-anchor-id="reference-genome-files">Reference genome files</h4>
+<p>The minimum reference genome requirements are a FASTA and GTF file, all other files required to run the pipeline can be generated from these files. However, it is more storage and compute friendly if you are able to re-use reference genome files as efficiently as possible. It is recommended to use the <code>--save_reference</code> parameter if you are using the pipeline to build new indices (e.g.&nbsp;those unavailable on <a href="https://nf-co.re/usage/reference_genomes">AWS iGenomes</a>) so that you can save them somewhere locally. The index building step can be quite a time-consuming process and it permits their reuse for future runs of the pipeline to save disk space. You can then either provide the appropriate reference genome files on the command-line via the appropriate parameters (e.g.&nbsp;<code>--star_index '/path/to/STAR/index/'</code>) or via a custom config file.</p>
+<ul>
+<li>If <code>--genome</code> is provided then the FASTA and GTF files (and existing indices) will be automatically obtained from AWS-iGenomes unless these have already been downloaded locally in the path specified by <code>--igenomes_base</code>.</li>
+<li>If <code>--gff</code> is provided as input then this will be converted to a GTF file, or the latter will be used if both are provided.</li>
+<li>If <code>--gene_bed</code> is not provided then it will be generated from the GTF file.</li>
+<li>If <code>--additional_fasta</code> is provided then the features in this file (e.g.&nbsp;ERCC spike-ins) will be automatically concatenated onto both the reference FASTA file as well as the GTF annotation before building the appropriate indices.</li>
+</ul>
+<p>When using <code>--aligner star_rsem</code>, both the STAR and RSEM indices should be present in the path specified by <code>--rsem_index</code> (see <a href="https://github.com/nf-core/rnaseq/issues/568">#568</a>)</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Compressed reference files are also supported by the pipeline i.e.&nbsp;standard files with the <code>.gz</code> extension and indices folders with the <code>tar.gz</code> extension.</p>
+</div>
+</div>
+</section>
+<section id="process-skipping-options" class="level4">
+<h4 class="anchored" data-anchor-id="process-skipping-options">Process skipping options</h4>
+<p>There are several options to skip various steps within the workflow.</p>
+<ul>
+<li><code>--skip_bigwig</code>: Skip bigWig file creation</li>
+<li><code>--skip_stringtie</code>: Skip StringTie.</li>
+<li><code>--skip_fastqc</code>: Skip FastQC.</li>
+<li><code>--skip_preseq</code>: Skip Preseq.</li>
+<li><code>--skip_dupradar</code>: Skip dupRadar.</li>
+<li><code>--skip_qualimap</code>: Skip Qualimap.</li>
+<li><code>--skip_rseqc</code>: Skip RSeQC.</li>
+<li><code>--skip_biotype_qc</code>: Skip additional featureCounts process for biotype QC.</li>
+<li><code>--skip_deseq2_qc</code>: Skip DESeq2 PCA and heatmap plotting.</li>
+<li><code>--skip_multiqc</code>: Skip MultiQC.</li>
+<li><code>--skip_qc</code>: Skip all QC steps except for MultiQC.</li>
+</ul>
+</section>
+</section>
+<section id="understanding-the-results-folder" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-the-results-folder">Understanding the results folder</h3>
+<p>The pipeline will save everything inside the <code>--outdir</code> folder. Inside it you will find different results. In this section we will go through the most relevant results for this workshop. If you are interested in the full documentation, visit the <a href="https://nf-co.re/rnaseq/3.6/output">nf-core rnaseq output docs</a>.</p>
+<section id="pipeline_info" class="level4">
+<h4 class="anchored" data-anchor-id="pipeline_info">1. <code>pipeline_info</code></h4>
+<p>First, we will check the <code>pipeline_info</code> folder. <a href="https://www.nextflow.io/docs/latest/tracing.html">Nextflow</a> provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.</p>
+<p><code>pipeline_info/</code></p>
+<ul>
+<li>Reports generated by Nextflow: <code>execution_report.html</code>, <code>execution_timeline.html</code>, <code>execution_trace.txt</code> and <code>pipeline_dag.dot</code>/<code>pipeline_dag.svg</code>.</li>
+<li>Reports generated by the pipeline: <code>pipeline_report.html</code>, <code>pipeline_report.txt</code> and <code>software_versions.yml</code>. The <code>pipeline_report*</code> files will only be present if the <code>--email</code> / <code>--email_on_fail</code> parameter’s are used when running the pipeline.</li>
+<li>Reformatted samplesheet files used as input to the pipeline: <code>samplesheet.valid.csv</code>.</li>
+</ul>
+</section>
+<section id="genome" class="level4">
+<h4 class="anchored" data-anchor-id="genome">2. <code>genome</code></h4>
+<p>A number of genome-specific files are generated by the pipeline because they are required for the downstream processing of the results. If the <code>--save_reference</code> parameter is provided then these will be saved in the <code>genome/</code> directory. It is recommended to use the <code>--save_reference</code> parameter if you are using the pipeline to build new indices so that you can save them somewhere locally. The index building step can be quite a time-consuming process and it permits their reuse for future runs of the pipeline to save disk space.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you have not selected <code>--save_reference</code>, you will instead get a README.txt file containing information about the reference that was used for the run.</p>
+</div>
+</div>
+<p><code>genome/</code></p>
+<ul>
+<li><code>*.fa</code>, <code>*.gtf</code>, <code>*.gff</code>, <code>*.bed</code>, <code>.tsv</code>: If the <code>--save_reference</code> parameter is provided then all of the genome reference files will be placed in this directory</li>
+</ul>
+<p><code>genome/index/</code></p>
+<ul>
+<li><code>star/</code>: Directory containing STAR indices.</li>
+<li><code>hisat2/</code>: Directory containing HISAT2 indices.</li>
+<li><code>rsem/</code>: Directory containing STAR and RSEM indices.</li>
+<li><code>salmon/</code>: Directory containing Salmon indices.</li>
+</ul>
+</section>
+<section id="multiqc" class="level4">
+<h4 class="anchored" data-anchor-id="multiqc">3. <code>multiqc</code></h4>
+<p>Results generated by MultiQC collate pipeline QC from supported tools i.e.&nbsp;FastQC, Cutadapt, SortMeRNA, STAR, RSEM, HISAT2, Salmon, SAMtools, Picard, RSeQC, Qualimap, Preseq and featureCounts. Additionally, various custom content has been added to the report to assess the output of dupRadar, DESeq2 and featureCounts biotypes, and to highlight samples failing a mimimum mapping threshold or those that failed to match the strand-specificity provided in the input samplesheet. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability.</p>
+<p><code>multiqc/</code></p>
+<ul>
+<li><code>multiqc_report.html</code>: a standalone HTML file that can be viewed in your web browser.</li>
+<li><code>multiqc_data/</code>: directory containing parsed statistics from the different tools used in the pipeline.</li>
+<li><code>multiqc_plots/</code>: directory containing individual plots from the different tools used in the pipeline.</li>
+</ul>
+</section>
+<section id="fastqc" class="level4">
+<h4 class="anchored" data-anchor-id="fastqc">4. <code>fastqc</code></h4>
+<p>The FastQC plots in this directory are generated relative to the raw, input reads. They may contain adapter sequence and regions of low quality.</p>
+<p><code>fastqc/</code></p>
+<ul>
+<li><code>*_fastqc.html</code>: FastQC report containing quality metrics.</li>
+<li><code>*_fastqc.zip</code>: Zip archive containing the FastQC report, tab-delimited data file and plot images.</li>
+</ul>
+</section>
+<section id="trimgalore" class="level4">
+<h4 class="anchored" data-anchor-id="trimgalore">5. <code>trimgalore</code></h4>
+<p>In this folder you will find your trimmed and filtered fastq files from TrimGalore, including its fastqc results!</p>
+<p><code>trimgalore/</code></p>
+<ul>
+<li><code>*.fq.gz</code>: If <code>--save_trimmed</code> is specified, FastQ files <strong>after</strong> adapter trimming will be placed in this directory.</li>
+<li><code>*_trimming_report.txt</code>: Log file generated by Trim Galore!.</li>
+</ul>
+<p><code>trimgalore/fastqc/</code></p>
+<ul>
+<li><code>*_fastqc.html</code>: FastQC report containing quality metrics for read 1 (<em>and read2 if paired-end</em>) <strong>after</strong> adapter trimming.</li>
+<li><code>*_fastqc.zip</code>: Zip archive containing the FastQC report, tab-delimited data file and plot images.</li>
+</ul>
+</section>
+<section id="aligner" class="level4">
+<h4 class="anchored" data-anchor-id="aligner">6. <code>aligner</code></h4>
+<p>Depending on the aligner that you use, this folder may change its contents and name. Generally, here you can find the aligned reads in <code>.bam</code> format, samtool stats, duplicated stats and different QC tools related to mapped reads.</p>
+<p>Also, depending on the <code>--aligner</code> option you can either find the quantification results from either salmon (pseudoquantification) or rsem (traditional quantification, i.e., a count matrix)</p>
+<p><strong>From star_salmon</strong></p>
+<p><code>star_salmon/</code></p>
+<ul>
+<li><code>*.Aligned.out.bam</code>: If <code>--save_align_intermeds</code> is specified the original BAM file containing read alignments to the reference genome will be placed in this directory.</li>
+</ul>
+<p><code>star_salmon/log/</code></p>
+<ul>
+<li><code>*.SJ.out.tab</code>: File containing filtered splice junctions detected after mapping the reads.</li>
+<li><code>*.Log.final.out</code>: STAR alignment report containing the mapping results summary.</li>
+<li><code>*.Log.out</code> and <code>*.Log.progress.out</code>: STAR log files containing detailed information about the run. Typically only useful for debugging purposes.</li>
+</ul>
+<p><code>star_salmon/salmon/</code></p>
+<ul>
+<li><code>salmon.merged.gene_counts.tsv</code>: Matrix of gene-level raw counts across all samples.</li>
+<li><code>salmon.merged.gene_tpm.tsv</code>: Matrix of gene-level TPM values across all samples.</li>
+<li><code>salmon.merged.gene_counts.rds</code>: RDS object that can be loaded in R that contains a <a href="https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html">SummarizedExperiment</a> container with the TPM (<code>abundance</code>), estimated counts (<code>counts</code>) and transcript length (<code>length</code>) in the assays slot for genes.</li>
+<li><code>salmon.merged.gene_counts_scaled.tsv</code>: Matrix of gene-level scaled counts across all samples.</li>
+<li><code>salmon.merged.gene_counts_scaled.rds</code>: RDS object that can be loaded in R that contains a <a href="https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html">SummarizedExperiment</a> container with the TPM (<code>abundance</code>), estimated counts (<code>counts</code>) and transcript length (<code>length</code>) in the assays slot for genes.</li>
+<li><code>salmon.merged.gene_counts_length_scaled.tsv</code>: Matrix of gene-level length-scaled counts across all samples.</li>
+<li><code>salmon.merged.gene_counts_length_scaled.rds</code>: RDS object that can be loaded in R that contains a <a href="https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html">SummarizedExperiment</a> container with the TPM (<code>abundance</code>), estimated counts (<code>counts</code>) and transcript length (<code>length</code>) in the assays slot for genes.</li>
+<li><code>salmon.merged.transcript_counts.tsv</code>: Matrix of isoform-level raw counts across all samples.</li>
+<li><code>salmon.merged.transcript_tpm.tsv</code>: Matrix of isoform-level TPM values across all samples.</li>
+<li><code>salmon.merged.transcript_counts.rds</code>: RDS object that can be loaded in R that contains a <a href="https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html">SummarizedExperiment</a> container with the TPM (<code>abundance</code>), estimated counts (<code>counts</code>) and transcript length (<code>length</code>) in the assays slot for transcripts.</li>
+<li><code>salmon_tx2gene.tsv</code>: Tab-delimited file containing gene to transcripts ids mappings.</li>
+</ul>
+<p><code>star_salmon/salmon/&lt;SAMPLE&gt;/</code></p>
+<ul>
+<li><code>logs/</code>: Contains the file <code>salmon_quant.log</code> giving a record of Salmon’s quantification.</li>
+<li><code>quant.genes.sf</code>: Salmon <em>gene</em>-level quantification of the sample, including feature length, effective length, TPM, and number of reads.</li>
+<li><code>quant.sf</code>: Salmon <em>transcript</em>-level quantification of the sample, including feature length, effective length, TPM, and number of reads.</li>
+</ul>
+<p><strong>From star_rsem</strong></p>
+<p><code>star_rsem/</code></p>
+<ul>
+<li><code>rsem.merged.gene_counts.tsv</code>: Matrix of gene-level raw counts across all samples.</li>
+<li><code>rsem.merged.gene_tpm.tsv</code>: Matrix of gene-level TPM values across all samples.</li>
+<li><code>rsem.merged.transcript_counts.tsv</code>: Matrix of isoform-level raw counts across all samples.</li>
+<li><code>rsem.merged.transcript_tpm.tsv</code>: Matrix of isoform-level TPM values across all samples.</li>
+<li><code>*.genes.results</code>: RSEM gene-level quantification results for each sample.</li>
+<li><code>*.isoforms.results</code>: RSEM isoform-level quantification results for each sample.</li>
+</ul>
+<p><code>star_rsem/&lt;SAMPLE&gt;.stat/</code></p>
+<ul>
+<li><code>*.cnt</code>, <code>*.model</code>, <code>*.theta</code>: RSEM counts and statistics for each sample.</li>
+</ul>
+<p><code>star_rsem/log/</code></p>
+<ul>
+<li><code>*.log</code>: STAR alignment report containing the mapping results summary.</li>
+</ul>
+</section>
+<section id="pseudoaligner" class="level4">
+<h4 class="anchored" data-anchor-id="pseudoaligner">7. <code>pseudoaligner</code></h4>
+<p>This is the same output as the <code>star_salmon/salmon</code> folder.</p>
+<hr>
+<p><em>Parts of this lesson have been taken from <a href="https://en.wikipedia.org/wiki/Pipeline_%28software%29">Wikipedia</a>, the <a href="https://www.nextflow.io/">Nextflow webpage</a> and the <a href="https://nf-co.re/">nf-core project webpage</a>.</em></p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/hds-sandbox\.github\.io\/bulk_RNAseq_course\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../develop/04a_preprocessing.html" class="pagination-link" aria-label="Preprocessing steps">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preprocessing steps</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../develop/04c_preprocessing_setup.html" class="pagination-link" aria-label="Ucloud setup">
+        <span class="nav-page-text">Ucloud setup</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
