@@ -1,0 +1,414 @@
+---
+title: Summarised workflow
+format: html 
+toc: false
+summary: You can use this lesson as a template for your own bulk RNAseq analysis
+---
+
+We have detailed the various steps in a differential expression analysis workflow, providing theory with example code. To provide a more succinct reference for the code needed to run a DGE analysis, we have summarized the steps in an analysis below:
+
+## Libraries
+
+```{.r .code-overflow-wrap}
+library(tidyverse)
+library(DESeq2)
+library(ggrepel)
+library(pheatmap)
+library(annotables)
+library(clusterProfiler)
+library(DOSE)
+library(pathview)
+library(org.Hs.eg.db)
+library(tximport)
+library(RColorBrewer)
+```
+
+## Obtaining gene-level counts from your preprocessing and create DESeq object
+
+### If you have a traditional raw count matrix
+
+Load data and metadata
+
+```{.r .code-overflow-wrap}
+data <- read_table("../Data/Vampirium_counts_traditional.tsv") 
+
+meta <- read_table("../Data/samplesheet.csv")
+meta$condition <- factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
+```
+
+Check that the row names of the metadata equal the column names of the **raw counts** data
+
+```{.r .code-overflow-wrap}
+all(colnames(data)[-1] == meta$sample)
+```
+
+Create DESeq2Dataset object
+
+```{.r .code-overflow-wrap}
+dds <- DESeqDataSetFromMatrix(countData = data %>% column_to_rownames("GeneSymbol"), 
+                      colData = meta %>% column_to_rownames("sample"), 
+                      design = ~ condition)
+```
+
+### If you have pseudocounts
+
+Load samplesheet with all our metadata from our pipeline
+
+```{.r .code-overflow-wrap}
+# Load data, metadata and tx2gene and create a txi object
+meta <- read_csv("/work/Intro_bulkRNAseq/Data/samplesheet.csv")
+meta$condition <- factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
+```
+
+Create a list of salmon results
+
+```{.r .code-overflow-wrap}
+dir <- "/work/Intro_bulkRNAseq/Data/salmon"
+tx2gene <- read_table(file.path(dir,"salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
+
+# Get all salmon results files
+files <- file.path(dir, meta$sample, "quant.sf")
+names(files) <- meta$sample
+```
+
+Create txi object
+
+```{.r .code-overflow-wrap}
+txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion = TRUE)
+```
+
+Create dds object
+
+```{.r .code-overflow-wrap}
+dds <- DESeqDataSetFromTximport(txi,
+    colData = meta %>% column_to_rownames("sample"), 
+                              design = ~ condition)
+```
+
+## Exploratory data analysis
+
+Prefiltering low count genes + PCA & hierarchical clustering - identifying outliers and sources of variation in the data:
+
+### Prefiltering low count genes
+
+```{.r .code-overflow-wrap}
+keep <- rowSums(counts(dds)) > 0
+dds <- dds[keep,]
+```
+
+### Rlog transformation
+
+```{.r .code-overflow-wrap}
+# Transform counts for data visualization
+rld <- rlog(dds, 
+            blind=TRUE)
+```
+
+### PCA
+
+Plot PCA
+
+```{.r .code-overflow-wrap}
+plotPCA(rld, 
+        intgroup="condition")
+```
+
+### Heatmaps
+
+Extract the rlog matrix from the object
+
+```{.r .code-overflow-wrap}
+rld_mat <- assay(rld)
+# Pearson correlation betweeen samples
+rld_cor <- cor(rld_mat) 
+# distances are computed by rows, so we need to transponse the matrix
+rld_dist <- as.matrix(dist(t(assay(rld))))
+```
+
+Plot heatmap of correlations
+
+```{.r .code-overflow-wrap}
+pheatmap(rld_cor, 
+         annotation = meta %>% column_to_rownames("sample") %>% select("condition"))
+```
+
+Plot heatmap of distances with a new color range
+
+```{.r .code-overflow-wrap}
+# Colors from the RColorBrewer package (only 6)
+heat.colors <- brewer.pal(6, "Blues") 
+# Interpolate 100 colors
+heat.colors <- colorRampPalette(heat.colors)(100) 
+
+pheatmap(rld_dist, annotation = meta %>% 
+      column_to_rownames("sample") %>% 
+      select("condition"), color = heat.colors)
+```
+
+## Run DESeq2:
+
+**Optional step** - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using
+
+```{.r .code-overflow-wrap}
+# dds <- DESeqDataSetFromMatrix(data, colData = meta, design = ~ covariate + condition)
+```
+
+Run DEseq2
+
+```{.r .code-overflow-wrap}
+# Run DESeq2 differential expression analysis
+dds <- DESeq(dds)
+```
+
+**Optional step** - Output normalized counts to save as a file to access outside RStudio using
+
+```{.r .code-overflow-wrap}
+normalized_counts <- counts(dds, normalized=TRUE)
+```
+
+## Check the fit of the dispersion estimates
+
+Plot dispersion estimates
+
+```{.r .code-overflow-wrap}
+plotDispEsts(dds)
+```
+
+## Create contrasts to perform Wald testing or the shrunken log2 fold changes between specific conditions
+
+Formal LFC calculation
+
+```{.r .code-overflow-wrap}
+# Specify contrast for comparison of interest
+contrast <- c("condition", "control", "vampirium")
+
+# Output results of Wald test for contrast
+res <- results(dds, 
+        contrast = contrast, 
+        alpha = 0.05)
+```
+
+Shrinkage
+
+```{.r .code-overflow-wrap}
+# Get name of the contrast you would like to use
+resultsNames(dds)
+
+# Shrink the log2 fold changes to be more accurate
+res <- lfcShrink(dds, 
+      coef = "condition_control_vs_vampirium", 
+      type = "apeglm")
+```
+
+## Output significant results:
+
+```{.r .code-overflow-wrap}
+# Set thresholds
+padj.cutoff <- 0.05
+
+# Turn the results object into a tibble for use with tidyverse functions
+res_tbl <- res %>%
+  data.frame() %>%
+  rownames_to_column(var="gene") %>% 
+  as_tibble()
+
+# Subset the significant results
+sig_res <- filter(res_tbl, 
+            padj < padj.cutoff)
+```
+
+## Visualize results: volcano plots, heatmaps, normalized counts plots of top genes, etc.
+
+Function to get gene_IDs based on gene names. The function will take as input a vector of gene names of interest, the tx2gene dataframe and the dds object that you analyzed.
+
+```{.r .code-overflow-wrap}
+lookup <- function(gene_name, tx2gene, dds){
+  hits <- tx2gene %>% select(gene_symbol, gene_ID) %>% distinct() %>% 
+    filter(gene_symbol %in% gene_name & gene_ID %in% rownames(dds))
+  return(hits)
+}
+
+lookup(gene_name = "TSPAN7", tx2gene = tx2gene, dds = dds)
+```
+
+Plot expression for single gene
+
+```{.r .code-overflow-wrap}
+plotCounts(dds, gene="ENSG00000156298", intgroup="condition")
+```
+
+### MAplot
+
+```{.r .code-overflow-wrap}
+plotMA(res)
+```
+
+### Volcano plot with labels (top N genes)
+
+```{.r .code-overflow-wrap}
+## Obtain logical vector where TRUE values denote padj values < 0.05 and fold change > 1.5 in either direction
+res_tbl <- res_tbl %>% 
+  mutate(threshold = padj < 0.05 & abs(log2FoldChange) >= 0.58)
+```
+
+```{.r .code-overflow-wrap}
+## Create an empty column to indicate which genes to label
+res_tbl <- res_tbl %>% mutate(genelabels = "")
+
+## Sort by padj values 
+res_tbl <- res_tbl %>% arrange(padj)
+
+## Populate the genelabels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes
+res_tbl$genelabels[1:10] <- as.character(res_tbl$gene[1:10])
+
+head(res_tbl)
+```
+
+```{.r .code-overflow-wrap}
+ggplot(res_tbl, aes(x = log2FoldChange, y = -log10(padj))) +
+  geom_point(aes(colour = threshold)) +
+  geom_text_repel(aes(label = genelabels)) +
+  ggtitle("Mov10 overexpression") +
+  xlab("log2 fold change") + 
+  ylab("-log10 adjusted p-value") +
+  theme(legend.position = "none",
+        plot.title = element_text(size = rel(1.5), hjust = 0.5),
+        axis.title = element_text(size = rel(1.25))) 
+```
+
+### Heatmap of differentially expressed genes
+
+```{.r .code-overflow-wrap}
+# filter significant results from normalized counts
+norm_sig <- normalized_counts %>% as_tibble(rownames = "gene") %>%
+  dplyr::filter(gene %in% sig_res$gene) %>% column_to_rownames(var="gene")
+```
+
+```{.r .code-overflow-wrap}
+pheatmap(norm_sig, 
+  cluster_rows = T, #cluster by expression pattern
+  scale = "row", # scale by gene so expression pattern is visible
+  treeheight_row = 0, # dont show the row dendogram
+  show_rownames = F, # remove rownames so it is more clear
+  annotation = meta %>% column_to_rownames(var = "sample") %>% 
+  dplyr::select("condition")
+)
+```
+
+## Perform analysis to extract functional significance of results: GO or KEGG enrichment, GSEA, etc.
+
+### Annotate with `annotables`
+
+```{.r .code-overflow-wrap}
+ids <- grch38 %>% dplyr::filter(ensgene %in% res_tbl$gene) 
+res_ids <- inner_join(res_tbl, ids, by=c("gene"="ensgene"))
+```
+
+### Perform enrichment analysis of GO terms (can be done as well with KEGG pathways)
+
+```{.r .code-overflow-wrap}
+# Create background dataset for hypergeometric testing using all genes tested for significance in the results
+all_genes <- dplyr::filter(res_ids, !is.na(gene)) %>% 
+  pull(gene) %>% 
+  as.character()
+
+# Extract significant results
+sig <- dplyr::filter(res_ids, padj < 0.05 & !is.na(gene))
+
+sig_genes <- sig %>% 
+  pull(gene) %>% 
+  as.character()
+```
+
+```{.r .code-overflow-wrap}
+# Perform enrichment analysis
+ego <- enrichGO(gene = sig_genes, 
+                universe = all_genes,
+                keyType = "ENSEMBL",
+                OrgDb = org.Hs.eg.db, 
+                ont = "BP", 
+                pAdjustMethod = "BH", 
+                qvalueCutoff = 0.05, 
+                readable = TRUE)
+
+ego <- enrichplot::pairwise_termsim(ego)
+```
+
+### Visualize result
+
+```{.r .code-overflow-wrap}
+dotplot(ego, showCategory=50)
+```
+
+```{.r .code-overflow-wrap}
+emapplot(ego, showCategory = 50)
+```
+
+### Cnetplot
+
+```{.r .code-overflow-wrap}
+## To color genes by log2 fold changes, we need to extract the log2 fold changes from our results table creating a named vector
+sig_foldchanges <- sig$log2FoldChange
+
+names(sig_foldchanges) <- sig$gene
+```
+
+```{.r .code-overflow-wrap}
+## Cnetplot details the genes associated with one or more terms - by default gives the top 5 significant terms (by padj)
+cnetplot(ego, 
+         categorySize="pvalue", 
+         showCategory = 5, 
+         foldChange=sig_foldchanges, 
+         vertex.label.font=6)
+```
+
+### Perform GSEA analysis of KEGG pathways (can be done as well with GO terms)
+
+```{.r .code-overflow-wrap}
+# Extract entrez IDs. IDs should not be duplicated or NA
+res_entrez <- dplyr::filter(res_ids, entrez != "NA" & entrez != "NULL" & duplicated(entrez)==F)
+
+## Extract the foldchanges
+foldchanges <- res_entrez$log2FoldChange
+
+## Name each fold change with the corresponding Entrez ID
+names(foldchanges) <- res_entrez$entrez
+
+## Sort fold changes in decreasing order
+foldchanges <- sort(foldchanges, decreasing = TRUE)
+```
+
+```{.r .code-overflow-wrap}
+# Run GSEA of KEGG
+gseaKEGG <- gseKEGG(geneList = foldchanges, # ordered named vector of fold changes (Entrez IDs are the associated names)
+            organism = "hsa", # supported organisms listed below
+            pvalueCutoff = 0.05, # padj cutoff value
+            verbose = FALSE)
+
+gseaKEGG_results <- gseaKEGG@result
+head(gseaKEGG_results)
+```
+
+```{.r .code-overflow-wrap}
+## Plot the GSEA plot for a single enriched pathway:
+gseaplot(gseaKEGG, geneSetID = gseaKEGG_results$ID[1])
+```
+
+```{.r .code-overflow-wrap}
+## Output images for a single significant KEGG pathway
+pathview(gene.data = foldchanges,
+        pathway.id = gseaKEGG_results$ID[1],
+        species = "hsa",
+        limit = list(gene = 2, # value gives the max/min limit for foldchanges
+        cpd = 1))
+```
+
+```{.r .code-overflow-wrap}
+knitr::include_graphics(paste0("./",gseaKEGG_results$ID[1],".png"))
+```
+
+## Make sure to output the versions of all tools used in the DE analysis:
+
+```{.r .code-overflow-wrap}
+sessionInfo()
+```

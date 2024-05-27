@@ -1,0 +1,67 @@
+project:
+  type: website
+  title: 'Bulk RNAseq data analysis'
+
+website:
+  site-url: 'https://hds-sandbox.github.io/bulk_RNAseq_course/'
+  page-navigation: true
+  navbar:
+    logo: develop/img/logo.png
+    left:
+      - href: develop/index.qmd
+        text: Introduction
+      - text: Experiment design
+        file: develop/02_experimental_planning.qmd
+      - text: Data processing
+        file: develop/04a_preprocessing.qmd
+      - text: Data analyses
+        file: develop/05a_data_analysis_setup.qmd
+      - text: "Workshop wrap-up"
+        file: develop/summary.qmd
+    right: 
+      - icon: github
+        href: https://github.com/hds-sandbox
+        aria-label: GitHub
+  sidebar:
+    - title: "Experiment design"
+      style: "docked"
+      search: true
+      contents:
+        - develop/02_experimental_planning.qmd
+        - develop/03_data_explanation.qmd
+    - title: "Data processing"
+      contents:
+        - develop/04a_preprocessing.qmd
+        - develop/04b_pipelines.qmd
+        - develop/04c_preprocessing_setup.qmd
+    - title: "Data analyses"
+      contents:
+        - develop/05a_data_analysis_setup.qmd
+        - develop/05b_count_matrix.qmd
+        - section: "Quality control"
+          contents: 
+            - develop/05c_count_normalization.qmd
+            - develop/06_exploratory_analysis.qmd
+        - section: "Differential Expression"
+          contents: 
+            - develop/07_extra_contrast_design.qmd
+            - develop/07a_DEA.qmd
+            - develop/07b_hypothesis_testing.qmd
+            - develop/07c_DEA_visualization.qmd
+        - section: "Functional Analysis"
+          contents: 
+            - develop/08a_FA_genomic_annotation.qmd
+            - develop/08b_FA_overrepresentation.qmd
+            - develop/08c_FA_GSEA.qmd
+        - section: "Workflow summary"
+          contents: develop/09_summarized_workflow.qmd
+format:
+  html:
+    theme: 
+      light: [materia, css/materialight.scss]
+      dark: darkly
+    toc: true
+    code-fold: true
+
+filters:
+  - css/custom-callout.lua

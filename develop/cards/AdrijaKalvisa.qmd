@@ -1,0 +1,7 @@
+---
+title: "Adrija Kalvisa"
+description: "Data Scientist"
+image: https://www2.adm.ku.dk/selv/pls/prt_www40.hentindhold_cms?p_personid=645384
+---
+
+[![](LinkedIN.png){width=50}](https://www.linkedin.com/in/adrija-kalvisa/)   [![](Github_black.png){width=50}](https://github.com/AdrijaK)

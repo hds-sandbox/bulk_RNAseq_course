@@ -1,0 +1,8 @@
+---
+title: "Thilde Bagger Terkelsen"
+description: "Data Scientist"
+---
+
+![](../img/cards/thilde.JPG){width=300}
+
+[![](LinkedIN.png){width=50}](https://dk.linkedin.com/in//thilde-b-terkelsen)   [![](Github_black.png){width=50}](https://github.com/ThildeBT)   [![](Outlook.png){width=50}](thilde.terkelsen@sund.ku.dk?subject=Test)   [![](mapPin.png){width=50}](https:heads.ku.dk) 
