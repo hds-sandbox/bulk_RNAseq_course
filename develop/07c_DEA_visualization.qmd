@@ -1,7 +1,9 @@
 ---
 title: Visualization
-format: html 
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: In this lesson we explain how visualize DEA results using log fold shrinkage
 ---
 

@@ -1,7 +1,10 @@
 ---
 summary: In this lesson we explain the dataset used for the workshop
 page-navigation: true
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 ---
 
 # Dataset explanation

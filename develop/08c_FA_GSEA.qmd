@@ -1,7 +1,9 @@
 ---
 title: Functional class scoring
-format: html 
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: In this lesson we explain how to run functional analysis on your results using Class Scoring methods
 ---
 

@@ -1,11 +1,12 @@
 ---
-format:
-    html
 date-modified: last-modified
 date-format: long
 link-citations: true
 page-navigation: true
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: This lesson explains several experimental design considerations before analysing bulk RNAseq data.
 ---
 

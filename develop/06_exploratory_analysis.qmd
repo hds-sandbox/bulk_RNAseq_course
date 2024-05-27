@@ -1,6 +1,9 @@
 ---
 title: Exploratory analysis
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: In this lesson we explain how to explore the relationships between samples using PCA and heatmaps
 ---
 

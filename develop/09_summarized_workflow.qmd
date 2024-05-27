@@ -1,7 +1,9 @@
 ---
 title: Summarised workflow
-format: html 
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: You can use this lesson as a template for your own bulk RNAseq analysis
 ---
 
