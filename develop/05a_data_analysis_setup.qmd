@@ -1,0 +1,94 @@
+---
+title: UCloud setup
+format: html
+lightbox: true
+toc: false
+summary: In this lesson we explain how to start an Rstudio session for data analysis
+---
+
+:::{.callout-note title="Section Overview"}
+
+⏰ **Time Estimation:** 20 minutes  
+
+💬 **Learning Objectives:**
+
+1. Start a transcriptomics app job in UCloud for the next lessons in data analysis
+:::
+
+<span style="font-size:30px;"> Get started on UCloud to perform data analysis<span>
+
+## Submit the job in UCloud
+
+Access [UCloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` where you have been invited.
+
+![](./img/04c_preprocessing_setup/chooseProject.png)
+
+Click on `Apps` on the left-side menu, and search for the application `Transcriptomics Sandbox` and select it:
+
+![](./img/05a_data_analysis_setup/apps.png)
+
+Once you are in the `Transcriptomics Sandbox`, choose appropriate parameters to run a job. Here, you will find a set of recommended values to choose. First, click on `Import parameters`, then, in the prompt window, choose `Import file from UCloud` and select the file  `jobParameters.json` which you will find located in the Drive `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `jobParameters.json`
+
+:::{.callout-warning}
+**Ensure that the hard-drive icon is labeled "sequencing_data" and you are in the "sandbox_bulkRNAseq" workspace.**
+
+You can select the drive by clicking on the down arrow (**&or;**) icon to open a dropdown menu.
+:::
+
+![](./img/05a_data_analysis_setup/importParamsTranscript.png)
+
+Let's take a look at the parameters we have chosen. We have given it a `Job name`, `Hours`, `Machine type` as well as a `Mandatory Parameter` `Select a module`. We have selected the module `Introduction to bulk RNAseq analysis in R`. This module will load the materials necessary to follow the next lessons. It will also contain a backup of the preprocessing results so that you may continue in case that your preprocessing did not work.
+
+![](./img/05a_data_analysis_setup/jobParams.png)
+
+Optional: If you have successfully run nf-core RNA jobs and want to use the files you generated from your own preprocessing results, go to `Select folders to use` and `Add folder` by selecting the one containing the pipeline results. They will be located in `Member Files:YourName#numbers` -> `Jobs` -> `nf-core: rnaseq` -> `job_name (RNAseq preprocessing ...)` -> `preprocessing_results_salmon` (unless you have moved them elsewhere). 
+
+Now, you are ready to run the app by clicking on the button on the right column of the screen (`submit`).
+
+Next, wait until the screen looks like the figure below. This process usually takes a few minutes. You can always come back to this screen via the `Runs` button in the left menu on UCloud. From there, you can add extra time or stop the app if you no longer need it.
+
+![](./img/05a_data_analysis_setup/startappTrans.png)
+
+Click on `open interface` on the top right-hand side of the screen. You will start Rstudio through your browser!
+
+On the lower right side of Rstudio, in the file explorer, you should see a folder called `Intro_to_bulkRNAseq`. Here you will find the materials of the course. If you have added your own preprocessing results, they will also listed here.
+
+![](./img/05a_data_analysis_setup/courseMaterial.png)
+
+You are ready to start analysing your data!
+
+## Stopping the app
+
+When you are finished, go to `Runs` > `Running jobs` in uCloud and click on the `Job name` you want to stop if you have several running. It is important to stop the job to prevent it from using unnecessary resources. Here, you can also click on the job and add extra time!
+
+![](./img/04c_preprocessing_setup/stopRun.png)
+
+## Saved work
+
+After running a first work session, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *Transcriptomics Sandbox*, which will contain all the jobs you have run with the Transcriptomics Sandbox app. Inside this folder, you will find your folder named after the job name you gave in the previous step.
+
+1. Your material will be saved in a volume with your username, that you should be able to see under the menu `Files`. 
+
+![](./img/04c_preprocessing_setup/fileDrives.png)
+
+1. Go to `Jobs → Transcriptomics Sandbox → <Job name> → Intro_to_bulkRNAseq`
+
+![](./img/05a_data_analysis_setup/fileTranscript.png)
+
+## Restarting the Rstudio session
+
+If you want to keep working on your previous results, you can restart an Rstudio session following these steps:
+
+Click on `Apps` on the left-side menu, and look for the application `Transcriptomics Sandbox` and click on it (recheck the top figures).
+
+You will be met again with a series of possible parameters to choose. You have to assign again the `Import parameters` file as before but now you can either select the JSON file provided by us or click on one of your previous runs and all the selected parameters will be automatically imported (previous runs are shown in the main prompt window).
+
+`sandbox_bulkRNASeq` -> `bulk_RNAseq_course` -> `jobParameters.json`
+
+In *"Select folders to use"*, add the folder with the results of your previous job. First, select: 
+
+ `Member Files: your_username -> Jobs -> Transcriptomics Sandbox -> <job_name> -> Intro_to_bulkRNAseq`
+ 
+Then, click `Use`.
+
+You are ready to run the app again by clicking on the button on the right column of the screen (`submit`). After opening the Rstudio interface, you should be able to access the folder `Intro_to_bulkRNAseq`, where you will find your course notebooks and results from your previous work!

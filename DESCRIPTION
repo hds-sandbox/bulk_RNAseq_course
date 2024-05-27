@@ -1,0 +1,13 @@
+Package: rquarto
+Title: Packages needed for the quarto course webpage
+Version: 1.0.0
+Authors@R: 
+    c(person(given = "Alba",
+             family = "Refoyo",
+             role = c("aut", "cre"),
+             email = "alba.martinez@sund.ku.dk"))
+Description: Packages needed for the quarto webpage to compile the few R codes
+Imports: xml2, curl
+Suggests: covr, knitr, rmarkdown, testthat, gt, tidyverse, ggplot2
+License: GPL (>= 2)
+VignetteBuilder: knitr, rmarkdown
