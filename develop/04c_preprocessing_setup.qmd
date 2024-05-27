@@ -1,8 +1,10 @@
 ---
 title: Ucloud setup
-format: html
 lightbox: true
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: In this lesson we explain how to run the nf-core pipeline in the UCloud computing system
 ---
 
@@ -256,3 +258,4 @@ After finishing the job, everything that the pipeline has created will be saved 
 ![](./img/04c_preprocessing_setup/savedWork2.png)
 
 Now you have access to the full results of your pipeline! As explained in the [previous lesson](04b_pipelines.qmd), the nf-core rnaseq workflow will create a MultiQC report summarizing several steps into a single html file that is interactive and explorable. In addition, there will be a folder with the results of the individual QC steps as well as the alignment and quantification results. Take your time and check it all out!
+

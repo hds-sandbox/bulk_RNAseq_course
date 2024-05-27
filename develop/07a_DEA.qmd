@@ -1,6 +1,9 @@
 ---
 title: DESeq2
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: In this lesson we explain how DEA works in DESeq
 ---
 

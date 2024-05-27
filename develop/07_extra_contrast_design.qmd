@@ -1,6 +1,9 @@
 ---
 title: Contrast designs
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: In this lesson we explain how create complex design formulas and contrasts
 ---
 

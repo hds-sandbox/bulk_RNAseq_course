@@ -1,8 +1,10 @@
 ---
 title: RNAseq count matrix
-format: html
 lightbox: true
-toc: false 
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: In this lesson we explain the attributes of bulk RNAseq count data
 ---
 

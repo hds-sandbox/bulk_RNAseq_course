@@ -1,6 +1,10 @@
 ---
 title: Preprocessing steps
 summary: In this lesson we explain theory behind read preprocessing
+format:
+  html:
+    page-layout: full
+    toc: false
 ---
 
 :::{.callout-note title="Section Overview"}

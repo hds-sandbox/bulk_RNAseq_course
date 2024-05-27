@@ -1,8 +1,10 @@
 ---
 title: Workshop summary
 summary: In here we have summarised all the steps of an RNAseq analysis
-format: html
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 ---
 
 Below you will find a summary of all the steps used in the workshop, as well as annotations for each of the steps.

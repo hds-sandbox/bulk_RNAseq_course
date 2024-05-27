@@ -3,10 +3,12 @@ project:
   title: 'Bulk RNAseq data analysis'
 
 website:
-  site-url: 'https://hds-sandbox.github.io/bulk_RNAseq_course/'
+  site-url: 'https://hds-sandbox.github.io/bulk_RNAseq_course'
   page-navigation: true
   navbar:
     logo: develop/img/logo.png
+    logo-href: http://hds-sandbox.github.io/ 
+    background: primary
     left:
       - href: develop/index.qmd
         text: Introduction

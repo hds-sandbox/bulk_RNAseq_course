@@ -1,8 +1,10 @@
 ---
 title: UCloud setup
-format: html
 lightbox: true
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: In this lesson we explain how to start an Rstudio session for data analysis
 ---
 

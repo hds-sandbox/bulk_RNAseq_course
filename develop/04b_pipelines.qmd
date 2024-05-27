@@ -1,8 +1,9 @@
 ---
 title: Nextflow & nf-core pipelines
-format: 
-    html
-toc: false
+format:
+  html:
+    page-layout: full
+    toc: false
 summary: In this lesson we explain a community curated pipeline for bulk RNAseq preprocessing
 embed-resources: false
 ---
