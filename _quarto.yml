@@ -11,7 +11,7 @@ website:
     background: primary
     left:
       - href: develop/index.qmd
-        text: Introduction
+        text: Home
       - text: Experiment design
         file: develop/02_experimental_planning.qmd
       - text: Data processing
