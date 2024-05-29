@@ -5,3 +5,5 @@ image: https://www2.adm.ku.dk/selv/pls/prt_www40.hentindhold_cms?p_personid=6453
 ---
 
 [![](LinkedIN.png){width=50}](https://www.linkedin.com/in/adrija-kalvisa/)   [![](Github_black.png){width=50}](https://github.com/AdrijaK)
+
+[Adrija](https://renew.ku.dk/people/?id=645384&vis=medarbejder) is a Special consultant at the NNF CPR/reNEW Genomics platform. Find out more about the genomics platform [here](https://www.cpr.ku.dk/research/facilities/genomics/). 
