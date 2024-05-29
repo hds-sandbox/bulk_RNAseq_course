@@ -1,5 +1,5 @@
 ---
-title: "Thilde Bagger Terkelsen"
+title: "Thilde Terkelsen"
 description: "Data Scientist"
 ---
 
