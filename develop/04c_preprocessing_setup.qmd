@@ -18,9 +18,9 @@ summary: In this lesson we explain how to run the nf-core pipeline in the UCloud
 3. Submit a nf-core RNAseq run on our data
 :::
 
-<span style="font-size:30px;"> Running the bulk RNAseq pipeline in uCloud <span>
+<span style="font-size:30px;"> Running the nf-core RNAseq pipeline in UCloud <span>
 
-## Submit a job in Ucloud
+## Submit a job
 
 Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` where you have been invited. Or ask to be invited to <jose.romero@sund.ku.dk>.
 
