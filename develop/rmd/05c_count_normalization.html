@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -288,7 +288,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>While TPM and RPKM/FPKM normalization methods both account for sequencing depth and gene length, RPKM/FPKM are not recommended. <strong>The reason is that the normalized count values output by the RPKM/FPKM method are not comparable between samples.</strong></p>
 <p>Using RPKM/FPKM normalization, the total number of RPKM/FPKM normalized counts for each sample will be different. Therefore, you cannot compare the normalized counts for each gene equally between samples.</p>
 <p><strong>RPKM-normalized counts table</strong></p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>gene</th>
@@ -330,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1-creates-a-pseudo-reference-sample-row-wise-geometric-mean" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-creates-a-pseudo-reference-sample-row-wise-geometric-mean">Step 1: creates a pseudo-reference sample (row-wise geometric mean)</h3>
 <p>For each gene, a pseudo-reference sample is created that is equal to the geometric mean across all samples.</p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>gene</th>
@@ -364,7 +364,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-2-calculates-ratio-of-each-sample-to-the-reference" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-calculates-ratio-of-each-sample-to-the-reference">Step 2: calculates ratio of each sample to the reference</h3>
 <p>For every gene in a sample, the ratios (sample/ref) are calculated (as shown below). This is performed for each sample in the dataset. Since the majority of genes are not differentially expressed, the majority of genes in each sample should have similar ratios within the sample.</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 7%">
 <col style="width: 9%">
@@ -460,7 +460,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>SampleA median ratio = 1.3</p>
 <p>SampleB median ratio = 0.77</p>
 <p><strong>Raw Counts</strong></p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>gene</th>
@@ -487,7 +487,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p><strong>Normalized Counts</strong></p>
-<table class="table">
+<table class="caption-top table">
 <thead>
 <tr class="header">
 <th>gene</th>
