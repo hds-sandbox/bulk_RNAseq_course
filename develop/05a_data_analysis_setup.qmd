@@ -90,6 +90,10 @@ You will be met again with a series of possible parameters to choose. You have t
 In *"Select folders to use"*, add the folder with the results of your previous job. First, select: 
 
  `Member Files: your_username -> Jobs -> Transcriptomics Sandbox -> <job_name> -> Intro_to_bulkRNAseq`
+
+ If you haven't run your own nf-core/rnaseq analysis, please mount the data by selecting the following folder:
+
+ `/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/`
  
 Then, click `Use`.
 
