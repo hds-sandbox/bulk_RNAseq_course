@@ -328,15 +328,14 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Ensure that the hard-drive icon is labeled “sequencing_data” and you are in the “sandbox_bulkRNAseq” workspace.</strong></p>
-<p>You can select the drive by clicking on the down arrow (<strong>∨</strong>) icon to open a dropdown menu.</p>
+<p><strong>Ensure that you are in the “sandbox_bulkRNAseq” workspace.</strong> You can select the workspace by clicking on the down arrow (<strong>∨</strong>) icon to open a dropdown menu.</p>
 </div>
 </div>
 <p><a href="./img/05a_data_analysis_setup/importParamsTranscript.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="./img/05a_data_analysis_setup/importParamsTranscript.png" class="img-fluid"></a></p>
 <p>Let’s take a look at the parameters we have chosen. We have given it a <code>Job name</code>, <code>Hours</code>, <code>Machine type</code> as well as a <code>Mandatory Parameter</code> <code>Select a module</code>. We have selected the module <code>Introduction to bulk RNAseq analysis in R</code>. <strong>This module will load the materials necessary to follow the next lessons. It will also contain a backup of the preprocessing results</strong> so that you may continue in case that your preprocessing did not work (but you will need to mount the data!).</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="./img/05a_data_analysis_setup/jobParams.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4" title="Job setting using user preprocessing results"><img src="./img/05a_data_analysis_setup/jobParams.png" class="img-fluid figure-img" alt="Job setting using user preprocessing results"></a></p>
+<p><a href="./img/05a_data_analysis_setup/jobParams.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4" title="Job setting using user preprocessing results"><img src="./img/05a_data_analysis_setup/jobParams.png" class="img-fluid figure-img" alt="Job setting using user preprocessing results"></a></p>
 <figcaption>Job setting using user preprocessing results</figcaption>
 </figure>
 </div>
@@ -362,7 +361,7 @@ Warning
 </div>
 <div class="callout-body-container callout-body">
 <p>Do not select <code>add folder</code> if you haven’t run nf-core pipeline. Once you launch RStudio, ensure there is a <code>Data</code> folder.</p>
-<p>IF (AND ONLY IF) you have <strong>correctly imported parameters</strong> but you do not find the Data folder, follow the instructions below! If you still run into problems, please contact us.</p>
+<p>IF (AND ONLY IF) you have <strong>correctly imported parameters but you do not find the Data folder</strong> follow the instructions below! If you still run into problems, please contact us.</p>
 <div class="callout callout-style-default callout-important callout-titled" title="Mount the backup data drive">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -375,7 +374,16 @@ Mount the backup data drive
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>If the data isn’t present, you will need to mount the data drive by selecting one of our backup folders that contains the data. Click on <code>add folder</code> and then choose <code>/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/</code> <img src="./img/05a_data_analysis_setup/data_select.png" class="img-fluid" alt="back-up data"></p>
+<p>If the data isn’t present, you will need to mount the data drive by selecting one of our backup folders that contains the data. Click on <code>add folder</code> and then choose <code>/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/</code>. Change the drive by clicking on the down arrow (<strong>∨</strong>) icon to open a dropdown menu. Afterwards, add your home folder so you can write the results to your own drive. <strong>You will not have write permissions on the <code>sandbox_bulRNAseq</code> drive</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./img/05a_data_analysis_setup/data_select.png" class="lightbox" data-glightbox="description: .lightbox-desc-5" data-gallery="quarto-lightbox-gallery-5" title="back-up data"><img src="./img/05a_data_analysis_setup/data_select.png" class="img-fluid figure-img" alt="back-up data"></a></p>
+<figcaption>back-up data</figcaption>
+</figure>
+</div>
+<!-- 
+Alternatively, you can also select the hard-drive icon is labeled "sequencing_data". 
+-->
 </div>
 </div>
 </div>
@@ -385,16 +393,16 @@ Mount the backup data drive
 </div>
 <p>Now, you are ready to run the app by clicking on the button on the right column of the screen (<code>submit</code>).</p>
 <p>Next, wait until the screen looks like the figure below. This process usually takes a few minutes. You can always come back to this screen via the <code>Runs</code> button in the left menu on UCloud. From there, you can add extra time or stop the app if you no longer need it.</p>
-<p><a href="./img/05a_data_analysis_setup/startappTrans.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="./img/05a_data_analysis_setup/startappTrans.png" class="img-fluid"></a></p>
+<p><a href="./img/05a_data_analysis_setup/startappTrans.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="./img/05a_data_analysis_setup/startappTrans.png" class="img-fluid"></a></p>
 <p>Click on <code>open interface</code> on the top right-hand side of the screen. You will start Rstudio through your browser!</p>
 <p>On the lower right side of Rstudio, in the file explorer, you should see a folder called <code>Intro_to_bulkRNAseq</code>. Here you will find the materials of the course. If you have added your own preprocessing results, they will also listed here.</p>
-<p><a href="./img/05a_data_analysis_setup/courseMaterial.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="./img/05a_data_analysis_setup/courseMaterial.png" class="img-fluid"></a></p>
+<p><a href="./img/05a_data_analysis_setup/courseMaterial.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="./img/05a_data_analysis_setup/courseMaterial.png" class="img-fluid"></a></p>
 <p>You are ready to start analysing your data!</p>
 </section>
 <section id="stopping-the-app" class="level2">
 <h2 class="anchored" data-anchor-id="stopping-the-app">Stopping the app</h2>
 <p>When you are finished, go to <code>Runs</code> &gt; <code>Running jobs</code> in uCloud and click on the <code>Job name</code> you want to stop if you have several running. It is important to stop the job to prevent it from using unnecessary resources. Here, you can also click on the job and add extra time!</p>
-<p><a href="./img/04c_preprocessing_setup/stopRun.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="./img/04c_preprocessing_setup/stopRun.png" class="img-fluid"></a></p>
+<p><a href="./img/04c_preprocessing_setup/stopRun.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="./img/04c_preprocessing_setup/stopRun.png" class="img-fluid"></a></p>
 </section>
 <section id="saved-work" class="level2">
 <h2 class="anchored" data-anchor-id="saved-work">Saved work</h2>
@@ -402,11 +410,11 @@ Mount the backup data drive
 <ol type="1">
 <li>Your material will be saved in a volume with your username, that you should be able to see under the menu <code>Files</code>.</li>
 </ol>
-<p><a href="./img/04c_preprocessing_setup/fileDrives.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="./img/04c_preprocessing_setup/fileDrives.png" class="img-fluid"></a></p>
+<p><a href="./img/04c_preprocessing_setup/fileDrives.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="./img/04c_preprocessing_setup/fileDrives.png" class="img-fluid"></a></p>
 <ol type="1">
 <li>Go to <code>Jobs → Transcriptomics Sandbox → &lt;Job name&gt; → Intro_to_bulkRNAseq</code></li>
 </ol>
-<p><a href="./img/05a_data_analysis_setup/fileTranscript.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="./img/05a_data_analysis_setup/fileTranscript.png" class="img-fluid"></a></p>
+<p><a href="./img/05a_data_analysis_setup/fileTranscript.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="./img/05a_data_analysis_setup/fileTranscript.png" class="img-fluid"></a></p>
 </section>
 <section id="restarting-the-rstudio-session" class="level2">
 <h2 class="anchored" data-anchor-id="restarting-the-rstudio-session">Restarting the Rstudio session</h2>
@@ -422,6 +430,7 @@ Mount the backup data drive
 
 <div class="hidden" aria-hidden="true">
 <span class="glightbox-desc lightbox-desc-4">Job setting using user preprocessing results</span>
+<span class="glightbox-desc lightbox-desc-5">back-up data</span>
 </div>
 </section>
 
@@ -989,7 +998,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","openEffect":"zoom","loop":false,"selector":".lightbox","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
