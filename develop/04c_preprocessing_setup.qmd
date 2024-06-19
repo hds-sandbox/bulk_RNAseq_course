@@ -22,7 +22,7 @@ summary: In this lesson we explain how to run the nf-core pipeline in the UCloud
 
 ## Submit a job in Ucloud
 
-Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` where you have been invited. Or ask to be invited to <jose.romero@sund.ku.dk>.
+Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` where you have been invited ([contact](https://hds-sandbox.github.io/contact/contact.html) the team if you haven't). 
 
 ![](./img/04c_preprocessing_setup/chooseProject.png)
 
