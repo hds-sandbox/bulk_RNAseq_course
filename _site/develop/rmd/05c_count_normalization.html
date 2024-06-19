@@ -102,40 +102,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@id": "https://hds-sandbox.github.io/bulk_RNAseq_course/",
-      "@type": "LearningResource",
-      "dct:conformsTo": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
-      "description": "This workshop includes a tutorial on how to approach RNAseq data, starting from your sequencing reads (fastq files). Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the Harvard Chan Bioinformatics Core (HBC), a collection of modified tutorials from the DESeq2, R language vignettes and the nf-core rnaseq pipeline.",
-      "keywords": [
-        "bioinformatics, RNAseq, bulk, NGS"
-      ],
-      "learningResourceType": [
-        "e-learning"
-      ],
-      "license": [
-        {
-          "@id": "https://creativecommons.org/licenses/by-sa/4.0/legalcode",
-          "@type": "CreativeWork"
-        }
-      ],
-      "mentions": [
-        {
-          "@id": "10.5281/zenodo.8046218",
-          "@type": "Thing"
-        },
-        {
-          "@id": "https://zenodo.org/record/7956067",
-          "@type": "Thing"
-        }
-      ],
-      "name": "Introduction to bulk RNAseq analysis workshop",
-      "educationalLevel": "Beginner",
-      "audience": "Researchers, PhDs, Postdocs, MSc"
-    }
-    </script>
 
 
 </head>
@@ -147,10 +113,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <a href="http://hds-sandbox.github.io/" class="navbar-brand navbar-brand-logo">
     <img src="../../develop/img/logo.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="http://hds-sandbox.github.io/">
     <span class="navbar-title">Bulk RNAseq data analysis</span>
     </a>
   </div>
@@ -161,12 +127,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.qmd"> 
+    <a class="nav-link" href="../../develop/index.html"> 
 <span class="menu-text">Introduction</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../index.qmd"> 
-<span class="menu-text">Experimental planning</span></a>
+    <a class="nav-link" href="../../develop/02_experimental_planning.html"> 
+<span class="menu-text">Experiment design</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/04a_preprocessing.html"> 
+<span class="menu-text">Data processing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/05a_data_analysis_setup.html"> 
+<span class="menu-text">Data analyses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/summary.html"> 
+<span class="menu-text">Workshop wrap-up</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -591,12 +569,17 @@ PD1/size_factors
 <h3 class="anchored" data-anchor-id="match-the-metadata-and-counts-data">1. Match the metadata and counts data</h3>
 <p>We should always make sure that we have sample names that match between the two files, and that the samples are in the right order. DESeq2 will output an error if this is not the case. Since we built our <code>txi</code> object from our metadata, everything should be OK.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Check that sample names match in both files</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(txi<span class="sc">$</span>counts) <span class="sc">%in%</span> meta<span class="sc">$</span>sample)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(txi<span class="sc">$</span>counts) <span class="sc">==</span> meta<span class="sc">$</span>sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>If your data did not match, you could use the <code>match()</code> function to rearrange them to be matching. <code>match()</code> function will take two arguments and find in which order the indexes of the second argument match the first argument.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"b"</span>,<span class="st">"c"</span>,<span class="st">"a"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -604,6 +587,7 @@ PD1/size_factors
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>reorder</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>b[reorder]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>!!! question “<strong>Exercise 2</strong>”</p>
 <pre><code>Suppose we had sample names matching in the txi object and metadata file, but they were out of order. Write the line(s) of code required make the `meta_random` dataframe with rows ordered such that they were identical to the column names of the `txi`.
@@ -681,16 +665,24 @@ all(colnames(txi$counts) == meta_random$sample) # are all samples in the same or
 <p>Let’s start by creating the <code>DESeqDataSet</code> object, and then we can talk a bit more about what is stored inside it. To create the object, we will need the <strong>txi</strong> object and the <strong>metadata</strong> table as input (<code>colData</code> argument). We will also need to specify a <strong>design formula</strong>. The design formula specifies which column(s) of our metadata we want to use for statistical testing and modeling (more about that later!). For our dataset we only have one column we are interested in, which is <code>condition</code>. This column has three factor levels, which tells DESeq2 that for each gene we want to evaluate gene expression change with respect to these different levels.</p>
 <p><strong>It is very important to establish beforehand which sample type will be our “base” or “reference” level.</strong> If nothing is changed, DESeq2 will assume that our reference samples will be the first sample type (in alphabetical order). You can check this using the <code>factor()</code> function.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(meta<span class="sc">$</span>condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>While in a normal experiment we would use control samples as our reference, in our case we are interested in both checking the differences between control vs.&nbsp;vampirium and garlicum vs.&nbsp;vampirium. Thus, it would be much more convinient to reorganize our factor base level to <code>vampirium</code>. We can do this also with the <code>factor()</code> function, using the <code>levels =</code> argument.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">$</span>condition <span class="ot">=</span> <span class="fu">factor</span>(meta<span class="sc">$</span>condition, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"vampirium"</span>, <span class="st">"control"</span>, <span class="st">"garlicum"</span>))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(meta<span class="sc">$</span>condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>We can see now that vampirium is the first factor! Meaning that it will be interpreted by DESeq as our reference sample type.</p>
 <p><strong>Our count matrix input is stored in the <code>txi</code> list object</strong>. So we need to specify that using the <code>DESeqDataSetFromTximport()</code> function, which will extract the counts component and round the values to the nearest whole number.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># colData argument requires rownames in order to assess matching sample names</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># meta is a tibble object from tidyverse, so we neeed to add rownames.</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If you do not do this and the samples do not match, you will add wrong info!</span></span>
@@ -698,6 +690,7 @@ all(colnames(txi$counts) == meta_random$sample) # are all samples in the same or
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromTximport</span>(txi,</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">design =</span> <span class="sc">~</span> condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>??? note “Control is not reference level warning”</p>
 <pre><code>The warning from the chunk before is telling us that we have setup our vampirium samples as reference, instead of control! This is exactly what we wanted.</code></pre>
@@ -717,12 +710,18 @@ dds &lt;- DESeqDataSetFromMatrix(countData = "../Data/Vampirium_counts_tradition
 :::</code></pre>
 <p>You can use DESeq-specific functions to access the different slots and retrieve information, if you wish. For example, suppose we wanted the original count matrix we would use <code>counts()</code> (<em>Note: we nested it within the <code>View()</code> function so that rather than getting printed in the console we can see it in the script editor</em>) :</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(<span class="fu">counts</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>As we go through the workflow we will use the relevant functions to check what information gets stored inside our object.</p>
 <p>You can use DESeq-specific functions to access the different slots and retrieve information, if you wish. For example, suppose we wanted the original count matrix we would use <code>counts()</code>:</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">counts</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>As we go through the workflow we will use the relevant functions to check what information gets stored inside our object.</p>
 <section id="pre-filtering" class="level4">
@@ -734,8 +733,11 @@ dds &lt;- DESeqDataSetFromMatrix(countData = "../Data/Vampirium_counts_tradition
 </ul>
 <p>Here we perform a minimal pre-filtering to keep only rows that have at least 10 reads total.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">counts</span>(dds)) <span class="sc">&gt;=</span> <span class="dv">10</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[keep,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 </section>
@@ -744,19 +746,31 @@ dds &lt;- DESeqDataSetFromMatrix(countData = "../Data/Vampirium_counts_tradition
 <p>The next step is to normalize the count data in order to be able to make fair gene comparisons between samples.</p>
 <p>To perform the <strong>median of ratios method</strong> of normalization, DESeq2 has a single <code>estimateSizeFactors()</code> function that will generate size factors for us. We will use the function in the example below, but <strong>in a typical RNA-seq analysis this step is automatically performed by the <code>DESeq()</code> function</strong>, which we will see later.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">estimateSizeFactors</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>By assigning the results back to the <code>dds</code> object we are filling in the slots of the <code>DESeqDataSet</code> object with the appropriate information. We can take a look at the normalization factor applied to each sample using:</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sizeFactors</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Now, to retrieve the normalized counts matrix from <code>dds</code>, we use the <code>counts()</code> function and add the argument <code>normalized=TRUE</code>.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>normalized_counts <span class="ot">&lt;-</span> <span class="fu">counts</span>(dds, <span class="at">normalized=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>We can save this normalized data matrix to file for later use:</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(normalized_counts, <span class="at">file=</span><span class="st">"/work/Intro_to_bulkRNAseq/Results/normalized_counts.txt"</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">quote=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>!!! warning</p>
 <pre><code>DESeq2 doesn't actually use normalized counts, rather it uses the raw counts and models the normalization inside the Generalized Linear Model (GLM). These normalized counts will be useful for downstream visualization of results, but cannot be used as input to DESeq2 or any other tools that perform differential expression analysis which use the negative binomial model.</code></pre>

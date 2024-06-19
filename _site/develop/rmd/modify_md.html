@@ -102,40 +102,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@id": "https://hds-sandbox.github.io/bulk_RNAseq_course/",
-      "@type": "LearningResource",
-      "dct:conformsTo": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
-      "description": "This workshop includes a tutorial on how to approach RNAseq data, starting from your sequencing reads (fastq files). Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the Harvard Chan Bioinformatics Core (HBC), a collection of modified tutorials from the DESeq2, R language vignettes and the nf-core rnaseq pipeline.",
-      "keywords": [
-        "bioinformatics, RNAseq, bulk, NGS"
-      ],
-      "learningResourceType": [
-        "e-learning"
-      ],
-      "license": [
-        {
-          "@id": "https://creativecommons.org/licenses/by-sa/4.0/legalcode",
-          "@type": "CreativeWork"
-        }
-      ],
-      "mentions": [
-        {
-          "@id": "10.5281/zenodo.8046218",
-          "@type": "Thing"
-        },
-        {
-          "@id": "https://zenodo.org/record/7956067",
-          "@type": "Thing"
-        }
-      ],
-      "name": "Introduction to bulk RNAseq analysis workshop",
-      "educationalLevel": "Beginner",
-      "audience": "Researchers, PhDs, Postdocs, MSc"
-    }
-    </script>
 
 
 </head>
@@ -147,10 +113,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <a href="http://hds-sandbox.github.io/" class="navbar-brand navbar-brand-logo">
     <img src="../../develop/img/logo.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="http://hds-sandbox.github.io/">
     <span class="navbar-title">Bulk RNAseq data analysis</span>
     </a>
   </div>
@@ -161,12 +127,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.qmd"> 
+    <a class="nav-link" href="../../develop/index.html"> 
 <span class="menu-text">Introduction</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../index.qmd"> 
-<span class="menu-text">Experimental planning</span></a>
+    <a class="nav-link" href="../../develop/02_experimental_planning.html"> 
+<span class="menu-text">Experiment design</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/04a_preprocessing.html"> 
+<span class="menu-text">Data processing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/05a_data_analysis_setup.html"> 
+<span class="menu-text">Data analyses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/summary.html"> 
+<span class="menu-text">Workshop wrap-up</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -197,22 +175,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div id="a54318ee" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shutil</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div id="304b386e" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>source_folder <span class="op">=</span> <span class="st">"./develop/"</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>images_folder <span class="op">=</span> <span class="st">"./img/"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>destination_folder <span class="op">=</span> <span class="st">"../"</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>files <span class="op">=</span> os.listdir(source_folder)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(files)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>['08b_FA_overrepresentation.md']</code></pre>
 </div>
 </div>
 <div id="1be423ee" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> files:</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i.endswith(<span class="st">".md"</span>):</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(source_folder <span class="op">+</span> i) <span class="im">as</span> f:</span>
@@ -227,23 +213,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            text <span class="op">=</span> re.sub(<span class="st">"</span><span class="ch">\\</span><span class="st">&lt;"</span>,<span class="st">"&lt;"</span>,text)</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(source_folder <span class="op">+</span> i, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            f.write(text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Processing: 08b_FA_overrepresentation.md 
 </code></pre>
 </div>
 </div>
 <div id="3c24b5e5" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file_name <span class="kw">in</span> os.listdir(source_folder):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># construct full file path</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    source <span class="op">=</span> source_folder <span class="op">+</span> file_name</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    destination <span class="op">=</span> destination_folder <span class="op">+</span> file_name</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    shutil.move(source, destination)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Moved:'</span>, file_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Moved: 08b_FA_overrepresentation.md</code></pre>
 </div>
 </div>
 <div id="3dd4b8a1" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> copy_directory(src_dir, dest_dir):</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(dest_dir):</span>
@@ -257,6 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            shutil.copy2(src_path, dest_path)</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>copy_directory(images_folder, destination_folder<span class="op">+</span><span class="st">"img/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 
 

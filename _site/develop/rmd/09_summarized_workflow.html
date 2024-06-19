@@ -102,40 +102,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@id": "https://hds-sandbox.github.io/bulk_RNAseq_course/",
-      "@type": "LearningResource",
-      "dct:conformsTo": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
-      "description": "This workshop includes a tutorial on how to approach RNAseq data, starting from your sequencing reads (fastq files). Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the Harvard Chan Bioinformatics Core (HBC), a collection of modified tutorials from the DESeq2, R language vignettes and the nf-core rnaseq pipeline.",
-      "keywords": [
-        "bioinformatics, RNAseq, bulk, NGS"
-      ],
-      "learningResourceType": [
-        "e-learning"
-      ],
-      "license": [
-        {
-          "@id": "https://creativecommons.org/licenses/by-sa/4.0/legalcode",
-          "@type": "CreativeWork"
-        }
-      ],
-      "mentions": [
-        {
-          "@id": "10.5281/zenodo.8046218",
-          "@type": "Thing"
-        },
-        {
-          "@id": "https://zenodo.org/record/7956067",
-          "@type": "Thing"
-        }
-      ],
-      "name": "Introduction to bulk RNAseq analysis workshop",
-      "educationalLevel": "Beginner",
-      "audience": "Researchers, PhDs, Postdocs, MSc"
-    }
-    </script>
 
 
 </head>
@@ -147,10 +113,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <a href="http://hds-sandbox.github.io/" class="navbar-brand navbar-brand-logo">
     <img src="../../develop/img/logo.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="http://hds-sandbox.github.io/">
     <span class="navbar-title">Bulk RNAseq data analysis</span>
     </a>
   </div>
@@ -161,12 +127,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.qmd"> 
+    <a class="nav-link" href="../../develop/index.html"> 
 <span class="menu-text">Introduction</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../index.qmd"> 
-<span class="menu-text">Experimental planning</span></a>
+    <a class="nav-link" href="../../develop/02_experimental_planning.html"> 
+<span class="menu-text">Experiment design</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/04a_preprocessing.html"> 
+<span class="menu-text">Data processing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/05a_data_analysis_setup.html"> 
+<span class="menu-text">Data analyses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/summary.html"> 
+<span class="menu-text">Workshop wrap-up</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -259,6 +237,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="libraries" class="level2">
 <h2 class="anchored" data-anchor-id="libraries">Libraries</h2>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
@@ -270,6 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(org.Hs.eg.db)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tximport)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="obtaining-gene-level-counts-from-your-preprocessing-and-create-deseq-object" class="level2">
@@ -278,48 +259,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="if-you-have-a-traditional-raw-count-matrix">If you have a traditional raw count matrix</h3>
 <p>Load data and metadata</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="st">"../Data/Vampirium_counts_traditional.tsv"</span>) </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="st">"../Data/samplesheet.csv"</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(meta<span class="sc">$</span>condition, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"vampirium"</span>, <span class="st">"control"</span>, <span class="st">"garlicum"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Check that the row names of the metadata equal the column names of the <strong>raw counts</strong> data</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(data)[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">==</span> meta<span class="sc">$</span>sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Create DESeq2Dataset object</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(<span class="at">countData =</span> data <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"GeneSymbol"</span>), </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">design =</span> <span class="sc">~</span> condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="if-you-have-pseudocounts" class="level3">
 <h3 class="anchored" data-anchor-id="if-you-have-pseudocounts">If you have pseudocounts</h3>
 <p>Load samplesheet with all our metadata from our pipeline</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data, metadata and tx2gene and create a txi object</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"/work/Intro_bulkRNAseq/Data/samplesheet.csv"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(meta<span class="sc">$</span>condition, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"vampirium"</span>, <span class="st">"control"</span>, <span class="st">"garlicum"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Create a list of salmon results</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dir <span class="ot">&lt;-</span> <span class="st">"/work/Intro_bulkRNAseq/Data/salmon"</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>tx2gene <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="fu">file.path</span>(dir,<span class="st">"salmon_tx2gene.tsv"</span>), <span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">"transcript_ID"</span>,<span class="st">"gene_ID"</span>,<span class="st">"gene_symbol"</span>))</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get all salmon results files</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dir, meta<span class="sc">$</span>sample, <span class="st">"quant.sf"</span>)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(files) <span class="ot">&lt;-</span> meta<span class="sc">$</span>sample</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Create txi object</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>txi <span class="ot">&lt;-</span> <span class="fu">tximport</span>(files, <span class="at">type=</span><span class="st">"salmon"</span>, <span class="at">tx2gene=</span>tx2gene, <span class="at">countsFromAbundance =</span> <span class="st">"lengthScaledTPM"</span>, <span class="at">ignoreTxVersion =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Create dds object</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromTximport</span>(txi,</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">design =</span> <span class="sc">~</span> condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 </section>
@@ -329,47 +331,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="prefiltering-low-count-genes" class="level3">
 <h3 class="anchored" data-anchor-id="prefiltering-low-count-genes">Prefiltering low count genes</h3>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">counts</span>(dds)) <span class="sc">&gt;</span> <span class="dv">0</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[keep,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="rlog-transformation" class="level3">
 <h3 class="anchored" data-anchor-id="rlog-transformation">Rlog transformation</h3>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform counts for data visualization</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>rld <span class="ot">&lt;-</span> <span class="fu">rlog</span>(dds, </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">blind=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="pca" class="level3">
 <h3 class="anchored" data-anchor-id="pca">PCA</h3>
 <p>Plot PCA</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotPCA</span>(rld, </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">intgroup=</span><span class="st">"condition"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="heatmaps" class="level3">
 <h3 class="anchored" data-anchor-id="heatmaps">Heatmaps</h3>
 <p>Extract the rlog matrix from the object</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rld_mat <span class="ot">&lt;-</span> <span class="fu">assay</span>(rld)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>rld_cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(rld_mat) <span class="co"># Pearson correlation betweeen samples</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>rld_dist <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">dist</span>(<span class="fu">t</span>(<span class="fu">assay</span>(rld)))) <span class="co">#distances are computed by rows, so we need to transponse the matrix</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Plot heatmap of correlations</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(rld_cor, </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="st">"condition"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Plot heatmap of distances with a new color range</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>heat.colors <span class="ot">&lt;-</span> <span class="fu">brewer.pal</span>(<span class="dv">6</span>, <span class="st">"Blues"</span>) <span class="co"># Colors from the RColorBrewer package (only 6)</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>heat.colors <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(heat.colors)(<span class="dv">100</span>) <span class="co"># Interpolate 100 colors</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(rld_dist, </span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="st">"condition"</span>),</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">color =</span> heat.colors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 </section>
@@ -377,29 +397,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="run-deseq2">Run DESeq2:</h2>
 <p><strong>Optional step</strong> - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dds &lt;- DESeqDataSetFromMatrix(data, colData = meta, design = ~ covariate + condition)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Run DEseq2</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run DESeq2 differential expression analysis</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p><strong>Optional step</strong> - Output normalized counts to save as a file to access outside RStudio using</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>normalized_counts <span class="ot">&lt;-</span> <span class="fu">counts</span>(dds, <span class="at">normalized=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="check-the-fit-of-the-dispersion-estimates" class="level2">
 <h2 class="anchored" data-anchor-id="check-the-fit-of-the-dispersion-estimates">Check the fit of the dispersion estimates</h2>
 <p>Plot dispersion estimates</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotDispEsts</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="create-contrasts-to-perform-wald-testing-or-the-shrunken-log2-fold-changes-between-specific-conditions" class="level2">
 <h2 class="anchored" data-anchor-id="create-contrasts-to-perform-wald-testing-or-the-shrunken-log2-fold-changes-between-specific-conditions">Create contrasts to perform Wald testing or the shrunken log2 fold changes between specific conditions</h2>
 <p>Formal LFC calculation</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify contrast for comparison of interest</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"condition"</span>, <span class="st">"control"</span>, <span class="st">"vampirium"</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -407,9 +441,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, </span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">contrast =</span> contrast, </span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Shrinkage</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get name of the contrast you would like to use</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -417,11 +454,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">lfcShrink</span>(dds, </span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">coef =</span> <span class="st">"condition_control_vs_vampirium"</span>, </span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">type =</span> <span class="st">"apeglm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="output-significant-results" class="level2">
 <h2 class="anchored" data-anchor-id="output-significant-results">Output significant results:</h2>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set thresholds</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>padj.cutoff <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -434,12 +474,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset the significant results</span></span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>sig_res <span class="ot">&lt;-</span> <span class="fu">filter</span>(res_tbl, </span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>                  padj <span class="sc">&lt;</span> padj.cutoff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="visualize-results-volcano-plots-heatmaps-normalized-counts-plots-of-top-genes-etc." class="level2">
 <h2 class="anchored" data-anchor-id="visualize-results-volcano-plots-heatmaps-normalized-counts-plots-of-top-genes-etc.">Visualize results: volcano plots, heatmaps, normalized counts plots of top genes, etc.</h2>
 <p>Function to get gene_IDs based on gene names. The function will take as input a vector of gene names of interest, the tx2gene dataframe and the dds object that you analyzed.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>lookup <span class="ot">&lt;-</span> <span class="cf">function</span>(gene_name, tx2gene, dds){</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  hits <span class="ot">&lt;-</span> tx2gene <span class="sc">%&gt;%</span> <span class="fu">select</span>(gene_symbol, gene_ID) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(gene_symbol <span class="sc">%in%</span> gene_name <span class="sc">&amp;</span> gene_ID <span class="sc">%in%</span> <span class="fu">rownames</span>(dds))</span>
@@ -447,25 +490,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lookup</span>(<span class="at">gene_name =</span> <span class="st">"TSPAN7"</span>, <span class="at">tx2gene =</span> tx2gene, <span class="at">dds =</span> dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Plot expression for single gene</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotCounts</span>(dds, <span class="at">gene=</span><span class="st">"ENSG00000156298"</span>, <span class="at">intgroup=</span><span class="st">"condition"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <section id="maplot" class="level3">
 <h3 class="anchored" data-anchor-id="maplot">MAplot</h3>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotMA</span>(res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="volcano-plot-with-labels-top-n-genes" class="level3">
 <h3 class="anchored" data-anchor-id="volcano-plot-with-labels-top-n-genes">Volcano plot with labels (top N genes)</h3>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Obtain logical vector where TRUE values denote padj values &lt; 0.05 and fold change &gt; 1.5 in either direction</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>res_tbl <span class="ot">&lt;-</span> res_tbl <span class="sc">%&gt;%</span> </span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">threshold =</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> <span class="fu">abs</span>(log2FoldChange) <span class="sc">&gt;=</span> <span class="fl">0.58</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create an empty column to indicate which genes to label</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>res_tbl <span class="ot">&lt;-</span> res_tbl <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">genelabels =</span> <span class="st">""</span>)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -476,8 +531,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>res_tbl<span class="sc">$</span>genelabels[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>] <span class="ot">&lt;-</span> <span class="fu">as.character</span>(res_tbl<span class="sc">$</span>gene[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span>
 <span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res_tbl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(res_tbl, <span class="fu">aes</span>(<span class="at">x =</span> log2FoldChange, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(padj))) <span class="sc">+</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> threshold)) <span class="sc">+</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> genelabels)) <span class="sc">+</span></span>
@@ -487,16 +545,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="fu">rel</span>(<span class="fl">1.5</span>), <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
 <span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="fu">rel</span>(<span class="fl">1.25</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="heatmap-of-differentially-expressed-genes" class="level3">
 <h3 class="anchored" data-anchor-id="heatmap-of-differentially-expressed-genes">Heatmap of differentially expressed genes</h3>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter significant results from normalized counts</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>norm_sig <span class="ot">&lt;-</span> normalized_counts <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"gene"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(gene <span class="sc">%in%</span> sig_res<span class="sc">$</span>gene) <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="at">var=</span><span class="st">"gene"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(norm_sig, </span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">cluster_rows =</span> T, <span class="co">#cluster by expression pattern</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">scale =</span> <span class="st">"row"</span>, <span class="co"># scale by gene so expression pattern is visible</span></span>
@@ -504,6 +568,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_rownames =</span> F, <span class="co"># remove rownames so it is more clear</span></span>
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="at">var =</span> <span class="st">"sample"</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="st">"condition"</span>)</span>
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>         )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 </section>
@@ -512,13 +577,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="annotate-with-annotables" class="level3">
 <h3 class="anchored" data-anchor-id="annotate-with-annotables">Annotate with <code>annotables</code></h3>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">&lt;-</span> grch38 <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(ensgene <span class="sc">%in%</span> res_tbl<span class="sc">$</span>gene) </span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>res_ids <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(res_tbl, ids, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"gene"</span><span class="ot">=</span><span class="st">"ensgene"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="perform-enrichment-analysis-of-go-terms-can-be-done-as-well-with-kegg-pathways" class="level3">
 <h3 class="anchored" data-anchor-id="perform-enrichment-analysis-of-go-terms-can-be-done-as-well-with-kegg-pathways">Perform enrichment analysis of GO terms (can be done as well with KEGG pathways)</h3>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create background dataset for hypergeometric testing using all genes tested for significance in the results</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>all_genes <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(res_ids, <span class="sc">!</span><span class="fu">is.na</span>(gene)) <span class="sc">%&gt;%</span> </span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(gene) <span class="sc">%&gt;%</span> </span>
@@ -530,8 +600,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>sig_genes <span class="ot">&lt;-</span> sig <span class="sc">%&gt;%</span> </span>
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(gene) <span class="sc">%&gt;%</span> </span>
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.character</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform enrichment analysis</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>ego <span class="ot">&lt;-</span> <span class="fu">enrichGO</span>(<span class="at">gene =</span> sig_genes, </span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">universe =</span> all_genes,</span>
@@ -542,37 +615,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">qvalueCutoff =</span> <span class="fl">0.05</span>, </span>
 <span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">readable =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>ego <span class="ot">&lt;-</span> enrichplot<span class="sc">::</span><span class="fu">pairwise_termsim</span>(ego)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="visualize-result" class="level3">
 <h3 class="anchored" data-anchor-id="visualize-result">Visualize result</h3>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dotplot</span>(ego, <span class="at">showCategory=</span><span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emapplot</span>(ego, <span class="at">showCategory =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="cnetplot" class="level3">
 <h3 class="anchored" data-anchor-id="cnetplot">Cnetplot</h3>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="do">## To color genes by log2 fold changes, we need to extract the log2 fold changes from our results table creating a named vector</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>sig_foldchanges <span class="ot">&lt;-</span> sig<span class="sc">$</span>log2FoldChange</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(sig_foldchanges) <span class="ot">&lt;-</span> sig<span class="sc">$</span>gene</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Cnetplot details the genes associated with one or more terms - by default gives the top 5 significant terms (by padj)</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cnetplot</span>(ego, </span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">categorySize=</span><span class="st">"pvalue"</span>, </span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">showCategory =</span> <span class="dv">5</span>, </span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">foldChange=</span>sig_foldchanges, </span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">vertex.label.font=</span><span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="perform-gsea-analysis-of-kegg-pathways-can-be-done-as-well-with-go-terms" class="level3">
 <h3 class="anchored" data-anchor-id="perform-gsea-analysis-of-kegg-pathways-can-be-done-as-well-with-go-terms">Perform GSEA analysis of KEGG pathways (can be done as well with GO terms)</h3>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract entrez IDs. IDs should not be duplicated or NA</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>res_entrez <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(res_ids, entrez <span class="sc">!=</span> <span class="st">"NA"</span> <span class="sc">&amp;</span> entrez <span class="sc">!=</span> <span class="st">"NULL"</span> <span class="sc">&amp;</span> <span class="fu">duplicated</span>(entrez)<span class="sc">==</span>F)</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -584,8 +672,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Sort fold changes in decreasing order</span></span>
 <span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>foldchanges <span class="ot">&lt;-</span> <span class="fu">sort</span>(foldchanges, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run GSEA of KEGG</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>gseaKEGG <span class="ot">&lt;-</span> <span class="fu">gseKEGG</span>(<span class="at">geneList =</span> foldchanges, <span class="co"># ordered named vector of fold changes (Entrez IDs are the associated names)</span></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">organism =</span> <span class="st">"hsa"</span>, <span class="co"># supported organisms listed below</span></span>
@@ -594,28 +685,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>gseaKEGG_results <span class="ot">&lt;-</span> gseaKEGG<span class="sc">@</span>result</span>
 <span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gseaKEGG_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot the GSEA plot for a single enriched pathway:</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(gseaKEGG, <span class="at">geneSetID =</span> gseaKEGG_results<span class="sc">$</span>ID[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Output images for a single significant KEGG pathway</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pathview</span>(<span class="at">gene.data =</span> foldchanges,</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">pathway.id =</span> gseaKEGG_results<span class="sc">$</span>ID[<span class="dv">1</span>],</span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">species =</span> <span class="st">"hsa"</span>,</span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">limit =</span> <span class="fu">list</span>(<span class="at">gene =</span> <span class="dv">2</span>, <span class="co"># value gives the max/min limit for foldchanges</span></span>
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">cpd =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">paste0</span>(<span class="st">"./"</span>,gseaKEGG_results<span class="sc">$</span>ID[<span class="dv">1</span>],<span class="st">".png"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 </section>
 <section id="make-sure-to-output-the-versions-of-all-tools-used-in-the-de-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="make-sure-to-output-the-versions-of-all-tools-used-in-the-de-analysis">Make sure to output the versions of all tools used in the DE analysis:</h2>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 
 

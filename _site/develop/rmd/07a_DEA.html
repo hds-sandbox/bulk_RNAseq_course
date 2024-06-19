@@ -102,40 +102,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@id": "https://hds-sandbox.github.io/bulk_RNAseq_course/",
-      "@type": "LearningResource",
-      "dct:conformsTo": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
-      "description": "This workshop includes a tutorial on how to approach RNAseq data, starting from your sequencing reads (fastq files). Thus, the workshop only briefly touches upon laboratory protocols, library preparation, and experimental design of RNA sequencing experiments, mainly for the purpose of outlining considerations in the downstream bioinformatic analysis. This workshop is based on the materials developed by members of the teaching team at the Harvard Chan Bioinformatics Core (HBC), a collection of modified tutorials from the DESeq2, R language vignettes and the nf-core rnaseq pipeline.",
-      "keywords": [
-        "bioinformatics, RNAseq, bulk, NGS"
-      ],
-      "learningResourceType": [
-        "e-learning"
-      ],
-      "license": [
-        {
-          "@id": "https://creativecommons.org/licenses/by-sa/4.0/legalcode",
-          "@type": "CreativeWork"
-        }
-      ],
-      "mentions": [
-        {
-          "@id": "10.5281/zenodo.8046218",
-          "@type": "Thing"
-        },
-        {
-          "@id": "https://zenodo.org/record/7956067",
-          "@type": "Thing"
-        }
-      ],
-      "name": "Introduction to bulk RNAseq analysis workshop",
-      "educationalLevel": "Beginner",
-      "audience": "Researchers, PhDs, Postdocs, MSc"
-    }
-    </script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -176,10 +142,10 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <a href="http://hds-sandbox.github.io/" class="navbar-brand navbar-brand-logo">
     <img src="../../develop/img/logo.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="http://hds-sandbox.github.io/">
     <span class="navbar-title">Bulk RNAseq data analysis</span>
     </a>
   </div>
@@ -190,12 +156,24 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.qmd"> 
+    <a class="nav-link" href="../../develop/index.html"> 
 <span class="menu-text">Introduction</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../index.qmd"> 
-<span class="menu-text">Experimental planning</span></a>
+    <a class="nav-link" href="../../develop/02_experimental_planning.html"> 
+<span class="menu-text">Experiment design</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/04a_preprocessing.html"> 
+<span class="menu-text">Data processing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/05a_data_analysis_setup.html"> 
+<span class="menu-text">Data analyses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/summary.html"> 
+<span class="menu-text">Workshop wrap-up</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -270,6 +248,8 @@ window.Quarto = {
 4.  Recognize the importance of dispersion during differential expression analysis</code></pre>
 <p>Previously, we created the DESeq2 object using the appropriate design formula.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DO NOT RUN</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dds object</span></span>
@@ -280,11 +260,15 @@ window.Quarto = {
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter genes with 0 counts</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">counts</span>(dds)) <span class="sc">&gt;</span> <span class="dv">0</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[keep,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Then, to run the actual differential expression analysis, we use a single call to the function <code>DESeq()</code>.</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Run analysis</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>And with that we completed the entire workflow for the differential gene expression analysis with DESeq2! The <code>DESeq()</code> function performs a default analysis through the following steps:</p>
 <ol type="1">
@@ -320,8 +304,11 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="vampirium-de-analysis-examining-the-size-factors">Vampirium DE analysis: examining the size factors</h3>
 <p>Let’s take a quick look at size factor values we have for each sample:</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check the size factors</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sizeFactors</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <pre><code>control_1 control_2 control_3 garlicum_2 garlicum_3 vampirium_1 vampirium_2 
  1.1149694  0.9606733  0.7492240  1.5633640  0.9359695  1.2262649  1.1405026 
@@ -329,8 +316,11 @@ vampirium_3
  0.6542030 </code></pre>
 <p>These numbers should be identical to those we generated initially when we had run the function <code>estimateSizeFactors(dds)</code>. Take a look at the total number of reads for each sample:</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Total number of raw counts per sample</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">counts</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>!!! info “How do the numbers correlate with the size factor?”</p>
 <pre><code>We see that the larger size factors correspond to the samples with higher sequencing depth, which makes sense, because to generate our normalized counts we need to divide the counts by the size factors. This accounts for the differences in sequencing depth between samples.
@@ -484,8 +474,11 @@ To address this problem, DESeq2 **shares information across genes** to generate 
 <h2 class="anchored" data-anchor-id="vampirium-de-analysis-exploring-the-dispersion-estimates-and-assessing-model-fit">Vampirium DE analysis: exploring the dispersion estimates and assessing model fit</h2>
 <p>Let’s take a look at the dispersion estimates for our Vampirium data:</p>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot dispersion estimates</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotDispEsts</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">

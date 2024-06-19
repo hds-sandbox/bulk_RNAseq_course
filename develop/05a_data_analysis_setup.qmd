@@ -32,9 +32,7 @@ Click on `Apps` on the left-side menu, and search for the application `Transcrip
 Once you are in the `Transcriptomics Sandbox`, choose appropriate parameters to run a job. Here, you will find a set of recommended values to choose. First, click on `Import parameters`, then, in the prompt window, choose `Import file from UCloud` and select the file  `jobParameters.json` which you will find located in the Drive `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `jobParameters.json`
 
 :::{.callout-warning}
-**Ensure that the hard-drive icon is labeled "sequencing_data" and you are in the "sandbox_bulkRNAseq" workspace.**
-
-You can select the drive by clicking on the down arrow (**&or;**) icon to open a dropdown menu.
+**Ensure that you are in the "sandbox_bulkRNAseq" workspace.** You can select the workspace by clicking on the down arrow (**&or;**) icon to open a dropdown menu.
 :::
 
 ![](./img/05a_data_analysis_setup/importParamsTranscript.png)
@@ -49,12 +47,16 @@ Let's take a look at the parameters we have chosen. We have given it a `Job name
 :::{.callout-warning}
 Do not select `add folder` if you haven't run nf-core pipeline. Once you launch RStudio, ensure there is a `Data` folder.
 
-IF (AND ONLY IF) you have **correctly imported parameters** but you do not find the Data folder, follow the instructions below! If you still run into problems, please contact us. 
+IF (AND ONLY IF) you have **correctly imported parameters but you do not find the Data folder** follow the instructions below! If you still run into problems, please contact us. 
 
 :::{.callout-important title="Mount the backup data drive" collapse="true"}
-If the data isn't present, you will need to mount the data drive by selecting one of our backup folders that contains the data. Click on `add folder` and then choose `/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/` 
+If the data isn't present, you will need to mount the data drive by selecting one of our backup folders that contains the data. Click on `add folder` and then choose `/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/`. Change the drive by clicking on the down arrow (**&or;**) icon to open a dropdown menu. Afterwards, add your home folder so you can write the results to your own drive. **You will not have write permissions on the `sandbox_bulRNAseq` drive**. 
+
 ![back-up data](./img/05a_data_analysis_setup/data_select.png)
 
+<!-- 
+Alternatively, you can also select the hard-drive icon is labeled "sequencing_data". 
+-->
 :::
 :::
 
