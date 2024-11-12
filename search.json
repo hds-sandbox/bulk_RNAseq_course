@@ -366,77 +366,132 @@
     "href": "develop/09_summarized_workflow.html",
     "title": "Summarised workflow",
     "section": "",
-    "text": "We have detailed the various steps in a differential expression analysis workflow, providing theory with example code. To provide a more succinct reference for the code needed to run a DGE analysis, we have summarized the steps in an analysis below:"
+    "text": "We have detailed the various steps in a differential expression analysis workflow, providing theory with example code. To provide a more succinct reference for the code needed to run a DGE analysis, we have summarized the steps in an analysis below:",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/09_summarized_workflow.html#libraries",
     "href": "develop/09_summarized_workflow.html#libraries",
     "title": "Summarised workflow",
     "section": "Libraries",
-    "text": "Libraries\nlibrary(tidyverse)\nlibrary(DESeq2)\nlibrary(ggrepel)\nlibrary(pheatmap)\nlibrary(annotables)\nlibrary(clusterProfiler)\nlibrary(DOSE)\nlibrary(pathview)\nlibrary(org.Hs.eg.db)\nlibrary(tximport)\nlibrary(RColorBrewer)"
+    "text": "Libraries\nlibrary(tidyverse)\nlibrary(DESeq2)\nlibrary(ggrepel)\nlibrary(pheatmap)\nlibrary(annotables)\nlibrary(clusterProfiler)\nlibrary(DOSE)\nlibrary(pathview)\nlibrary(org.Hs.eg.db)\nlibrary(tximport)\nlibrary(RColorBrewer)",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/09_summarized_workflow.html#obtaining-gene-level-counts-from-your-preprocessing-and-create-deseq-object",
     "href": "develop/09_summarized_workflow.html#obtaining-gene-level-counts-from-your-preprocessing-and-create-deseq-object",
     "title": "Summarised workflow",
     "section": "Obtaining gene-level counts from your preprocessing and create DESeq object",
-    "text": "Obtaining gene-level counts from your preprocessing and create DESeq object\n\nIf you have a traditional raw count matrix\nLoad data and metadata\ndata &lt;- read_table(\"../Data/Vampirium_counts_traditional.tsv\") \n\nmeta &lt;- read_table(\"../Data/samplesheet.csv\")\nmeta$condition &lt;- factor(meta$condition, levels = c(\"vampirium\", \"control\", \"garlicum\"))\nCheck that the row names of the metadata equal the column names of the raw counts data\nall(colnames(data)[-1] == meta$sample)\nCreate DESeq2Dataset object\ndds &lt;- DESeqDataSetFromMatrix(countData = data %&gt;% column_to_rownames(\"GeneSymbol\"), \n                      colData = meta %&gt;% column_to_rownames(\"sample\"), \n                      design = ~ condition)\n\n\nIf you have pseudocounts\nLoad samplesheet with all our metadata from our pipeline\n# Load data, metadata and tx2gene and create a txi object\nmeta &lt;- read_csv(\"/work/Intro_bulkRNAseq/Data/samplesheet.csv\")\nmeta$condition &lt;- factor(meta$condition, levels = c(\"vampirium\", \"control\", \"garlicum\"))\nCreate a list of salmon results\ndir &lt;- \"/work/Intro_bulkRNAseq/Data/salmon\"\ntx2gene &lt;- read_table(file.path(dir,\"salmon_tx2gene.tsv\"), col_names = c(\"transcript_ID\",\"gene_ID\",\"gene_symbol\"))\n\n# Get all salmon results files\nfiles &lt;- file.path(dir, meta$sample, \"quant.sf\")\nnames(files) &lt;- meta$sample\nCreate txi object\ntxi &lt;- tximport(files, type=\"salmon\", tx2gene=tx2gene, countsFromAbundance = \"lengthScaledTPM\", ignoreTxVersion = TRUE)\nCreate dds object\ndds &lt;- DESeqDataSetFromTximport(txi,\n    colData = meta %&gt;% column_to_rownames(\"sample\"), \n                              design = ~ condition)"
+    "text": "Obtaining gene-level counts from your preprocessing and create DESeq object\n\nIf you have a traditional raw count matrix\nLoad data and metadata\ndata &lt;- read_table(\"../Data/Vampirium_counts_traditional.tsv\") \n\nmeta &lt;- read_table(\"../Data/samplesheet.csv\")\nmeta$condition &lt;- factor(meta$condition, levels = c(\"vampirium\", \"control\", \"garlicum\"))\nCheck that the row names of the metadata equal the column names of the raw counts data\nall(colnames(data)[-1] == meta$sample)\nCreate DESeq2Dataset object\ndds &lt;- DESeqDataSetFromMatrix(countData = data %&gt;% column_to_rownames(\"GeneSymbol\"), \n                      colData = meta %&gt;% column_to_rownames(\"sample\"), \n                      design = ~ condition)\n\n\nIf you have pseudocounts\nLoad samplesheet with all our metadata from our pipeline\n# Load data, metadata and tx2gene and create a txi object\nmeta &lt;- read_csv(\"/work/Intro_bulkRNAseq/Data/samplesheet.csv\")\nmeta$condition &lt;- factor(meta$condition, levels = c(\"vampirium\", \"control\", \"garlicum\"))\nCreate a list of salmon results\ndir &lt;- \"/work/Intro_bulkRNAseq/Data/salmon\"\ntx2gene &lt;- read_table(file.path(dir,\"salmon_tx2gene.tsv\"), col_names = c(\"transcript_ID\",\"gene_ID\",\"gene_symbol\"))\n\n# Get all salmon results files\nfiles &lt;- file.path(dir, meta$sample, \"quant.sf\")\nnames(files) &lt;- meta$sample\nCreate txi object\ntxi &lt;- tximport(files, type=\"salmon\", tx2gene=tx2gene, countsFromAbundance = \"lengthScaledTPM\", ignoreTxVersion = TRUE)\nCreate dds object\ndds &lt;- DESeqDataSetFromTximport(txi,\n    colData = meta %&gt;% column_to_rownames(\"sample\"), \n                              design = ~ condition)",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/09_summarized_workflow.html#exploratory-data-analysis",
     "href": "develop/09_summarized_workflow.html#exploratory-data-analysis",
     "title": "Summarised workflow",
     "section": "Exploratory data analysis",
-    "text": "Exploratory data analysis\nPrefiltering low count genes + PCA & hierarchical clustering - identifying outliers and sources of variation in the data:\n\nPrefiltering low count genes\nkeep &lt;- rowSums(counts(dds)) &gt; 0\ndds &lt;- dds[keep,]\n\n\nRlog transformation\n# Transform counts for data visualization\nrld &lt;- rlog(dds, \n            blind=TRUE)\n\n\nPCA\nPlot PCA\nplotPCA(rld, \n        intgroup=\"condition\")\n\n\nHeatmaps\nExtract the rlog matrix from the object\nrld_mat &lt;- assay(rld)\n# Pearson correlation betweeen samples\nrld_cor &lt;- cor(rld_mat) \n# distances are computed by rows, so we need to transponse the matrix\nrld_dist &lt;- as.matrix(dist(t(assay(rld))))\nPlot heatmap of correlations\npheatmap(rld_cor, \n         annotation = meta %&gt;% column_to_rownames(\"sample\") %&gt;% select(\"condition\"))\nPlot heatmap of distances with a new color range\n# Colors from the RColorBrewer package (only 6)\nheat.colors &lt;- brewer.pal(6, \"Blues\") \n# Interpolate 100 colors\nheat.colors &lt;- colorRampPalette(heat.colors)(100) \n\npheatmap(rld_dist, annotation = meta %&gt;% \n      column_to_rownames(\"sample\") %&gt;% \n      select(\"condition\"), color = heat.colors)"
+    "text": "Exploratory data analysis\nPrefiltering low count genes + PCA & hierarchical clustering - identifying outliers and sources of variation in the data:\n\nPrefiltering low count genes\nkeep &lt;- rowSums(counts(dds)) &gt; 0\ndds &lt;- dds[keep,]\n\n\nRlog transformation\n# Transform counts for data visualization\nrld &lt;- rlog(dds, \n            blind=TRUE)\n\n\nPCA\nPlot PCA\nplotPCA(rld, \n        intgroup=\"condition\")\n\n\nHeatmaps\nExtract the rlog matrix from the object\nrld_mat &lt;- assay(rld)\n# Pearson correlation betweeen samples\nrld_cor &lt;- cor(rld_mat) \n# distances are computed by rows, so we need to transponse the matrix\nrld_dist &lt;- as.matrix(dist(t(assay(rld))))\nPlot heatmap of correlations\npheatmap(rld_cor, \n         annotation = meta %&gt;% column_to_rownames(\"sample\") %&gt;% select(\"condition\"))\nPlot heatmap of distances with a new color range\n# Colors from the RColorBrewer package (only 6)\nheat.colors &lt;- brewer.pal(6, \"Blues\") \n# Interpolate 100 colors\nheat.colors &lt;- colorRampPalette(heat.colors)(100) \n\npheatmap(rld_dist, annotation = meta %&gt;% \n      column_to_rownames(\"sample\") %&gt;% \n      select(\"condition\"), color = heat.colors)",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/09_summarized_workflow.html#run-deseq2",
     "href": "develop/09_summarized_workflow.html#run-deseq2",
     "title": "Summarised workflow",
     "section": "Run DESeq2:",
-    "text": "Run DESeq2:\nOptional step - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using\n# dds &lt;- DESeqDataSetFromMatrix(data, colData = meta, design = ~ covariate + condition)\nRun DEseq2\n# Run DESeq2 differential expression analysis\ndds &lt;- DESeq(dds)\nOptional step - Output normalized counts to save as a file to access outside RStudio using\nnormalized_counts &lt;- counts(dds, normalized=TRUE)"
+    "text": "Run DESeq2:\nOptional step - Re-create DESeq2 dataset if the design formula has changed after QC analysis in include other sources of variation using\n# dds &lt;- DESeqDataSetFromMatrix(data, colData = meta, design = ~ covariate + condition)\nRun DEseq2\n# Run DESeq2 differential expression analysis\ndds &lt;- DESeq(dds)\nOptional step - Output normalized counts to save as a file to access outside RStudio using\nnormalized_counts &lt;- counts(dds, normalized=TRUE)",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/09_summarized_workflow.html#check-the-fit-of-the-dispersion-estimates",
     "href": "develop/09_summarized_workflow.html#check-the-fit-of-the-dispersion-estimates",
     "title": "Summarised workflow",
     "section": "Check the fit of the dispersion estimates",
-    "text": "Check the fit of the dispersion estimates\nPlot dispersion estimates\nplotDispEsts(dds)"
+    "text": "Check the fit of the dispersion estimates\nPlot dispersion estimates\nplotDispEsts(dds)",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/09_summarized_workflow.html#create-contrasts-to-perform-wald-testing-or-the-shrunken-log2-fold-changes-between-specific-conditions",
     "href": "develop/09_summarized_workflow.html#create-contrasts-to-perform-wald-testing-or-the-shrunken-log2-fold-changes-between-specific-conditions",
     "title": "Summarised workflow",
     "section": "Create contrasts to perform Wald testing or the shrunken log2 fold changes between specific conditions",
-    "text": "Create contrasts to perform Wald testing or the shrunken log2 fold changes between specific conditions\nFormal LFC calculation\n# Specify contrast for comparison of interest\ncontrast &lt;- c(\"condition\", \"control\", \"vampirium\")\n\n# Output results of Wald test for contrast\nres &lt;- results(dds, \n        contrast = contrast, \n        alpha = 0.05)\nShrinkage\n# Get name of the contrast you would like to use\nresultsNames(dds)\n\n# Shrink the log2 fold changes to be more accurate\nres &lt;- lfcShrink(dds, \n      coef = \"condition_control_vs_vampirium\", \n      type = \"apeglm\")"
+    "text": "Create contrasts to perform Wald testing or the shrunken log2 fold changes between specific conditions\nFormal LFC calculation\n# Specify contrast for comparison of interest\ncontrast &lt;- c(\"condition\", \"control\", \"vampirium\")\n\n# Output results of Wald test for contrast\nres &lt;- results(dds, \n        contrast = contrast, \n        alpha = 0.05)\nShrinkage\n# Get name of the contrast you would like to use\nresultsNames(dds)\n\n# Shrink the log2 fold changes to be more accurate\nres &lt;- lfcShrink(dds, \n      coef = \"condition_control_vs_vampirium\", \n      type = \"apeglm\")",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/09_summarized_workflow.html#output-significant-results",
     "href": "develop/09_summarized_workflow.html#output-significant-results",
     "title": "Summarised workflow",
     "section": "Output significant results:",
-    "text": "Output significant results:\n# Set thresholds\npadj.cutoff &lt;- 0.05\n\n# Turn the results object into a tibble for use with tidyverse functions\nres_tbl &lt;- res %&gt;%\n  data.frame() %&gt;%\n  rownames_to_column(var=\"gene\") %&gt;% \n  as_tibble()\n\n# Subset the significant results\nsig_res &lt;- filter(res_tbl, \n            padj &lt; padj.cutoff)"
+    "text": "Output significant results:\n# Set thresholds\npadj.cutoff &lt;- 0.05\n\n# Turn the results object into a tibble for use with tidyverse functions\nres_tbl &lt;- res %&gt;%\n  data.frame() %&gt;%\n  rownames_to_column(var=\"gene\") %&gt;% \n  as_tibble()\n\n# Subset the significant results\nsig_res &lt;- filter(res_tbl, \n            padj &lt; padj.cutoff)",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/09_summarized_workflow.html#visualize-results-volcano-plots-heatmaps-normalized-counts-plots-of-top-genes-etc.",
     "href": "develop/09_summarized_workflow.html#visualize-results-volcano-plots-heatmaps-normalized-counts-plots-of-top-genes-etc.",
     "title": "Summarised workflow",
     "section": "Visualize results: volcano plots, heatmaps, normalized counts plots of top genes, etc.",
-    "text": "Visualize results: volcano plots, heatmaps, normalized counts plots of top genes, etc.\nFunction to get gene_IDs based on gene names. The function will take as input a vector of gene names of interest, the tx2gene dataframe and the dds object that you analyzed.\nlookup &lt;- function(gene_name, tx2gene, dds){\n  hits &lt;- tx2gene %&gt;% select(gene_symbol, gene_ID) %&gt;% distinct() %&gt;% \n    filter(gene_symbol %in% gene_name & gene_ID %in% rownames(dds))\n  return(hits)\n}\n\nlookup(gene_name = \"TSPAN7\", tx2gene = tx2gene, dds = dds)\nPlot expression for single gene\nplotCounts(dds, gene=\"ENSG00000156298\", intgroup=\"condition\")\n\nMAplot\nplotMA(res)\n\n\nVolcano plot with labels (top N genes)\n## Obtain logical vector where TRUE values denote padj values &lt; 0.05 and fold change &gt; 1.5 in either direction\nres_tbl &lt;- res_tbl %&gt;% \n  mutate(threshold = padj &lt; 0.05 & abs(log2FoldChange) &gt;= 0.58)\n## Create an empty column to indicate which genes to label\nres_tbl &lt;- res_tbl %&gt;% mutate(genelabels = \"\")\n\n## Sort by padj values \nres_tbl &lt;- res_tbl %&gt;% arrange(padj)\n\n## Populate the genelabels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes\nres_tbl$genelabels[1:10] &lt;- as.character(res_tbl$gene[1:10])\n\nhead(res_tbl)\nggplot(res_tbl, aes(x = log2FoldChange, y = -log10(padj))) +\n  geom_point(aes(colour = threshold)) +\n  geom_text_repel(aes(label = genelabels)) +\n  ggtitle(\"Mov10 overexpression\") +\n  xlab(\"log2 fold change\") + \n  ylab(\"-log10 adjusted p-value\") +\n  theme(legend.position = \"none\",\n        plot.title = element_text(size = rel(1.5), hjust = 0.5),\n        axis.title = element_text(size = rel(1.25))) \n\n\nHeatmap of differentially expressed genes\n# filter significant results from normalized counts\nnorm_sig &lt;- normalized_counts %&gt;% as_tibble(rownames = \"gene\") %&gt;%\n  dplyr::filter(gene %in% sig_res$gene) %&gt;% column_to_rownames(var=\"gene\")\npheatmap(norm_sig, \n  cluster_rows = T, #cluster by expression pattern\n  scale = \"row\", # scale by gene so expression pattern is visible\n  treeheight_row = 0, # dont show the row dendogram\n  show_rownames = F, # remove rownames so it is more clear\n  annotation = meta %&gt;% column_to_rownames(var = \"sample\") %&gt;% \n  dplyr::select(\"condition\")\n)"
+    "text": "Visualize results: volcano plots, heatmaps, normalized counts plots of top genes, etc.\nFunction to get gene_IDs based on gene names. The function will take as input a vector of gene names of interest, the tx2gene dataframe and the dds object that you analyzed.\nlookup &lt;- function(gene_name, tx2gene, dds){\n  hits &lt;- tx2gene %&gt;% select(gene_symbol, gene_ID) %&gt;% distinct() %&gt;% \n    filter(gene_symbol %in% gene_name & gene_ID %in% rownames(dds))\n  return(hits)\n}\n\nlookup(gene_name = \"TSPAN7\", tx2gene = tx2gene, dds = dds)\nPlot expression for single gene\nplotCounts(dds, gene=\"ENSG00000156298\", intgroup=\"condition\")\n\nMAplot\nplotMA(res)\n\n\nVolcano plot with labels (top N genes)\n## Obtain logical vector where TRUE values denote padj values &lt; 0.05 and fold change &gt; 1.5 in either direction\nres_tbl &lt;- res_tbl %&gt;% \n  mutate(threshold = padj &lt; 0.05 & abs(log2FoldChange) &gt;= 0.58)\n## Create an empty column to indicate which genes to label\nres_tbl &lt;- res_tbl %&gt;% mutate(genelabels = \"\")\n\n## Sort by padj values \nres_tbl &lt;- res_tbl %&gt;% arrange(padj)\n\n## Populate the genelabels column with contents of the gene symbols column for the first 10 rows, i.e. the top 10 most significantly expressed genes\nres_tbl$genelabels[1:10] &lt;- as.character(res_tbl$gene[1:10])\n\nhead(res_tbl)\nggplot(res_tbl, aes(x = log2FoldChange, y = -log10(padj))) +\n  geom_point(aes(colour = threshold)) +\n  geom_text_repel(aes(label = genelabels)) +\n  ggtitle(\"Mov10 overexpression\") +\n  xlab(\"log2 fold change\") + \n  ylab(\"-log10 adjusted p-value\") +\n  theme(legend.position = \"none\",\n        plot.title = element_text(size = rel(1.5), hjust = 0.5),\n        axis.title = element_text(size = rel(1.25))) \n\n\nHeatmap of differentially expressed genes\n# filter significant results from normalized counts\nnorm_sig &lt;- normalized_counts %&gt;% as_tibble(rownames = \"gene\") %&gt;%\n  dplyr::filter(gene %in% sig_res$gene) %&gt;% column_to_rownames(var=\"gene\")\npheatmap(norm_sig, \n  cluster_rows = T, #cluster by expression pattern\n  scale = \"row\", # scale by gene so expression pattern is visible\n  treeheight_row = 0, # dont show the row dendogram\n  show_rownames = F, # remove rownames so it is more clear\n  annotation = meta %&gt;% column_to_rownames(var = \"sample\") %&gt;% \n  dplyr::select(\"condition\")\n)",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/09_summarized_workflow.html#perform-analysis-to-extract-functional-significance-of-results-go-or-kegg-enrichment-gsea-etc.",
     "href": "develop/09_summarized_workflow.html#perform-analysis-to-extract-functional-significance-of-results-go-or-kegg-enrichment-gsea-etc.",
     "title": "Summarised workflow",
     "section": "Perform analysis to extract functional significance of results: GO or KEGG enrichment, GSEA, etc.",
-    "text": "Perform analysis to extract functional significance of results: GO or KEGG enrichment, GSEA, etc.\n\nAnnotate with annotables\nids &lt;- grch38 %&gt;% dplyr::filter(ensgene %in% res_tbl$gene) \nres_ids &lt;- inner_join(res_tbl, ids, by=c(\"gene\"=\"ensgene\"))\n\n\nPerform enrichment analysis of GO terms (can be done as well with KEGG pathways)\n# Create background dataset for hypergeometric testing using all genes tested for significance in the results\nall_genes &lt;- dplyr::filter(res_ids, !is.na(gene)) %&gt;% \n  pull(gene) %&gt;% \n  as.character()\n\n# Extract significant results\nsig &lt;- dplyr::filter(res_ids, padj &lt; 0.05 & !is.na(gene))\n\nsig_genes &lt;- sig %&gt;% \n  pull(gene) %&gt;% \n  as.character()\n# Perform enrichment analysis\nego &lt;- enrichGO(gene = sig_genes, \n                universe = all_genes,\n                keyType = \"ENSEMBL\",\n                OrgDb = org.Hs.eg.db, \n                ont = \"BP\", \n                pAdjustMethod = \"BH\", \n                qvalueCutoff = 0.05, \n                readable = TRUE)\n\nego &lt;- enrichplot::pairwise_termsim(ego)\n\n\nVisualize result\ndotplot(ego, showCategory=50)\nemapplot(ego, showCategory = 50)\n\n\nCnetplot\n## To color genes by log2 fold changes, we need to extract the log2 fold changes from our results table creating a named vector\nsig_foldchanges &lt;- sig$log2FoldChange\n\nnames(sig_foldchanges) &lt;- sig$gene\n## Cnetplot details the genes associated with one or more terms - by default gives the top 5 significant terms (by padj)\ncnetplot(ego, \n         categorySize=\"pvalue\", \n         showCategory = 5, \n         foldChange=sig_foldchanges, \n         vertex.label.font=6)\n\n\nPerform GSEA analysis of KEGG pathways (can be done as well with GO terms)\n# Extract entrez IDs. IDs should not be duplicated or NA\nres_entrez &lt;- dplyr::filter(res_ids, entrez != \"NA\" & entrez != \"NULL\" & duplicated(entrez)==F)\n\n## Extract the foldchanges\nfoldchanges &lt;- res_entrez$log2FoldChange\n\n## Name each fold change with the corresponding Entrez ID\nnames(foldchanges) &lt;- res_entrez$entrez\n\n## Sort fold changes in decreasing order\nfoldchanges &lt;- sort(foldchanges, decreasing = TRUE)\n# Run GSEA of KEGG\ngseaKEGG &lt;- gseKEGG(geneList = foldchanges, # ordered named vector of fold changes (Entrez IDs are the associated names)\n            organism = \"hsa\", # supported organisms listed below\n            pvalueCutoff = 0.05, # padj cutoff value\n            verbose = FALSE)\n\ngseaKEGG_results &lt;- gseaKEGG@result\nhead(gseaKEGG_results)\n## Plot the GSEA plot for a single enriched pathway:\ngseaplot(gseaKEGG, geneSetID = gseaKEGG_results$ID[1])\n## Output images for a single significant KEGG pathway\npathview(gene.data = foldchanges,\n        pathway.id = gseaKEGG_results$ID[1],\n        species = \"hsa\",\n        limit = list(gene = 2, # value gives the max/min limit for foldchanges\n        cpd = 1))\nknitr::include_graphics(paste0(\"./\",gseaKEGG_results$ID[1],\".png\"))"
+    "text": "Perform analysis to extract functional significance of results: GO or KEGG enrichment, GSEA, etc.\n\nAnnotate with annotables\nids &lt;- grch38 %&gt;% dplyr::filter(ensgene %in% res_tbl$gene) \nres_ids &lt;- inner_join(res_tbl, ids, by=c(\"gene\"=\"ensgene\"))\n\n\nPerform enrichment analysis of GO terms (can be done as well with KEGG pathways)\n# Create background dataset for hypergeometric testing using all genes tested for significance in the results\nall_genes &lt;- dplyr::filter(res_ids, !is.na(gene)) %&gt;% \n  pull(gene) %&gt;% \n  as.character()\n\n# Extract significant results\nsig &lt;- dplyr::filter(res_ids, padj &lt; 0.05 & !is.na(gene))\n\nsig_genes &lt;- sig %&gt;% \n  pull(gene) %&gt;% \n  as.character()\n# Perform enrichment analysis\nego &lt;- enrichGO(gene = sig_genes, \n                universe = all_genes,\n                keyType = \"ENSEMBL\",\n                OrgDb = org.Hs.eg.db, \n                ont = \"BP\", \n                pAdjustMethod = \"BH\", \n                qvalueCutoff = 0.05, \n                readable = TRUE)\n\nego &lt;- enrichplot::pairwise_termsim(ego)\n\n\nVisualize result\ndotplot(ego, showCategory=50)\nemapplot(ego, showCategory = 50)\n\n\nCnetplot\n## To color genes by log2 fold changes, we need to extract the log2 fold changes from our results table creating a named vector\nsig_foldchanges &lt;- sig$log2FoldChange\n\nnames(sig_foldchanges) &lt;- sig$gene\n## Cnetplot details the genes associated with one or more terms - by default gives the top 5 significant terms (by padj)\ncnetplot(ego, \n         categorySize=\"pvalue\", \n         showCategory = 5, \n         foldChange=sig_foldchanges, \n         vertex.label.font=6)\n\n\nPerform GSEA analysis of KEGG pathways (can be done as well with GO terms)\n# Extract entrez IDs. IDs should not be duplicated or NA\nres_entrez &lt;- dplyr::filter(res_ids, entrez != \"NA\" & entrez != \"NULL\" & duplicated(entrez)==F)\n\n## Extract the foldchanges\nfoldchanges &lt;- res_entrez$log2FoldChange\n\n## Name each fold change with the corresponding Entrez ID\nnames(foldchanges) &lt;- res_entrez$entrez\n\n## Sort fold changes in decreasing order\nfoldchanges &lt;- sort(foldchanges, decreasing = TRUE)\n# Run GSEA of KEGG\ngseaKEGG &lt;- gseKEGG(geneList = foldchanges, # ordered named vector of fold changes (Entrez IDs are the associated names)\n            organism = \"hsa\", # supported organisms listed below\n            pvalueCutoff = 0.05, # padj cutoff value\n            verbose = FALSE)\n\ngseaKEGG_results &lt;- gseaKEGG@result\nhead(gseaKEGG_results)\n## Plot the GSEA plot for a single enriched pathway:\ngseaplot(gseaKEGG, geneSetID = gseaKEGG_results$ID[1])\n## Output images for a single significant KEGG pathway\npathview(gene.data = foldchanges,\n        pathway.id = gseaKEGG_results$ID[1],\n        species = \"hsa\",\n        limit = list(gene = 2, # value gives the max/min limit for foldchanges\n        cpd = 1))\nknitr::include_graphics(paste0(\"./\",gseaKEGG_results$ID[1],\".png\"))",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/09_summarized_workflow.html#make-sure-to-output-the-versions-of-all-tools-used-in-the-de-analysis",
     "href": "develop/09_summarized_workflow.html#make-sure-to-output-the-versions-of-all-tools-used-in-the-de-analysis",
     "title": "Summarised workflow",
     "section": "Make sure to output the versions of all tools used in the DE analysis:",
-    "text": "Make sure to output the versions of all tools used in the DE analysis:\nsessionInfo()"
+    "text": "Make sure to output the versions of all tools used in the DE analysis:\nsessionInfo()",
+    "crumbs": [
+      "Data analyses",
+      "Workflow summary",
+      "Summarised workflow"
+    ]
   },
   {
     "objectID": "develop/rmd/05b_count_matrix.html",
