@@ -115,7 +115,7 @@ High-Performance Computing (HPC) platforms are essential for large-scale data an
 - To run the nf-core RNAseq pipeline follow the instructions [here](https://hds-sandbox.github.io/bulk_RNAseq_course/develop/04c_preprocessing_setup.html). This will generate the output from the preprocessing pipeline.  
 
 <div style="overflow: auto;">
-  <img src="/img/transcriptomics.png" alt="Image" style="float: left; margin-right: 15px; width: 8%;">
+  <img src="./img/transcriptomics.png" alt="Image" style="float: left; margin-right: 15px; width: 8%;">
   <p>
     **Transcriptomics Sandbox**: Our sandbox for bulk or single-cell RNA sequencing analysis provides stand-alone analysis and visualization tools.
     
