@@ -1643,28 +1643,28 @@
   {
     "objectID": "develop/workshop_RNAseq_nov2024.html#access-sandbox-resources",
     "href": "develop/workshop_RNAseq_nov2024.html#access-sandbox-resources",
-    "title": "Workshop Startup",
+    "title": "Welcome to the bulk RNAseq workshop",
     "section": "Access Sandbox resources",
     "text": "Access Sandbox resources\nOur first choice is to provide all the training materials, tutorials, and tools as interactive apps on UCloud, the supercomputer located at the University of Southern Denmark. Anyone using these resources needs the following:\n\na Danish university ID so you can sign on to UCloud via WAYF1.\n\n \n\n for UCloud Access click here \n\n \n\nbasic ability to navigate in Linux/RStudio/Jupyter. You don’t need to be an expert, but it is beyond our ambitions (and course material) to teach you how to code from zero and how to run analyses simultaneously. We recommend a basic R or Python course before diving in.\nFor workshop participants: Use our invite link to the correct UCloud workspace that will be shared on the day of the workshop. This way, we can provide you with compute resources for the active sessions of the workshop2 Click the link below after your first uCloud access and accept the invite that shows.\n\n \n\n Invite link to uCloud workspace"
   },
   {
     "objectID": "develop/workshop_RNAseq_nov2024.html#transcriptomics-apps",
     "href": "develop/workshop_RNAseq_nov2024.html#transcriptomics-apps",
-    "title": "Workshop Startup",
+    "title": "Welcome to the bulk RNAseq workshop",
     "section": "Transcriptomics apps",
     "text": "Transcriptomics apps\nHigh-Performance Computing (HPC) platforms are essential for large-scale data analysis. Therefore, we will run our bulk RNA-seq analyses on one of the national HPC platforms, UCloud.\n\nIf you want to review the course material, visit our website where you will find the content for all the lectures.\n\nZenodo link to download the material (slides, assignments, data, etc.) for this workshop here.\nTo get started with our transcriptomics app, follow the UCloud setup guidelines. This will help you set up a new job and repeat the exercises on your own.\nTo run the nf-core RNAseq pipeline follow the instructions here. This will generate the output from the preprocessing pipeline.\n\n\n\n\nTranscriptomics Sandbox: Our sandbox for bulk or single-cell RNA sequencing analysis provides stand-alone analysis and visualization tools.\n\n\n \nWe are developing other apps. If you are interested, explore the modules section on our website!"
   },
   {
     "objectID": "develop/workshop_RNAseq_nov2024.html#discussion-and-feedback",
     "href": "develop/workshop_RNAseq_nov2024.html#discussion-and-feedback",
-    "title": "Workshop Startup",
+    "title": "Welcome to the bulk RNAseq workshop",
     "section": "Discussion and feedback",
     "text": "Discussion and feedback\nWe hope you enjoyed the workshop. If you have broader questions, suggestions, or concerns, now is the time to raise them! Remember that you can check out longer versions of our tutorials as well as other topics and tools in each of the Sandbox modules. We regularly run workshops on a variety of health data science topics that you can also check out (follow our news here).\nAs data scientists, we also would be happy for some quantifiable info and feedback - we want to build things that the Danish health data science community is excited to use.\n\n \n\n\n\n\n\n\n\nNice meeting you and we hope to see you again!"
   },
   {
     "objectID": "develop/workshop_RNAseq_nov2024.html#footnotes",
     "href": "develop/workshop_RNAseq_nov2024.html#footnotes",
-    "title": "Workshop Startup",
+    "title": "Welcome to the bulk RNAseq workshop",
     "section": "Footnotes",
     "text": "Footnotes\n\n\nOther institutions (e.g. hospitals, libraries, …) can log on through WAYF. See all institutions here↩︎\nTo use Sandbox materials outside of the workshop: remember that each new user has hundreds of hours of free computing credit and around 50GB of free storage, which can be used to run any uCloud software. If you run out of credit (which takes a long time) you’ll need to check with the local DeiC office at your university about how to request compute hours on UCloud. Contact us at the Sandbox if you need help or want more information.↩︎"
   },
