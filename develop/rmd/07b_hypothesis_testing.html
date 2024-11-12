@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Bulk RNAseq data analysis - Hypothesis testing with DESeq2</title>
+<title>Hypothesis testing with DESeq2 – Bulk RNAseq data analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -103,7 +103,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -150,11 +150,15 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../develop/workshop_RNAseq_nov2024.html"> 
+<span class="menu-text">Workshop Info Nov ’24</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../develop/index.html"> 
 <span class="menu-text">Home</span></a>
@@ -184,7 +188,7 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
@@ -366,6 +370,7 @@ Using LRT, we are evaluating the **null hypothesis that the full model fits just
 For have an experiment looking at the effect of treatment over time on mice of two different genotypes. We could use a design formula for our "full model" that would include the major sources of variation in our data: genotype, treatment, time, and our main condition of interest, which is the difference in the effect of treatment over time (treatment:time).
 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -374,7 +379,9 @@ full_model &lt;- ~ genotype + treatment + time + treatment:time
 :::
 
 
+
 To perform the LRT test, we can determine all genes that have significant differences in expression between treatments across time points by giving the "reduced model" without the `treatment:time` term:
+
 
 
 ::: {.cell layout-align="center"}
@@ -385,7 +392,9 @@ reduced_model &lt;- ~ genotype + treatment + time
 :::
 
 
+
 Then, we could run our test by using the following code:
+
 
 
 ::: {.cell layout-align="center"}
@@ -398,7 +407,9 @@ dds_lrt_time &lt;- DESeq(dds_lrt, test="LRT", reduced = ~ genotype + treatment +
 :::
 
 
+
 This analysis will not return genes where the treatment effect does not change over time, even though the genes may be differentially expressed between groups at a particular time point, as shown in the figure below:
+
 
 
 ::: {.cell layout-align="center"}
@@ -408,7 +419,9 @@ This analysis will not return genes where the treatment effect does not change o
 :::
 
 
+
 The significant DE genes will represent those genes that have differences in the effect of treatment over time, an example is displayed in the figure below:
+
 
 
 ::: {.cell layout-align="center"}
@@ -489,6 +502,7 @@ The significant DE genes will represent those genes that have differences in the
 <pre><code>Define contrasts for Vampirium samples using one of the two methods above.
 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -500,6 +514,7 @@ The significant DE genes will represent those genes that have differences in the
 <pre><code>First let's check the metadata:
 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -508,7 +523,9 @@ meta
 :::
 
 
+
 Since we have only given the `condition` column in the design formula, the first element should be `condition`. The second element is the condition we are interested, `control` and our base level is `vampirium`.
+
 
 
 ::: {.cell layout-align="center"}
@@ -657,6 +674,7 @@ contrast_cont &lt;- c("condition", "control", "vampirium")
 <pre><code>The `results()` function has an option to add a fold change threshold using the `lfcThreshold` argument. This method is more statistically motivated, and is recommended when you want a more confident set of genes based on a certain fold-change. It actually performs a statistical test against the desired threshold, by performing a two-tailed test for log2 fold changes greater than the absolute value specified. The user can change the alternative hypothesis using `altHypothesis` and perform two one-tailed tests as well. **This is a more conservative approach, so expect to retrieve a much smaller set of genes!**
 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -729,6 +747,7 @@ Now that we have results for the Control vs Vampirium results, do the same for t
 <pre><code>1. Contrast for Garlicum vs Vampirium
 
 
+
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -737,7 +756,9 @@ contrast_gar &lt;- c("condition", "garlicum", "vampirium")
 :::
 
 
+
 2. Extract results
+
 
 
 ::: {.cell layout-align="center"}
@@ -748,7 +769,9 @@ res_tableGar &lt;- results(dds, contrast = contrast_gar)
 :::
 
 
+
 3. Significant genes
+
 
 
 ::: {.cell layout-align="center"}
@@ -768,7 +791,9 @@ sigGar
 :::
 
 
+
 4. Comparison against sigGar vs sigCont
+
 
 
 ::: {.cell layout-align="center"}
@@ -785,6 +810,7 @@ nrow(sigCont) #number of significant genes in Control vs Vampirium
 nrow(sigCont) - nrow(sigGar)
 ```
 :::
+
 
 
 sigCont has almost 2000 more genes that are differentially expressed!</code></pre>
@@ -976,18 +1002,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1019,7 +1034,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/hds-sandbox\.github\.io\/bulk_RNAseq_course");
@@ -1027,7 +1064,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

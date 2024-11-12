@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Bulk RNAseq data analysis - Ucloud setup</title>
+<title>Ucloud setup – Bulk RNAseq data analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -125,11 +125,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/workshop_RNAseq_nov2024.html"> 
+<span class="menu-text">Workshop Info Nov ’24</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="../develop/index.html"> 
 <span class="menu-text">Home</span></a>
@@ -159,20 +163,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/04c_preprocessing_setup.html">Ucloud setup</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -358,23 +362,23 @@ Reconnect to tmux session
 <p>The <code>--input</code> parameter points to the <code>samplesheet.csv</code> file that contains all the info regarding our samples. The file looks like this:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="euohawacmn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#euohawacmn table {
+<div id="yukthiienx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yukthiienx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#euohawacmn thead, #euohawacmn tbody, #euohawacmn tfoot, #euohawacmn tr, #euohawacmn td, #euohawacmn th {
+#yukthiienx thead, #yukthiienx tbody, #yukthiienx tfoot, #yukthiienx tr, #yukthiienx td, #yukthiienx th {
   border-style: none;
 }
 
-#euohawacmn p {
+#yukthiienx p {
   margin: 0;
   padding: 0;
 }
 
-#euohawacmn .gt_table {
+#yukthiienx .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -400,12 +404,12 @@ Reconnect to tmux session
   border-left-color: #D3D3D3;
 }
 
-#euohawacmn .gt_caption {
+#yukthiienx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#euohawacmn .gt_title {
+#yukthiienx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -417,7 +421,7 @@ Reconnect to tmux session
   border-bottom-width: 0;
 }
 
-#euohawacmn .gt_subtitle {
+#yukthiienx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -429,7 +433,7 @@ Reconnect to tmux session
   border-top-width: 0;
 }
 
-#euohawacmn .gt_heading {
+#yukthiienx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -441,13 +445,13 @@ Reconnect to tmux session
   border-right-color: #D3D3D3;
 }
 
-#euohawacmn .gt_bottom_border {
+#yukthiienx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#euohawacmn .gt_col_headings {
+#yukthiienx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -462,7 +466,7 @@ Reconnect to tmux session
   border-right-color: #D3D3D3;
 }
 
-#euohawacmn .gt_col_heading {
+#yukthiienx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -482,7 +486,7 @@ Reconnect to tmux session
   overflow-x: hidden;
 }
 
-#euohawacmn .gt_column_spanner_outer {
+#yukthiienx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -494,15 +498,15 @@ Reconnect to tmux session
   padding-right: 4px;
 }
 
-#euohawacmn .gt_column_spanner_outer:first-child {
+#yukthiienx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#euohawacmn .gt_column_spanner_outer:last-child {
+#yukthiienx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#euohawacmn .gt_column_spanner {
+#yukthiienx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -514,11 +518,11 @@ Reconnect to tmux session
   width: 100%;
 }
 
-#euohawacmn .gt_spanner_row {
+#yukthiienx .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#euohawacmn .gt_group_heading {
+#yukthiienx .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -544,7 +548,7 @@ Reconnect to tmux session
   text-align: left;
 }
 
-#euohawacmn .gt_empty_group_heading {
+#yukthiienx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -559,15 +563,15 @@ Reconnect to tmux session
   vertical-align: middle;
 }
 
-#euohawacmn .gt_from_md > :first-child {
+#yukthiienx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#euohawacmn .gt_from_md > :last-child {
+#yukthiienx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#euohawacmn .gt_row {
+#yukthiienx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -586,7 +590,7 @@ Reconnect to tmux session
   overflow-x: hidden;
 }
 
-#euohawacmn .gt_stub {
+#yukthiienx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -599,7 +603,7 @@ Reconnect to tmux session
   padding-right: 5px;
 }
 
-#euohawacmn .gt_stub_row_group {
+#yukthiienx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -613,15 +617,15 @@ Reconnect to tmux session
   vertical-align: top;
 }
 
-#euohawacmn .gt_row_group_first td {
+#yukthiienx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#euohawacmn .gt_row_group_first th {
+#yukthiienx .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#euohawacmn .gt_summary_row {
+#yukthiienx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -631,16 +635,16 @@ Reconnect to tmux session
   padding-right: 5px;
 }
 
-#euohawacmn .gt_first_summary_row {
+#yukthiienx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#euohawacmn .gt_first_summary_row.thick {
+#yukthiienx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#euohawacmn .gt_last_summary_row {
+#yukthiienx .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -650,7 +654,7 @@ Reconnect to tmux session
   border-bottom-color: #D3D3D3;
 }
 
-#euohawacmn .gt_grand_summary_row {
+#yukthiienx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -660,7 +664,7 @@ Reconnect to tmux session
   padding-right: 5px;
 }
 
-#euohawacmn .gt_first_grand_summary_row {
+#yukthiienx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -670,7 +674,7 @@ Reconnect to tmux session
   border-top-color: #D3D3D3;
 }
 
-#euohawacmn .gt_last_grand_summary_row_top {
+#yukthiienx .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -680,11 +684,11 @@ Reconnect to tmux session
   border-bottom-color: #D3D3D3;
 }
 
-#euohawacmn .gt_striped {
+#yukthiienx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#euohawacmn .gt_table_body {
+#yukthiienx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -693,7 +697,7 @@ Reconnect to tmux session
   border-bottom-color: #D3D3D3;
 }
 
-#euohawacmn .gt_footnotes {
+#yukthiienx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -707,7 +711,7 @@ Reconnect to tmux session
   border-right-color: #D3D3D3;
 }
 
-#euohawacmn .gt_footnote {
+#yukthiienx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -716,7 +720,7 @@ Reconnect to tmux session
   padding-right: 5px;
 }
 
-#euohawacmn .gt_sourcenotes {
+#yukthiienx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -730,7 +734,7 @@ Reconnect to tmux session
   border-right-color: #D3D3D3;
 }
 
-#euohawacmn .gt_sourcenote {
+#yukthiienx .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -738,63 +742,63 @@ Reconnect to tmux session
   padding-right: 5px;
 }
 
-#euohawacmn .gt_left {
+#yukthiienx .gt_left {
   text-align: left;
 }
 
-#euohawacmn .gt_center {
+#yukthiienx .gt_center {
   text-align: center;
 }
 
-#euohawacmn .gt_right {
+#yukthiienx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#euohawacmn .gt_font_normal {
+#yukthiienx .gt_font_normal {
   font-weight: normal;
 }
 
-#euohawacmn .gt_font_bold {
+#yukthiienx .gt_font_bold {
   font-weight: bold;
 }
 
-#euohawacmn .gt_font_italic {
+#yukthiienx .gt_font_italic {
   font-style: italic;
 }
 
-#euohawacmn .gt_super {
+#yukthiienx .gt_super {
   font-size: 65%;
 }
 
-#euohawacmn .gt_footnote_marks {
+#yukthiienx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#euohawacmn .gt_asterisk {
+#yukthiienx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#euohawacmn .gt_indent_1 {
+#yukthiienx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#euohawacmn .gt_indent_2 {
+#yukthiienx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#euohawacmn .gt_indent_3 {
+#yukthiienx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#euohawacmn .gt_indent_4 {
+#yukthiienx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#euohawacmn .gt_indent_5 {
+#yukthiienx .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1114,18 +1118,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1157,7 +1150,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/hds-sandbox\.github\.io\/bulk_RNAseq_course");
@@ -1165,7 +1180,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -1498,30 +1513,37 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom","closeEffect":"zoom"});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
     }
-  });
-
-};
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
           </script>
 
 
