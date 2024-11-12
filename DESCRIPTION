@@ -11,3 +11,4 @@ Imports: xml2, curl
 Suggests: covr, knitr, rmarkdown, testthat, gt, tidyverse, ggplot2
 License: GPL (>= 2)
 VignetteBuilder: knitr, rmarkdown
+
