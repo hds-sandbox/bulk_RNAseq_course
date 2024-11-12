@@ -58,7 +58,8 @@ website:
             - develop/08b_FA_overrepresentation.qmd
             - develop/08c_FA_GSEA.qmd
         - section: "Workflow summary"
-          contents: develop/09_summarized_workflow.qmd
+          contents: 
+            - develop/09_summarized_workflow.qmd
 format:
   html:
     theme: 
