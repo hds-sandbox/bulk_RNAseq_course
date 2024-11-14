@@ -348,7 +348,7 @@ Warning
 <li>Note that Documentation is available (though it redirects you to this website).</li>
 <li>If you have previously run the app, you can import job parameters from that run. We’ll get to that later.</li>
 <li>Set your job name (pick something original / with your initials!), your hours of use (you can top up later as the job runs, but give a good estimate), and your machine type (if you simply want to do the downstream analysis, you only need 1 core, but running the full pipeline will take 8-12 cores).</li>
-<li>Add folders containing any material that your job needs to run. For first time use, without your own data, you don’t need a folder. However, we recommend making your own working directory and eventually copying files to and editing files from there.</li>
+<li>Add folders containing any material that your job needs to run. For first time use, without your own data, you don’t need a folder. However, we recommend making your own working directory in your member files (see my work_JAB example below) and eventually copying files to and editing files from there (e.g.&nbsp;<code>work_&lt;YourInitials&gt;</code>).</li>
 <li>Select the module you want to use. In this example, we select ‘Introduction to bulk RNAseq analysis in R’.</li>
 <li>Then you can submit your job.</li>
 </ol>
@@ -399,17 +399,29 @@ Warning
 <h2 class="anchored" data-anchor-id="restarting-the-rstudio-session">Restarting the Rstudio session</h2>
 <section id="starting-from-in-progress-work" class="level3">
 <h3 class="anchored" data-anchor-id="starting-from-in-progress-work">Starting from in-progress work</h3>
-<p>If you want to keep working on your previous results, it makes sense to copy the <code>Intro_to_bulkRNAseq</code> folder to your own working dirctory, and reload this folder for new jobs. If this exact folder with this exact name is available in the root directory of your job workspace, the app will not download fresh directories, and you will instead have your own edited/editable files.</p>
+<p>If you want to keep working on your previous results, it makes sense to copy the <code>Intro_to_bulkRNAseq</code> folder to your own working directory, and reload this folder for new jobs. If this exact folder with this exact name is available in the root directory of your job workspace, the app will not download fresh directories, and you will instead have your own edited/editable files.</p>
 <p>To copy the directory, complete the following steps:</p>
 <ol type="1">
 <li>Go to <code>Jobs → Transcriptomics Sandbox → &lt;Job name&gt; → Intro_to_bulkRNAseq</code></li>
 <li>Click ONCE to select <code>Intro_to_bulkRNAseq</code></li>
 <li>Click ‘Copy to…’</li>
 <li>Click on your root member files directory</li>
-<li>Select ‘Copy to’ the custom working directory you made</li>
+<li>Select ‘Copy to’ the custom working directory you made (you can <code>Create folder</code> now if you haven’t previously)</li>
 </ol>
 <p><a href="./img/05a_data_analysis_setup/1124_setupUCloudwriteabledir.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="./img/05a_data_analysis_setup/1124_setupUCloudwriteabledir.png" class="img-fluid"></a></p>
-<p>Now you will always have your own, writeable copy of tthis directory… AS LONG AS YOU LOAD IT IN YOUR NEXT JOB!</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ta-da
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Now you will always have your own, writeable copy of this directory… AS LONG AS YOU LOAD IT IN YOUR NEXT JOB!</strong></p>
+</div>
+</div>
 <p><a href="./img/05a_data_analysis_setup/1124_setupUCloudjob_owndir.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="./img/05a_data_analysis_setup/1124_setupUCloudjob_owndir.png" class="img-fluid"></a></p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1011,7 +1023,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","openEffect":"zoom","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

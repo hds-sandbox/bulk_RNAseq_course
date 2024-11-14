@@ -64,7 +64,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../develop/04c_preprocessing_nf3120.html" rel="next">
 <link href="../develop/04b_pipelines.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -221,12 +220,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">nf-core/rnaseq 3.17.0</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/04c_preprocessing_nf3120.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">nf-core/rnaseq 3.12.0</span></a>
-  </div>
-</li>
       </ul>
   </li>
     </ul>
@@ -356,13 +349,27 @@ Reconnect to tmux session
 </div>
 </div>
 </div>
-<p>Let’s prepare to run the pipeline. First, navigate to your personal drive—the one with your name (e.g.``)—and create a directory to serve as your working directory where all pipeline results will be saved (e.g., nfcore-results). Make sure you’re now located within this new directory. Next, copy the bash script that runs the Nextflow command into this directory by using:</p>
+<p>Let’s prepare to run the pipeline. First, navigate to your personal drive—the one with your name (e.g.<code>Yourname#xxxx</code>)—and create a directory to serve as your working directory where all pipeline results will be saved (e.g., <code>nfcore-results</code>). Make sure you’re now located within this new directory. Finally, copy the bash script that runs the Nextflow command into this directory. Check the commands you need to run below:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Terminal</strong></pre>
 </div>
-<div class="sourceCode" id="cb3" data-filename="Terminal"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> nfcore-results <span class="co"># you might have named it differently </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> ./sequencing_data/scripts_v3.17.0/preprocessing_salmon.sh .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3" data-filename="Terminal"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change location to your personal drive and create a new directory</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># cd /work/&lt;YourName#xxxx&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> nfcore-results</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Make the new dir your current working dir!</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> nfcore-results <span class="co"># you might have named it differently </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy our bash script to your directory </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> /work/sequencing_data/scripts_v3.17.0/preprocessing_salmon.sh .</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure you have copied the bash script using the ls command </span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> . </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># ls is a Linux shell command that lists directory contents of files and directories.</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># You will run the pipeline from here as follows BUT not yet! (that's why is commented-out)</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># bash ./preprocessing_salmon.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Once copied, review the bash script:</p>
 <div class="code-with-filename">
@@ -1205,13 +1212,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../develop/04c_preprocessing_nf3120.html" class="pagination-link" aria-label="nf-core/rnaseq 3.12.0">
-        <span class="nav-page-text">nf-core/rnaseq 3.12.0</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom","loop":false,"selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
