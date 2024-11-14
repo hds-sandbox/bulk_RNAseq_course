@@ -117,3 +117,21 @@ div.callout-readme p{
 // div.callout-hint.callout-style-default {
 //     background-color: #ff0000; /* Change to the desired background color */
 //   }   
+
+
+// button actions e.g. download 
+
+.btn-action {
+  color: white;
+  background-color: #f7b604 !important;
+  text-transform: none !important;
+  min-width: 230px;
+  min-height: 75px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold; /* Make text bold */
+}
+
+.btn-action-primary:hover {
+  color: white;
+}

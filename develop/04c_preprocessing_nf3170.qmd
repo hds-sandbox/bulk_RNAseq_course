@@ -78,14 +78,27 @@ tmux attach -t 0 # abbreviated as tmux a -t0
 ```
 :::
 
-Let's prepare to run the pipeline. First, navigate to your personal drive—the one with your name (e.g.``)—and create a directory to serve as your working directory where all pipeline results will be saved (e.g., nfcore-results). Make sure you’re now located within this new directory.
-Next, copy the bash script that runs the Nextflow command into this directory by using:
-
+Let's prepare to run the pipeline. First, navigate to your personal drive—the one with your name (e.g.`Yourname#xxxx`)—and create a directory to serve as your working directory where all pipeline results will be saved (e.g., `nfcore-results`). Make sure you’re now located within this new directory. Finally, copy the bash script that runs the Nextflow command into this directory. Check the commands you need to run below: 
 
 ```{.bash filename="Terminal"}
+# Change location to your personal drive and create a new directory
+# cd /work/<YourName#xxxx>
+mkdir nfcore-results
+
+# Make the new dir your current working dir!
 cd nfcore-results # you might have named it differently 
-bash ./sequencing_data/scripts_v3.17.0/preprocessing_salmon.sh .
+
+# Copy our bash script to your directory 
+cp /work/sequencing_data/scripts_v3.17.0/preprocessing_salmon.sh .
+
+# Make sure you have copied the bash script using the ls command 
+ls . 
+# ls is a Linux shell command that lists directory contents of files and directories.
+
+# You will run the pipeline from here as follows BUT not yet! (that's why is commented-out)
+# bash ./preprocessing_salmon.sh
 ```
+
 
 Once copied, review the bash script:
 
