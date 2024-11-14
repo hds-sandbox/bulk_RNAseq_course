@@ -285,15 +285,15 @@ Section Overview
 </div>
 <section id="submit-a-job" class="level2">
 <h2 class="anchored" data-anchor-id="submit-a-job">Submit a job</h2>
-<p>Access <a href="https://cloud.sdu.dk">Ucloud</a> with your account and choose the project <code>Sandbox RNASeq Workshop</code> where you have been invited (<a href="https://hds-sandbox.github.io/contact/contact.html">contact</a> the team if you haven’t).</p>
+<p>Access <a href="https://cloud.sdu.dk">Ucloud</a> with your account and choose the project <code>Sandbox RNASeq Workshop</code> to which you have been invited (<a href="https://hds-sandbox.github.io/contact/contact.html">contact</a> the team if you haven’t).</p>
 <p><a href="./img/04c_preprocessing_setup/chooseProject.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="./img/04c_preprocessing_setup/chooseProject.png" class="img-fluid"></a></p>
-<p>Click on <code>Apps</code> on the left-side menu, and search for the application <code>nf-core rnaseq</code> and click on it.</p>
+<p>Click on <code>Apps</code> on the left-side menu, search for the application <code>nf-core rnaseq</code>, and click on it.</p>
 <p><a href="./img/04c_preprocessing_setup/chooseRNAseq.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="./img/04c_preprocessing_setup/chooseRNAseq.png" class="img-fluid"></a></p>
 <p>Next, let’s set up the parameters to run the pipeline. Your screen should resemble the image below—please verify it does.</p>
 <ol type="1">
 <li>Assign a job title using your name and the task (e.g., “preprocessing salmon”).</li>
 <li>Select 8 cores and a runtime of 4 hours.</li>
-<li>Choose the <strong>sequencing data</strong> drive containing the sequencing reads and scripts needed for the pipeline.</li>
+<li>Choose the <strong>sequencing data</strong> drive containing the sequencing reads and scripts needed for the pipeline. Please, also add your personal drive—the one with your name (e.g.<code>Yourname#xxxx</code>).</li>
 <li>Enable <strong>interactive mode</strong> to start a session through the terminal app, allowing us to work with the command line and monitor the progress of the pipeline.</li>
 </ol>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -307,7 +307,7 @@ Warning
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Ensure that the hard-drive icon is labeled “sequencing_data” and you are in the “sandbox_bulkRNAseq” workspace.</strong></p>
-<p>You can select the drive by clicking on the down arrow (<strong>∨</strong>) icon to open a dropdown menu.</p>
+<p>You can select the drive by clicking the down arrow (<strong>∨</strong>) icon to open a dropdown menu.</p>
 </div>
 </div>
 <p><a href="./img/04c_preprocessing_setup/select_options_rnaseq.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="./img/04c_preprocessing_setup/select_options_rnaseq.png" class="img-fluid"></a></p>
@@ -316,7 +316,7 @@ Warning
 <p>Now, click the button on the top-right of the screen (<code>submit</code>) to start the job.</p>
 <p>Next, wait until the screen looks like the figure below. This process usually takes a few minutes. You can always come back to this screen via the <code>Runs</code> button in the left menu on UCloud. From there, you can add extra time or stop the app if you no longer need it.</p>
 <p><a href="./img/04c_preprocessing_setup/startApp.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="./img/04c_preprocessing_setup/startApp.png" class="img-fluid"></a></p>
-<p>Now, click on <code>Open terminal</code> on the top right-hand side of the screen. You will start terminal session through your browser! Once inside the terminal, you will need to do one last thing before starting the pipeline:</p>
+<p>Now, click on <code>Open terminal</code> on the top right-hand side of the screen. You will start the terminal session through your browser! Once inside the terminal, you will need to do one last thing before starting the pipeline:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Terminal</strong></pre>
@@ -340,7 +340,7 @@ Reconnect to tmux session
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If you want to leave the tmux session (<em>and not kill it</em>), you can do so by pressing simultaneously <code>Ctrl</code> and <code>B</code> keys, and then press <code>D</code>. Then, you can reconnect to the session using the command:</p>
+<p>If you want to leave the tmux session (<em>and not kill it</em>), you can do so by pressing simultaneously <code>Ctrl</code> and <code>B</code> keys, and then pressing <code>D</code>. Then, you can reconnect to the session using the command:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Terminal</strong></pre>
@@ -359,7 +359,7 @@ Reconnect to tmux session
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> nfcore-results</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Make the new dir your current working dir!</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> nfcore-results <span class="co"># you might have named it differently </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> nfcore-results <span class="co"># You might have named it differently </span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy our bash script to your directory </span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> /work/sequencing_data/scripts_v3.17.0/preprocessing_salmon.sh .</span>
@@ -368,7 +368,7 @@ Reconnect to tmux session
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> . </span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># ls is a Linux shell command that lists directory contents of files and directories.</span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># You will run the pipeline from here as follows BUT not yet! (that's why is commented-out)</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># You will run the pipeline from here as follows BUT not yet! (that's why is commented out)</span></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># bash ./preprocessing_salmon.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Once copied, review the bash script:</p>
@@ -376,7 +376,7 @@ Reconnect to tmux session
 <div class="code-with-filename-file">
 <pre><strong>preprocessing_salmon.sh</strong></pre>
 </div>
-<div class="sourceCode" id="cb4" data-filename="preprocessing_salmon.sh"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash  # Specifies the script should be run in bash shell</span></span>
+<div class="sourceCode" id="cb4" data-filename="preprocessing_salmon.sh"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash  # Specifies the script that should be run in the bash shell</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">VRNASEQ</span><span class="op">=</span><span class="st">"3.17.0"</span>    <span class="co"># Defines the version of the rnaseq pipeline to use</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">PARAMSF</span><span class="op">=</span><span class="st">"/work/sequencing_data/scripts_v3.17.0/nf-params_salmon.json"</span>   <span class="co"># Set path to configuration pipeline parameters (e.g. aligner software)</span></span>
@@ -384,7 +384,7 @@ Reconnect to tmux session
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="at">-r</span> <span class="va">$VRNASEQ</span> <span class="at">-params-file</span> <span class="va">$PARAMSF</span> <span class="at">-profile</span> conda <span class="at">-c</span> <span class="va">$CONFIGF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This small bash script initiates the <code>nf-core/rnaseq</code> pipeline. It’s a good practice to save the command used to run the pipeline, and now you’ve copied it into your results folder! You’ll notice extra parameters and configuration settings defined in the script, which we’ll explore shortly. The final line of the script runs the RNA-seq pipeline with the specified version, parameters, Conda profile, and configuration file. <strong>We will inspect each part of the nextflow command below in the section <a href="#understanding-pipeline-options">Understanding the pipeline arguments</a> but we will first look at the different input files.</strong></p>
+<p>This small bash script initiates the <code>nf-core/rnaseq</code> pipeline. It’s a good practice to save the command used to run the pipeline, and now you’ve copied it into your results folder! You’ll notice extra parameters and configuration settings defined in the script, which we’ll explore shortly. The final line of the script runs the RNA-seq pipeline with the specified version, parameters, Conda profile, and configuration file. <strong>We will inspect each part of the Nextflow command below in the section <a href="#understanding-pipeline-options">Understanding the pipeline arguments</a> but we will first look at the different input files.</strong></p>
 <section id="parameters-file" class="level4">
 <h4 class="anchored" data-anchor-id="parameters-file">Parameters file</h4>
 <p>The <strong>parameters JSON file</strong> is used in nf-core pipelines to define various arguments and software options that can be utilized within the pipeline. You can find a full list of all parameters on the official page: https://nf-co.re/rnaseq/3.17.0/parameters/. Let’s take a look at the different configuration files we’re using.</p>
@@ -501,19 +501,19 @@ Bash scripting
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="at">-r</span> 3.17.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>While usually one would run an nf-core pipeline using <code>nextflow run nf-core/rnaseq</code> and fetch the pipeline remotely, UCloud has installed the pipelines locally. Specifically, we are using the latest version by using the argument <code>-r 3.17.0</code>.</p>
 <hr>
-<p>The <code>-params-file</code> argument is another nextflow core argument that allows us to give the nf-core rnaseq pipeline arguments in a <a href="https://www.json.org/json-en.html">json file</a>, instead of creating an excessively long command. Writing the parameters this way allows for better reproducibility, since you can reuse the file in the future.</p>
+<p>The <code>-params-file</code> argument is another nextflow core argument that allows us to give the nf-core rnaseq pipeline arguments in a <a href="https://www.json.org/json-en.html">json file</a>, instead of creating an excessively long command. Writing the parameters this way allows for better reproducibility since you can reuse the file in the future.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set path to configuration pipeline parameters (e.g. aligner software)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="va">PARAMSF</span><span class="op">=</span><span class="st">"/path/to/params.json"</span>   </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-params-file</span> <span class="va">$PARAMSF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
-<p>The next argument defines the <code>-profile</code>. Profiles can give configuration presets for different compute environments. Unfortunately, the UCloud implementation of the nf-core pipelines do not currently allow the use of docker or singularity, which are the recommended profile options. However, UCloud has made sure that there is a working conda environment ready to use!</p>
+<p>The next argument defines the <code>-profile</code>. Profiles can give configuration presets for different compute environments. Unfortunately, the UCloud implementation of the nf-core pipelines does not currently allow the use of docker or singularity, which are the recommended profile options. However, UCloud has made sure that there is a working conda environment ready to use!</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">-profile</span> conda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 <p>Finally, we include the argument to specify the config file containing the resource settings:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set path to maximum cores and memory usage (e.g. what you requested on UCloud)</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="va">CONFIGF</span><span class="op">=</span><span class="st">"/path/to/config.json"</span>   </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-c</span> <span class="va">$CONFIGF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>These are nf-core specific arguments that indicates nextflow to only use as maximum the number of CPUs and RAM we have requested when we submitted the job. We are using 8 cores since it is what we requested in the submission page (e.g.&nbsp;if you submitted a job with 4 CPUs, this will be equal to 4). We are using slightly less RAM than we requested (48Gb) just in case there is a problem with memory overflow.</p>
+<p>These are nf-core specific arguments that indicate Nextflow to only use as maximum the number of CPUs and RAM we requested when we submitted the job. We are using 8 cores since it is what we requested on the submission page (e.g.&nbsp;if you submitted a job with 4 CPUs, this will be equal to 4). We are using slightly less RAM than we requested (48Gb) just in case there is a problem with memory overflow.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -546,7 +546,7 @@ Need more help?
 </section>
 <section id="restarting-a-failed-run" class="level2">
 <h2 class="anchored" data-anchor-id="restarting-a-failed-run">Restarting a failed run</h2>
-<p>When running a nf-core pipelines for the first time, you might encounter some errors, for example, one of your files has an incorrect path, or a program failed to do its job. <strong>It is very important to read the error message carefully (try Googling it, as chances are others have encountered the same issue)!</strong></p>
+<p>When running a nf-core pipeline for the first time, you might encounter some errors, for example, one of your files has an incorrect path, or a program failed to do its job. <strong>It is very important to read the error message carefully (try Googling it, as chances are others have encountered the same issue)!</strong></p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Failure">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -564,7 +564,7 @@ Failure
 </div>
 </div>
 <p><a href="./img/04c_preprocessing_setup/conda_error.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="./img/04c_preprocessing_setup/conda_error.png" class="img-fluid"></a></p>
-<p>Once you fix the error, it is possible to <em>resume</em> a pipeline instead of restarting the whole workflow. You can do this by adding the <code>-resume</code> argument to the nextflow command:</p>
+<p>Once you fix the error, it is possible to <em>resume</em> a pipeline instead of restarting the whole workflow. You can do this by adding the <code>-resume</code> argument to the Nextflow command:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="at">-r</span> <span class="va">$VRNASEQ</span> <span class="at">-params-file</span> <span class="va">$PARAMSF</span> <span class="at">-profile</span> conda <span class="at">-c</span> <span class="va">$CONFIGF</span> <span class="at">-resume</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="stopping-the-app" class="level2">
@@ -576,7 +576,7 @@ Failure
 <h2 class="anchored" data-anchor-id="saved-results">Saved results</h2>
 <p>After finishing the job, everything that the pipeline has created will be saved in the directory you created in your personal drive.</p>
 <ol type="1">
-<li>All generated files will be saved in a volume with your username, that you should be able to find under the menu <code>Files</code> &gt; <code>Drives</code> &gt; <code>Member Files:YourName#numbers</code></li>
+<li>All generated files will be saved in a volume with your username, which you should be able to find under the menu <code>Files</code> &gt; <code>Drives</code> &gt; <code>Member Files:YourName#numbers</code></li>
 </ol>
 <p><a href="./img/04c_preprocessing_setup/fileDrives.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="./img/04c_preprocessing_setup/fileDrives.png" class="black-box img-fluid"></a></p>
 <ol start="2" type="1">
@@ -608,7 +608,7 @@ Did you not save the results in a specific folder?
 </div>
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>You can always find past generated files by looking into the <code>Jobs</code> folder! You will need to remember which app and job name you provided before subting the job to UCloud. For example,</p>
+<p>You can always find past generated files by looking into the <code>Jobs</code> folder! You will need to remember which app and job name you provided before submitting the job to UCloud. For example,</p>
 <ul>
 <li>Go to <code>Jobs</code> -&gt; <code>nf-core: rnaseq</code> -&gt; <code>job_name (RNAseq preprocessing ...)</code> -&gt; <code>preprocessing_results_salmon</code> <img src="./img/04c_preprocessing_setup/savedWork2.png" class="img-fluid"></li>
 </ul>
@@ -619,7 +619,7 @@ Did you not save the results in a specific folder?
 </section>
 <section id="downstream-analysis-using-your-results" class="level2">
 <h2 class="anchored" data-anchor-id="downstream-analysis-using-your-results">Downstream analysis using your results</h2>
-<p><strong>Optional</strong>: If you have successfully run nf-core RNA jobs and want to use the files you generated from your own preprocessing results, don’t forget to choose use folder when submitting a new job. How?</p>
+<p><strong>Optional</strong>: If you have successfully run nf-core RNA jobs and want to use the files you generated from your own preprocessing results, don’t forget to choose <code>Use folder</code> when submitting a new job. How?</p>
 <blockquote class="blockquote">
 <p>Go to <code>Select folders to use</code> and <code>Add folder</code> by selecting the one containing the pipeline results like shown in the image above. They will be located in <code>Member Files:YourName#numbers</code> -&gt; <code>nfcore-results</code> -&gt; <code>preprocessing_results_salmon</code> (unless you have moved them elsewhere).</p>
 </blockquote>
@@ -629,12 +629,12 @@ Do not select `add folder` if you haven't run nf-core pipeline. Once you launch 
 IF (AND ONLY IF) you have **correctly imported parameters but you do not find the Data folder** follow the instructions below! If you still run into problems, please contact us.
 
 ### "Mount the backup data drive"
-If the data isn't present, you will need to mount the data drive by selecting one of our backup folders that contains the data. Click on `add folder` and then choose `/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/`. Change the drive by clicking on the down arrow (**&or;**) icon to open a dropdown menu. Afterwards, add your home folder so you can write the results to your own drive. **You will not have write permissions on the `sandbox_bulRNAseq` drive**. 
+If the data isn't present, you will need to mount the data drive by selecting one of our backup folders that contains the data. Click on `add folder` and then choose `/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/`. Change the drive by clicking the down arrow (**&or;**) icon to open a dropdown menu. Afterward, add your home folder so you can write the results to your own drive. **You will not have write permissions on the `sandbox_bulRNAseq` drive**. 
 
 ![back-up data](./img/05a_data_analysis_setup/data_select.png)
 
 
-Alternatively, you can also select the hard-drive icon is labeled "sequencing_data". 
+Alternatively, you can also select the hard-drive icon labeled "sequencing_data". 
 -->
 
 
@@ -1215,7 +1215,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
