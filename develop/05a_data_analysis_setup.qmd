@@ -41,28 +41,6 @@ Let's take a look at the parameters we have chosen. We have given it a `Job name
 
 ![Job setting using user preprocessing results](./img/05a_data_analysis_setup/jobParams.png)
 
-:::{.callout-note title="Data folders"}
-**Optional**: If you have successfully run nf-core RNA jobs and want to use the files you generated from your own preprocessing results, go to `Select folders to use` and `Add folder` by selecting the one containing the pipeline results like shown in the image above. They will be located in `Member Files:YourName#numbers` -> `Jobs` -> `nf-core: rnaseq` -> `job_name (RNAseq preprocessing ...)` -> `preprocessing_results_salmon` (unless you have moved them elsewhere). 
-
-:::{.callout-warning}
-Do not select `add folder` if you haven't run nf-core pipeline. Once you launch RStudio, ensure there is a `Data` folder.
-
-IF (AND ONLY IF) you have **correctly imported parameters but you do not find the Data folder** follow the instructions below! If you still run into problems, please contact us. 
-
-:::{.callout-important title="Mount the backup data drive" collapse="true"}
-If the data isn't present, you will need to mount the data drive by selecting one of our backup folders that contains the data. Click on `add folder` and then choose `/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/`. Change the drive by clicking on the down arrow (**&or;**) icon to open a dropdown menu. Afterwards, add your home folder so you can write the results to your own drive. **You will not have write permissions on the `sandbox_bulRNAseq` drive**. 
-
-![back-up data](./img/05a_data_analysis_setup/data_select.png)
-
-<!-- 
-Alternatively, you can also select the hard-drive icon is labeled "sequencing_data". 
--->
-:::
-:::
-
-:::
-
-
 Now, you are ready to run the app by clicking on the button on the right column of the screen (`submit`).
 
 Next, wait until the screen looks like the figure below. This process usually takes a few minutes. You can always come back to this screen via the `Runs` button in the left menu on UCloud. From there, you can add extra time or stop the app if you no longer need it.
@@ -80,8 +58,6 @@ You are ready to start analysing your data!
 ## Stopping the app
 
 When you are finished, go to `Runs` > `Running jobs` in uCloud and click on the `Job name` you want to stop if you have several running. It is important to stop the job to prevent it from using unnecessary resources. Here, you can also click on the job and add extra time!
-
-![](./img/04c_preprocessing_setup/stopRun.png)
 
 ## Saved work
 
