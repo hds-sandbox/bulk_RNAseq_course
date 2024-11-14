@@ -42,6 +42,15 @@ Our first choice is to provide all the **training materials, tutorials, and tool
 </p>
 
 &nbsp;
+
+4. Additional files needed for exercises from Day 1 - Lecture 2 (QC report files)
+
+<div style="display: flex; justify-content: center; align-items: center; padding: 30px 20px;">
+  <a href="./QC_exercise_files_1124.zip" download="qcreport-files.zip">
+    <button class="btn-action">Download QC files</button>
+  </a>
+</div>
+
 &nbsp;
 
 
@@ -102,7 +111,7 @@ Our first choice is to provide all the **training materials, tutorials, and tool
 
 # Workshop
 
-The Health Data Science Sandbox aims to be a **training resource for bioinformaticians, data scientists, and those generally curious about how to investigate large biomedical datasets**. We are an active and developing project **seeking interested users** (both trainees and educators). All of our open-source materials are available on our [Github page](https://github.com/hds-sandbox) and can be used on a computing cluster! We work with both [UCloud](https://cloud/sdu.dk), [GenomeDK](https://genome.au.dk) and [Computerome](https://www.computerome.dk/), the major Danish academic supercomputers. See our [HPC Access page](../access/index.qmd) for more info on each setup.
+The Health Data Science Sandbox aims to be a **training resource for bioinformaticians, data scientists, and those generally curious about how to investigate large biomedical datasets**. We are an active and developing project **seeking interested users** (both trainees and educators). All of our open-source materials are available on our [Github page](https://github.com/hds-sandbox) and can be used on a computing cluster! We work with both [UCloud](https://cloud/sdu.dk), [GenomeDK](https://genome.au.dk) and [Computerome](https://www.computerome.dk/), the major Danish academic supercomputers.
 
 
 ## Transcriptomics apps
@@ -128,7 +137,7 @@ We are developing other apps. If you are interested, explore the modules section
 
 ## Discussion and feedback
 
-We hope you enjoyed the workshop. If you have broader questions, suggestions, or concerns, now is the time to raise them! Remember that you can check out longer versions of our tutorials as well as other topics and tools in each of the [Sandbox modules](../modules/index.html). We regularly run workshops on a variety of health data science topics that you can also check out ([follow our news here](../news.qmd)).
+We hope you enjoyed the workshop. If you have broader questions, suggestions, or concerns, now is the time to raise them! Remember that you can check out longer versions of our tutorials as well as other topics and tools in each of the [Sandbox modules](https://hds-sandbox.github.io/modules/). We regularly run workshops on a variety of health data science topics that you can also check out ([follow our news here](https://hds-sandbox.github.io/news.html)).
 
 As data scientists, we also would be happy for some quantifiable info and feedback - we want to build things that the Danish health data science community is excited to use. 
 

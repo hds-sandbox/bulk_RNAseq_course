@@ -43,7 +43,7 @@ To set up a job for using the bulk RNA-seq module in our Transcriptomics app, yo
 2. Note that Documentation is available (though it redirects you to this website).
 3. If you have previously run the app, you can import job parameters from that run. We'll get to that later.
 4.  Set your job name (pick something original / with your initials!), your hours of use (you can top up later as the job runs, but give a good estimate), and your machine type (if you simply want to do the downstream analysis, you only need 1 core, but running the full pipeline will take 8-12 cores).
-5. Add folders containing any material that your job needs to run. For first time use, without your own data, you don't need a folder. However, we recommend making your own working directory and eventually copying files to and editing files from there.
+5. Add folders containing any material that your job needs to run. For first time use, without your own data, you don't need a folder. However, we recommend making your own working directory in your member files (see my work_JAB example below) and eventually copying files to and editing files from there (e.g. `work_<YourInitials>`).
 6. Select the module you want to use. In this example, we select 'Introduction to bulk RNAseq analysis in R'.
 7. Then you can submit your job.
 
@@ -88,7 +88,7 @@ After running a first work session, everything that you have created, including 
 
 ### Starting from in-progress work
 
-If you want to keep working on your previous results, it makes sense to copy the `Intro_to_bulkRNAseq` folder to your own working dirctory, and reload this folder for new jobs. If this exact folder with this exact name is available in the root directory of your job workspace, the app will not download fresh directories, and you will instead have your own edited/editable files.
+If you want to keep working on your previous results, it makes sense to copy the `Intro_to_bulkRNAseq` folder to your own working directory, and reload this folder for new jobs. If this exact folder with this exact name is available in the root directory of your job workspace, the app will not download fresh directories, and you will instead have your own edited/editable files.
 
 To copy the directory, complete the following steps:
 
@@ -96,11 +96,14 @@ To copy the directory, complete the following steps:
 2. Click ONCE to select `Intro_to_bulkRNAseq`
 3. Click 'Copy to...'
 4. Click on your root member files directory
-5. Select 'Copy to' the custom working directory you made
+5. Select 'Copy to' the custom working directory you made (you can `Create folder` now if you haven't previously)
 
 ![](./img/05a_data_analysis_setup/1124_setupUCloudwriteabledir.png)
 
-Now you will always have your own, writeable copy of tthis directory... AS LONG AS YOU LOAD IT IN YOUR NEXT JOB!
+:::{.callout-tip}
+# Ta-da
+**Now you will always have your own, writeable copy of this directory... AS LONG AS YOU LOAD IT IN YOUR NEXT JOB!**
+:::
 
 ![](./img/05a_data_analysis_setup/1124_setupUCloudjob_owndir.png)
 

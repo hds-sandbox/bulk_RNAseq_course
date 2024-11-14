@@ -46,7 +46,7 @@
   </url>
   <url>
     <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/05a_data_analysis_setup.html</loc>
-    <lastmod>2024-11-14T08:13:53.558Z</lastmod>
+    <lastmod>2024-11-14T12:44:29.863Z</lastmod>
   </url>
   <url>
     <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/extraCards/JenniferBartell.html</loc>
@@ -66,7 +66,7 @@
   </url>
   <url>
     <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/workshop_RNAseq_nov2024.html</loc>
-    <lastmod>2024-11-14T08:01:32.453Z</lastmod>
+    <lastmod>2024-11-14T13:23:11.268Z</lastmod>
   </url>
   <url>
     <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/08a_FA_genomic_annotation.html</loc>
@@ -154,10 +154,14 @@
   </url>
   <url>
     <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/04c_preprocessing_nf3170.html</loc>
-    <lastmod>2024-11-14T11:05:48.926Z</lastmod>
+    <lastmod>2024-11-14T12:53:14.311Z</lastmod>
   </url>
   <url>
     <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/04c_preprocessing_nf3120.html</loc>
+    <lastmod>2024-11-14T11:08:41.841Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/04c_preprocessing_nf3112.html</loc>
     <lastmod>2024-11-14T11:08:41.841Z</lastmod>
   </url>
 </urlset>
