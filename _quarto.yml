@@ -40,7 +40,6 @@ website:
         - section: "UCloud setup"
           contents: 
           - develop/04c_preprocessing_nf3170.qmd
-          - develop/04c_preprocessing_nf3112.qmd
     - title: "Data analyses"
       contents:
         - develop/05a_data_analysis_setup.qmd
