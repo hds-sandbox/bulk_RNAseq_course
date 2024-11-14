@@ -234,9 +234,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#submit-a-job" id="toc-submit-a-job" class="nav-link active" data-scroll-target="#submit-a-job">Submit a job</a></li>
+  <li><a href="#understanding-the-pipeline-options" id="toc-understanding-the-pipeline-options" class="nav-link" data-scroll-target="#understanding-the-pipeline-options">Understanding the pipeline arguments</a></li>
+  <li><a href="#running-the-pipeline" id="toc-running-the-pipeline" class="nav-link" data-scroll-target="#running-the-pipeline">Running the pipeline</a></li>
+  <li><a href="#restarting-a-failed-run" id="toc-restarting-a-failed-run" class="nav-link" data-scroll-target="#restarting-a-failed-run">Restarting a failed run</a></li>
+  <li><a href="#stopping-the-app" id="toc-stopping-the-app" class="nav-link" data-scroll-target="#stopping-the-app">Stopping the app</a></li>
+  <li><a href="#saved-results" id="toc-saved-results" class="nav-link" data-scroll-target="#saved-results">Saved results</a></li>
+  <li><a href="#downstream-analysis-using-your-results" id="toc-downstream-analysis-using-your-results" class="nav-link" data-scroll-target="#downstream-analysis-using-your-results">Downstream analysis using your results</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content column-body" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/04c_preprocessing_nf3170.html">UCloud setup</a></li><li class="breadcrumb-item"><a href="../develop/04c_preprocessing_nf3170.html">nf-core/rnaseq 3.17.0</a></li></ol></nav>
 <div class="quarto-title">
@@ -245,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div class="quarto-title-meta column-page-right">
+<div class="quarto-title-meta column-body">
 
     
   
@@ -350,7 +364,7 @@ Reconnect to tmux session
 <div class="sourceCode" id="cb3" data-filename="Terminal"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> nfcore-results <span class="co"># you might have named it differently </span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> ./sequencing_data/scripts_v3.17.0/preprocessing_salmon.sh .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Once copied, review the script by running:</p>
+<p>Once copied, review the bash script:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>preprocessing_salmon.sh</strong></pre>
@@ -363,7 +377,7 @@ Reconnect to tmux session
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="at">-r</span> <span class="va">$VRNASEQ</span> <span class="at">-params-file</span> <span class="va">$PARAMSF</span> <span class="at">-profile</span> conda <span class="at">-c</span> <span class="va">$CONFIGF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This small bash script initiates the <code>nf-core/rnaseq</code> pipeline. It’s a good practice to save the command used to run the pipeline, and now you’ve copied it into your results folder! You’ll notice extra parameters and configuration settings defined in the script, which we’ll explore shortly. The final line of the script runs the RNA-seq pipeline with the specified version, parameters, Conda profile, and configuration file. <strong>We will inspect each part of the command below in the section <a href="#understanding-pipeline-options">Understanding the pipeline arguments</a> but we will first look at the different input files.</strong></p>
+<p>This small bash script initiates the <code>nf-core/rnaseq</code> pipeline. It’s a good practice to save the command used to run the pipeline, and now you’ve copied it into your results folder! You’ll notice extra parameters and configuration settings defined in the script, which we’ll explore shortly. The final line of the script runs the RNA-seq pipeline with the specified version, parameters, Conda profile, and configuration file. <strong>We will inspect each part of the nextflow command below in the section <a href="#understanding-pipeline-options">Understanding the pipeline arguments</a> but we will first look at the different input files.</strong></p>
 <section id="parameters-file" class="level4">
 <h4 class="anchored" data-anchor-id="parameters-file">Parameters file</h4>
 <p>The <strong>parameters JSON file</strong> is used in nf-core pipelines to define various arguments and software options that can be utilized within the pipeline. You can find a full list of all parameters on the official page: https://nf-co.re/rnaseq/3.17.0/parameters/. Let’s take a look at the different configuration files we’re using.</p>
@@ -416,7 +430,7 @@ More info on the parameters file
 </section>
 <section id="samples-sheet" class="level4">
 <h4 class="anchored" data-anchor-id="samples-sheet">Samples’ sheet</h4>
-<p>Let’s quickly explore our <code>samplesheet.csv</code> file (we named it <code>samplesheet_v3.17.0.csv</code> to differentiate it from other formats, as the file may have slightly changed with Nextflow updates—don’t worry about this).</p>
+<p>Let’s quickly explore our <code>samplesheet.csv</code> file (we named it <code>samplesheet_v3.17.0.csv</code> to differentiate it from other formats, as the file may have slightly changed with Nextflow updates—don’t worry about this). Additional details, including descriptions of the columns <a href="https://nf-co.re/rnaseq/3.17.0/docs/usage/#full-samplesheet">here</a></p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>samplesheet_v3.17.0.csv</strong></pre>
@@ -451,25 +465,48 @@ garlicum_2,/work/sequencing_data/raw_reads/Garlicum_2.fastq.gz,,unstranded</code
 </section>
 <section id="understanding-the-pipeline-options" class="level2">
 <h2 class="anchored" data-anchor-id="understanding-the-pipeline-options">Understanding the pipeline arguments</h2>
-<p>Let’s divide the command into different sections. First we have:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="at">-r</span> 3.17.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s divide the command into different sections.</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Nextflow command</strong></pre>
+</div>
+<div class="sourceCode" id="cb8" data-filename="Nextflow command"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run <span class="dt">\</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    nf-core/rnaseq <span class="at">-r</span> <span class="op">&lt;</span>VERSION<span class="op">&gt;</span><span class="dt">\</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">-params-file</span> <span class="op">&lt;</span>PARAMS_FILE<span class="op">&gt;</span> <span class="dt">\</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">-profile</span> <span class="op">&lt;</span>conda,docker,arm<span class="op">&gt;</span>  <span class="dt">\</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">-c</span> <span class="op">&lt;</span>CONFIG_FILE<span class="op">&gt;</span>  <span class="dt">\</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Bash scripting
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The notation used in the command to run Nextflow is a common practice in bash scripting. It involves defining a variable for the file path (e.g., <code>PARAMSF="/work/sequencing_data/scripts_v3.17.0/nf-params_salmon.json"</code>) and then referencing the variable in the command (e.g., <code>-params-file $PARAMSF</code>). This approach enhances the readability and manageability of the script.</p>
+<p>You can easily define other paths and reuse the script!</p>
+</div>
+</div>
+<p>First we have:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="at">-r</span> 3.17.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>While usually one would run an nf-core pipeline using <code>nextflow run nf-core/rnaseq</code> and fetch the pipeline remotely, UCloud has installed the pipelines locally. Specifically, we are using the latest version by using the argument <code>-r 3.17.0</code>.</p>
 <hr>
-<p>Then, we have:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set path to configuration pipeline parameters (e.g. aligner software)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="va">PARAMSF</span><span class="op">=</span><span class="st">"/work/sequencing_data/scripts_v3.17.0/nf-params_salmon.json"</span>   </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-params-file</span> <span class="va">$PARAMSF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The <code>-params-file</code> argument is another nextflow core argument that allows us to give the nf-core rnaseq pipeline arguments in a <a href="https://www.json.org/json-en.html">json file</a>, instead of creating an excessively long command. Writing the parameters this way allows for better reproducibility, since you can reuse the file in the future.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set path to configuration pipeline parameters (e.g. aligner software)</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="va">PARAMSF</span><span class="op">=</span><span class="st">"/path/to/params.json"</span>   </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-params-file</span> <span class="va">$PARAMSF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
-<p>We can continue with the next argument:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">-profile</span> conda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Unfortunately, the UCloud implementation of the nf-core pipelines do not currently allow the use of docker or singularity, which are the recommended profile options. However, UCloud has made sure that there is a working conda environment ready to use!</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set path to maximum cores and memory usage (e.g. what you requested on UCloud)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="va">CONFIGF</span><span class="op">=</span><span class="st">"/work/sequencing_data/scripts_v3.17.0/maxcores.config"</span>    </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">-c</span> conda <span class="va">$CONFIGF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The next argument defines the <code>-profile</code>. Profiles can give configuration presets for different compute environments. Unfortunately, the UCloud implementation of the nf-core pipelines do not currently allow the use of docker or singularity, which are the recommended profile options. However, UCloud has made sure that there is a working conda environment ready to use!</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">-profile</span> conda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p>Finally, we include the argument to specify the config file containing the resource settings:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set path to maximum cores and memory usage (e.g. what you requested on UCloud)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="va">CONFIGF</span><span class="op">=</span><span class="st">"/path/to/config.json"</span>   </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-c</span> <span class="va">$CONFIGF</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>These are nf-core specific arguments that indicates nextflow to only use as maximum the number of CPUs and RAM we have requested when we submitted the job. We are using 8 cores since it is what we requested in the submission page (e.g.&nbsp;if you submitted a job with 4 CPUs, this will be equal to 4). We are using slightly less RAM than we requested (48Gb) just in case there is a problem with memory overflow.</p>
-<p>Finally, we remove the nextflow <code>work</code> directory if the pipeline completes successfully. this will save quite a bit if storage in the future, since the nextflow <code>work</code> directory will accumulate over runs.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -494,15 +531,15 @@ Need more help?
 <div class="code-with-filename-file">
 <pre><strong>Terminal within tmux session</strong></pre>
 </div>
-<div class="sourceCode" id="cb12" data-filename="Terminal within tmux session"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># running command from /work/YourName#xxxx/nfcore-results </span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> ./preprocessing_salmon.sh </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13" data-filename="Terminal within tmux session"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># running command from /work/YourName#xxxx/nfcore-results </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> ./preprocessing_salmon.sh </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You should see now a prompt like this, which means that the pipeline started successfully!</p>
 <p><a href="./img/04c_preprocessing_setup/nfcore3170-start.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="./img/04c_preprocessing_setup/nfcore3170-start.png" class="img-fluid"></a></p>
 </section>
 <section id="restarting-a-failed-run" class="level2">
 <h2 class="anchored" data-anchor-id="restarting-a-failed-run">Restarting a failed run</h2>
-<p>When running a nf-core pipelines for the first time, you might encounter some errors, for example, one of your files has an incorrect path, or a program failed to do its job.</p>
+<p>When running a nf-core pipelines for the first time, you might encounter some errors, for example, one of your files has an incorrect path, or a program failed to do its job. <strong>It is very important to read the error message carefully (try Googling it, as chances are others have encountered the same issue)!</strong></p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Failure">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -513,36 +550,72 @@ Failure
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Error in terminal</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Error</span> executing process <span class="op">&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Caused</span> by:</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Failed</span> to create create conda environment</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Error in terminal</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Error</span> executing process <span class="op">&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Caused</span> by:</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Failed</span> to create create conda environment</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p><a href="./img/04c_preprocessing_setup/conda_error.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="./img/04c_preprocessing_setup/conda_error.png" class="img-fluid"></a></p>
 <p>Once you fix the error, it is possible to <em>resume</em> a pipeline instead of restarting the whole workflow. You can do this by adding the <code>-resume</code> argument to the nextflow command:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="at">-r</span> 3.11.2 <span class="at">-params-file</span> /work/sequencing_data/Scripts/nf-params.json <span class="at">-profile</span> conda <span class="at">--max_cpus</span> 8 <span class="at">--max_memory</span> 40GB​ <span class="at">-resume</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/rnaseq <span class="at">-r</span> <span class="va">$VRNASEQ</span> <span class="at">-params-file</span> <span class="va">$PARAMSF</span> <span class="at">-profile</span> conda <span class="at">-c</span> <span class="va">$CONFIGF</span> <span class="at">-resume</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="stopping-the-app" class="level2">
 <h2 class="anchored" data-anchor-id="stopping-the-app">Stopping the app</h2>
-<p>Once the pipeline is done, go on <code>Runs</code> in uCloud and stop it from using more resources than necessary! This will help to keep the courses running for other people.</p>
+<p>Once the pipeline is done (HINT: check your tmux session), go on <code>Runs</code> in UCloud and stop it from using more resources than necessary!</p>
 <p><a href="./img/04c_preprocessing_setup/stopRun.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="./img/04c_preprocessing_setup/stopRun.png" class="img-fluid"></a></p>
 </section>
 <section id="saved-results" class="level2">
 <h2 class="anchored" data-anchor-id="saved-results">Saved results</h2>
-<p>After finishing the job, everything that the pipeline has created will be saved in your own personal <em>“Jobs”</em> folder. Inside this folder there will be a subfolder called <em>nf-core: rnaseq</em>, which will contain all the jobs you have run with the nf-core app. Here, you will find the results folder named after the job name you gave when you submitted the job.</p>
+<p>After finishing the job, everything that the pipeline has created will be saved in the directory you created in your personal drive.</p>
 <ol type="1">
-<li>Your material will be saved in a volume with your username, that you should be able to see under the menu <code>Files</code> &gt; <code>Drives</code> &gt; <code>Member Files:YourName#numbers</code></li>
+<li>All generated files will be saved in a volume with your username, that you should be able to find under the menu <code>Files</code> &gt; <code>Drives</code> &gt; <code>Member Files:YourName#numbers</code></li>
 </ol>
 <p><a href="./img/04c_preprocessing_setup/fileDrives.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="./img/04c_preprocessing_setup/fileDrives.png" class="black-box img-fluid"></a></p>
-<ol type="1">
-<li>Go to <code>Jobs</code> -&gt; <code>nf-core: rnaseq</code> -&gt; <code>job_name (RNAseq preprocessing ...)</code> -&gt; <code>preprocessing_results_salmon</code></li>
+<ol start="2" type="1">
+<li>You will find the results under the <code>preprocessing_results_salmon</code> which you used as <code>--outdir</code></li>
 </ol>
-<p><a href="./img/04c_preprocessing_setup/savedWork2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="./img/04c_preprocessing_setup/savedWork2.png" class="img-fluid"></a></p>
+<p><a href="./img/04c_preprocessing_setup/savedResults.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="./img/04c_preprocessing_setup/savedResults.png" class="black-box img-fluid"></a></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nextflow work directory
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A common practice is to remove the <code>work</code> directory once the pipeline completes successfully. This helps save storage space in the long run, as the work directory can accumulate over multiple runs. Feel free to explore the contents to see more details on how the jobs were run, and if there are any failures, you can find additional information there.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Did you not save the results in a specific folder?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You can always find past generated files by looking into the <code>Jobs</code> folder! You will need to remember which app and job name you provided before subting the job to UCloud. For example,</p>
+<ul>
+<li>Go to <code>Jobs</code> -&gt; <code>nf-core: rnaseq</code> -&gt; <code>job_name (RNAseq preprocessing ...)</code> -&gt; <code>preprocessing_results_salmon</code> <img src="./img/04c_preprocessing_setup/savedWork2.png" class="img-fluid"></li>
+</ul>
+</div>
+</div>
+</div>
 <p>Now you have access to the full results of your pipeline! As explained in the <a href="../develop/04b_pipelines.html">previous lesson</a>, the nf-core rnaseq workflow will create a MultiQC report summarizing several steps into a single html file that is interactive and explorable. In addition, there will be a folder with the results of the individual QC steps as well as the alignment and quantification results. Take your time and check it all out!</p>
-<section id="downstream-analysis-using-your-results" class="level3">
-<h3 class="anchored" data-anchor-id="downstream-analysis-using-your-results">Downstream analysis using your results</h3>
-<p><strong>Optional</strong>: If you have successfully run nf-core RNA jobs and want to use the files you generated from your own preprocessing results, go to <code>Select folders to use</code> and <code>Add folder</code> by selecting the one containing the pipeline results like shown in the image above. They will be located in <code>Member Files:YourName#numbers</code> -&gt; <code>Jobs</code> -&gt; <code>nf-core: rnaseq</code> -&gt; <code>job_name (RNAseq preprocessing ...)</code> -&gt; <code>preprocessing_results_salmon</code> (unless you have moved them elsewhere).</p>
+</section>
+<section id="downstream-analysis-using-your-results" class="level2">
+<h2 class="anchored" data-anchor-id="downstream-analysis-using-your-results">Downstream analysis using your results</h2>
+<p><strong>Optional</strong>: If you have successfully run nf-core RNA jobs and want to use the files you generated from your own preprocessing results, don’t forget to choose use folder when submitting a new job. How?</p>
+<blockquote class="blockquote">
+<p>Go to <code>Select folders to use</code> and <code>Add folder</code> by selecting the one containing the pipeline results like shown in the image above. They will be located in <code>Member Files:YourName#numbers</code> -&gt; <code>nfcore-results</code> -&gt; <code>preprocessing_results_salmon</code> (unless you have moved them elsewhere).</p>
+</blockquote>
 <!-- 
 Do not select `add folder` if you haven't run nf-core pipeline. Once you launch RStudio, ensure there is a `Data` folder.
 
@@ -558,7 +631,6 @@ Alternatively, you can also select the hard-drive icon is labeled "sequencing_da
 -->
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1126,7 +1198,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
       <a href="../develop/04b_pipelines.html" class="pagination-link" aria-label="Nextflow &amp; nf-core pipelines">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Nextflow &amp; nf-core pipelines</span>
@@ -1139,7 +1211,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
