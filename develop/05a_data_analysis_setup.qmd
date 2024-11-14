@@ -29,17 +29,26 @@ Click on `Apps` on the left-side menu, and search for the application `Transcrip
 
 ![](./img/05a_data_analysis_setup/apps.png)
 
-Once you are in the `Transcriptomics Sandbox`, choose appropriate parameters to run a job. Here, you will find a set of recommended values to choose. First, click on `Import parameters`, then, in the prompt window, choose `Import file from UCloud` and select the file  `jobParameters.json` which you will find located in the Drive `sandbox_bulkRNASeq` -\> `bulk_RNAseq_course` -\> `jobParameters.json`
+Once you are in the `Transcriptomics Sandbox`, input appropriate parameters to run a job. Here, you will find a set of recommended values to choose. 
 
 :::{.callout-warning}
-**Ensure that you are in the "sandbox_bulkRNAseq" workspace.** You can select the workspace by clicking on the down arrow (**&or;**) icon to open a dropdown menu.
+**Always ensure that you are in the "sandbox_bulkRNAseq" workspace.** You can select the workspace by clicking on the down arrow (**&or;**) icon to open a dropdown menu.
 :::
 
-![](./img/05a_data_analysis_setup/importParamsTranscript.png)
+Let's take a look at the parameters we have chosen. We have given it a `Job name`, `Hours`, `Machine type` as well as a `Mandatory Parameter` `Select a module`. We have selected the module `Introduction to bulk RNAseq analysis in R`. **This module will load the materials necessary to follow the next lessons. It will also contain a data file containing the preprocessing results** so that you can go through analyses without processing raw reads with our pipeline, which takes several hours. You can test out running the pipeline by following our guide [here](https://hds-sandbox.github.io/bulk_RNAseq_course/develop/04b_pipelines.html) and then mounting the data from your own drive (independently of our workshops).
 
-Let's take a look at the parameters we have chosen. We have given it a `Job name`, `Hours`, `Machine type` as well as a `Mandatory Parameter` `Select a module`. We have selected the module `Introduction to bulk RNAseq analysis in R`. **This module will load the materials necessary to follow the next lessons. It will also contain a backup of the preprocessing results** so that you may continue in case that your preprocessing did not work (but you will need to mount the data!).
+To set up a job for using the bulk RNA-seq module in our Transcriptomics app, you need to do the following:
 
-![Job setting using user preprocessing results](./img/05a_data_analysis_setup/jobParams.png)
+1. Check the App version (we recommend using the latest).
+2. Note that Documentation is available (though it redirects you to this website).
+3. If you have previously run the app, you can import job parameters from that run. We'll get to that later.
+4.  Set your job name (pick something original / with your initials!), your hours of use (you can top up later as the job runs, but give a good estimate), and your machine type (if you simply want to do the downstream analysis, you only need 1 core, but running the full pipeline will take 8-12 cores).
+5. Add folders containing any material that your job needs to run. For first time use, without your own data, you don't need a folder. However, we recommend making your own working directory and eventually copying files to and editing files from there.
+6. Select the module you want to use. In this example, we select 'Introduction to bulk RNAseq analysis in R'.
+7. Then you can submit your job.
+
+![Job setting using user preprocessing results](./img/05a_data_analysis_setup/1124_setupUCloudJob.png)
+
 
 Now, you are ready to run the app by clicking on the button on the right column of the screen (`submit`).
 
@@ -54,6 +63,10 @@ On the lower right side of Rstudio, in the file explorer, you should see a folde
 ![](./img/05a_data_analysis_setup/courseMaterial.png)
 
 You are ready to start analysing your data!
+
+:::{.callout-warning}
+**Does your session not seem to be starting properly?** If your 'Messages' window indicates the job has started, but your `open interface` button is not clickable, hit refresh. If it IS clickable, but the new tab that opens is just spinning without showing an interface, wait a few seconds and then hit refresh. It's probably there, but UCloud just takes a moment sometimes to gather its thoughts.
+:::
 
 ## Stopping the app
 
@@ -73,18 +86,36 @@ After running a first work session, everything that you have created, including 
 
 ## Restarting the Rstudio session
 
-If you want to keep working on your previous results, you can restart an Rstudio session following these steps:
+### Starting from in-progress work
 
-Click on `Apps` on the left-side menu, and look for the application `Transcriptomics Sandbox` and click on it (recheck the top figures).
+If you want to keep working on your previous results, it makes sense to copy the `Intro_to_bulkRNAseq` folder to your own working dirctory, and reload this folder for new jobs. If this exact folder with this exact name is available in the root directory of your job workspace, the app will not download fresh directories, and you will instead have your own edited/editable files.
 
-You will be met again with a series of possible parameters to choose. You have to assign again the `Import parameters` file as before but now you can either select the JSON file provided by us or click on one of your previous runs and all the selected parameters will be automatically imported (previous runs are shown in the main prompt window).
+To copy the directory, complete the following steps:
 
-`sandbox_bulkRNASeq` -> `bulk_RNAseq_course` -> `jobParameters.json`
+1. Go to `Jobs → Transcriptomics Sandbox → <Job name> → Intro_to_bulkRNAseq`
+2. Click ONCE to select `Intro_to_bulkRNAseq`
+3. Click 'Copy to...'
+4. Click on your root member files directory
+5. Select 'Copy to' the custom working directory you made
 
-In *"Select folders to use"*, add the folder with the results of your previous job. First, select: 
+![](./img/05a_data_analysis_setup/1124_setupUCloudwriteabledir.png)
 
- `Member Files: your_username -> Jobs -> Transcriptomics Sandbox -> <job_name> -> Intro_to_bulkRNAseq`
- 
-Then, click `Use`.
+Now you will always have your own, writeable copy of tthis directory... AS LONG AS YOU LOAD IT IN YOUR NEXT JOB!
 
-You are ready to run the app again by clicking on the button on the right column of the screen (`submit`). After opening the Rstudio interface, you should be able to access the folder `Intro_to_bulkRNAseq`, where you will find your course notebooks and results from your previous work!
+![](./img/05a_data_analysis_setup/1124_setupUCloudjob_owndir.png)
+
+:::{.callout-warning}
+**Remember to save your notebooks while working in an interactive session.** Otherwise you might lose edits to your .Rmd files.
+:::
+
+### Reusing old job parameters
+
+The very easy way (perhaps after your job has accidentally run out of time / disconnected due to a UCloud blip) is to simply hit 'Run application again'.
+
+![](./img/05a_data_analysis_setup/1124_restartUCloud_easy.png)
+
+Other moderately easy methods include:
+A) accessing the `Runs` menu, where you can see completed, pending, and active jobs and select one to restart via `Run application again`.
+B) accessing the Transcriptomics Sandbox App job setup window, selecting `Import parameters`, and then importing from your last job. You can also select a `JobParameters.json` file if one has been shared with you to replicate parameters for a specific task.
+
+![](./img/05a_data_analysis_setup/1124_importJobparams.png)
