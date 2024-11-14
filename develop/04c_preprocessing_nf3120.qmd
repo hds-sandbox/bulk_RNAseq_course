@@ -1,5 +1,5 @@
 ---
-title: Ucloud setup
+title: "nf-core/rnaseq 3.12.0"
 lightbox: true
 format:
   html:
@@ -10,15 +10,12 @@ summary: In this lesson we explain how to run the nf-core pipeline in the UCloud
 
 :::{.callout-note title="Section Overview"}
 
-⏰ **Time Estimation:** 40 minutes  
-
 💬 **Learning Objectives:**
+
 1. Learn about the UCloud computing system.
 2. Learn how to submit a job and explore your results folders.
-3. Submit a nf-core RNAseq run on our data
+3. Submit a nf-core/rnaseq 3.12.0 run on our data
 :::
-
-<span style="font-size:30px;"> Running the nf-core RNAseq pipeline in UCloud <span>
 
 ## Submit a job
 
@@ -247,7 +244,7 @@ Once the pipeline is done, go on `Runs` in uCloud and stop it from using more re
 
 ## Saved results
 
-After finishing the job, everything that the pipeline has created will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *nf-core: rnaseq*, which will contain all the jobs you have run with the nf-core app. Inside this folder, you will find the results folder named after the job name you gave when you submitted the job.
+After finishing the job, everything that the pipeline has created will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *nf-core: rnaseq*, which will contain all the jobs you have run with the nf-core app. Here, you will find the results folder named after the job name you gave when you submitted the job.
 
 1. Your material will be saved in a volume with your username, that you should be able to see under the menu `Files` > `Drives` > `Member Files:YourName#numbers`
  
@@ -259,3 +256,20 @@ After finishing the job, everything that the pipeline has created will be saved 
 
 Now you have access to the full results of your pipeline! As explained in the [previous lesson](04b_pipelines.qmd), the nf-core rnaseq workflow will create a MultiQC report summarizing several steps into a single html file that is interactive and explorable. In addition, there will be a folder with the results of the individual QC steps as well as the alignment and quantification results. Take your time and check it all out!
 
+### Downstream analysis using your results 
+
+**Optional**: If you have successfully run nf-core RNA jobs and want to use the files you generated from your own preprocessing results, go to `Select folders to use` and `Add folder` by selecting the one containing the pipeline results like shown in the image above. They will be located in `Member Files:YourName#numbers` -> `Jobs` -> `nf-core: rnaseq` -> `job_name (RNAseq preprocessing ...)` -> `preprocessing_results_salmon` (unless you have moved them elsewhere). 
+
+<!-- 
+Do not select `add folder` if you haven't run nf-core pipeline. Once you launch RStudio, ensure there is a `Data` folder.
+
+IF (AND ONLY IF) you have **correctly imported parameters but you do not find the Data folder** follow the instructions below! If you still run into problems, please contact us.
+
+### "Mount the backup data drive"
+If the data isn't present, you will need to mount the data drive by selecting one of our backup folders that contains the data. Click on `add folder` and then choose `/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/`. Change the drive by clicking on the down arrow (**&or;**) icon to open a dropdown menu. Afterwards, add your home folder so you can write the results to your own drive. **You will not have write permissions on the `sandbox_bulRNAseq` drive**. 
+
+![back-up data](./img/05a_data_analysis_setup/data_select.png)
+
+
+Alternatively, you can also select the hard-drive icon is labeled "sequencing_data". 
+-->

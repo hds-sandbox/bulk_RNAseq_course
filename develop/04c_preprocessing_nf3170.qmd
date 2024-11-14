@@ -1,0 +1,305 @@
+---
+title: "nf-core/rnaseq 3.17.0"
+lightbox: true
+format:
+  html:
+    page-layout: full
+    toc: false
+summary: In this lesson we explain how to run the nf-core pipeline in the UCloud computing system
+---
+
+:::{.callout-note title="Section Overview"}
+
+💬 **Learning Objectives:**
+
+1. Learn about the UCloud computing system.
+2. Learn how to submit a job and explore your results folders.
+3. Submit a nf-core/rnaseq 3.17.0 run on our data
+
+We will be running the nf-core/rnaseq pipeline. Please refer to their detailed documentation here: <https://nf-co.re/rnaseq/3.17.0/>. We highly recommend reading through all the sections to fully understand how to run the pipeline, explore the optional parameters you can set, and learn about the output format.
+:::
+
+## Submit a job
+
+Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` where you have been invited ([contact](https://hds-sandbox.github.io/contact/contact.html) the team if you haven't). 
+
+![](./img/04c_preprocessing_setup/chooseProject.png)
+
+Click on `Apps` on the left-side menu, and search for the application `nf-core rnaseq` and click on it.
+
+![](./img/04c_preprocessing_setup/chooseRNAseq.png)
+
+Next, let's set up the parameters to run the pipeline. Your screen should resemble the image below—please verify it does.
+
+1. Assign a job title using your name and the task (e.g., "preprocessing salmon"). 
+2. Select 8 cores and a runtime of 4 hours.
+3. Choose the **sequencing data** drive containing the sequencing reads and scripts needed for the pipeline.
+4. Enable **interactive mode** to start a session through the terminal app, allowing us to work with the command line and monitor the progress of the pipeline. 
+
+:::{.callout-warning}
+**Ensure that the hard-drive icon is labeled "sequencing_data" and you are in the "sandbox_bulkRNAseq" workspace.**
+
+You can select the drive by clicking on the down arrow (**&or;**) icon to open a dropdown menu.
+:::
+
+![](./img/04c_preprocessing_setup/select_options_rnaseq.png)
+
+You are almost ready to run the app! But first, make sure your screen looks like the one shown here. Review the arguments used to run the job: we have specified a `Job name`, `Hours`, `Machine type`, and an additional parameter, `Interactive mode`.
+
+![](./img/04c_preprocessing_setup/final_jobParams.png)
+
+Now, click the button on the top-right of the screen (`submit`) to start the job.
+
+Next, wait until the screen looks like the figure below. This process usually takes a few minutes. You can always come back to this screen via the `Runs` button in the left menu on UCloud. From there, you can add extra time or stop the app if you no longer need it.
+
+![](./img/04c_preprocessing_setup/startApp.png)
+
+Now, click on `Open terminal` on the top right-hand side of the screen. You will start terminal session through your browser! Once inside the terminal, you will need to do one last thing before starting the pipeline:
+
+```{.bash filename="Terminal"}
+ # This will create a session with an automatically assigned numeric name, starting from 0
+tmux 
+
+# Alternatively, 
+tmux new -s session_name
+```
+
+![](./img/04c_preprocessing_setup/tmux.png)
+
+The `tmux` command initiates a **persistent virtual command line session**. This is crucial because, once the pipeline starts, you won’t be able to monitor its progress if your computer disconnects or enters sleep mode. With `tmux`, however, you can close your computer, and the session will still be active when you reconnect—unless your requested job time has run out. You’ll know you’re inside the tmux session by checking the bottom of the screen.
+
+![](img/04c_preprocessing_setup/tmux_session.png)
+
+:::{.callout-tip title="Reconnect to tmux session"}
+
+If you want to leave the tmux session (*and not kill it*), you can do so by pressing simultaneously `Ctrl` and `B` keys, and then press `D`. Then, you can reconnect to the session using the command:
+
+```{.bash filename="Terminal"}
+tmux attach -t 0 # abbreviated as tmux a -t0
+```
+:::
+
+Let's prepare to run the pipeline. First, navigate to your personal drive—the one with your name (e.g.``)—and create a directory to serve as your working directory where all pipeline results will be saved (e.g., nfcore-results). Make sure you’re now located within this new directory.
+Next, copy the bash script that runs the Nextflow command into this directory by using:
+
+
+```{.bash filename="Terminal"}
+cd nfcore-results # you might have named it differently 
+bash ./sequencing_data/scripts_v3.17.0/preprocessing_salmon.sh .
+```
+
+Once copied, review the script by running:
+
+```{.bash filename="preprocessing_salmon.sh"}
+#!/bin/bash  # Specifies the script should be run in bash shell
+
+VRNASEQ="3.17.0"    # Defines the version of the rnaseq pipeline to use
+PARAMSF="/work/sequencing_data/scripts_v3.17.0/nf-params_salmon.json"   # Set path to configuration pipeline parameters (e.g. aligner software)
+CONFIGF="/work/sequencing_data/scripts_v3.17.0/maxcores.config"     # Set path to maximum cores and memory usage (e.g. what you requested on UCloud)
+
+nextflow run nf-core/rnaseq -r $VRNASEQ -params-file $PARAMSF -profile conda -c $CONFIGF
+```
+
+This small bash script initiates the `nf-core/rnaseq` pipeline. It’s a good practice to save the command used to run the pipeline, and now you’ve copied it into your results folder! You’ll notice extra parameters and configuration settings defined in the script, which we’ll explore shortly. The final line of the script runs the RNA-seq pipeline with the specified version, parameters, Conda profile, and configuration file. **We will inspect each part of the command below in the section [Understanding the pipeline arguments](#understanding-pipeline-options) but we will first look at the different input files.**
+
+#### Parameters file 
+
+The **parameters JSON file** is used in nf-core pipelines to define various arguments and software options that can be utilized within the pipeline. You can find a full list of all parameters on the official page: https://nf-co.re/rnaseq/3.17.0/parameters/. Let's take a look at the different configuration files we're using.
+
+In the parameters file, we specify that we want to use the pseudoaligner Salmon for this pipeline. The key elements we need to define are the location of the samplesheet, the output directory where Nextflow will save the results, and the paths to the FASTA and GTF files.  It is important to use full paths for these locations to ensure that Nextflow can correctly access the required files, regardless of the working directory.
+
+```{.json filename="nf-params.json"}
+{
+    "input": "/work/sequencing_data/raw_reads/samplesheet_v3.17.0.csv",
+    "outdir": "preprocessing_results_salmon",
+    "fasta": "/work/sequencing_data/genomic_resources/homo_sapiens/GRCh38/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz",
+    "gtf": "/work/sequencing_data/genomic_resources/homo_sapiens/GRCh38/Homo_sapiens.GRCh38.109.MODIFIED.gtf.gz",
+    "pseudo_aligner": "salmon",
+    "skip_stringtie": true,
+    "skip_rseqc": true,
+    "skip_preseq": true,
+    "skip_qualimap": true,
+    "skip_biotype_qc": true,
+    "skip_bigwig": true,
+    "skip_deseq2_qc": true,
+    "skip_bbsplit": true,
+    "skip_alignment": true,
+    "extra_salmon_quant_args": "--gcBias"
+}
+```
+:::{.callout-note}
+# More info on the parameters file
+
+**`--input` parameter**
+
+The `--input` parameter points to the `samplesheet.csv` file that contains all the info regarding our samples. 
+
+**`--outdir` parameter**
+
+The `--outdir` parameter indicates where the results of the pipeline will be saved.
+
+**`--fasta` parameter**
+
+Path to FASTA reference genome file.
+
+**`--gtf` parameter**
+
+Path to GTF annotation file that contains genomic region information.
+
+**`--pseudo_aligner` argument**
+
+The `--pseudo_aligner` argument indicates that we want to use salmon to quantify transcription levels.
+
+Finally, we are skipping several QC and extra steps that we did not explain in the [previous lesson](./04a_preprocessing.qmd). Do not worry if you cannot manage to run the pipeline or you do not have the time, we have prepared a backup folder that contains the results from a traditional alignment + pseudoquantification for you to freely explore! (More about that [below](#saved-results)).
+:::
+
+#### Samples' sheet
+
+Let's quickly explore our `samplesheet.csv` file (we named it `samplesheet_v3.17.0.csv` to differentiate it from other formats, as the file may have slightly changed with Nextflow updates—don't worry about this).
+
+```{.plaintext filename="samplesheet_v3.17.0.csv"}
+sample,fastq_1,fastq_2,strandedness
+control_3,/work/sequencing_data/raw_reads/Control_3.fastq.gz,,unstranded
+control_2,/work/sequencing_data/raw_reads/Control_2.fastq.gz,,unstranded
+control_1,/work/sequencing_data/raw_reads/Control_1.fastq.gz,,unstranded
+vampirium_3,/work/sequencing_data/raw_reads/Vampirium_3.fastq.gz,,unstranded
+vampirium_2,/work/sequencing_data/raw_reads/Vampirium_2.fastq.gz,,unstranded
+vampirium_1,/work/sequencing_data/raw_reads/Vampirium_1.fastq.gz,,unstranded
+garlicum_3,/work/sequencing_data/raw_reads/Garlicum_3.fastq.gz,,unstranded
+garlicum_2,/work/sequencing_data/raw_reads/Garlicum_2.fastq.gz,,unstranded
+```
+**It is crucial that the FASTQ paths inside this file match the paths in your job exactly!** A good practice is to use the full paths to avoid any discrepancies.
+
+#### Configuration file 
+
+The configuration file ensures that, regardless of how nf-core defines the resources required for each task, the jobs will run with the resources we allocate when submitting the job. You can learn more about configuration parameters [here](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources). One of Nextflow's key strengths is its ability to run on virtually any computational infrastructure, so these settings might differ if you run the workflow on a different machine.
+
+```{.json filename="maxcores.config"}
+process {
+  resourceLimits = [
+    cpus: 8,
+    memory: 40.GB,
+  ]
+}
+```
+
+## Understanding the pipeline arguments {#understanding-the-pipeline-options}
+
+Let's divide the command into different sections. First we have:
+
+```{.bash}
+nextflow run nf-core/rnaseq -r 3.17.0
+```
+
+While usually one would run an nf-core pipeline using `nextflow run nf-core/rnaseq` and fetch the pipeline remotely, UCloud has installed the pipelines locally. Specifically, we are using the latest version by using the argument `-r 3.17.0`. 
+
+***
+
+Then, we have:
+
+```{.bash}
+# Set path to configuration pipeline parameters (e.g. aligner software)
+PARAMSF="/work/sequencing_data/scripts_v3.17.0/nf-params_salmon.json"   
+-params-file $PARAMSF
+```
+
+The `-params-file` argument is another nextflow core argument that allows us to give the nf-core rnaseq pipeline arguments in a [json file](https://www.json.org/json-en.html), instead of creating an excessively long command. Writing the parameters this way allows for better reproducibility, since you can reuse the file in the future.
+
+***
+
+We can continue with the next argument:
+
+```{.bash}
+-profile conda
+```
+
+Unfortunately, the UCloud implementation of the nf-core pipelines do not currently allow the use of docker or singularity, which are the recommended profile options. However, UCloud has made sure that there is a working conda environment ready to use!
+
+```{.bash}
+# Set path to maximum cores and memory usage (e.g. what you requested on UCloud)
+CONFIGF="/work/sequencing_data/scripts_v3.17.0/maxcores.config"    
+
+-c conda $CONFIGF
+```
+These are nf-core specific arguments that indicates nextflow to only use as maximum the number of CPUs and RAM we have requested when we submitted the job. We are using 8 cores since it is what we requested in the submission page (e.g. if you submitted a job with 4 CPUs, this will be equal to 4). We are using slightly less RAM than we requested (48Gb) just in case there is a problem with memory overflow.
+
+Finally, we remove the nextflow `work` directory if the pipeline completes successfully. this will save quite a bit if storage in the future, since the nextflow `work` directory will accumulate over runs.
+
+:::{.callout-warning}
+# Need more help?
+- Ask your instructors if you have any questions before we start running it. 
+- You can also check nf-core usage documentation [here](https://nf-co.re/rnaseq/3.17.0/docs/usage/). 
+:::
+
+
+## Running the pipeline 
+We can finally start the run! Type in the command:
+
+```{.bash filename="Terminal within tmux session"}
+# running command from /work/YourName#xxxx/nfcore-results 
+bash ./preprocessing_salmon.sh 
+```
+
+You should see now a prompt like this, which means that the pipeline started successfully!
+
+![](./img/04c_preprocessing_setup/nfcore3170-start.png)
+
+## Restarting a failed run
+
+When running a nf-core pipelines for the first time, you might encounter some errors, for example, one of your files has an incorrect path, or a program failed to do its job.
+
+:::{.callout-warning title="Failure"}
+    
+```{.bash}
+# Error in terminal
+Error executing process >
+Caused by:
+    Failed to create create conda environment
+```
+:::
+
+![](./img/04c_preprocessing_setup/conda_error.png)
+
+Once you fix the error, it is possible to *resume* a pipeline instead of restarting the whole workflow. You can do this by adding the `-resume` argument to the nextflow command:
+
+```{.bash .code-overflow-wrap}
+nextflow run nf-core/rnaseq -r 3.11.2 -params-file /work/sequencing_data/Scripts/nf-params.json -profile conda --max_cpus 8 --max_memory 40GB​ -resume
+```
+
+## Stopping the app
+
+Once the pipeline is done, go on `Runs` in uCloud and stop it from using more resources than necessary! This will help to keep the courses running for other people.
+
+![](./img/04c_preprocessing_setup/stopRun.png)
+
+## Saved results
+
+After finishing the job, everything that the pipeline has created will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *nf-core: rnaseq*, which will contain all the jobs you have run with the nf-core app. Here, you will find the results folder named after the job name you gave when you submitted the job.
+
+1. Your material will be saved in a volume with your username, that you should be able to see under the menu `Files` > `Drives` > `Member Files:YourName#numbers`
+ 
+![](./img/04c_preprocessing_setup/fileDrives.png){.black-box}
+
+1. Go to `Jobs` -> `nf-core: rnaseq` -> `job_name (RNAseq preprocessing ...)` -> `preprocessing_results_salmon`
+
+![](./img/04c_preprocessing_setup/savedWork2.png)
+
+Now you have access to the full results of your pipeline! As explained in the [previous lesson](04b_pipelines.qmd), the nf-core rnaseq workflow will create a MultiQC report summarizing several steps into a single html file that is interactive and explorable. In addition, there will be a folder with the results of the individual QC steps as well as the alignment and quantification results. Take your time and check it all out!
+
+### Downstream analysis using your results 
+
+**Optional**: If you have successfully run nf-core RNA jobs and want to use the files you generated from your own preprocessing results, go to `Select folders to use` and `Add folder` by selecting the one containing the pipeline results like shown in the image above. They will be located in `Member Files:YourName#numbers` -> `Jobs` -> `nf-core: rnaseq` -> `job_name (RNAseq preprocessing ...)` -> `preprocessing_results_salmon` (unless you have moved them elsewhere). 
+
+<!-- 
+Do not select `add folder` if you haven't run nf-core pipeline. Once you launch RStudio, ensure there is a `Data` folder.
+
+IF (AND ONLY IF) you have **correctly imported parameters but you do not find the Data folder** follow the instructions below! If you still run into problems, please contact us.
+
+### "Mount the backup data drive"
+If the data isn't present, you will need to mount the data drive by selecting one of our backup folders that contains the data. Click on `add folder` and then choose `/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/`. Change the drive by clicking on the down arrow (**&or;**) icon to open a dropdown menu. Afterwards, add your home folder so you can write the results to your own drive. **You will not have write permissions on the `sandbox_bulRNAseq` drive**. 
+
+![back-up data](./img/05a_data_analysis_setup/data_select.png)
+
+
+Alternatively, you can also select the hard-drive icon is labeled "sequencing_data". 
+-->
