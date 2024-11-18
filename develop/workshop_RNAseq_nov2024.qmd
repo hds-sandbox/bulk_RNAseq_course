@@ -45,9 +45,17 @@ Our first choice is to provide all the **training materials, tutorials, and tool
 
 4. Additional files needed for exercises from Day 1 - Lecture 2 (QC report files)
 
-<div style="display: flex; justify-content: center; align-items: center; padding: 30px 20px;">
+<div style="display: flex; justify-content: center; padding: 10px 20px;">
   <a href="./QC_exercise_files_1124.zip" download="qcreport-files.zip">
     <button class="btn-action">Download QC files</button>
+  </a>
+</div>
+
+5. Course slides
+
+<div style="display: flex; justify-content: center; padding: 10px 20px">
+  <a href="./BulkRNAseq_slides_nov24.zip" download="bulkRNAseq-slides.zip">
+    <button class="btn-action">Download course slides</button>
   </a>
 </div>
 
