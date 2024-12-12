@@ -37,6 +37,15 @@ jobs:
       - name: Install R
         uses: r-lib/actions/setup-r@v2
 
+
+      - name: Check renv paths
+        run: |
+          Rscript -e 'cat("Project Library:", renv::paths$library(), "\n")'
+          Rscript -e 'cat("Global Cache:", renv::paths$cache(), "\n")'
+
+      - name: Set custom renv library path
+        run: echo "RENV_PATHS_LIBRARY=~/renv/library/4.4.2/" >> $GITHUB_ENV
+  
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
 
