@@ -1,6 +1,8 @@
 on: 
   push:
     branches: webpage
+  push:
+    branches: main
   workflow_dispatch:
 
 name: Quarto Publish
@@ -27,9 +29,30 @@ jobs:
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
 
+      - name: make work folder with data
+        if: runner.os == 'Linux'
+        run: mkdir -p /work/Intro_to_bulkRNAseq/
 
-#      - name: Install pandoc
-#        uses: pandoc/actions/setup@{main}
+      - name: Get data
+        if: runner.os == 'Linux'
+        run: | 
+          wget -O /work/Intro_to_bulkRNAseq/Data.zip  https://zenodo.org/records/12090853/files/Data.zip?download=1
+          unzip /work/Intro_to_bulkRNAseq/Data.zip -d /work/Intro_to_bulkRNAseq/
+          rm /work/Intro_to_bulkRNAseq/Data.zip
+
+      - name: Install R packages
+        if: runner.os == 'Linux'
+        run: R -e "install.packages(c("BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"));
+                   BiocManager::install(c("DESeq2", "clusterProfiler", "DOSE", "org.Hs.eg.db", "pathview", "DEGreport", 
+                   "tximport", "AnnotationHub", "ensembldb","apeglm","ggnewscale"))"
+
+      - name: Pull Notebooks folder content
+        if: runner.os == 'Linux'
+        run: |
+          git clone https://github.com/hds-sandbox/bulk_RNAseq_course.git temp_repo
+          cp -r temp_repo/Notebooks/*.Rmd develop
+          cp -r temp_repo/Notebooks/img/* develop/img/
+          rm -rf temp_repo
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
