@@ -60,6 +60,6 @@ jobs:
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         env:
-          RENV_PATHS_LIBRARY=~/renv/library/4.4.2/
+          RENV_PATHS_LIBRARY: ~/renv/library/4.4.2/
         with:
           target: gh-pages
