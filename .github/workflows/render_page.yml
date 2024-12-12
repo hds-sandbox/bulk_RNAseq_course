@@ -27,22 +27,18 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo mkdir -p /work/Intro_to_bulkRNAseq/
 
-      - name: Install R
-        uses: r-lib/actions/setup-r@v2
-
-      - name: Install R Dependencies
-        uses: r-lib/actions/setup-renv@v2
-
-      - name: make work folder with data
-        if: runner.os == 'Linux'
-        run: sudo mkdir -p /work/Intro_to_bulkRNAseq/
-
       - name: Get data
         if: runner.os == 'Linux'
         run: | 
-          wget -O /work/Intro_to_bulkRNAseq/Data.zip  https://zenodo.org/records/12090853/files/Data.zip?download=1
-          unzip /work/Intro_to_bulkRNAseq/Data.zip -d /work/Intro_to_bulkRNAseq/
-          rm /work/Intro_to_bulkRNAseq/Data.zip
+          sudo wget -O /work/Intro_to_bulkRNAseq/Data.zip  https://zenodo.org/records/12090853/files/Data.zip?download=1
+          sudo unzip /work/Intro_to_bulkRNAseq/Data.zip -d /work/Intro_to_bulkRNAseq/
+          sudo rm /work/Intro_to_bulkRNAseq/Data.zip
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+
+#      - name: Install R Dependencies
+#        uses: r-lib/actions/setup-renv@v2
 
       - name: Install R packages
         if: runner.os == 'Linux'
