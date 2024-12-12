@@ -42,9 +42,8 @@ jobs:
 
       - name: Install R packages
         if: runner.os == 'Linux'
-        run: R -e "install.packages(c("BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"));
-                   BiocManager::install(c("DESeq2", "clusterProfiler", "DOSE", "org.Hs.eg.db", "pathview", "DEGreport", 
-                   "tximport", "AnnotationHub", "ensembldb","apeglm","ggnewscale"))"
+        run: R -e "install.packages(c("BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))"
+             R -e "BiocManager::install(c("DESeq2", "clusterProfiler", "DOSE", "org.Hs.eg.db", "pathview", "DEGreport", "tximport", "AnnotationHub", "ensembldb","apeglm","ggnewscale"))"
 
       - name: Pull Notebooks folder content
         if: runner.os == 'Linux'
