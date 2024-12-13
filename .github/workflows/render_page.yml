@@ -53,7 +53,7 @@ jobs:
           R -e 'install.packages(c("BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
           R -e 'BiocManager::install(c("DESeq2", "clusterProfiler", "DOSE", "org.Hs.eg.db", "pathview", "DEGreport", "tximport", "AnnotationHub", "ensembldb","apeglm","ggnewscale"))'
           R -e 'install.packages(c("rmarkdown", "markdown", "knitr"))' 
-          
+
       - name: Pull Notebooks folder content
         if: runner.os == 'Linux'
         run: |
@@ -64,7 +64,5 @@ jobs:
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
-        env:
-          RENV_PATHS_LIBRARY: ~/renv/library/4.4.2/
         with:
           target: gh-pages
