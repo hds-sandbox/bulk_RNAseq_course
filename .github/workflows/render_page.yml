@@ -51,9 +51,11 @@ jobs:
       - name: installations
         run: |
           R -e 'install.packages(c("devtools","BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
+          R -e 'devtools::install_github("stephenturner/annotables")'
           R -e 'BiocManager::install(c("DESeq2", "clusterProfiler", "DOSE", "org.Hs.eg.db", "pathview", "DEGreport", "tximport", "AnnotationHub", "ensembldb","apeglm","ggnewscale"))'
           R -e 'install.packages(c("rmarkdown", "markdown", "knitr"))' 
-          R -e 'devtools::install_github("stephenturner/annotables")'
+        env:
+          GITHUB_PAT: ${{ secrets.TOKEN }}
 
       - name: Pull Notebooks folder content
         if: runner.os == 'Linux'
