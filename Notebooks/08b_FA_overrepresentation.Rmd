@@ -43,10 +43,10 @@ library(annotables)
 library(tximport)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
+meta <- read_csv("../Data/samplesheet.csv")
 meta$condition = factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
-dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+dir <- "../Data/salmon"
+tx2gene <- read_table("../Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 files <- file.path(dir, meta$sample, "quant.sf")
 names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
@@ -130,7 +130,7 @@ Let's check the results:
 cluster_summary <- data.frame(ego)
 cluster_summary
 
-write.csv(cluster_summary, "/work/Intro_to_bulkRNAseq/Results/clusterProfiler_Cont-Vamp.csv")
+write.csv(cluster_summary, "../Results/clusterProfiler_Cont-Vamp.csv")
 ```
 
 ***

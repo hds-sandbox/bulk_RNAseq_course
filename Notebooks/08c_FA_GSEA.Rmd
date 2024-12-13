@@ -47,10 +47,10 @@ library(clusterProfiler)
 library(org.Hs.eg.db)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
+meta <- read_csv("../Data/samplesheet.csv")
 meta$condition = factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
-dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+dir <- "../Data/salmon"
+tx2gene <- read_table("../Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 files <- file.path(dir, meta$sample, "quant.sf")
 names(files) <- meta$sample
 txi <- tximport(files, type="salmon", tx2gene=tx2gene, countsFromAbundance = "lengthScaledTPM", ignoreTxVersion	= TRUE)
@@ -140,7 +140,7 @@ View the enriched pathways:
 
 ```{r}
 ## Write GSEA results to file
-write.csv(gseaKEGG_results, "/work/Intro_to_bulkRNAseq/Results/gsea_Cont-Vamp_kegg.csv", quote=F)
+write.csv(gseaKEGG_results, "../Results/gsea_Cont-Vamp_kegg.csv", quote=F)
 ```
 
 > ***NOTE:** We will all get different results for the GSEA because the permutations performed use random reordering. If we would like to use the same permutations every time we run a function (i.e. we would like the same results every time we run the function), then we could use the `set.seed(123456)` function prior to running. The input to `set.seed()` could be any number, but if you would want the same results, then you would need to use the same number as input.*

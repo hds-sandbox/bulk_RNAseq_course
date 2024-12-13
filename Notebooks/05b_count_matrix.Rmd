@@ -62,7 +62,7 @@ For the sake of reproducibility, we will be using the backup results from our pr
 
 ```{r}
 # Tabulated separated files can be opened using the read_table() function.
-read_table("/work/Intro_to_bulkRNAseq/Data/salmon/control_1/quant.sf") %>% head()
+read_table("../Data/salmon/control_1/quant.sf") %>% head()
 ```
 
 For each transcript that was assayed in the reference, we have:
@@ -83,7 +83,7 @@ We will use the `samplesheet.csv` file that we use to process our raw reads, sin
 
 ```{r}
 # Load metadata
-meta <- read_csv("/work/Intro_to_bulkRNAseq/Data/samplesheet.csv")
+meta <- read_csv("../Data/samplesheet.csv")
 
 # View metadata
 meta
@@ -93,7 +93,7 @@ Using the samples column, we can create all the paths needed:
 
 ```{r}
 # Directory where salmon files are. You can change this path to the results of your own analysis
-dir <- "/work/Intro_to_bulkRNAseq/Data/salmon"
+dir <- "../Data/salmon"
 
 # List all directories containing quant.sf files using the samplename column of metadata
 files <- file.path(dir, meta$sample, "quant.sf")
@@ -106,7 +106,7 @@ files
 Our Salmon files were generated with transcript sequences listed by Ensembl IDs, but `tximport` needs to know **which genes these transcripts came from**. We will use annotation table the that was created in our workflow, called `tx2gene.txt`.
 
 ```{r}
-tx2gene <- read_table("/work/Intro_to_bulkRNAseq/Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
+tx2gene <- read_table("../Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))
 tx2gene %>% head()
 ```
 
