@@ -33,6 +33,7 @@ jobs:
           wget -O Data.zip  https://zenodo.org/records/12090853/files/Data.zip?download=1
           unzip Data.zip
           rm Data.zip
+          mkdir -p Results
 
       - name: Install R
         uses: r-lib/actions/setup-r@v2
