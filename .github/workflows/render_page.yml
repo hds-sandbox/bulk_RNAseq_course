@@ -30,10 +30,9 @@ jobs:
       - name: Get data
         if: runner.os == 'Linux'
         run: | 
-          sudo wget -O /work/Intro_to_bulkRNAseq/Data.zip  https://zenodo.org/records/12090853/files/Data.zip?download=1
-          sudo unzip /work/Intro_to_bulkRNAseq/Data.zip -d /work/Intro_to_bulkRNAseq/
-          sudo cp -a /work/Intro_to_bulkRNAseq/Data .
-          sudo rm /work/Intro_to_bulkRNAseq/Data.zip
+          wget -O Data.zip  https://zenodo.org/records/12090853/files/Data.zip?download=1
+          unzip Data.zip
+          rm Data.zip
 
       - name: Install R
         uses: r-lib/actions/setup-r@v2
