@@ -89,7 +89,7 @@ meta <- meta[reorder,]
 Create DESeq2Dataset object
 
 ```{r}
-dds <- DESeqDataSetFromMatrix(countData = data %>% select(-gene_name) %>% column_to_rownames("gene_id") %>% mutate_all(as.integer), 
+dds <- DESeqDataSetFromMatrix(countData = data %>% dplyr::select(-gene_name) %>% column_to_rownames("gene_id") %>% mutate_all(as.integer), 
                               colData = meta %>% column_to_rownames("sample"), 
                               design = ~ condition)
 ```
@@ -281,7 +281,7 @@ plotCounts(dds, gene="ENSG00000156298", intgroup="condition")
 Function to annotate all your gene results
 
 ```{r}
-res_tbl <- merge(res_tbl, tx2gene %>% select(-transcript_ID) %>% distinct(),
+res_tbl <- merge(res_tbl, tx2gene %>% dplyr::select(-transcript_ID) %>% distinct(),
                         by.x = "gene", by.y = "gene_ID", all.x = T)
 
 res_tbl
