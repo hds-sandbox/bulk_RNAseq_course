@@ -40,7 +40,6 @@ library(tidyverse)
 library(DESeq2)
 library(tximport)
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 meta <- read_csv("../Data/samplesheet.csv")
 dir <- "../Data/salmon"
 tx2gene <- read_table("../Data/salmon/salmon_tx2gene.tsv", col_names = c("transcript_ID","gene_ID","gene_symbol"))

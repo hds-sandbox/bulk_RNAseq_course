@@ -51,7 +51,6 @@ library(tximport)
 
 # And with this last line of code, we set our working directory to the folder with this notebook.
 # This way, the relative paths will work without issues
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 ```
 
 ## Loading data

@@ -38,10 +38,6 @@ knitr::opts_chunk$set(autodep        = TRUE,
 # This chunk is ONLY necessary if you want to knit this document into a pdf!!
 library(tidyverse)
 library(DESeq2)
-
-# And with this last line of code, we set our working directory to the folder with this notebook.
-# This way, the relative paths will work without issues
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 ```
 
 Approximate time: 40 minutes

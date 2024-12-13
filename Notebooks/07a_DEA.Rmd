@@ -40,7 +40,6 @@ library(tidyverse)
 library(DESeq2)
 library(tximport)
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 meta <- read_csv("../Data/samplesheet.csv")
 meta$condition = factor(meta$condition, levels = c("vampirium", "control", "garlicum"))
 dir <- "../Data/salmon"
