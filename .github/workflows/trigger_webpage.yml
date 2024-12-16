@@ -1,0 +1,20 @@
+name: Trigger Webpage Workflow
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Webpage Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Quarto Publish
+          repo: hds-sandbox/bulk_RNAseq_course
+          ref: webpage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
