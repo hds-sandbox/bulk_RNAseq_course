@@ -173,7 +173,7 @@ Define contrasts for Control vs Vampirium samples using one of the two methods a
 
 **Your code here** 
 
-```{r, eval=FALSE)}	
+```{r, eval=FALSE}	
 contrast_cont <- 
 ```
 

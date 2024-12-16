@@ -117,12 +117,13 @@ Within R, there are many popular packages used for gene/transcript-level annotat
 AnnotationHub is a wonderful resource for accessing genomic data or querying large collection of whole genome resources, including ENSEMBL, UCSC, ENCODE, Broad Institute, KEGG, NIH Pathway Interaction Database, etc. All of this information is stored and easily accessible by directly connecting to the database.
 
 To get started with AnnotationHub, we first load the library and connect to the database:
-
-**The script will ask you to create a cache directory, type yes! **
 ```{r}
-# We have a tiny problem here with one of our packages, so we need to install this specific version first
 library(AnnotationHub)
 library(ensembldb)
+
+#To avoid prompting from annotation hub
+setAnnotationHubOption("CACHE", "./AnnotationHub")
+setAnnotationHubOption("ASK", "FALSE")
 
 # Connect to AnnotationHub
 ah <- AnnotationHub()
