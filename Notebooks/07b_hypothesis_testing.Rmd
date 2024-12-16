@@ -173,8 +173,8 @@ Define contrasts for Control vs Vampirium samples using one of the two methods a
 
 **Your code here** 
 
-```{r}
-contrast_cont <-
+```{r, eval=FALSE)}	
+contrast_cont <- 
 ```
 
 ***
@@ -183,27 +183,27 @@ contrast_cont <-
 
 Now that we have our contrast created, we can use it as input to the `results()` function.
 
-```{r}
+```{r, eval=FALSE}
 ?results
 ```
 
 You will see we have the option to provide a wide array of arguments and tweak things from the defaults as needed. For example:
 
-```{r}
+```{r, eval=FALSE}
 ## Extract results for Contorl vs Vampirium with a pvalue < 0.05
 res_tableCont <- results(dds, contrast=contrast_cont, alpha = 0.05)
 ```
 
 The results table that is returned to us is **a `DESeqResults` object**, which is a simple subclass of DataFrame.
 
-```{r}
+```{r, eval=FALSE}
 # Check what type of object is returned
 class(res_tableCont)
 ```
 
 Now let's take a look at **what information is stored** in the results:
 
-```{r}
+```{r, eval=FALSE}
 # What is stored in results?
 res_tableCont %>% 
   data.frame() %>% 
@@ -212,7 +212,7 @@ res_tableCont %>%
 
 We can use the `mcols()` function to extract information on what the values stored in each column represent:
 
-```{r}
+```{r, eval=FALSE}
 # Get information on each column in results
 data.frame(mcols(res_tableCont, use.names=T))
 ```
@@ -238,7 +238,7 @@ The missing values represent genes that have undergone filtering as part of the 
 
 If within a row, all samples have zero counts there is no expression information and therefore these genes are not tested. Since we have already filtered out these genes ourselves when we created our `dds` object.
 
-```{r}
+```{r, eval=FALSE}
 # Show genes with zero expression
 res_tableCont %>%
   as_tibble(rownames = "gene") %>% 
@@ -252,7 +252,7 @@ res_tableCont %>%
 
 The `DESeq()` function calculates, for every gene and for every sample, a diagnostic test for outliers called Cook's distance. If several samples are flagged for a certain gene, the gene is filtered out.
 
-```{r}
+```{r, eval=FALSE}
 # Show genes that have an extreme outlier
 res_tableCont %>% 
   as_tibble(rownames = "gene") %>% 
@@ -268,7 +268,7 @@ It seems that we have some genes with outliers!
 
 DESeq2 defines a low mean threshold, that is empirically determined from your data, in which the fraction of significant genes can be increased by reducing the number of genes that are considered for multiple testing. This is based on the notion that genes with very low counts are not likely to see significant differences typically due to high dispersion.
 
-```{r}
+```{r, eval=FALSE}
 # Show genes below the low mean threshold
 res_tableCont %>% 
   as_tibble(rownames = "gene") %>% 
@@ -296,7 +296,7 @@ res_tableCont_LFC1 <- results(dds, contrast=contrast_cont, alpha = 0.05, lfcThre
 
 To summarize the results table, a handy function in DESeq2 is `summary()`.
 
-```{r}
+```{r, eval=FALSE}
 ## Summarize results
 summary(res_tableCont, alpha = 0.05)
 ```
@@ -307,14 +307,14 @@ In addition to the number of genes up- and down-regulated at the default thresho
 
 Let's first create variables that contain our threshold criteria. We will only be using the adjusted p-values in our criteria:
 
-```{r}
+```{r, eval=FALSE}
 ### Set thresholds
 padj.cutoff <- 0.05
 ```
 
 We can easily subset the results table to only include those that are significant using the `dplyr::filter()` function, but first we will convert the results table into a tibble:
 
-```{r}
+```{r, eval=FALSE}
 # Create a tibble of results and add gene symbols to new object
 res_tableCont_tb <- res_tableCont %>%
   as_tibble(rownames = "gene") %>%
@@ -325,13 +325,13 @@ head(res_tableCont_tb)
 
 Now we can subset that table to only keep the significant genes using our pre-defined thresholds:
 
-```{r}
+```{r, eval=FALSE}
 # Subset the tibble to keep only significant genes
 sigCont <- res_tableCont_tb %>%
   dplyr::filter(padj < padj.cutoff)
 ```
 
-```{r}
+```{r, eval=FALSE}
 # Take a quick look at this tibble
 head(sigCont)
 ```

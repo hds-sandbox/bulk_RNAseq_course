@@ -121,9 +121,6 @@ To get started with AnnotationHub, we first load the library and connect to the 
 **The script will ask you to create a cache directory, type yes! **
 ```{r}
 # We have a tiny problem here with one of our packages, so we need to install this specific version first
-install.packages("devtools")
-devtools::install_version("dbplyr", version = "2.3.4")
-
 library(AnnotationHub)
 library(ensembldb)
 

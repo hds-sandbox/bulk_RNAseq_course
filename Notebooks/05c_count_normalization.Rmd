@@ -80,7 +80,7 @@ size_factors <- c(1.32, 0.70, 1.04, 1.27, 1.11, 0.85)
 
 **Your code here:**
 
-```{r}
+```{r, eval=FALSE}
 
 ```
 
@@ -130,7 +130,7 @@ meta_random <- meta[sample(1:nrow(meta)),]
 **Your code here:**
 
 ```{r}
-
+#your code here
 ```
 
 *** 

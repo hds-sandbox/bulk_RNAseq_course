@@ -105,7 +105,7 @@ By default `plotPCA()` uses the *top 500 most variable genes*. You can change th
 **Your code here:**
 
 ```{r}
-
+#your code here
 ```
 
 ***
@@ -212,7 +212,7 @@ Instead of using distances between expression patterns, check the Pearson correl
 **Your code here:**
 
 ```{r}
-
+#your code here
 ```
 
 **Extra**
