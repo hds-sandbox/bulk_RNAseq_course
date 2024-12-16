@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>nf-core/rnaseq 3.12.0 – Bulk RNAseq data analysis</title>
+<title>Bulk RNAseq data analysis - nf-core/rnaseq 3.12.0</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -64,6 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../develop/04c_preprocessing_nf3170.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -109,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -124,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -142,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Experiment design</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../develop/04a_preprocessing.html"> 
+    <a class="nav-link active" href="../develop/04a_preprocessing.html" aria-current="page"> 
 <span class="menu-text">Data processing</span></a>
   </li>  
   <li class="nav-item">
@@ -162,28 +163,88 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
+          <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/04c_preprocessing_nf3170.html">UCloud setup</a></li><li class="breadcrumb-item"><a href="../develop/04c_preprocessing_nf3112.html">nf-core/rnaseq 3.12.0</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/04a_preprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preprocessing steps</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/04b_pipelines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Nextflow &amp; nf-core pipelines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">UCloud setup</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/04c_preprocessing_nf3170.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">nf-core/rnaseq 3.17.0</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/04c_preprocessing_nf3112.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">nf-core/rnaseq 3.12.0</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-right" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/04c_preprocessing_nf3170.html">UCloud setup</a></li><li class="breadcrumb-item"><a href="../develop/04c_preprocessing_nf3112.html">nf-core/rnaseq 3.12.0</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">nf-core/rnaseq 3.12.0</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-right">
 
     
   
@@ -321,23 +382,24 @@ Reconnect to tmux session
 <p>The <code>--input</code> parameter points to the <code>samplesheet.csv</code> file that contains all the info regarding our samples. The file looks like this:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="hpzigeogmn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#hpzigeogmn table {
+<div>
+<div id="jbfcovcnmo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jbfcovcnmo table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#hpzigeogmn thead, #hpzigeogmn tbody, #hpzigeogmn tfoot, #hpzigeogmn tr, #hpzigeogmn td, #hpzigeogmn th {
+#jbfcovcnmo thead, #jbfcovcnmo tbody, #jbfcovcnmo tfoot, #jbfcovcnmo tr, #jbfcovcnmo td, #jbfcovcnmo th {
   border-style: none;
 }
 
-#hpzigeogmn p {
+#jbfcovcnmo p {
   margin: 0;
   padding: 0;
 }
 
-#hpzigeogmn .gt_table {
+#jbfcovcnmo .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -363,12 +425,12 @@ Reconnect to tmux session
   border-left-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_caption {
+#jbfcovcnmo .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#hpzigeogmn .gt_title {
+#jbfcovcnmo .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -380,7 +442,7 @@ Reconnect to tmux session
   border-bottom-width: 0;
 }
 
-#hpzigeogmn .gt_subtitle {
+#jbfcovcnmo .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -392,7 +454,7 @@ Reconnect to tmux session
   border-top-width: 0;
 }
 
-#hpzigeogmn .gt_heading {
+#jbfcovcnmo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -404,13 +466,13 @@ Reconnect to tmux session
   border-right-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_bottom_border {
+#jbfcovcnmo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_col_headings {
+#jbfcovcnmo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -425,7 +487,7 @@ Reconnect to tmux session
   border-right-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_col_heading {
+#jbfcovcnmo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -445,7 +507,7 @@ Reconnect to tmux session
   overflow-x: hidden;
 }
 
-#hpzigeogmn .gt_column_spanner_outer {
+#jbfcovcnmo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -457,15 +519,15 @@ Reconnect to tmux session
   padding-right: 4px;
 }
 
-#hpzigeogmn .gt_column_spanner_outer:first-child {
+#jbfcovcnmo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hpzigeogmn .gt_column_spanner_outer:last-child {
+#jbfcovcnmo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hpzigeogmn .gt_column_spanner {
+#jbfcovcnmo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -477,11 +539,11 @@ Reconnect to tmux session
   width: 100%;
 }
 
-#hpzigeogmn .gt_spanner_row {
+#jbfcovcnmo .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#hpzigeogmn .gt_group_heading {
+#jbfcovcnmo .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -507,7 +569,7 @@ Reconnect to tmux session
   text-align: left;
 }
 
-#hpzigeogmn .gt_empty_group_heading {
+#jbfcovcnmo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -522,15 +584,15 @@ Reconnect to tmux session
   vertical-align: middle;
 }
 
-#hpzigeogmn .gt_from_md > :first-child {
+#jbfcovcnmo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hpzigeogmn .gt_from_md > :last-child {
+#jbfcovcnmo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hpzigeogmn .gt_row {
+#jbfcovcnmo .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -549,7 +611,7 @@ Reconnect to tmux session
   overflow-x: hidden;
 }
 
-#hpzigeogmn .gt_stub {
+#jbfcovcnmo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -562,7 +624,7 @@ Reconnect to tmux session
   padding-right: 5px;
 }
 
-#hpzigeogmn .gt_stub_row_group {
+#jbfcovcnmo .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -576,15 +638,15 @@ Reconnect to tmux session
   vertical-align: top;
 }
 
-#hpzigeogmn .gt_row_group_first td {
+#jbfcovcnmo .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#hpzigeogmn .gt_row_group_first th {
+#jbfcovcnmo .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#hpzigeogmn .gt_summary_row {
+#jbfcovcnmo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -594,16 +656,16 @@ Reconnect to tmux session
   padding-right: 5px;
 }
 
-#hpzigeogmn .gt_first_summary_row {
+#jbfcovcnmo .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_first_summary_row.thick {
+#jbfcovcnmo .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#hpzigeogmn .gt_last_summary_row {
+#jbfcovcnmo .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -613,7 +675,7 @@ Reconnect to tmux session
   border-bottom-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_grand_summary_row {
+#jbfcovcnmo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -623,7 +685,7 @@ Reconnect to tmux session
   padding-right: 5px;
 }
 
-#hpzigeogmn .gt_first_grand_summary_row {
+#jbfcovcnmo .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -633,7 +695,7 @@ Reconnect to tmux session
   border-top-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_last_grand_summary_row_top {
+#jbfcovcnmo .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -643,11 +705,11 @@ Reconnect to tmux session
   border-bottom-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_striped {
+#jbfcovcnmo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hpzigeogmn .gt_table_body {
+#jbfcovcnmo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -656,7 +718,7 @@ Reconnect to tmux session
   border-bottom-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_footnotes {
+#jbfcovcnmo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -670,7 +732,7 @@ Reconnect to tmux session
   border-right-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_footnote {
+#jbfcovcnmo .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -679,7 +741,7 @@ Reconnect to tmux session
   padding-right: 5px;
 }
 
-#hpzigeogmn .gt_sourcenotes {
+#jbfcovcnmo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -693,7 +755,7 @@ Reconnect to tmux session
   border-right-color: #D3D3D3;
 }
 
-#hpzigeogmn .gt_sourcenote {
+#jbfcovcnmo .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -701,68 +763,77 @@ Reconnect to tmux session
   padding-right: 5px;
 }
 
-#hpzigeogmn .gt_left {
+#jbfcovcnmo .gt_left {
   text-align: left;
 }
 
-#hpzigeogmn .gt_center {
+#jbfcovcnmo .gt_center {
   text-align: center;
 }
 
-#hpzigeogmn .gt_right {
+#jbfcovcnmo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hpzigeogmn .gt_font_normal {
+#jbfcovcnmo .gt_font_normal {
   font-weight: normal;
 }
 
-#hpzigeogmn .gt_font_bold {
+#jbfcovcnmo .gt_font_bold {
   font-weight: bold;
 }
 
-#hpzigeogmn .gt_font_italic {
+#jbfcovcnmo .gt_font_italic {
   font-style: italic;
 }
 
-#hpzigeogmn .gt_super {
+#jbfcovcnmo .gt_super {
   font-size: 65%;
 }
 
-#hpzigeogmn .gt_footnote_marks {
+#jbfcovcnmo .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#hpzigeogmn .gt_asterisk {
+#jbfcovcnmo .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#hpzigeogmn .gt_indent_1 {
+#jbfcovcnmo .gt_indent_1 {
   text-indent: 5px;
 }
 
-#hpzigeogmn .gt_indent_2 {
+#jbfcovcnmo .gt_indent_2 {
   text-indent: 10px;
 }
 
-#hpzigeogmn .gt_indent_3 {
+#jbfcovcnmo .gt_indent_3 {
   text-indent: 15px;
 }
 
-#hpzigeogmn .gt_indent_4 {
+#jbfcovcnmo .gt_indent_4 {
   text-indent: 20px;
 }
 
-#hpzigeogmn .gt_indent_5 {
+#jbfcovcnmo .gt_indent_5 {
   text-indent: 25px;
+}
+
+#jbfcovcnmo .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#jbfcovcnmo div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_col_headings">
 <th id="sample" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">sample</th>
@@ -832,6 +903,7 @@ Reconnect to tmux session
 </tbody>
 </table>
 
+</div>
 </div>
 </div>
 </div>
@@ -1094,7 +1166,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1126,47 +1209,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/hds-sandbox\.github\.io\/bulk_RNAseq_course");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1201,11 +1244,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
+      return note.innerHTML;
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -1479,38 +1518,40 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation column-page-right">
+  <div class="nav-page nav-page-previous">
+      <a href="../develop/04c_preprocessing_nf3170.html" class="pagination-link" aria-label="nf-core/rnaseq 3.17.0">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">nf-core/rnaseq 3.17.0</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","loop":false,"openEffect":"zoom","descPosition":"bottom"});
-(function() {
-  let previousOnload = window.onload;
-  window.onload = () => {
-    if (previousOnload) {
-      previousOnload();
-    }
-    lightboxQuarto.on('slide_before_load', (data) => {
-      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-      const href = trigger.getAttribute('href');
-      if (href !== null) {
-        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-        if (imgEl !== null) {
-          const srcAttr = imgEl.getAttribute("src");
-          if (srcAttr && srcAttr.startsWith("data:")) {
-            slideConfig.href = srcAttr;
-          }
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
         }
-      } 
-    });
-  
-    lightboxQuarto.on('slide_after_load', (data) => {
-      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(slideNode);
       }
-    });
-  
-  };
-  
-})();
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
           </script>
 
 

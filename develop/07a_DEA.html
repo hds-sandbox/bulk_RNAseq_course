@@ -2,12 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="You!">
+<meta name="dcterms.date" content="2024-12-16">
 
-<title>DESeq2 – Bulk RNAseq data analysis</title>
+<title>Gene-level differential expression analysis with DESeq2 – Bulk RNAseq data analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,12 +73,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-74e5c8182057b581c8ce78f3c749e987.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-9f03a6b1aa4272b2c7f9d01b972febf4.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -105,35 +107,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -200,7 +173,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">Differential Expression</a></li><li class="breadcrumb-item"><a href="../develop/07a_DEA.html">DESeq2</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">Differential Expression</a></li><li class="breadcrumb-item"><a href="../develop/07a_DEA.html">Gene-level differential expression analysis with DESeq2</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -210,7 +183,7 @@ window.Quarto = {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -229,7 +202,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/05b_count_matrix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RNAseq count matrix</span></a>
+ <span class="menu-text">The RNAseq count matrix</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -244,13 +217,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/05c_count_normalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Normalization</span></a>
+ <span class="menu-text">Count normalization with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/06_exploratory_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Exploratory analysis</span></a>
+ <span class="menu-text">Exploratory analysis with DESeq2</span></a>
   </div>
 </li>
       </ul>
@@ -267,25 +240,25 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07_extra_contrast_design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Contrast designs</span></a>
+ <span class="menu-text">DESeq samples comparison: contrast designs</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07a_DEA.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">DESeq2</span></a>
+ <span class="menu-text">Gene-level differential expression analysis with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07b_hypothesis_testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hypothesis testing</span></a>
+ <span class="menu-text">Hypothesis testing with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07c_DEA_visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Visualization</span></a>
+ <span class="menu-text">Log Fold Shrinkage and DEA visualizations</span></a>
   </div>
 </li>
       </ul>
@@ -302,19 +275,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08a_FA_genomic_annotation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Gene annotation</span></a>
+ <span class="menu-text">Genomic annotations for functional analyses</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08b_FA_overrepresentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Analysis</span></a>
+ <span class="menu-text">Functional Analysis for RNA-seq</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08c_FA_GSEA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional class scoring</span></a>
+ <span class="menu-text">Functional Class Scoring</span></a>
   </div>
 </li>
       </ul>
@@ -331,7 +304,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/09_summarized_workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Summarised workflow</span></a>
+ <span class="menu-text">Summary of DGE workflow</span></a>
   </div>
 </li>
       </ul>
@@ -341,20 +314,45 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#deseq2-differential-gene-expression-analysis-workflow" id="toc-deseq2-differential-gene-expression-analysis-workflow" class="nav-link" data-scroll-target="#deseq2-differential-gene-expression-analysis-workflow">DESeq2 differential gene expression analysis workflow</a>
+  <ul class="collapse">
+  <li><a href="#step-1-estimate-size-factors" id="toc-step-1-estimate-size-factors" class="nav-link" data-scroll-target="#step-1-estimate-size-factors">Step 1: Estimate size factors</a></li>
+  <li><a href="#step-2-estimate-gene-wise-dispersion" id="toc-step-2-estimate-gene-wise-dispersion" class="nav-link" data-scroll-target="#step-2-estimate-gene-wise-dispersion">Step 2: Estimate gene-wise dispersion</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">Differential Expression</a></li><li class="breadcrumb-item"><a href="../develop/07a_DEA.html">DESeq2</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">Differential Expression</a></li><li class="breadcrumb-item"><a href="../develop/07a_DEA.html">Gene-level differential expression analysis with DESeq2</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">DESeq2</h1>
+<h1 class="title">Gene-level differential expression analysis with DESeq2</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-right">
+<div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>You! </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 16, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -364,274 +362,149 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled" title="Section Overview">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Section Overview
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>⏰ <strong>Time Estimation:</strong> 40 minutes</p>
-<p>💬 <strong>Learning Objectives:</strong></p>
-<ol type="1">
+<p>Approximate time: 15 minutes</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<ul>
 <li>Explain the different steps involved in running <code>DESeq()</code></li>
-<li>Examine size factors and undertand the source of differences</li>
+<li>Examine size factors and understand the source of differences</li>
 <li>Inspect gene-level dispersion estimates</li>
 <li>Recognize the importance of dispersion during differential expression analysis</li>
-</ol>
-</div>
-</div>
-<p><span style="font-size:30px;">Gene-level differential expression analysis with DESeq2<span></span></span></p>
+</ul>
+</section>
+<section id="deseq2-differential-gene-expression-analysis-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="deseq2-differential-gene-expression-analysis-workflow">DESeq2 differential gene expression analysis workflow</h2>
 <p>Previously, we created the DESeq2 object using the appropriate design formula.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DO NOT RUN</span></span>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DO NOT RUN</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dds object</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromTximport</span>(txi,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">design =</span> <span class="sc">~</span> condition)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                                <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                                <span class="at">design =</span> <span class="sc">~</span> condition)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter genes with 0 counts</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">counts</span>(dds)) <span class="sc">&gt;</span> <span class="dv">0</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[keep,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Then, to run the actual differential expression analysis, we use a single call to the function <code>DESeq()</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Run analysis</span></span>
+</details>
+</div>
+<p>Then, to run the entire differential expression analysis workflow, we use a single call to the function <code>DESeq()</code>.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Run analysis</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <p>And with that we completed the entire workflow for the differential gene expression analysis with DESeq2! The <code>DESeq()</code> function performs a default analysis through the following steps:</p>
 <ol type="1">
 <li>Estimation of size factors: <code>estimateSizeFactors()</code></li>
 <li>Estimation of dispersion: <code>estimateDispersions()</code></li>
 <li>Negative Binomial GLM fitting and Wald statistics: <code>nbinomWaldTest()</code></li>
 </ol>
-<p><img src="./img/07a_DEA/deseq_steps/Slide1.png" class="img-fluid"></p>
-<p>We will be taking a detailed look at each of these steps to better understand how DESeq2 is performing the statistical analysis and what metrics we should examine to explore the quality of our analysis.</p>
-<section id="step-1-estimate-size-factors" class="level2">
-<h2 class="anchored" data-anchor-id="step-1-estimate-size-factors">Step 1: Estimate size factors</h2>
-<p>The first step in the differential expression analysis is to estimate the size factors, which is exactly what we already did to normalize the raw counts. <img src="./img/07a_DEA/deseq_steps/Slide2.png" class="img-fluid"></p>
-<p>DESeq2 will automatically estimate the size factors when performing the differential expression analysis. However, if you have already generated the size factors using <code>estimateSizeFactors()</code>, as we did earlier, then DESeq2 will use these values.</p>
-<p>To normalize the count data, DESeq2 calculates size factors for each sample using the <em>median of ratios method</em> discussed previously in the <a href="05c_count_normalization.md">count normalization</a> lesson.</p>
-<section id="vampirium-de-analysis-examining-the-size-factors" class="level3">
-<h3 class="anchored" data-anchor-id="vampirium-de-analysis-examining-the-size-factors">Vampirium DE analysis: examining the size factors</h3>
+<section id="step-1-estimate-size-factors" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-estimate-size-factors">Step 1: Estimate size factors</h3>
+<p>The first step in the differential expression analysis is to estimate the size factors, which is exactly what we already did to normalize the raw counts.</p>
 <p>Let’s take a quick look at size factor values we have for each sample:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check the size factors</span></span>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check the size factors</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sizeFactors</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>control_1 control_2 control_3 garlicum_2 garlicum_3 vampirium_1 vampirium_2 
- 1.1149694  0.9606733  0.7492240  1.5633640  0.9359695  1.2262649  1.1405026 
-vampirium_3 
- 0.6542030 </code></pre>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  control_3   control_2   control_1 vampirium_3 vampirium_2 vampirium_1 
+  0.7501070   0.9580056   1.1134126   0.6565921   1.1418067   1.2184977 
+ garlicum_3  garlicum_2 
+  0.9327493   1.5527069 </code></pre>
+</div>
+</div>
 <p>These numbers should be identical to those we generated initially when we had run the function <code>estimateSizeFactors(dds)</code>. Take a look at the total number of reads for each sample:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Total number of raw counts per sample</span></span>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Total number of raw counts per sample</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">counts</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  control_3   control_2   control_1 vampirium_3 vampirium_2 vampirium_1 
+   20257917    26156069    30817090    17054657    29573402    31589516 
+ garlicum_3  garlicum_2 
+   26428310    44740987 </code></pre>
 </div>
-<div class="callout-title-container flex-fill">
-How do the numbers correlate with the size factor?”
 </div>
-</div>
-<div class="callout-body-container callout-body">
+<p><em>How do the numbers correlate with the size factor?</em></p>
 <p>We see that the larger size factors correspond to the samples with higher sequencing depth, which makes sense, because to generate our normalized counts we need to divide the counts by the size factors. This accounts for the differences in sequencing depth between samples.</p>
 <p>Now take a look at the total depth after normalization using:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Total number of normalized counts per sample</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">counts</span>(dds, <span class="at">normalized=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Total number of normalized counts per sample</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">counts</span>(dds, <span class="at">normalized=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  control_3   control_2   control_1 vampirium_3 vampirium_2 vampirium_1 
+   27006701    27302628    27678052    25974507    25900533    25924969 
+ garlicum_3  garlicum_2 
+   28333777    28814831 </code></pre>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-How do the values across samples compare with the total counts taken for each sample?”
-</div>
-</div>
-<div class="callout-body-container callout-body">
+<p><em>How do the values across samples compare with the total counts taken for each sample?</em></p>
 <p>You might have expected the counts to be the exact same across the samples after normalization. However, DESeq2 also accounts for RNA composition during the normalization procedure. By using the median ratio value for the size factor, DESeq2 should not be biased to a large number of counts sucked up by a few DE genes; however, this may lead to the size factors being quite different than what would be anticipated just based on sequencing depth.</p>
-</div>
-</div>
 </section>
-</section>
-<section id="step-2-estimate-gene-wise-dispersion" class="level2">
-<h2 class="anchored" data-anchor-id="step-2-estimate-gene-wise-dispersion">Step 2: Estimate gene-wise dispersion</h2>
-<p>The next step in the differential expression analysis is the estimation of gene-wise dispersions. Before we get into the details, we should have a good idea about what dispersion is referring to in DESeq2. <img src="./img/07a_DEA/deseq_steps/Slide3.png" class="img-fluid"></p>
-<p>In RNA-seq count data, we know:</p>
-<ol type="1">
-<li>To determine differentially expressed genes, we need to identify genes that have significantly different mean expression between groups <strong>given the variation within the groups</strong> (between replicates).</li>
-<li>The variation within group (between replicates) needs to account for the fact that variance increases with the mean expression, as shown in the plot below (each black dot is a gene).</li>
-</ol>
-<p><img src="./img/07a_DEA/deseq_mean_vs_variance.png" class="img-fluid"></p>
-<p><strong>To accurately identify DE genes, DESeq2 needs to account for the relationship between the variance and mean.</strong> We don’t want all of our DE genes to be genes with low counts because the variance is lower for lowly expressed genes.</p>
-<p>Instead of using variance as the measure of variation in the data (<em>since variance correlates with gene expression level</em>), DESeq2 uses a measure of variation called <strong>dispersion, which accounts for a gene’s variance and mean expression level</strong>. Dispersion is calculated by:</p>
-<p><span class="math inline">\(Var=\mu+\alpha*\mu^2\)</span>, where:</p>
-<ul>
-<li><span class="math inline">\(\alpha\)</span> = dispersion</li>
-<li><span class="math inline">\(Var\)</span> = variance</li>
-<li><span class="math inline">\(\mu\)</span> = mean</li>
-</ul>
-<p>Which results in the following relationship:</p>
-<div style="font-size: 0.8em; overflow-x: auto;">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: center;"></th>
-<th style="text-align: center;">Effect on dispersion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">Variance increases</td>
-<td style="text-align: center;">Dispersion increases</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Mean expression increases</td>
-<td style="text-align: center;">Dispersion decreases</td>
-</tr>
-</tbody>
-</table>
+<section id="step-2-estimate-gene-wise-dispersion" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-estimate-gene-wise-dispersion">Step 2: Estimate gene-wise dispersion</h3>
+<p>Let’s take a look at the dispersion estimates for our Vampirium data. First, we will use the function <code>estimateDispersions()</code>.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">estimateDispersions</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<p>For genes with moderate to high count values, the square root of dispersion will be equal to the coefficient of variation. So 0.01 dispersion means 10% variation around the mean expected across biological replicates. The dispersion estimates for genes with the same mean will differ only based on their variance. <strong>Therefore, the dispersion estimates reflect the variance in gene expression for a given mean value.</strong> In the plot below, each black dot is a gene, and the dispersion is plotted against the mean expression (across within-group replicates) for each gene.</p>
+<p>We can check the values using the <code>dispersion()</code> function and plotting it with the <code>plotDispEsts()</code> function:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">dispersions</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.102415719 0.005312987 0.005241663 9.982833063 0.954109932 0.002146811</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot dispersion estimates</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotDispEsts</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/07a_DEA/deseq_dispersion1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
+<p><img src="./img/07a_DEA.rmarkdown/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-How does the dispersion relate to our model?
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>To accurately model sequencing counts, we need to generate accurate estimates of within-group variation (variation between replicates of the same sample group) for each gene. With only a few (3-6) replicates per group, the <strong>estimates of variation for each gene are often unreliable</strong>.</p>
-<p>To address this problem, DESeq2 <strong>shares information across genes</strong> to generate more accurate estimates of variation based on the mean expression level of the gene using a method called ‘shrinkage’. <strong>DESeq2 assumes that genes with similar expression levels should have similar dispersion.</strong></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note on estimating gene dispersion
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>DESeq2 estimates the dispersion for each gene separately, based on the gene’s expression level (mean counts of within-group replicates) and variance.</p>
-</div>
-</div>
-</section>
-<section id="step-3-fit-and-shrink-gene-wise-dispersion-estimates" class="level2">
-<h2 class="anchored" data-anchor-id="step-3-fit-and-shrink-gene-wise-dispersion-estimates">Step 3: Fit and shrink gene-wise dispersion estimates</h2>
-<p>The next step in the workflow is to fit a curve to the gene-wise dispersion estimates and then shrink those estimates towards the curve. The idea behind fitting a curve to the data is that different genes will have different scales of biological variability, but, across all genes, there will be a distribution of reasonable estimates of dispersion.</p>
-<p><img src="./img/07a_DEA/deseq_steps/Slide4.png" class="img-fluid"></p>
-<p>This curve is displayed as a red line in the figure below, which plots the estimate for the <strong>expected dispersion value for genes of a given expression strength</strong>. Each black dot is a gene with an associated mean expression level and maximum likelihood estimation (MLE) of the dispersion (Step 1).</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./img/07a_DEA/deseq_dispersion1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
-</figure>
-</div>
-<p>After we fit the curve to the estimates, we can shrink the gene-wise dispersion estimates toward the expected dispersion values. Thanks to the curve we can identify more accurately differentially expressed genes when sample sizes are small, and the strength of the shrinkage for each gene depends on:</p>
-<ul>
-<li>how close gene dispersions are from the curve</li>
-<li>sample size (more samples = less shrinkage)</li>
-</ul>
-<p><strong>This shrinkage method is particularly important to reduce false positives in the differential expression analysis.</strong> Genes with low dispersion estimates are shrunken towards the curve, and the more accurate, higher shrunken values are output for fitting of the model and differential expression testing. These shrunken estimates represent the within-group variation that is needed to determine whether the gene expression across groups is significantly different.</p>
-<p>Dispersion estimates that are slightly above the curve are also shrunk toward the curve for better dispersion estimation; however, genes with <strong>extremely high dispersion values are not</strong>. This is due to the likelihood that the gene does not follow the modeling assumptions and has higher variability than others for biological or technical reasons [<a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8">1</a>]. Shrinking the values toward the curve could result in false positives, so these values are not shrunken. These genes are shown surrounded by blue circles below.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./img/07a_DEA/deseq_dispersion2.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<p><strong>This is a good plot to evaluate whether your data is a good fit for the DESeq2 model.</strong> You expect your data to generally scatter around the curve, with the dispersion decreasing with increasing mean expression levels. If you see a cloud or different shapes, then you might want to explore your data more to see if you have contamination or outlier samples. Note how much shrinkage you get across the whole range of means in the <code>plotDispEsts()</code> plot for any experiment with low degrees of freedom.</p>
-<p>Examples of <strong>worrisome dispersion plots</strong> are shown below:</p>
-<p>The plot below shows a cloud of dispersion values, which do not generally follow the curve. This would suggest a bad fit of the data to the model.</p>
-<p><img src="./img/07a_DEA/bad_dispersion1.png" class="img-fluid"></p>
-<p>The next plot shows the dispersion values initially decreasing, then increasing with larger expression values. The larger mean expression values should not have larger dispersions based on our expectations - we expect decreasing dispersions with increasing mean. This indicates that there is less variation for more highly expressed genes than expected. This also indicates that there could be an outlier sample or contamination present in our analysis.</p>
-<p><img src="./img/07a_DEA/bad_dispersion2.png" class="img-fluid"></p>
-</section>
-<section id="vampirium-de-analysis-exploring-the-dispersion-estimates-and-assessing-model-fit" class="level2">
-<h2 class="anchored" data-anchor-id="vampirium-de-analysis-exploring-the-dispersion-estimates-and-assessing-model-fit">Vampirium DE analysis: exploring the dispersion estimates and assessing model fit</h2>
-<p>Let’s take a look at the dispersion estimates for our Vampirium data:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot dispersion estimates</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotDispEsts</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./img/07a_DEA/plotDispersion.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Since we have a small sample size, for many genes we see quite a bit of shrinkage. Do you think our data are a good fit for the model?
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>We see a nice decrease in dispersion with increasing mean expression, which is good. We also see the dispersion estimates generally surround the curve, which is also expected. Overall, this plot looks good. We do see strong shrinkage, which is likely due to the fact that we have only two replicates for one of our sample groups. The more replicates we have, the less shrinkage is applied to the dispersion estimates, and the more DE genes are able to be identified. We would generally recommend having at least 4 biological replicates per condition for better estimation of variation.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise 1
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-exercise">
+<p>We can see that our estimated dispersions look quite good!</p>
+<hr>
+<p><strong>Exercise 1</strong></p>
 <p>Given the dispersion plot below, would you have any concerns regarding the fit of your data to the model?</p>
 <ul>
 <li>If not, what aspects of the plot makes you feel confident about your data?</li>
 <li>If so, what are your concerns? What would you do to address them?</li>
 </ul>
-<p><img src="./img/07a_DEA/exercise_dispersion.png" class="img-fluid" width="500"></p>
-<div class="callout callout-style-default callout-solution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-solution">
-<p>The plot looks really bad. The fitted line (red) is above the final dispersions, and there is a “rainfall” coming from the cloud of dispersions. This could mean that our original data has some sort of contamination or outlier, or that the count matrix is not a “raw” count matrix.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./img/07a_DEA/exercise_dispersion.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="644"></p>
+</figure>
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<hr>
-<p><em>This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
-<p><em>Some materials and hands-on activities were adapted from <a href="http://www.bioconductor.org/help/workflows/rnaseqGene/#de">RNA-seq workflow</a> on the Bioconductor website</em></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -861,8 +734,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -973,7 +844,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1199,15 +1069,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../develop/07_extra_contrast_design.html" class="pagination-link" aria-label="Contrast designs">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Contrast designs</span>
+      <a href="../develop/07_extra_contrast_design.html" class="pagination-link" aria-label="DESeq samples comparison: contrast designs">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">DESeq samples comparison: contrast designs</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../develop/07b_hypothesis_testing.html" class="pagination-link" aria-label="Hypothesis testing">
-        <span class="nav-page-text">Hypothesis testing</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../develop/07b_hypothesis_testing.html" class="pagination-link" aria-label="Hypothesis testing with DESeq2">
+        <span class="nav-page-text">Hypothesis testing with DESeq2</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

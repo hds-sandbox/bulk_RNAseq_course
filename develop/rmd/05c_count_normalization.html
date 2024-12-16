@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Count normalization with DESeq2 – Bulk RNAseq data analysis</title>
+<title>Bulk RNAseq data analysis - Count normalization with DESeq2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -121,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -159,7 +159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
+          <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
@@ -233,7 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/05c_count_normalization/normalization_workflow.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="./img/05c_count_normalization/normalization_workflow.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="720"></p>
 </figure>
 </div>
 </div>
@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/05c_count_normalization/library_size_bias.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="./img/05c_count_normalization/library_size_bias.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="720"></p>
 </figure>
 </div>
 </div>
@@ -261,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/05c_count_normalization/length_bias.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="./img/05c_count_normalization/length_bias.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="720"></p>
 </figure>
 </div>
 </div>
@@ -275,7 +275,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/05c_count_normalization/rna_composition_bias.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="./img/05c_count_normalization/rna_composition_bias.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="720"></p>
 </figure>
 </div>
 </div>
@@ -292,7 +292,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>While TPM and RPKM/FPKM normalization methods both account for sequencing depth and gene length, RPKM/FPKM are not recommended. <strong>The reason is that the normalized count values output by the RPKM/FPKM method are not comparable between samples.</strong></p>
 <p>Using RPKM/FPKM normalization, the total number of RPKM/FPKM normalized counts for each sample will be different. Therefore, you cannot compare the normalized counts for each gene equally between samples.</p>
 <p><strong>RPKM-normalized counts table</strong></p>
-<table class="caption-top table">
+<table class="table">
 <thead>
 <tr class="header">
 <th>gene</th>
@@ -334,7 +334,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1-creates-a-pseudo-reference-sample-row-wise-geometric-mean" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-creates-a-pseudo-reference-sample-row-wise-geometric-mean">Step 1: creates a pseudo-reference sample (row-wise geometric mean)</h3>
 <p>For each gene, a pseudo-reference sample is created that is equal to the geometric mean across all samples.</p>
-<table class="caption-top table">
+<table class="table">
 <thead>
 <tr class="header">
 <th>gene</th>
@@ -368,7 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-2-calculates-ratio-of-each-sample-to-the-reference" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-calculates-ratio-of-each-sample-to-the-reference">Step 2: calculates ratio of each sample to the reference</h3>
 <p>For every gene in a sample, the ratios (sample/ref) are calculated (as shown below). This is performed for each sample in the dataset. Since the majority of genes are not differentially expressed, the majority of genes in each sample should have similar ratios within the sample.</p>
-<table class="caption-top table">
+<table class="table">
 <colgroup>
 <col style="width: 7%">
 <col style="width: 9%">
@@ -449,7 +449,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/05c_count_normalization/deseq_median_of_ratios.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="./img/05c_count_normalization/deseq_median_of_ratios.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="326"></p>
 </figure>
 </div>
 </div>
@@ -464,7 +464,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>SampleA median ratio = 1.3</p>
 <p>SampleB median ratio = 0.77</p>
 <p><strong>Raw Counts</strong></p>
-<table class="caption-top table">
+<table class="table">
 <thead>
 <tr class="header">
 <th>gene</th>
@@ -491,7 +491,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p><strong>Normalized Counts</strong></p>
-<table class="caption-top table">
+<table class="table">
 <thead>
 <tr class="header">
 <th>gene</th>
@@ -525,7 +525,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 NOTE: You will need to run the code below to generate the raw counts dataframe (PD1) and the size factor vector (size_factors), then use these objects to determine the normalized counts values:
 
 
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -543,7 +542,6 @@ size_factors &lt;- c(1.32, 0.70, 1.04, 1.27, 1.11, 0.85)
 <pre><code>Let's check first what is PD1
 
 
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -552,9 +550,7 @@ PD1
 :::
 
 
-
 Since we have the size factors per sample, we only need to divide our PD1 counts by the size factors!
-
 
 
 ::: {.cell layout-align="center"}
@@ -601,7 +597,6 @@ PD1/size_factors
 <pre><code>Suppose we had sample names matching in the txi object and metadata file, but they were out of order. Write the line(s) of code required make the `meta_random` dataframe with rows ordered such that they were identical to the column names of the `txi`.
 
 
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -613,7 +608,6 @@ meta_random &lt;- meta[sample(1:nrow(meta)),]
 <pre><code>Let's check now meta_random order:
 
 
-
 ::: {.cell layout-align="center"}
 
 ```{.r .cell-code}
@@ -622,9 +616,7 @@ meta_random
 :::
 
 
-
 We can see that it is all scrambled. We want the rows of `meta_random` to be the same order as the columns of the `txi@counts` object (which is not, as you can see below):
-
 
 
 ::: {.cell layout-align="center"}
@@ -637,9 +629,7 @@ all(colnames(txi$counts) == meta_random$sample) # are all samples in the same or
 :::
 
 
-
 Let's use the match function. First we find the order that `meta_random$sample` should be to match the columns of `txi@counts`:
-
 
 
 ::: {.cell layout-align="center"}
@@ -651,9 +641,7 @@ reorder
 :::
 
 
-
 Finally, we change the order of the rows of meta_random:
-
 
 
 ::: {.cell layout-align="center"}
@@ -665,9 +653,7 @@ meta_random
 :::
 
 
-
 And confirm:
-
 
 
 ::: {.cell layout-align="center"}
@@ -714,7 +700,6 @@ all(colnames(txi$counts) == meta_random$sample) # are all samples in the same or
 <pre><code>The warning from the chunk before is telling us that we have setup our vampirium samples as reference, instead of control! This is exactly what we wanted.</code></pre>
 <p>??? note “Starting from a traditional count matrix”</p>
 <pre><code>If you did not create pseudocounts, but a count matrix from aligned BAM files and tools such as `featurecounts`, you would want to use the `DESeqDataSetFromMatrix()` function.
-
 
 
 ::: {.cell layout-align="center"}
@@ -981,7 +966,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1013,47 +1009,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/hds-sandbox\.github\.io\/bulk_RNAseq_course");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1088,11 +1044,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
+      return note.innerHTML;
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

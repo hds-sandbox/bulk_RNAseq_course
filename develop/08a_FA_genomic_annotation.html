@@ -2,12 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="You!">
+<meta name="dcterms.date" content="2024-12-16">
 
-<title>Gene annotation – Bulk RNAseq data analysis</title>
+<title>Genomic annotations for functional analyses – Bulk RNAseq data analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,12 +73,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-74e5c8182057b581c8ce78f3c749e987.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-9f03a6b1aa4272b2c7f9d01b972febf4.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -171,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Functional Analysis</a></li><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Gene annotation</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Functional Analysis</a></li><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Genomic annotations for functional analyses</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -181,7 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -200,7 +202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/05b_count_matrix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RNAseq count matrix</span></a>
+ <span class="menu-text">The RNAseq count matrix</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -215,13 +217,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/05c_count_normalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Normalization</span></a>
+ <span class="menu-text">Count normalization with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/06_exploratory_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Exploratory analysis</span></a>
+ <span class="menu-text">Exploratory analysis with DESeq2</span></a>
   </div>
 </li>
       </ul>
@@ -238,25 +240,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07_extra_contrast_design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Contrast designs</span></a>
+ <span class="menu-text">DESeq samples comparison: contrast designs</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07a_DEA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DESeq2</span></a>
+ <span class="menu-text">Gene-level differential expression analysis with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07b_hypothesis_testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hypothesis testing</span></a>
+ <span class="menu-text">Hypothesis testing with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07c_DEA_visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Visualization</span></a>
+ <span class="menu-text">Log Fold Shrinkage and DEA visualizations</span></a>
   </div>
 </li>
       </ul>
@@ -273,19 +275,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08a_FA_genomic_annotation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Gene annotation</span></a>
+ <span class="menu-text">Genomic annotations for functional analyses</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08b_FA_overrepresentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Analysis</span></a>
+ <span class="menu-text">Functional Analysis for RNA-seq</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08c_FA_GSEA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional class scoring</span></a>
+ <span class="menu-text">Functional Class Scoring</span></a>
   </div>
 </li>
       </ul>
@@ -302,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/09_summarized_workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Summarised workflow</span></a>
+ <span class="menu-text">Summary of DGE workflow</span></a>
   </div>
 </li>
       </ul>
@@ -312,20 +314,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#genomic-annotations" id="toc-genomic-annotations" class="nav-link" data-scroll-target="#genomic-annotations">Genomic annotations</a></li>
+  <li><a href="#databases" id="toc-databases" class="nav-link" data-scroll-target="#databases">Databases</a></li>
+  <li><a href="#tools-for-accessing-databases" id="toc-tools-for-accessing-databases" class="nav-link" data-scroll-target="#tools-for-accessing-databases">Tools for accessing databases</a>
+  <ul class="collapse">
+  <li><a href="#annotation-tools-for-accessingquerying-annotations-from-a-specific-databases" id="toc-annotation-tools-for-accessingquerying-annotations-from-a-specific-databases" class="nav-link" data-scroll-target="#annotation-tools-for-accessingquerying-annotations-from-a-specific-databases">Annotation tools: for accessing/querying annotations from a specific databases</a></li>
+  </ul></li>
+  <li><a href="#annotationhub" id="toc-annotationhub" class="nav-link" data-scroll-target="#annotationhub">AnnotationHub</a>
+  <ul class="collapse">
+  <li><a href="#using-annotationhub-to-create-a-tx2gene-file" id="toc-using-annotationhub-to-create-a-tx2gene-file" class="nav-link" data-scroll-target="#using-annotationhub-to-create-a-tx2gene-file">Using AnnotationHub to create a tx2gene file</a></li>
+  </ul></li>
+  <li><a href="#annotables-package" id="toc-annotables-package" class="nav-link" data-scroll-target="#annotables-package">Annotables package</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Functional Analysis</a></li><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Gene annotation</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Functional Analysis</a></li><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Genomic annotations for functional analyses</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Gene annotation</h1>
+<h1 class="title">Genomic annotations for functional analyses</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-right">
+<div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>You! </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 16, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -335,27 +368,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled" title="Section Overview">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Section Overview
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>⏰ <strong>Time Estimation:</strong> 30 minutes</p>
-<p>💬 <strong>Learning Objectives:</strong></p>
-<ol type="1">
-<li>Discuss the available genomic annotation databases and the different types of information stored</li>
+<p>Approximate time: 30 minutes</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li>Discuss the available genomic annotation databases and the different types if information stored</li>
 <li>Compare and contrast the tools available for accessing genomic annotation databases</li>
-<li>Apply various R packages for retrieval of genomic annotations</li>
-</ol>
-</div>
-</div>
-<p><span style="font-size:30px;">Genomic annotations for functional analyses<span></span></span></p>
-<p>The analysis of next-generation sequencing results requires associating genes, transcripts, proteins, etc. with functional or regulatory information. To perform functional analysis on gene lists, we often need to obtain gene identifiers that are compatible with the tools we wish to use and this is not always trivial. Here, we discuss <strong>ways in which you can obtain gene annotation information and some of the advantages and disadvantages of each method</strong>.</p>
+</ul>
+</section>
+<section id="genomic-annotations" class="level2">
+<h2 class="anchored" data-anchor-id="genomic-annotations">Genomic annotations</h2>
+<p>The analysis of next-generation sequencing results requires associating genes, transcripts, proteins, etc. with functional or regulatory information. To perform functional analysis on gene lists, we often need to obtain gene identifiers that are compatible with the tools we wish to use and this is not always trivial.</p>
+</section>
 <section id="databases" class="level2">
 <h2 class="anchored" data-anchor-id="databases">Databases</h2>
 <p>We retrieve information on the processes, pathways, etc. (for which a gene is involved in) from the necessary database where the information is stored. The database you choose will be dependent on what type of information you are trying to obtain. Examples of databases that are often queried, include:</p>
@@ -378,423 +402,601 @@ Section Overview
 <li><strong>CORUM:</strong> database of protein complexes for human, mouse, rat</li>
 <li><strong>…</strong></li>
 </ul>
-<p>This is by no means an exhaustive list, there are many other databases available that are not listed here.</p>
-</section>
-<section id="genome-builds" class="level2">
-<h2 class="anchored" data-anchor-id="genome-builds">Genome builds</h2>
-<p>Before you begin your search through any of these databases, you should know which <strong>build of the genome</strong> was used to generate your gene list and make sure you use the <strong>same build for the annotations</strong> during functional analysis. When a new genome build is acquired, the names and/or coordinate location of genomic features (gene, transcript, exon, etc.) may change. Therefore, the annotations regarding genome features (gene, transcript, exon, etc.) is genome-build specific and we need to make sure that our annotations are obtained from the appropriate resource.</p>
-<p>For example, we have used the GRCh38 build of the human genome to quantify gene expression for differential expression analysis, so we should use the <strong>same GRCh38 build</strong> of the genome to convert between gene IDs and to identify annotations for each of the genes.</p>
 </section>
 <section id="tools-for-accessing-databases" class="level2">
 <h2 class="anchored" data-anchor-id="tools-for-accessing-databases">Tools for accessing databases</h2>
 <p>Within R, there are many popular packages used for gene/transcript-level annotation. These packages provide tools that take the list of genes you provide and retrieve information for each gene using one or more of the databases listed above.</p>
 <section id="annotation-tools-for-accessingquerying-annotations-from-a-specific-databases" class="level3">
 <h3 class="anchored" data-anchor-id="annotation-tools-for-accessingquerying-annotations-from-a-specific-databases">Annotation tools: for accessing/querying annotations from a specific databases</h3>
-<div style="font-size: 0.75em; overflow-x: auto;">
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th>Tool</th>
-<th>Description</th>
-<th>Pros</th>
-<th>Cons</th>
+<th style="text-align: center;">Tool</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Pros</th>
+<th style="text-align: center;">Cons</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong><a href="https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf">org.Xx.eg.db</a></strong></td>
-<td>Query gene feature information for the organism of interest</td>
-<td>gene ID conversion, biotype and coordinate information</td>
-<td>only latest genome build available</td>
+<td style="text-align: center;"><strong><a href="https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf">org.Xx.eg.db</a></strong></td>
+<td style="text-align: left;">Query gene feature information for the organism of interest</td>
+<td style="text-align: left;">gene ID conversion, biotype and coordinate information</td>
+<td style="text-align: center;">only latest genome build available</td>
 </tr>
 <tr class="even">
-<td><strong><a href="http://bioconductor.org/packages/devel/bioc/vignettes/ensembldb/inst/doc/ensembldb.html">EnsDb.Xx.vxx</a></strong></td>
-<td>Transcript and gene-level information directly fetched from Ensembl API (similar to TxDb, but with filtering ability and versioned by Ensembl release)</td>
-<td>easy functions to extract features, direct filtering</td>
-<td>Not the most up-to-date annotations, more difficult to use than some packages</td>
+<td style="text-align: center;"><strong><a href="http://bioconductor.org/packages/devel/bioc/vignettes/ensembldb/inst/doc/ensembldb.html">EnsDb.Xx.vxx</a></strong></td>
+<td style="text-align: left;">Transcript and gene-level information directly fetched from Ensembl API (similar to TxDb, but with filtering ability and versioned by Ensembl release)</td>
+<td style="text-align: left;">easy functions to extract features, direct filtering</td>
+<td style="text-align: center;">Not the most up-to-date annotations, more difficult to use than some packages</td>
 </tr>
 <tr class="odd">
-<td><strong><a href="https://bioconductor.org/packages/release/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.pdf">TxDb.Xx.UCSC.hgxx.knownGene</a></strong></td>
-<td>UCSC database for transcript and gene-level information or can create own <em>TxDb</em> from an SQLite database file using the <em>GenomicFeatures</em> package</td>
-<td>feature information, easy functions to extract features</td>
-<td>only available current and recent genome builds - can create your own, less up-to-date with annotations than Ensembl</td>
+<td style="text-align: center;"><strong><a href="https://bioconductor.org/packages/release/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.pdf">TxDb.Xx.UCSC.hgxx.knownGene</a></strong></td>
+<td style="text-align: left;">UCSC database for transcript and gene-level information or can create own <em>TxDb</em> from an SQLite database file using the <em>GenomicFeatures</em> package</td>
+<td style="text-align: left;">feature information, easy functions to extract features</td>
+<td style="text-align: center;">only available current and recent genome builds - can create your own, less up-to-date with annotations than Ensembl</td>
 </tr>
 <tr class="even">
-<td><strong><a href="https://github.com/stephenturner/annotables">annotables</a></strong></td>
-<td>Gene-level feature information immediately available for the human and model organisms</td>
-<td>super quick and easy gene ID conversion, biotype and coordinate information</td>
-<td>static resource, not updated regularly</td>
+<td style="text-align: center;"><strong><a href="https://github.com/stephenturner/annotables">annotables</a></strong></td>
+<td style="text-align: left;">Gene-level feature information immediately available for the human and model organisms</td>
+<td style="text-align: left;">super quick and easy gene ID conversion, biotype and coordinate information</td>
+<td style="text-align: center;">static resource, not updated regularly</td>
 </tr>
 <tr class="odd">
-<td><strong><a href="https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/biomaRt.html">biomaRt</a></strong></td>
-<td>An R package version of the Ensembl <a href="http://www.ensembl.org/biomart/martview/70dbbbe3f1c5389418b5ea1e02d89af3">BioMart online tool</a></td>
-<td>all Ensembl database information available, all organisms on Ensembl, wealth of information</td>
-<td>nan</td>
+<td style="text-align: center;"><strong><a href="https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/biomaRt.html">biomaRt</a></strong></td>
+<td style="text-align: left;">An R package version of the Ensembl <a href="http://www.ensembl.org/biomart/martview/70dbbbe3f1c5389418b5ea1e02d89af3">BioMart online tool</a></td>
+<td style="text-align: left;">all Ensembl database information available, all organisms on Ensembl, wealth of information</td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
-</div>
 </section>
-<section id="interface-tools" class="level3">
-<h3 class="anchored" data-anchor-id="interface-tools">Interface tools</h3>
-<p>Other packages are design for accessing/querying annotations from multiple different annotation sources</p>
-<ul>
-<li><strong>AnnotationDbi:</strong> queries the <em>OrgDb</em>, <em>TxDb</em>, <em>Go.db</em>, <em>EnsDb</em>, and <em>BioMart</em> annotations.<br>
-</li>
-<li><strong>AnnotationHub:</strong> queries large collection of whole genome resources, including ENSEMBL, UCSC, ENCODE, Broad Institute, KEGG, NIH Pathway Interaction Database, etc.</li>
-</ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>These are both packages that can be used to create the <code>tx2gene</code> files that salmon gave us in case you did not have them.</p>
-</div>
-</div>
-</section>
-</section>
-<section id="annotationdbi" class="level2">
-<h2 class="anchored" data-anchor-id="annotationdbi">AnnotationDbi</h2>
-<p>AnnotationDbi is an R package that provides an interface for connecting and querying various annotation databases using SQLite data storage. The AnnotationDbi packages can query the <em>OrgDb</em>, <em>TxDb</em>, <em>EnsDb</em>, <em>Go.db</em>, and <em>BioMart</em> annotations. There is helpful <a href="https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf">documentation</a> available to reference when extracting data from any of these databases.</p>
 </section>
 <section id="annotationhub" class="level2">
 <h2 class="anchored" data-anchor-id="annotationhub">AnnotationHub</h2>
 <p>AnnotationHub is a wonderful resource for accessing genomic data or querying large collection of whole genome resources, including ENSEMBL, UCSC, ENCODE, Broad Institute, KEGG, NIH Pathway Interaction Database, etc. All of this information is stored and easily accessible by directly connecting to the database.</p>
 <p>To get started with AnnotationHub, we first load the library and connect to the database:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load libraries</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AnnotationHub)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ensembldb)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to AnnotationHub</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ah <span class="ot">&lt;-</span> <span class="fu">AnnotationHub</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The script will ask you to create a cache directory, type yes!</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled" title="What is a cache?">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-What is a cache?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>A cache is used in R to store data or a copy of the data so that future requests can be served faster without having to re-run a lengthy computation.</p>
-<p>The <code>AnnotationHub()</code> command creates a client that manages a local cache of the database, helping with quick and reproducible access. When encountering question <code>AnnotationHub does not exist, create directory?</code>, you can anwser either <code>yes</code> (create a permanent location to store cache) or <code>no</code> (create a temporary location to store cache). <code>hubCache(ah)</code> gets the file system location of the local AnnotationHub cache. <code>hubUrl(ah)</code> gets the URL for the online hub.</p>
-</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AnnotationHub)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ensembldb)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#To avoid prompting from annotation hub</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">setAnnotationHubOption</span>(<span class="st">"CACHE"</span>, <span class="st">"./AnnotationHub"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">setAnnotationHubOption</span>(<span class="st">"ASK"</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to AnnotationHub</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>ah <span class="ot">&lt;-</span> <span class="fu">AnnotationHub</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>To see the types of information stored inside our database, we can just type the name of the object:</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Results here will differ from yours</p>
-</div>
-</div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the AnnotationHub object</span></span>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the AnnotationHub object</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ah</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Using the output, you can get an idea of the information that you can query within the AnnotationHub object. (Note that the output below will be different than yours!)</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">AnnotationHub</span> with 47240 records</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># snapshotDate(): 2019-10-29 </span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># $dataprovider: BroadInstitute, Ensembl, UCSC, ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/, H...</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># $species: Homo sapiens, Mus musculus, Drosophila melanogaster, Bos taurus, Pan troglod...</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># $rdataclass: GRanges, BigWigFile, TwoBitFile, Rle, OrgDb, EnsDb, ChainFile, TxDb, Inpa...</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># additional mcols(): taxonomyid, genome, description, coordinate_1_based,</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   maintainer, rdatadateadded, preparerclass, tags, rdatapath, sourceurl,</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   sourcetype </span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># retrieve records with, e.g., 'object[["AH5012"]]' </span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                <span class="ex">title</span>                                                                   </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH5012</span>  <span class="kw">|</span> <span class="ex">Chromosome</span> Band                                                         </span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH5013</span>  <span class="kw">|</span> <span class="ex">STS</span> Markers                                                             </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH5014</span>  <span class="kw">|</span> <span class="ex">FISH</span> Clones                                                             </span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH5015</span>  <span class="kw">|</span> <span class="ex">Recomb</span> Rate                                                             </span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH5016</span>  <span class="kw">|</span> <span class="ex">ENCODE</span> Pilot                                                            </span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="ex">...</span>       ...                                                                     </span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH78364</span> <span class="kw">|</span> <span class="ex">Xiphophorus_maculatus.X_maculatus-5.0-male.ncrna.2bit</span>                   </span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH78365</span> <span class="kw">|</span> <span class="ex">Zonotrichia_albicollis.Zonotrichia_albicollis-1.0.1.cdna.all.2bit</span>       </span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH78366</span> <span class="kw">|</span> <span class="ex">Zonotrichia_albicollis.Zonotrichia_albicollis-1.0.1.dna_rm.toplevel.2bit</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH78367</span> <span class="kw">|</span> <span class="ex">Zonotrichia_albicollis.Zonotrichia_albicollis-1.0.1.dna_sm.toplevel.2bit</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH78368</span> <span class="kw">|</span> <span class="ex">Zonotrichia_albicollis.Zonotrichia_albicollis-1.0.1.ncrna.2bit</span>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Notice the note on retrieving records with <code>object[["AH5012"]]</code> - this will be how we can <strong>extract a single record</strong> from the AnnotationHub object.</p>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>AnnotationHub with 72098 records
+# snapshotDate(): 2024-10-28
+# $dataprovider: Ensembl, BroadInstitute, UCSC, ftp://ftp.ncbi.nlm.nih.gov/g...
+# $species: Homo sapiens, Mus musculus, Drosophila melanogaster, Rattus norv...
+# $rdataclass: GRanges, TwoBitFile, BigWigFile, EnsDb, Rle, OrgDb, SQLiteFil...
+# additional mcols(): taxonomyid, genome, description,
+#   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,
+#   rdatapath, sourceurl, sourcetype 
+# retrieve records with, e.g., 'object[["AH5012"]]' 
+
+             title                                             
+  AH5012   | Chromosome Band                                   
+  AH5013   | STS Markers                                       
+  AH5014   | FISH Clones                                       
+  AH5015   | Recomb Rate                                       
+  AH5016   | ENCODE Pilot                                      
+  ...        ...                                               
+  AH119504 | Ensembl 113 EnsDb for Xiphophorus maculatus       
+  AH119505 | Ensembl 113 EnsDb for Xenopus tropicalis          
+  AH119506 | Ensembl 113 EnsDb for Zonotrichia albicollis      
+  AH119507 | Ensembl 113 EnsDb for Zalophus californianus      
+  AH119508 | Ensembl 113 EnsDb for Zosterops lateralis melanops</code></pre>
+</div>
+</div>
 <p>If you would like to see more information about any of the classes of data you can extract that information as well. For example, if you wanted to <strong>determine all species information available</strong>, you could explore that within the AnnotationHub object:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore all species information available</span></span>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore all species information available</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(ah<span class="sc">$</span>species) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Homo sapiens"         "Vicugna pacos"        "Dasypus novemcinctus"
+[4] "Otolemur garnettii"   "Papio hamadryas"      "Papio anubis"        </code></pre>
+</div>
+</div>
 <p>In addition to species information, there is also additional information about the type of Data Objects and the Data Providers:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the types of Data Objects available</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(ah<span class="sc">$</span>rdataclass) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the Data Providers</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(ah<span class="sc">$</span>dataprovider) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the types of Data Objects available</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(ah<span class="sc">$</span>rdataclass) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "GRanges"          "data.frame"       "Inparanoid8Db"    "TwoBitFile"      
+[5] "ChainFile"        "SQLiteConnection"</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore the Data Providers</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(ah<span class="sc">$</span>dataprovider) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "UCSC"        "Ensembl"     "RefNet"      "Inparanoid8" "NHLBI"      
+[6] "ChEA"       </code></pre>
+</div>
+</div>
 <p>Now that we know the types of information available from AnnotationHub we can query it for the information we want using the <code>query()</code> function. Let’s say we would like to <strong>return the Ensembl <code>EnsDb</code> information for Human</strong>. To return the records available, we need to use the terms as they are output from the <code>ah</code> object to extract the desired data.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Query AnnotationHub</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>human_ens <span class="ot">&lt;-</span> <span class="fu">query</span>(ah, <span class="fu">c</span>(<span class="st">"Homo sapiens"</span>, <span class="st">"EnsDb"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The query retrieves all <strong>hits for the <code>EnsDb</code> objects</strong>, and you will see that they are listed by the release number. The most current release for GRCh38 is Ensembl98 and AnnotationHub offers that as an option to use. However, if you look at options for older releases, for Homo sapiens it only go back as far as Ensembl 87. This is fine if you are using GRCh38, however if you were using an older genome build like hg19/GRCh37, you would need to load the <code>EnsDb</code> package if available for that release or you might need to build your own with <code>ensembldb</code>.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Query AnnotationHub</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>human_ens <span class="ot">&lt;-</span> <span class="fu">query</span>(ah, <span class="fu">c</span>(<span class="st">"Homo sapiens"</span>, <span class="st">"EnsDb"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-title-container flex-fill">
-Note
+<p>The query retrieves all <strong>hits for the <code>EnsDb</code> objects</strong>, and you will see that they are listed by the release number. The most current release for GRCh38 is Ensembl 109 and AnnotationHub offers that as an option to use. However, if you look at options for older releases, for Homo sapiens it only goes back as far as Ensembl 87. This is fine if you are using GRCh38, however if you were using an older genome build like hg19/GRCh37, you would need to load the <code>EnsDb</code> package if available for that release or you might need to build your own with <code>ensembldb</code>.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>human_ens</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>AnnotationHub with 28 records
+# snapshotDate(): 2024-10-28
+# $dataprovider: Ensembl
+# $species: Homo sapiens
+# $rdataclass: EnsDb
+# additional mcols(): taxonomyid, genome, description,
+#   coordinate_1_based, maintainer, rdatadateadded, preparerclass, tags,
+#   rdatapath, sourceurl, sourcetype 
+# retrieve records with, e.g., 'object[["AH53211"]]' 
+
+             title                             
+  AH53211  | Ensembl 87 EnsDb for Homo Sapiens 
+  AH53715  | Ensembl 88 EnsDb for Homo Sapiens 
+  AH56681  | Ensembl 89 EnsDb for Homo Sapiens 
+  AH57757  | Ensembl 90 EnsDb for Homo Sapiens 
+  AH60773  | Ensembl 91 EnsDb for Homo Sapiens 
+  ...        ...                               
+  AH109606 | Ensembl 109 EnsDb for Homo sapiens
+  AH113665 | Ensembl 110 EnsDb for Homo sapiens
+  AH116291 | Ensembl 111 EnsDb for Homo sapiens
+  AH116860 | Ensembl 112 EnsDb for Homo sapiens
+  AH119325 | Ensembl 113 EnsDb for Homo sapiens</code></pre>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>Results here will differ from yours</p>
+<p>If we are looking for the latest Ensembl release, so that the annotations are the most up-to-date, we can use the AnnotationHub ID to <strong>subset the object</strong>:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract annotations of interest</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>human_ens <span class="ot">&lt;-</span> human_ens[[<span class="fu">length</span>(human_ens)]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-</div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>human_ens</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">AnnotationHub</span> with 13 records</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># snapshotDate(): 2019-10-29 </span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># $dataprovider: Ensembl</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># $species: Homo sapiens</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># $rdataclass: EnsDb</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># additional mcols(): taxonomyid, genome, description, coordinate_1_based,</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   maintainer, rdatadateadded, preparerclass, tags, rdatapath, sourceurl,</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   sourcetype </span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># retrieve records with, e.g., 'object[["AH53211"]]' </span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                <span class="ex">title</span>                            </span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH53211</span> <span class="kw">|</span> <span class="ex">Ensembl</span> 87 EnsDb for Homo Sapiens</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH53715</span> <span class="kw">|</span> <span class="ex">Ensembl</span> 88 EnsDb for Homo Sapiens</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH56681</span> <span class="kw">|</span> <span class="ex">Ensembl</span> 89 EnsDb for Homo Sapiens</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH57757</span> <span class="kw">|</span> <span class="ex">Ensembl</span> 90 EnsDb for Homo Sapiens</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH60773</span> <span class="kw">|</span> <span class="ex">Ensembl</span> 91 EnsDb for Homo Sapiens</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="ex">...</span>       ...                              </span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH67950</span> <span class="kw">|</span> <span class="ex">Ensembl</span> 95 EnsDb for Homo sapiens</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH69187</span> <span class="kw">|</span> <span class="ex">Ensembl</span> 96 EnsDb for Homo sapiens</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH73881</span> <span class="kw">|</span> <span class="ex">Ensembl</span> 97 EnsDb for Homo sapiens</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH73986</span> <span class="kw">|</span> <span class="ex">Ensembl</span> 79 EnsDb for Homo sapiens</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">AH75011</span> <span class="kw">|</span> <span class="ex">Ensembl</span> 98 EnsDb for Homo sapiens</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In our case, we are looking for the latest Ensembl release so that the annotations are the most up-to-date. To extract this information from AnnotationHub, we can use the AnnotationHub ID to <strong>subset the object</strong>:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract annotations of interest</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>human_ens <span class="ot">&lt;-</span> human_ens[[<span class="fu">length</span>(human_ens)]] <span class="co"># We extract latest</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now we can use <code>ensembldb</code> functions to extract the information at the gene, transcript, or exon levels. We are interested in the gene-level annotations, so we can extract that information as follows:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract gene-level information</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">genes</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract gene-level information</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">genes</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          gene_id   gene_name                       gene_biotype gene_seq_start
+1 ENSG00000290825    DDX11L16                             lncRNA          11121
+3 ENSG00000223972     DDX11L1 transcribed_unprocessed_pseudogene          12010
+4 ENSG00000310526      WASH7P                             lncRNA          14356
+5 ENSG00000227232      WASH7P transcribed_unprocessed_pseudogene          14696
+6 ENSG00000278267   MIR6859-1                              miRNA          17369
+7 ENSG00000243485 MIR1302-2HG                             lncRNA          28589
+  gene_seq_end seq_name seq_strand seq_coord_system
+1        24894        1          1       chromosome
+3        13670        1          1       chromosome
+4        30744        1         -1       chromosome
+5        24886        1         -1       chromosome
+6        17436        1         -1       chromosome
+7        31109        1          1       chromosome
+                                                                                      description
+1 DEAD/H-box helicase 11 like 16 (pseudogene) [Source:NCBI gene (formerly Entrezgene);Acc:727856]
+3                  DEAD/H-box helicase 11 like 1 (pseudogene) [Source:HGNC Symbol;Acc:HGNC:37102]
+4                           WASP family homolog 7, pseudogene [Source:HGNC Symbol;Acc:HGNC:38034]
+5                           WASP family homolog 7, pseudogene [Source:HGNC Symbol;Acc:HGNC:38034]
+6                                             microRNA 6859-1 [Source:HGNC Symbol;Acc:HGNC:50039]
+7                                         MIR1302-2 host gene [Source:HGNC Symbol;Acc:HGNC:52482]
+    gene_id_version canonical_transcript      symbol     entrezid
+1 ENSG00000290825.2      ENST00000832823    DDX11L16 727856, ....
+3 ENSG00000223972.6      ENST00000450305     DDX11L1           NA
+4 ENSG00000310526.1      ENST00000831140      WASH7P       653635
+5 ENSG00000227232.6      ENST00000488147      WASH7P           NA
+6 ENSG00000278267.1      ENST00000619216   MIR6859-1    102466751
+7 ENSG00000243485.6      ENST00000834618 MIR1302-2HG           NA</code></pre>
+</div>
+</div>
 <p>But note that it is just as easy to get the transcript- or exon-level information:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract transcript-level information</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">transcripts</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract exon-level information</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">exons</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract transcript-level information</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">transcripts</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>            tx_id     tx_biotype tx_seq_start tx_seq_end tx_cds_seq_start
+1 ENST00000620701          snRNA            1        107               NA
+2 ENST00000634102 protein_coding            1      58864             5632
+3 ENST00000630811         lncRNA            1       7125               NA
+4 ENST00000622103          snRNA           12        118               NA
+5 ENST00000612589          snRNA           12        118               NA
+6 ENST00000610987          snRNA           12        118               NA
+  tx_cds_seq_end         gene_id tx_support_level     tx_id_version gc_content
+1             NA ENSG00000275782               NA ENST00000620701.1   42.99065
+2          57902 ENSG00000278550                1 ENST00000634102.1   59.15209
+3             NA ENSG00000280592                2 ENST00000630811.1   55.94758
+4             NA ENSG00000275021               NA ENST00000622103.1   42.99065
+5             NA ENSG00000275168               NA ENST00000612589.1   42.99065
+6             NA ENSG00000276552               NA ENST00000610987.1   42.99065
+  tx_external_name tx_is_canonical         tx_name
+1        U6.55-201               1 ENST00000620701
+2      SLC43A2-224               0 ENST00000634102
+3    LINC01624-216               1 ENST00000630811
+4        U6.47-201               1 ENST00000622103
+5        U6.49-201               1 ENST00000612589
+6        U6.61-201               1 ENST00000610987</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract exon-level information</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exons</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          exon_id exon_seq_start exon_seq_end
+1 ENSE00003754250              1          107
+2 ENSE00003766135              1         2668
+3 ENSE00003783572              1         5793
+4 ENSE00003716605             12          118
+5 ENSE00003723881             12          118
+6 ENSE00003725167             12          118</code></pre>
+</div>
+</div>
 <p>To <strong>obtain an annotation data frame</strong> using AnnotationHub, we’ll use the <code>genes()</code> function, but only keep selected columns and filter out rows to keep those corresponding to our gene identifiers in our results file:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a gene-level dataframe </span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>annotations_ahb <span class="ot">&lt;-</span> <span class="fu">genes</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>)  <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gene_id, gene_name, entrezid, gene_biotype, description) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(gene_id <span class="sc">%in%</span> res_tableCont_tb<span class="sc">$</span>gene)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a gene-level dataframe </span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>annotations_ahb <span class="ot">&lt;-</span> <span class="fu">genes</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>)  <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gene_id, gene_name, entrezid, gene_biotype, description) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(gene_id <span class="sc">%in%</span> res_tableCont_tb<span class="sc">$</span>gene)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <p>This dataframe looks like it should be fine as it is, but we look a little closer we will notice that the column containing Entrez identifiers is a list, and in fact there are many Ensembl identifiers that map to more than one Entrez identifier!</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Wait a second, we don't have one-to-one mappings!</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(annotations_ahb<span class="sc">$</span>entrezid)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">map</span>(annotations_ahb<span class="sc">$</span>entrezid, length) <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Wait a second, we don't have one-to-one mappings!</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(annotations_ahb<span class="sc">$</span>entrezid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "list"</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">map</span>(annotations_ahb<span class="sc">$</span>entrezid, length) <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>ENSG00000290825 ENSG00000239149 ENSG00000229571 ENSG00000291072 ENSG00000158747 
+              1             308             322             400             454 
+ENSG00000235200 ENSG00000233008 ENSG00000137962 ENSG00000235501 ENSG00000225206 
+           1344            1457            1604            1615            1635 
+ENSG00000187733 ENSG00000226419 ENSG00000277610 ENSG00000291123 ENSG00000263513 
+           1691            1829            1950            1955            1984 
+ENSG00000232527 ENSG00000288905 ENSG00000117262 ENSG00000188092 ENSG00000274020 
+           1988            2004            2024            2084            2099 
+ENSG00000291158 ENSG00000143384 ENSG00000163156 ENSG00000272668 ENSG00000162747 
+           2130            2173            2205            2496            2580 
+ENSG00000120341 ENSG00000230124 ENSG00000284237 ENSG00000224535 ENSG00000199396 
+           2782            2823            3148            3207            3420 
+ENSG00000199270 ENSG00000201925 ENSG00000228044 ENSG00000203668 ENSG00000226005 
+           3421            3422            3510            3584            3721 
+ENSG00000242147 ENSG00000272381 ENSG00000228426 ENSG00000285662 ENSG00000228566 
+           3745            3994            4093            4149            4288 
+ENSG00000230417 ENSG00000166272 ENSG00000232903 ENSG00000171714 ENSG00000281880 
+           4482            4838            5143            5592            5644 
+ENSG00000254584 ENSG00000255267 ENSG00000229183 ENSG00000254911 ENSG00000245552 
+           5646            5752            5940            6617            6649 
+ENSG00000109927 ENSG00000149557 ENSG00000151067 ENSG00000258325 ENSG00000111671 
+           6950            7009            7135            7138            7251 
+ENSG00000213809 ENSG00000111215 ENSG00000212127 ENSG00000255374 ENSG00000255760 
+           7393            7411            7416            7425            7659 
+ENSG00000257545 ENSG00000178882 ENSG00000249345 ENSG00000215483 ENSG00000226519 
+           8614            8939            8965            9346            9395 
+ENSG00000176124 ENSG00000186047 ENSG00000235532 ENSG00000178734 ENSG00000223617 
+           9482            9491            9596            9606            9786 
+ENSG00000258038 ENSG00000206588 ENSG00000253563 ENSG00000214900 ENSG00000258537 
+          10148           10195           10236           10326           10356 
+ENSG00000257365 ENSG00000133961 ENSG00000223403 ENSG00000258710 ENSG00000277865 
+          10549           10680           11019           11154           11167 
+ENSG00000183629 ENSG00000207432 ENSG00000261247 ENSG00000178115 ENSG00000207430 
+          11226           11258           11259           11276           11279 
+ENSG00000137843 ENSG00000237289 ENSG00000259426 ENSG00000159289 ENSG00000167195 
+          11413           11540           11942           12026           12069 
+ENSG00000278662 ENSG00000251209 ENSG00000259182 ENSG00000290824 ENSG00000290355 
+          12235           12488           12536           12561           12562 
+ENSG00000261617 ENSG00000069764 ENSG00000224712 ENSG00000166780 ENSG00000185164 
+          12899           12966           12968           12987           13032 
+ENSG00000184110 ENSG00000183336 ENSG00000181625 ENSG00000169627 ENSG00000132207 
+          13212           13249           13250           13296           13297 
+ENSG00000261052 ENSG00000090857 ENSG00000157335 ENSG00000157429 ENSG00000196436 
+          13299           13812           13813           13843           13896 
+ENSG00000140839 ENSG00000197943 ENSG00000260279 ENSG00000197912 ENSG00000286190 
+          13897           14007           14158           14163           14372 
+ENSG00000171916 ENSG00000273018 ENSG00000154016 ENSG00000233098 ENSG00000126861 
+          14704           14706           14727           14803           14993 
+ENSG00000274808 ENSG00000274512 ENSG00000273709 ENSG00000263715 ENSG00000120088 
+          15116           15158           15377           15479           15481 
+ENSG00000228696 ENSG00000238083 ENSG00000108379 ENSG00000263293 ENSG00000267452 
+          15491           15496           15501           15518           15657 
+ENSG00000226364 ENSG00000287664 ENSG00000267280 ENSG00000136488 ENSG00000227036 
+          15659           15769           15801           15867           15991 
+ENSG00000234721 ENSG00000175711 ENSG00000262352 ENSG00000173213 ENSG00000267712 
+          16008           16331           16340           16342           16845 
+ENSG00000266256 ENSG00000188629 ENSG00000213999 ENSG00000267767 ENSG00000205076 
+          16982           17431           17840           18091           18269 
+ENSG00000178934 ENSG00000231924 ENSG00000160336 ENSG00000204577 ENSG00000267710 
+          18270           18438           18952           18988           19098 
+ENSG00000267858 ENSG00000236790 ENSG00000228999 ENSG00000222005 ENSG00000234690 
+          19236           19305           19426           19734           19745 
+ENSG00000115239 ENSG00000228590 ENSG00000271889 ENSG00000186854 ENSG00000261600 
+          19775           19822           19838           20124           20224 
+ENSG00000291150 ENSG00000144015 ENSG00000186281 ENSG00000015568 ENSG00000144063 
+          20225           20264           20270           20443           20450 
+ENSG00000290614 ENSG00000136698 ENSG00000236107 ENSG00000213160 ENSG00000237298 
+          20666           20668           20910           20936           21063 
+ENSG00000231646 ENSG00000185176 ENSG00000233806 ENSG00000261186 ENSG00000088298 
+          21111           21735           21773           21779           22215 
+ENSG00000168746 ENSG00000215440 ENSG00000228340 ENSG00000274333 ENSG00000275496 
+          22355           22556           22579           22684           22691 
+ENSG00000280145 ENSG00000280018 ENSG00000276077 ENSG00000278932 ENSG00000274391 
+          22696           22699           22701           22730           22741 
+ENSG00000156273 ENSG00000205670 ENSG00000222018 ENSG00000243627 ENSG00000221398 
+          22835           22920           22921           22923           22926 
+ENSG00000159216 ENSG00000238141 ENSG00000184012 ENSG00000160200 ENSG00000160201 
+          22931           22995           23017           23051           23052 
+ENSG00000160202 ENSG00000188660 ENSG00000234289 ENSG00000160223 ENSG00000128383 
+          23055           23059           23062           23079           23789 
+ENSG00000197182 ENSG00000144455 ENSG00000227110 ENSG00000231304 ENSG00000280739 
+          23965           24069           24089           24274           24434 
+ENSG00000186448 ENSG00000174840 ENSG00000184220 ENSG00000249846 ENSG00000243620 
+          24508           24802           25018           25373           25544 
+ENSG00000232832 ENSG00000233136 ENSG00000248933 ENSG00000250634 ENSG00000261761 
+          26136           26329           26332           26370           26476 
+ENSG00000250546 ENSG00000260641 ENSG00000245293 ENSG00000249509 ENSG00000196951 
+          26894           26987           27062           27113           27279 
+ENSG00000251600 ENSG00000151611 ENSG00000251249 ENSG00000198948 ENSG00000215156 
+          27303           27322           27365           27487           27894 
+ENSG00000205572 ENSG00000205571 ENSG00000172062 ENSG00000145736 ENSG00000245526 
+          28185           28186           28200           28203           28396 
+ENSG00000250331 ENSG00000120709 ENSG00000247199 ENSG00000249738 ENSG00000248469 
+          28479           28846           29065           29198           29329 
+ENSG00000278970 ENSG00000248275 ENSG00000112679 ENSG00000145979 ENSG00000228223 
+          29465           29483           29496           29665           29836 
+ENSG00000285761 ENSG00000231074 ENSG00000241370 ENSG00000146112 ENSG00000244355 
+          29975           30012           30018           30035           30117 
+ENSG00000244731 ENSG00000204314 ENSG00000237541 ENSG00000204209 ENSG00000124713 
+          30145           30155           30177           30221           30397 
+ENSG00000146147 ENSG00000065615 ENSG00000111850 ENSG00000228624 ENSG00000112541 
+          30556           30743           30774           30982           31459 
+ENSG00000155026 ENSG00000105889 ENSG00000196683 ENSG00000290758 ENSG00000152926 
+          31647           31776           31782           32060           32238 
+ENSG00000262461 ENSG00000274570 ENSG00000286014 ENSG00000178809 ENSG00000186645 
+          32338           32340           32400           32405           32448 
+ENSG00000105793 ENSG00000272752 ENSG00000223646 ENSG00000004866 ENSG00000224897 
+          32527           32686           32874           32905           32960 
+ENSG00000273297 ENSG00000234352 ENSG00000230549 ENSG00000236125 ENSG00000215372 
+          33081           33110           33525           33526           33528 
+ENSG00000255251 ENSG00000285765 ENSG00000285950 ENSG00000255378 ENSG00000186562 
+          33530           33531           33538           33539           33540 
+ENSG00000237038 ENSG00000225327 ENSG00000254229 ENSG00000248538 ENSG00000254866 
+          33542           33543           33546           33566           33624 
+ENSG00000145002 ENSG00000228801 ENSG00000076554 ENSG00000260493 ENSG00000248690 
+          33635           34035           34256           34297           34594 
+ENSG00000253438 ENSG00000229140 ENSG00000181135 ENSG00000181404 ENSG00000180071 
+          34653           34667           34785           34865           35273 
+ENSG00000287838 ENSG00000284116 ENSG00000290718 ENSG00000291075 ENSG00000283378 
+          35281           35293           35296           35305           35334 
+ENSG00000238113 ENSG00000290971 ENSG00000260691 ENSG00000196873 ENSG00000234394 
+          35348           35396           35407           35409           35412 
+ENSG00000224958 ENSG00000158169 ENSG00000225194 ENSG00000271086 ENSG00000234323 
+          35414           35677           35691           35760           35815 
+ENSG00000286112 ENSG00000233016 ENSG00000273730 ENSG00000277626 ENSG00000277641 
+          36096           36257           36343           36370           36371 
+ENSG00000288357 ENSG00000288487 ENSG00000288206 ENSG00000233192 ENSG00000257473 
+          36400           36401           36402           36511           36531 
+ENSG00000227046 ENSG00000223793 ENSG00000206206 ENSG00000231823 ENSG00000206301 
+          36535           36549           36554           36571           36591 
+ENSG00000231617 ENSG00000225103 ENSG00000206279 ENSG00000231526 ENSG00000229396 
+          36596           36614           36619           36638           36643 
+ENSG00000268009 ENSG00000269791 ENSG00000236362 ENSG00000189064 ENSG00000179304 
+          37062           37063           37117           37118           37154 
+ENSG00000268350 ENSG00000158301 ENSG00000269226 ENSG00000101883 ENSG00000267978 
+          37156           37497           37543           37678           37892 
+ENSG00000221867 ENSG00000268902 ENSG00000197172 ENSG00000235961 ENSG00000063587 
+          37930           37931           37935           37942           37947 
+ENSG00000224533 ENSG00000099715 ENSG00000114374 ENSG00000291016 
+          38029           38044           38058           38073 </code></pre>
+</div>
+</div>
 <p>So what do we do here? And why do we have this problem? An answer from the <a href="https://www.biostars.org/p/16505/">Ensembl Help Desk</a> is that this occurs when we cannot choose a perfect match; ie when we have two good matches, but one does not appear to match with a better percentage than the other. In that case, we assign both matches. What we will do is choose to <strong>keep the first identifier for these multiple mapping cases</strong>.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>annotations_ahb<span class="sc">$</span>entrezid <span class="ot">&lt;-</span> <span class="fu">map</span>(annotations_ahb<span class="sc">$</span>entrezid,<span class="dv">1</span>) <span class="sc">%&gt;%</span>  <span class="fu">unlist</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Not all databases handle multiple mappings in the same way. For example, if we used the OrgDb instead of the EnsDb:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>human_orgdb <span class="ot">&lt;-</span> <span class="fu">query</span>(ah, <span class="fu">c</span>(<span class="st">"Homo sapiens"</span>, <span class="st">"OrgDb"</span>))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>human_orgdb <span class="ot">&lt;-</span> human_ens[[<span class="fu">length</span>(human_ens)]]</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>annotations_orgdb <span class="ot">&lt;-</span> <span class="fu">select</span>(human_orgdb, res_tableCont_tb<span class="sc">$</span>gene, <span class="fu">c</span>(<span class="st">"SYMBOL"</span>, <span class="st">"GENENAME"</span>, <span class="st">"ENTREZID"</span>), <span class="st">"ENSEMBL"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We would find that multiple mapping entries would be automatically reduced to one-to-one. We would also find that more than half of the input genes do not return any annotations. This is because the OrgDb family of database are primarily based on mapping using Entrez Gene identifiers. Since our data is based on Ensembl mappings, using the OrgDb would result in a loss of information.</p>
-</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>annotations_ahb<span class="sc">$</span>entrezid <span class="ot">&lt;-</span> <span class="fu">map</span>(annotations_ahb<span class="sc">$</span>entrezid,<span class="dv">1</span>) <span class="sc">%&gt;%</span>  <span class="fu">unlist</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Let’s take a look and see how many of our Ensembl identifiers have an associated gene symbol, and how many of them are unique:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">is.na</span>(annotations_ahb<span class="sc">$</span>gene_name)) <span class="sc">%&gt;%</span> <span class="fu">length</span>()</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">duplicated</span>(annotations_ahb<span class="sc">$</span>gene_name)) <span class="sc">%&gt;%</span> <span class="fu">length</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(annotations_ahb<span class="sc">$</span>gene_name))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(annotations_ahb<span class="sc">$</span>gene_name))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11482</code></pre>
+</div>
+</div>
 <p>Let’s identify the non-duplicated genes and only keep the ones that are not duplicated:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the indices for the non-duplicated genes</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>non_duplicates_idx <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">duplicated</span>(annotations_ahb<span class="sc">$</span>gene_name) <span class="sc">==</span> <span class="cn">FALSE</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># How many rows does annotations_ahb have?</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>annotations_ahb <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Return only the non-duplicated genes using indices</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>annotations_ahb <span class="ot">&lt;-</span> annotations_ahb[non_duplicates_idx, ]</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># How many rows are we left with after removing?</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>annotations_ahb <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the indices for the non-duplicated genes</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>non_duplicates_idx <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">duplicated</span>(annotations_ahb<span class="sc">$</span>gene_name) <span class="sc">==</span> <span class="cn">FALSE</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># How many rows does annotations_ahb have?</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>annotations_ahb <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 38076</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Return only the non-duplicated genes using indices</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>annotations_ahb <span class="ot">&lt;-</span> annotations_ahb[non_duplicates_idx, ]</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># How many rows are we left with after removing?</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>annotations_ahb <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 26594</code></pre>
+</div>
+</div>
 <p>Finally, it would be good to know <strong>what proportion of the Ensembl identifiers map to an Entrez identifier</strong>:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine how many of the Entrez column entries are NA</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">is.na</span>(annotations_ahb<span class="sc">$</span>entrezid)) <span class="sc">%&gt;%</span>  <span class="fu">length</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>That’s more than half of our genes! If we plan on using Entrez ID results for downstream analysis, we should definitely keep this in mind. If you look at some of the Ensembl IDs from our query that returned NA, these map to pseudogenes (i.e <a href="https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000265439;r=6:44209766-44210063;t=ENST00000580735">ENSG00000265439</a>) or non-coding RNAs (i.e.&nbsp;<a href="http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000265425;r=18:68427030-68436918;t=ENST00000577835">ENSG00000265425</a>). The discrepancy (which we can expect to observe) between databases is due to the fact that each implements its own different computational approaches for generating the gene builds.</p>
-<section id="using-annotationhub-to-create-our-tx2gene-file" class="level3">
-<h3 class="anchored" data-anchor-id="using-annotationhub-to-create-our-tx2gene-file">Using AnnotationHub to create our tx2gene file</h3>
-<p>To create our <code>tx2gene</code> file, we would need to use a combination of the methods above and merge two dataframes together. For example:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DO NOT RUN THIS CODE</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a transcript dataframe</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a> txdb <span class="ot">&lt;-</span> <span class="fu">transcripts</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>   dplyr<span class="sc">::</span><span class="fu">select</span>(tx_id, gene_id)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a> txdb <span class="ot">&lt;-</span> txdb[<span class="fu">grep</span>(<span class="st">"ENST"</span>, txdb<span class="sc">$</span>tx_id),]</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a> <span class="co"># Create a gene-level dataframe</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a> genedb <span class="ot">&lt;-</span> <span class="fu">genes</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>)  <span class="sc">%&gt;%</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>   dplyr<span class="sc">::</span><span class="fu">select</span>(gene_id, gene_name)</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a> <span class="co"># Merge the two dataframes together</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a> annotations <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(txdb, genedb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In this lesson our focus has been using annotation packages to extract information mainly just for gene ID conversion for the different tools that we use downstream. Many of the annotation packages we have presented have much more information than what we need for functional analysis and we have only just scratched the surface here. It’s good to know the capabilities of the tools we use, so we encourage you to spend some time exploring these packages to become more familiar with them.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine how many of the Entrez column entries are NA</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(<span class="fu">is.na</span>(annotations_ahb<span class="sc">$</span>entrezid)) <span class="sc">%&gt;%</span> <span class="fu">length</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7260</code></pre>
+</div>
+</div>
+<p>For the different steps in the functional analysis, we require Ensembl and Entrez IDs. We will use the gene annotations that we generated previously to merge with our differential expression results.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Merge the AnnotationHub dataframe with the results </span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>res_ids_ahb <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(res_tableCont_tb, annotations_ahb, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"gene"</span><span class="ot">=</span><span class="st">"gene_id"</span>))    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="using-annotationhub-to-create-a-tx2gene-file" class="level3">
+<h3 class="anchored" data-anchor-id="using-annotationhub-to-create-a-tx2gene-file">Using AnnotationHub to create a tx2gene file</h3>
+<p>If you wish to easily translate between genes and transcripts (this depends on how the count matrix was computed), it would be wise to create a ‘transcript to gene’ translation file (or <code>tx2gene</code> file). In our case, we already have one tx2gene table generated by our pipeline, but sometimes you may not have access to an tx2gene file already, so it is useful to learn how to create such a file To create it, we would need to use a combination of the methods above and merge two dataframes together. For example:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DO NOT RUN THIS CODE</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a transcript dataframe</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a> txdb <span class="ot">&lt;-</span> <span class="fu">transcripts</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>   dplyr<span class="sc">::</span><span class="fu">select</span>(tx_id, gene_id)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a> txdb <span class="ot">&lt;-</span> txdb[<span class="fu">grep</span>(<span class="st">"ENST"</span>, txdb<span class="sc">$</span>tx_id),]</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a> <span class="co"># Create a gene-level dataframe</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a> genedb <span class="ot">&lt;-</span> <span class="fu">genes</span>(human_ens, <span class="at">return.type =</span> <span class="st">"data.frame"</span>)  <span class="sc">%&gt;%</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>   dplyr<span class="sc">::</span><span class="fu">select</span>(gene_id, gene_name)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a> <span class="co"># Merge the two dataframes together</span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a> annotations <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(txdb, genedb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 </section>
 <section id="annotables-package" class="level2">
 <h2 class="anchored" data-anchor-id="annotables-package">Annotables package</h2>
-<p>The <em>annotables</em> package is a super easy annotation package to use. It is not updated frequently, so it’s not great for getting the most up-to-date information for the current builds and does not have information for other organisms than human and mouse, but is a quick way to get annotation information.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install package</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">"annotables"</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load library</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(annotables)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Access previous build of annotations</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>grch38</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We can see that the <code>grch38</code> object already contains all the information we want in a super easy way. Let’s annotate the results of our shrunken DEA for Control vs Vampirium:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Re-run this code if you are unsure that you have the right table</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="ot">&lt;-</span> <span class="fu">lfcShrink</span>(dds, <span class="at">coef =</span> <span class="st">"condition_control_vs_vampirium"</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>res_tableCont_tb <span class="ot">&lt;-</span> res_tableCont <span class="sc">%&gt;%</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rownames_to_column</span>(<span class="at">var=</span><span class="st">"gene"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Return the IDs for the gene symbols in the DE results</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">&lt;-</span> grch38 <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(ensgene <span class="sc">%in%</span> <span class="fu">rownames</span>(res_tableCont))</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Merge the IDs with the results </span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>res_ids <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(res_tableCont_tb, ids, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"gene"</span><span class="ot">=</span><span class="st">"ensgene"</span>))</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res_ids)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <em>annotables</em> package is a super easy annotation package to use. It is not updated frequently, so it’s not great for getting the most up-to-date information for the current builds and does not have information for other organisms than human and mouse, but is a quick way to get annotation information, specially for older builds.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(annotables)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>grch38</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 75,118 × 9
+   ensgene         entrez symbol  chr    start    end strand biotype description
+   &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      
+ 1 ENSG00000000003   7105 TSPAN6  X     1.01e8 1.01e8     -1 protei… tetraspani…
+ 2 ENSG00000000005  64102 TNMD    X     1.01e8 1.01e8      1 protei… tenomodulin
+ 3 ENSG00000000419   8813 DPM1    20    5.09e7 5.10e7     -1 protei… dolichyl-p…
+ 4 ENSG00000000457  57147 SCYL3   1     1.70e8 1.70e8     -1 protei… SCY1 like …
+ 5 ENSG00000000460  55732 C1orf1… 1     1.70e8 1.70e8      1 protei… chromosome…
+ 6 ENSG00000000938   2268 FGR     1     2.76e7 2.76e7     -1 protei… FGR proto-…
+ 7 ENSG00000000971   3075 CFH     1     1.97e8 1.97e8      1 protei… complement…
+ 8 ENSG00000001036   2519 FUCA2   6     1.43e8 1.44e8     -1 protei… alpha-L-fu…
+ 9 ENSG00000001084   2729 GCLC    6     5.35e7 5.36e7     -1 protei… glutamate-…
+10 ENSG00000001167   4800 NFYA    6     4.11e7 4.11e7      1 protei… nuclear tr…
+# ℹ 75,108 more rows</code></pre>
+</div>
+</div>
+<p>We can see that the <code>grch37</code> object already contains all the information we want in a super easy way. Let’s annotate the results of our shrunken DEA for our Control vs Vampirium comparison:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Re-run this code if you are unsure that you have the right table</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="ot">&lt;-</span> <span class="fu">lfcShrink</span>(dds, <span class="at">coef =</span> <span class="st">"condition_control_vs_vampirium"</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>res_tableCont_tb <span class="ot">&lt;-</span> res_tableCont <span class="sc">%&gt;%</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rownames_to_column</span>(<span class="at">var=</span><span class="st">"gene"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Return the IDs for the gene symbols in the DE results</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">&lt;-</span> grch38 <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(ensgene <span class="sc">%in%</span> <span class="fu">rownames</span>(res_tableCont))</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Merge the IDs with the results </span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>res_ids <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(res_tableCont_tb, ids, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"gene"</span><span class="ot">=</span><span class="st">"ensgene"</span>))</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res_ids)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 14
+  gene       baseMean log2FoldChange  lfcSE  pvalue     padj entrez symbol chr  
+  &lt;chr&gt;         &lt;dbl&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;
+1 ENSG00000…   26.1          0.00128 0.181  9.88e-1  0.994    64102 TNMD   X    
+2 ENSG00000… 1614.          -0.293   0.0914 4.11e-4  0.00329   8813 DPM1   20   
+3 ENSG00000…  509.          -0.170   0.0975 4.47e-2  0.135    57147 SCYL3  1    
+4 ENSG00000…    0.404        0.00606 0.199  6.57e-1 NA         2268 FGR    1    
+5 ENSG00000…    8.38         0.0121  0.197  7.09e-1 NA         3075 CFH    1    
+6 ENSG00000… 2632.           0.0790  0.0576 1.52e-1  0.320     2519 FUCA2  6    
+# ℹ 5 more variables: start &lt;int&gt;, end &lt;int&gt;, strand &lt;int&gt;, biotype &lt;chr&gt;,
+#   description &lt;chr&gt;</code></pre>
+</div>
+</div>
 <p>Our data is now ready to use for functional analysis! We have all the ids necessary to proceed.</p>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise 1
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-exercise">
+<hr>
+<p><strong>Exercise 1</strong></p>
 <ul>
 <li>Create a new <code>res_ids</code> object using the <code>annotables</code> package with the human build grch37. <strong>NOTE</strong> call it <code>res_ids_grch37</code>!</li>
 <li>What are the differences between the <code>res_id_ahb</code>object and the <code>res_ids_grch37</code>?</li>
 </ul>
-<div class="callout callout-style-default callout-solution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-solution">
-<div class="sourceCode" id="cb23"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ids_grch37 <span class="ot">&lt;-</span> grch37 <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(ensgene <span class="sc">%in%</span> <span class="fu">rownames</span>(res_tableCont))</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>res_ids_grch37 <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(res_tableCont_tb, ids_grch38, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"gene"</span><span class="ot">=</span><span class="st">"ensgene"</span>))</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res_ids_grch37)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Let’s compare it to the <code>res_ids_ahb</code> object</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res_ids_ahb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We can see that <code>res_id_ahb</code> contains less columns, but this is because we selected fewer columns in our previous steps. What about the the sizes of these tables?</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(res_ids_ahb)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(res_ids_grch37)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(res_tableCont_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We see that there is a difference in the number of genes. So what is happening? The gene IDs that we have in our count data are from the genome version grch37, and we are trying to match it to annotations from the more updated version grch38. There will be genes that are missing just because of the version. Then we have also removed duplicated gene names in our <code>annotation_ahb</code> object, which may contain different gene IDs. So we may have deleted some gene IDs that are not matching anymore with our results table. In any case, we should always annotate our genes with the version of the reference genome we used for alignment and quantification!</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise 2
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-exercise">
-<p>Annotate the results of your DEA for Garlicum vs Vampirium with grch38.</p>
-<div class="callout callout-style-default callout-solution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-solution">
-<div class="sourceCode" id="cb26"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Return the IDs for the gene symbols in the DE results</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">&lt;-</span> grch38 <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(ensgene <span class="sc">%in%</span> <span class="fu">rownames</span>(res_tableGar))</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Merge the IDs with the results </span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>res_ids_Gar <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(res_tableGar_tb, ids, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"gene"</span><span class="ot">=</span><span class="st">"ensgene"</span>))</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res_ids_Gar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
 <hr>
-<p><em>This lesson was originally developed by members of the teaching team (Mary Piper) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
+<p><strong>Exercise 2</strong></p>
+<p>Annotate the results of your DEA for Garlicum vs Vampirium with grch38.</p>
+<hr>
 
 
 </section>
@@ -1026,8 +1228,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1138,7 +1338,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1364,15 +1563,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../develop/07c_DEA_visualization.html" class="pagination-link" aria-label="Visualization">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Visualization</span>
+      <a href="../develop/07c_DEA_visualization.html" class="pagination-link" aria-label="Log Fold Shrinkage and DEA visualizations">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Log Fold Shrinkage and DEA visualizations</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../develop/08b_FA_overrepresentation.html" class="pagination-link" aria-label="Functional Analysis">
-        <span class="nav-page-text">Functional Analysis</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../develop/08b_FA_overrepresentation.html" class="pagination-link" aria-label="Functional Analysis for RNA-seq">
+        <span class="nav-page-text">Functional Analysis for RNA-seq</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

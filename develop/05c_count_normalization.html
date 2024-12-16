@@ -2,12 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="You!">
+<meta name="dcterms.date" content="2024-12-16">
 
-<title>Normalization – Bulk RNAseq data analysis</title>
+<title>Count normalization with DESeq2 – Bulk RNAseq data analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,12 +73,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-74e5c8182057b581c8ce78f3c749e987.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-9f03a6b1aa4272b2c7f9d01b972febf4.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -171,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/05c_count_normalization.html">Quality control</a></li><li class="breadcrumb-item"><a href="../develop/05c_count_normalization.html">Normalization</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/05c_count_normalization.html">Quality control</a></li><li class="breadcrumb-item"><a href="../develop/05c_count_normalization.html">Count normalization with DESeq2</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -181,7 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -200,7 +202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/05b_count_matrix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RNAseq count matrix</span></a>
+ <span class="menu-text">The RNAseq count matrix</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -215,13 +217,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/05c_count_normalization.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Normalization</span></a>
+ <span class="menu-text">Count normalization with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/06_exploratory_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Exploratory analysis</span></a>
+ <span class="menu-text">Exploratory analysis with DESeq2</span></a>
   </div>
 </li>
       </ul>
@@ -238,25 +240,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07_extra_contrast_design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Contrast designs</span></a>
+ <span class="menu-text">DESeq samples comparison: contrast designs</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07a_DEA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DESeq2</span></a>
+ <span class="menu-text">Gene-level differential expression analysis with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07b_hypothesis_testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hypothesis testing</span></a>
+ <span class="menu-text">Hypothesis testing with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07c_DEA_visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Visualization</span></a>
+ <span class="menu-text">Log Fold Shrinkage and DEA visualizations</span></a>
   </div>
 </li>
       </ul>
@@ -273,19 +275,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08a_FA_genomic_annotation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Gene annotation</span></a>
+ <span class="menu-text">Genomic annotations for functional analyses</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08b_FA_overrepresentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Analysis</span></a>
+ <span class="menu-text">Functional Analysis for RNA-seq</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08c_FA_GSEA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional class scoring</span></a>
+ <span class="menu-text">Functional Class Scoring</span></a>
   </div>
 </li>
       </ul>
@@ -302,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/09_summarized_workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Summarised workflow</span></a>
+ <span class="menu-text">Summary of DGE workflow</span></a>
   </div>
 </li>
       </ul>
@@ -312,20 +314,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#normalization" id="toc-normalization" class="nav-link" data-scroll-target="#normalization">Normalization</a></li>
+  <li><a href="#count-normalization-of-the-vampirium-dataset-using-deseq2" id="toc-count-normalization-of-the-vampirium-dataset-using-deseq2" class="nav-link" data-scroll-target="#count-normalization-of-the-vampirium-dataset-using-deseq2">Count normalization of the Vampirium dataset using DESeq2</a>
+  <ul class="collapse">
+  <li><a href="#match-the-metadata-and-counts-data" id="toc-match-the-metadata-and-counts-data" class="nav-link" data-scroll-target="#match-the-metadata-and-counts-data">1. Match the metadata and counts data</a></li>
+  <li><a href="#create-deseq2-object" id="toc-create-deseq2-object" class="nav-link" data-scroll-target="#create-deseq2-object">2. Create DESEq2 object</a></li>
+  <li><a href="#generate-the-vampirium-normalized-counts" id="toc-generate-the-vampirium-normalized-counts" class="nav-link" data-scroll-target="#generate-the-vampirium-normalized-counts">3. Generate the Vampirium normalized counts</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/05c_count_normalization.html">Quality control</a></li><li class="breadcrumb-item"><a href="../develop/05c_count_normalization.html">Normalization</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/05c_count_normalization.html">Quality control</a></li><li class="breadcrumb-item"><a href="../develop/05c_count_normalization.html">Count normalization with DESeq2</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Normalization</h1>
+<h1 class="title">Count normalization with DESeq2</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-right">
+<div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>You! </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 16, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -335,442 +364,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled" title="Section Overview">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Section Overview
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>⏰ <strong>Time Estimation:</strong> 40 minutes</p>
-<p>💬 <strong>Learning Objectives:</strong></p>
-<ol type="1">
-<li>Explore different types of normalization methods</li>
+<p>Approximate time: 40 minutes</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<ul>
 <li>Become familiar with the <code>DESeqDataSet</code> object</li>
 <li>Understand how to normalize counts using DESeq2</li>
-</ol>
-</div>
-</div>
-<p><span style="font-size:30px;"> Count normalization with DESeq2 <span></span></span></p>
-<p>The first step in the DE analysis workflow is count normalization, which is necessary to make accurate comparisons of gene expression between samples.</p>
-<p><img src="./img/05c_count_normalization/normalization_workflow.png" class="img-fluid"></p>
-<p>The counts of mapped reads for each gene is proportional to the expression of RNA (“interesting”) in addition to many other factors (“uninteresting”). Normalization is the process of scaling raw count values to account for the “uninteresting” factors. In this way the expression levels are more comparable between and/or within samples.</p>
-<p>The main factors often considered during normalization are:</p>
-<ul>
-<li><strong>Sequencing depth:</strong> Accounting for sequencing depth is necessary for comparison of gene expression between samples. In the example below, each gene appears to have doubled in expression in <em>Sample A</em> relative to <em>Sample B</em>, however this is a consequence of <em>Sample A</em> having double the sequencing depth.</li>
 </ul>
-<p><img src="./img/05c_count_normalization/library_size_bias.png" class="img-fluid"></p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>In the figure above, each red rectangle represents a read aligned to a gene. Reads connected by dashed lines connect a read spanning an intron.</p>
-</div>
-</div>
-<ul>
-<li><strong>Gene length:</strong> Accounting for gene length is necessary for comparing expression between different genes within the same sample. In the example, <em>Gene 2</em> and <em>Gene 3</em> have similar levels of expression, but the number of reads mapped to <em>Gene 2</em> would be many more than the number mapped to <em>Gene 3</em> because <em>Gene 2</em> is longer.</li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./img/05c_count_normalization/length_bias.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
-</figure>
-</div>
-<ul>
-<li><p><strong>GC-content</strong>: Genomic features such as GC-content may result in a read count biases, as GC-rich and GC-poor fragments are under-represented in RNAseq experiments. This under-representation is attributed to the fact that fragments with high and low GC-content are not adequately amplified in a standard high throughput sequencing protocol and, subsequently, that the fragments are difficult to align (correctly) to reference genome, i.e.&nbsp;less unique, repeat regions, etc. (<a href="https://academic.oup.com/nar/article/40/10/e72/2411059">Benjamini &amp; Speed, 2012</a> and <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-480">Risso et al, 2011</a>).</p></li>
-<li><p><strong>RNA composition:</strong> A few highly differentially expressed genes between samples, differences in the number of genes expressed between samples, or presence of contamination can skew some types of normalization methods. Accounting for RNA composition is recommended for accurate comparison of expression between samples, and is particularly important when performing differential expression analyses <a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106">Anders &amp; Huber, 2010</a>.</p>
-<p>In the example, if we were to divide each sample by the total number of counts to normalize, the counts would be greatly skewed by the DE gene, which takes up most of the counts for <em>Sample A</em>, but not <em>Sample B</em>. Most other genes for <em>Sample A</em> would be divided by the larger number of total counts and appear to be less expressed than those same genes in <em>Sample B</em>.</p></li>
-</ul>
-<p><img src="./img/05c_count_normalization/rna_composition_bias.png" class="img-fluid"></p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>While normalization is essential for differential expression analyses, it is also necessary for exploratory data analysis, visualization of data, and whenever you are exploring or comparing counts between or within samples.</p>
-</div>
-</div>
-<section id="common-normalization-methods" class="level2">
-<h2 class="anchored" data-anchor-id="common-normalization-methods">Common normalization methods</h2>
-<p>Several common normalization methods exist to account for these differences:</p>
-<div style="font-size: 0.8em;">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Normalization method</th>
-<th>Description</th>
-<th>Accounted factors</th>
-<th>Recommendations for use</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>CPM</strong> (counts per million)</td>
-<td>counts scaled by total number of reads</td>
-<td>sequencing depth</td>
-<td>gene count comparisons between replicates of the same samplegroup; <strong>NOT for within sample comparisons or DE analysis</strong></td>
-</tr>
-<tr class="even">
-<td><strong>TPM</strong> (transcripts per kilobase million)</td>
-<td>counts per length of transcript (kb) per million reads mapped</td>
-<td>sequencing depth and gene length</td>
-<td>gene count comparisons within a sample or between samples of the same sample group; <strong>NOT for DE analysis</strong></td>
-</tr>
-<tr class="odd">
-<td><strong>RPKM/FPKM</strong> (reads/fragments per kilobase of exon per million reads/fragments mapped)</td>
-<td>similar to TPM</td>
-<td>sequencing depth and gene length</td>
-<td>gene count comparisons between genes within a sample; <strong>NOT for between sample comparisons or DE analysis</strong></td>
-</tr>
-<tr class="even">
-<td><a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-10-r106">DESeq2’s <strong>median of ratios</strong></a></td>
-<td>counts divided by sample-specific size factors determined by median ratio of gene counts relative to geometric mean per gene</td>
-<td>sequencing depth and RNA composition</td>
-<td>gene count comparisons between samples and for <strong>DE analysis</strong>; <strong>NOT for within sample comparisons</strong></td>
-</tr>
-<tr class="odd">
-<td><a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25">EdgeR’s <strong>trimmed mean of M values (TMM)</strong></a></td>
-<td>uses a weighted trimmed mean of the log expression ratios between samples</td>
-<td>sequencing depth, RNA composition</td>
-<td>gene count comparisons between samples and for <strong>DE analysis</strong>; <strong>NOT for within sample comparisons</strong></td>
-</tr>
-</tbody>
-</table>
-</div>
 </section>
-<section id="rpkmfpkm-not-recommended" class="level2">
-<h2 class="anchored" data-anchor-id="rpkmfpkm-not-recommended">RPKM/FPKM (not recommended)</h2>
-<p>While TPM and RPKM/FPKM normalization methods both account for sequencing depth and gene length, RPKM/FPKM are not recommended. <strong>The reason is that the normalized count values output by the RPKM/FPKM method are not comparable between samples.</strong></p>
-<p>Using RPKM/FPKM normalization, the total number of RPKM/FPKM normalized counts for each sample will be different. Therefore, you cannot compare the normalized counts for each gene equally between samples.</p>
-<p><strong>RPKM-normalized counts table</strong></p>
-<div style="font-size: 0.8em; overflow-x: auto;">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>gene</th>
-<th style="text-align: center;">sampleA</th>
-<th style="text-align: center;">sampleB</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>XCR1</td>
-<td style="text-align: center;">5.5</td>
-<td style="text-align: center;">5.5</td>
-</tr>
-<tr class="even">
-<td>WASHC1</td>
-<td style="text-align: center;">73.4</td>
-<td style="text-align: center;">21.8</td>
-</tr>
-<tr class="odd">
-<td>…</td>
-<td style="text-align: center;">…</td>
-<td style="text-align: center;">…</td>
-</tr>
-<tr class="even">
-<td>Total RPKM-normalized counts</td>
-<td style="text-align: center;">1,000,000</td>
-<td style="text-align: center;">1,500,000</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>For example, in the table above, SampleA has a greater proportion of counts associated with XCR1 (5.5/1,000,000) than does sampleB (5.5/1,500,000) even though the RPKM count values are the same. Therefore, we cannot directly compare the counts for XCR1 (or any other gene) between sampleA and sampleB because the total number of normalized counts are different between samples.</p>
-</section>
-<section id="deseq2-normalized-counts-median-of-ratios-method" class="level2">
-<h2 class="anchored" data-anchor-id="deseq2-normalized-counts-median-of-ratios-method">DESeq2-normalized counts: Median of ratios method</h2>
-<p>Since tools for differential expression analysis are comparing the counts between sample groups for the same gene, gene length does not need to be accounted for by the tool. However, <strong>sequencing depth</strong> and <strong>RNA composition</strong> do need to be taken into account.</p>
-<p>To normalize for sequencing depth and RNA composition, DESeq2 uses the median of ratios method. On the user-end there is only one step, but on the back-end there are multiple steps involved, as described below.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Note on the DESeq2 workflow">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note on the DESeq2 workflow
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The steps below describe in detail some of the steps performed by DESeq2 when you run a single function to get DE genes. Basically, for a typical RNA-seq analysis, <strong>you would not run these steps individually</strong>.</p>
-</div>
-</div>
-<section id="step-1-creates-a-pseudo-reference-sample-row-wise-geometric-mean" class="level3">
-<h3 class="anchored" data-anchor-id="step-1-creates-a-pseudo-reference-sample-row-wise-geometric-mean">Step 1: creates a pseudo-reference sample (row-wise geometric mean)</h3>
-<p>For each gene, a pseudo-reference sample is created that is equal to the geometric mean across all samples.</p>
-<div style="font-size: 0.8em; overflow-x: auto;">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>gene</th>
-<th style="text-align: center;">sampleA</th>
-<th style="text-align: center;">sampleB</th>
-<th style="text-align: center;">pseudo-reference sample</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>EF2A</td>
-<td style="text-align: center;">1489</td>
-<td style="text-align: center;">906</td>
-<td style="text-align: center;">sqrt(1489 * 906) = <strong>1161.5</strong></td>
-</tr>
-<tr class="even">
-<td>ABCD1</td>
-<td style="text-align: center;">22</td>
-<td style="text-align: center;">13</td>
-<td style="text-align: center;">sqrt(22 * 13) = <strong>17.7</strong></td>
-</tr>
-<tr class="odd">
-<td>…</td>
-<td style="text-align: center;">…</td>
-<td style="text-align: center;">…</td>
-<td style="text-align: center;">…</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="step-2-calculates-ratio-of-each-sample-to-the-reference" class="level3">
-<h3 class="anchored" data-anchor-id="step-2-calculates-ratio-of-each-sample-to-the-reference">Step 2: calculates ratio of each sample to the reference</h3>
-<p>For every gene in a sample, the ratios (sample/ref) are calculated (as shown below). This is performed for each sample in the dataset. Since the majority of genes are not differentially expressed, the majority of genes in each sample should have similar ratios within the sample.</p>
-<div style="font-size: 0.8em; overflow-x: auto;">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 7%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 25%">
-<col style="width: 24%">
-<col style="width: 23%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>gene</th>
-<th style="text-align: center;">sampleA</th>
-<th style="text-align: center;">sampleB</th>
-<th style="text-align: center;">pseudo-reference sample</th>
-<th style="text-align: center;">ratio of sampleA/ref</th>
-<th style="text-align: center;">ratio of sampleB/ref</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>EF2A</td>
-<td style="text-align: center;">1489</td>
-<td style="text-align: center;">906</td>
-<td style="text-align: center;">1161.5</td>
-<td style="text-align: center;">1489/1161.5 = <strong>1.28</strong></td>
-<td style="text-align: center;">906/1161.5 = <strong>0.78</strong></td>
-</tr>
-<tr class="even">
-<td>ABCD1</td>
-<td style="text-align: center;">22</td>
-<td style="text-align: center;">13</td>
-<td style="text-align: center;">16.9</td>
-<td style="text-align: center;">22/16.9 = <strong>1.30</strong></td>
-<td style="text-align: center;">13/16.9 = <strong>0.77</strong></td>
-</tr>
-<tr class="odd">
-<td>MEFV</td>
-<td style="text-align: center;">793</td>
-<td style="text-align: center;">410</td>
-<td style="text-align: center;">570.2</td>
-<td style="text-align: center;">793/570.2 = <strong>1.39</strong></td>
-<td style="text-align: center;">410/570.2 = <strong>0.72</strong></td>
-</tr>
-<tr class="even">
-<td>BAG1</td>
-<td style="text-align: center;">76</td>
-<td style="text-align: center;">42</td>
-<td style="text-align: center;">56.5</td>
-<td style="text-align: center;">76/56.5 = <strong>1.35</strong></td>
-<td style="text-align: center;">42/56.5 = <strong>0.74</strong></td>
-</tr>
-<tr class="odd">
-<td>MOV10</td>
-<td style="text-align: center;">521</td>
-<td style="text-align: center;">1196</td>
-<td style="text-align: center;">883.7</td>
-<td style="text-align: center;">521/883.7 = <strong>0.590</strong></td>
-<td style="text-align: center;">1196/883.7 = <strong>1.35</strong></td>
-</tr>
-<tr class="even">
-<td>…</td>
-<td style="text-align: center;">…</td>
-<td style="text-align: center;">…</td>
-<td style="text-align: center;">…</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="step-3-calculate-the-normalization-factor-for-each-sample-size-factor" class="level3">
-<h3 class="anchored" data-anchor-id="step-3-calculate-the-normalization-factor-for-each-sample-size-factor">Step 3: calculate the normalization factor for each sample (size factor)</h3>
-<p>The median value (column-wise for the above table) of all ratios for a given sample is taken as the normalization factor (size factor) for that sample, as calculated below. Notice that the differentially expressed genes should not affect the median value:</p>
-<p><code>normalization_factor_sampleA &lt;- median(c(1.28, 1.3, 1.39, 1.35, 0.59))</code></p>
-<p><code>normalization_factor_sampleB &lt;- median(c(0.78, 0.77, 0.72, 0.74, 1.35))</code></p>
-<p>The figure below illustrates the median value for the distribution of all gene ratios for a single sample (frequency is on the y-axis).</p>
-<p><img src="./img/05c_count_normalization/deseq_median_of_ratios.png" class="img-fluid"></p>
-<p>The median of ratios method assumes that not ALL genes are differentially expressed; therefore, the normalization factors should account for sequencing depth and RNA composition of the sample (large outlier genes will not represent the median ratio values). <strong>This method is robust to imbalance in up-/down-regulation and large numbers of differentially expressed genes.</strong></p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Usually, these size factors are around 1, if you see large variations between samples it is important to take note since it might indicate the presence of extreme outliers.</p>
-</div>
-</div>
-</section>
-<section id="step-4-calculate-the-normalized-count-values-using-the-normalization-factor" class="level3">
-<h3 class="anchored" data-anchor-id="step-4-calculate-the-normalized-count-values-using-the-normalization-factor">Step 4: calculate the normalized count values using the normalization factor</h3>
-<p>This is performed by dividing each raw count value in a given sample by that sample’s normalization factor to generate normalized count values. This is performed for all count values (every gene in every sample). For example, if the median ratio for SampleA was 1.3 and the median ratio for SampleB was 0.77, you could calculate normalized counts as follows:</p>
-<p>SampleA median ratio = 1.3</p>
-<p>SampleB median ratio = 0.77</p>
-<p><strong>Raw Counts</strong></p>
-<div style="font-size: 0.8em; overflow-x: auto;">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>gene</th>
-<th style="text-align: center;">sampleA</th>
-<th style="text-align: center;">sampleB</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>EF2A</td>
-<td style="text-align: center;">1489</td>
-<td style="text-align: center;">906</td>
-</tr>
-<tr class="even">
-<td>ABCD1</td>
-<td style="text-align: center;">22</td>
-<td style="text-align: center;">13</td>
-</tr>
-<tr class="odd">
-<td>…</td>
-<td style="text-align: center;">…</td>
-<td style="text-align: center;">…</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Normalized Counts</strong></p>
-<div style="font-size: 0.8em; overflow-x: auto;">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>gene</th>
-<th style="text-align: center;">sampleA</th>
-<th style="text-align: center;">sampleB</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>EF2A</td>
-<td style="text-align: center;">1489 / 1.3 = <strong>1145.39</strong></td>
-<td style="text-align: center;">906 / 0.77 = <strong>1176.62</strong></td>
-</tr>
-<tr class="even">
-<td>ABCD1</td>
-<td style="text-align: center;">22 / 1.3 = <strong>16.92</strong></td>
-<td style="text-align: center;">13 / 0.77 = <strong>16.88</strong></td>
-</tr>
-<tr class="odd">
-<td>…</td>
-<td style="text-align: center;">…</td>
-<td style="text-align: center;">…</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Please note that normalized count values are not whole numbers.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise 1
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-exercise">
+<section id="normalization" class="level2">
+<h2 class="anchored" data-anchor-id="normalization">Normalization</h2>
+<p>The first step in the DE analysis workflow is count normalization, which is necessary to make accurate comparisons of gene expression between samples. Let’s try to run an easy example!</p>
+<hr>
+<p><strong>Exercise 1</strong></p>
 <p>Determine the normalized (median of ratios) counts for your gene of interest, PD1, given the raw counts and size factors below.</p>
 <p>NOTE: You will need to run the code below to generate the raw counts dataframe (PD1) and the size factor vector (size_factors), then use these objects to determine the normalized counts values:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Raw counts for PD1</span></span>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Raw counts for PD1</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>PD1 <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">c</span>(<span class="dv">21</span>, <span class="dv">58</span>, <span class="dv">17</span>, <span class="dv">97</span>, <span class="dv">83</span>, <span class="dv">10</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename_all</span>(<span class="sc">~</span><span class="fu">paste0</span>(<span class="st">"Sample"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_all</span>(<span class="sc">~</span><span class="fu">paste0</span>(<span class="st">"Sample"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>))</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Size factors for each sample</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>size_factors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.32</span>, <span class="fl">0.70</span>, <span class="fl">1.04</span>, <span class="fl">1.27</span>, <span class="fl">1.11</span>, <span class="fl">0.85</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-solution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+</details>
 </div>
-<div class="callout-title-container flex-fill">
-Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-solution">
-<p>Let’s check first what is PD1</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>PD1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Since we have the size factors per sample, we only need to divide our PD1 counts by the size factors!</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>PD1<span class="sc">/</span>size_factors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
+<p><strong>Your code here:</strong></p>
+<hr>
 </section>
 <section id="count-normalization-of-the-vampirium-dataset-using-deseq2" class="level2">
 <h2 class="anchored" data-anchor-id="count-normalization-of-the-vampirium-dataset-using-deseq2">Count normalization of the Vampirium dataset using DESeq2</h2>
@@ -783,133 +406,144 @@ Solution
 <section id="match-the-metadata-and-counts-data" class="level3">
 <h3 class="anchored" data-anchor-id="match-the-metadata-and-counts-data">1. Match the metadata and counts data</h3>
 <p>We should always make sure that we have sample names that match between the two files, and that the samples are in the right order. DESeq2 will output an error if this is not the case. Since we built our <code>txi</code> object from our metadata, everything should be OK.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Check that sample names match in both files</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(txi<span class="sc">$</span>counts) <span class="sc">%in%</span> meta<span class="sc">$</span>sample)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(txi<span class="sc">$</span>counts) <span class="sc">==</span> meta<span class="sc">$</span>sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Check that sample names match in both files</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(txi<span class="sc">$</span>counts) <span class="sc">%in%</span> meta<span class="sc">$</span>sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(txi<span class="sc">$</span>counts) <span class="sc">==</span> meta<span class="sc">$</span>sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
 <p>If your data did not match, you could use the <code>match()</code> function to rearrange them to be matching. <code>match()</code> function will take two arguments and find in which order the indexes of the second argument match the first argument.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"b"</span>,<span class="st">"c"</span>,<span class="st">"a"</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>reorder <span class="ot">&lt;-</span> <span class="fu">match</span>(a,b)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>reorder</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>b[reorder]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"b"</span>,<span class="st">"c"</span>,<span class="st">"a"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>reorder <span class="ot">&lt;-</span> <span class="fu">match</span>(a,b)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>reorder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 1 2</code></pre>
 </div>
-<div class="callout-title-container flex-fill">
-Exercise 2
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>b[reorder]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "a" "b" "c"</code></pre>
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-exercise">
+<hr>
+<p><strong>Exercise 2</strong></p>
 <p>Suppose we had sample names matching in the txi object and metadata file, but they were out of order. Write the line(s) of code required make the <code>meta_random</code> dataframe with rows ordered such that they were identical to the column names of the <code>txi</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># randomize metadata rownames</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>meta_random <span class="ot">&lt;-</span> meta[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(meta)),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-solution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># randomize metadata rownames</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>meta_random <span class="ot">&lt;-</span> meta[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(meta)),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-title-container flex-fill">
-Solution
+<p><strong>Your code here:</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-solution">
-<p>Let’s check now meta_random order:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>meta_random</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We can see that it is all scrambled. We want the rows of <code>meta_random</code> to be the same order as the columns of the <code>txi@counts</code> object (which is not, as you can see below):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Check that sample names match in both files</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(txi<span class="sc">$</span>counts) <span class="sc">%in%</span> meta_random<span class="sc">$</span>sample) <span class="co"># are all samples in our metadata?</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(txi<span class="sc">$</span>counts) <span class="sc">==</span> meta_random<span class="sc">$</span>sample) <span class="co"># are all samples in the same order?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Let’s use the match function. First we find the order that <code>meta_random$sample</code> should be to match the columns of <code>txi@counts</code>:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>reorder <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="fu">colnames</span>(txi<span class="sc">$</span>counts),meta_random<span class="sc">$</span>sample)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>reorder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Finally, we change the order of the rows of meta_random:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>meta_random <span class="ot">&lt;-</span> meta_random[reorder,]</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>meta_random</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>And confirm:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(txi<span class="sc">$</span>counts) <span class="sc">==</span> meta_random<span class="sc">$</span>sample) <span class="co"># are all samples in the same order?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+<hr>
 </section>
 <section id="create-deseq2-object" class="level3">
 <h3 class="anchored" data-anchor-id="create-deseq2-object">2. Create DESEq2 object</h3>
-<p>Bioconductor software packages often define and use a custom class within R for storing data (input data, intermediate data and also results). These custom data structures are similar to <code>lists</code> in that they can contain multiple different data types/structures within them. But, unlike lists they have pre-specified <code>data slots</code>, which hold specific types/classes of data. The data stored in these pre-specified slots can be accessed by using specific package-defined functions.</p>
 <p>Let’s start by creating the <code>DESeqDataSet</code> object, and then we can talk a bit more about what is stored inside it. To create the object, we will need the <strong>txi</strong> object and the <strong>metadata</strong> table as input (<code>colData</code> argument). We will also need to specify a <strong>design formula</strong>. The design formula specifies which column(s) of our metadata we want to use for statistical testing and modeling (more about that later!). For our dataset we only have one column we are interested in, which is <code>condition</code>. This column has three factor levels, which tells DESeq2 that for each gene we want to evaluate gene expression change with respect to these different levels.</p>
 <p><strong>It is very important to establish beforehand which sample type will be our “base” or “reference” level.</strong> If nothing is changed, DESeq2 will assume that our reference samples will be the first sample type (in alphabetical order). You can check this using the <code>factor()</code> function.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(meta<span class="sc">$</span>condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>While in a normal experiment we would use control samples as our reference, in our case we are interested in both checking the differences between control vs.&nbsp;vampirium and garlicum vs.&nbsp;vampirium. Thus, it would be much more convinient to reorganize our factor base level to <code>vampirium</code>. We can do this also with the <code>factor()</code> function, using the <code>levels =</code> argument.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">$</span>condition <span class="ot">=</span> <span class="fu">factor</span>(meta<span class="sc">$</span>condition, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"vampirium"</span>, <span class="st">"control"</span>, <span class="st">"garlicum"</span>))</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(meta<span class="sc">$</span>condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(meta<span class="sc">$</span>condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] control   control   control   vampirium vampirium vampirium garlicum 
+[8] garlicum 
+Levels: control garlicum vampirium</code></pre>
+</div>
+</div>
+<p>While in a normal experiment we would use control samples as our reference, in our case we are interested in both checking the differences between control vs.&nbsp;vampirium and garlicum vs.&nbsp;vampirium. Thus, it would be much more convenient to reorganize our factor base level to <code>vampirium</code>. We can do this also with the <code>factor()</code> function, using the <code>levels =</code> argument.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>meta<span class="sc">$</span>condition <span class="ot">=</span> <span class="fu">factor</span>(meta<span class="sc">$</span>condition, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"vampirium"</span>, <span class="st">"control"</span>, <span class="st">"garlicum"</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(meta<span class="sc">$</span>condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] control   control   control   vampirium vampirium vampirium garlicum 
+[8] garlicum 
+Levels: vampirium control garlicum</code></pre>
+</div>
+</div>
 <p>We can see now that vampirium is the first factor! Meaning that it will be interpreted by DESeq as our reference sample type.</p>
 <p><strong>Our count matrix input is stored in the <code>txi</code> list object</strong>. So we need to specify that using the <code>DESeqDataSetFromTximport()</code> function, which will extract the counts component and round the values to the nearest whole number.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># colData argument requires rownames in order to assess matching sample names</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># meta is a tibble object from tidyverse, so we neeed to add rownames.</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If you do not do this and the samples do not match, you will add wrong info!</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromTximport</span>(txi,</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">design =</span> <span class="sc">~</span> condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># colData argument requires rownames in order to assess matching sample names</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># meta is a tibble object from tidyverse, so we neeed to add rownames.</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If you do not do this and the samples do not match, you will add wrong info!</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromTximport</span>(txi,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">design =</span> <span class="sc">~</span> condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-title-container flex-fill">
-Control is not reference level warning
+<blockquote class="blockquote">
+<p><strong>NOTE:</strong> The warning from the chunk before is telling us that we have setup our vampirium samples as reference, instead of control! This is exactly what we wanted.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>NOTE:</strong> If you did not create pseudocounts, but a count matrix from aligned BAM files and tools such as <code>featurecounts</code>, you would want to use the <code>DESeqDataSetFromMatrix()</code> function.</p>
+</blockquote>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DO NOT RUN!</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Create DESeq2Dataset object from traditional count matrix</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(<span class="at">countData =</span> <span class="st">"../Data/Vampirium_counts_traditional.tsv"</span>, </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">design =</span> <span class="sc">~</span> condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-11" class="callout-11-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>The warning from the chunk before is telling us that we have setup our vampirium samples as reference, instead of control! This is exactly what we wanted.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Starting from a traditional count matrix
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>If you did not create pseudocounts, but a count matrix from aligned BAM files and tools such as <code>featurecounts</code>, you would want to use the <code>DESeqDataSetFromMatrix()</code> function.</p>
-</div>
-</div>
-</div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DO NOT RUN!</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Create DESeq2Dataset object from traditional count matrix</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(<span class="at">countData =</span> <span class="st">"../Data/Vampirium_counts_traditional.tsv"</span>, </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">design =</span> <span class="sc">~</span> condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can use DESeq-specific functions to access the different slots and retrieve information, if you wish. For example, suppose we wanted the original count matrix we would use <code>counts()</code> (<em>Note: we nested it within the <code>View()</code> function so that rather than getting printed in the console we can see it in the script editor</em>) :</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(<span class="fu">counts</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>As we go through the workflow we will use the relevant functions to check what information gets stored inside our object.</p>
 <p>You can use DESeq-specific functions to access the different slots and retrieve information, if you wish. For example, suppose we wanted the original count matrix we would use <code>counts()</code>:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">counts</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">counts</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                control_3 control_2 control_1 vampirium_3 vampirium_2
+ENSG00000000005        24        28        28          22          38
+ENSG00000000419      1009      1421      1634        1311        1896
+ENSG00000000457       341       400       525         342         584
+ENSG00000000938         0         1         1           0           0
+ENSG00000000971        10        21         1           4          22
+ENSG00000001036      1887      2550      3078        1659        2850
+                vampirium_1 garlicum_3 garlicum_2
+ENSG00000000005          24         13         34
+ENSG00000000419        2108       1484       2544
+ENSG00000000457         630        549        920
+ENSG00000000938           0          0          2
+ENSG00000000971           1          2          4
+ENSG00000001036        3013       2624       4353</code></pre>
+</div>
+</div>
 <p>As we go through the workflow we will use the relevant functions to check what information gets stored inside our object.</p>
 <section id="pre-filtering" class="level4">
 <h4 class="anchored" data-anchor-id="pre-filtering">Pre-filtering</h4>
@@ -919,36 +553,69 @@ Starting from a traditional count matrix
 <li>It can also improve visualizations, as features with no information for differential expression are not plotted.</li>
 </ul>
 <p>Here we perform a minimal pre-filtering to keep only rows that have at least 10 reads total.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">counts</span>(dds)) <span class="sc">&gt;=</span> <span class="dv">10</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[keep,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">counts</span>(dds)) <span class="sc">&gt;=</span> <span class="dv">10</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[keep,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 </section>
-<section id="generate-the-normalized-counts" class="level3">
-<h3 class="anchored" data-anchor-id="generate-the-normalized-counts">3. Generate the normalized counts</h3>
+<section id="generate-the-vampirium-normalized-counts" class="level3">
+<h3 class="anchored" data-anchor-id="generate-the-vampirium-normalized-counts">3. Generate the Vampirium normalized counts</h3>
 <p>The next step is to normalize the count data in order to be able to make fair gene comparisons between samples.</p>
 <p>To perform the <strong>median of ratios method</strong> of normalization, DESeq2 has a single <code>estimateSizeFactors()</code> function that will generate size factors for us. We will use the function in the example below, but <strong>in a typical RNA-seq analysis this step is automatically performed by the <code>DESeq()</code> function</strong>, which we will see later.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">estimateSizeFactors</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">estimateSizeFactors</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <p>By assigning the results back to the <code>dds</code> object we are filling in the slots of the <code>DESeqDataSet</code> object with the appropriate information. We can take a look at the normalization factor applied to each sample using:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sizeFactors</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sizeFactors</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  control_3   control_2   control_1 vampirium_3 vampirium_2 vampirium_1 
+  0.7500980   0.9580056   1.1134270   0.6565847   1.1418466   1.2185305 
+ garlicum_3  garlicum_2 
+  0.9327493   1.5527685 </code></pre>
+</div>
+</div>
 <p>Now, to retrieve the normalized counts matrix from <code>dds</code>, we use the <code>counts()</code> function and add the argument <code>normalized=TRUE</code>.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>normalized_counts <span class="ot">&lt;-</span> <span class="fu">counts</span>(dds, <span class="at">normalized=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>normalized_counts <span class="ot">&lt;-</span> <span class="fu">counts</span>(dds, <span class="at">normalized=</span><span class="cn">TRUE</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(normalized_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 control_3  control_2    control_1 vampirium_3 vampirium_2
+ENSG00000000005   31.99582   29.22739   25.1475854   33.506721    33.27943
+ENSG00000000419 1345.15751 1483.28994 1467.5412362 1996.695993  1660.46823
+ENSG00000000457  454.60725  417.53411  471.5172271  520.877216   511.45224
+ENSG00000000971   13.33159   21.92054    0.8981281    6.092131    19.26704
+ENSG00000001036 2515.67119 2661.77997 2764.4381426 2526.711406  2495.95699
+ENSG00000001084 2852.96044 2820.44293 3023.9971495 2613.524275  2751.68311
+                 vampirium_1  garlicum_3  garlicum_2
+ENSG00000000005   19.6958544   13.937293   21.896374
+ENSG00000000419 1729.9525449 1590.995601 1638.363998
+ENSG00000000457  517.0161780  588.582605  592.490125
+ENSG00000000971    0.8206606    2.144199    2.576044
+ENSG00000001036 2472.6503879 2813.188988 2803.379907
+ENSG00000001084 2516.1453997 3677.301154 3390.717944</code></pre>
+</div>
+</div>
 <p>We can save this normalized data matrix to file for later use:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(normalized_counts, <span class="at">file=</span><span class="st">"/work/Intro_to_bulkRNAseq/Results/normalized_counts.txt"</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">quote=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(normalized_counts, <span class="at">file=</span><span class="st">"../Results/normalized_counts.txt"</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">quote=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>DESeq2 doesn’t actually use normalized counts, rather it uses the raw counts and models the normalization inside the Generalized Linear Model (GLM). These normalized counts will be useful for downstream visualization of results, but cannot be used as input to DESeq2 or any other tools that perform differential expression analysis which use the negative binomial model.</p>
-</div>
-</div>
-<hr>
-<p><em>This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
 
 
 </section>
@@ -1181,8 +848,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1293,7 +958,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1519,15 +1183,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../develop/05b_count_matrix.html" class="pagination-link" aria-label="RNAseq count matrix">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">RNAseq count matrix</span>
+      <a href="../develop/05b_count_matrix.html" class="pagination-link" aria-label="The RNAseq count matrix">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">The RNAseq count matrix</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../develop/06_exploratory_analysis.html" class="pagination-link" aria-label="Exploratory analysis">
-        <span class="nav-page-text">Exploratory analysis</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../develop/06_exploratory_analysis.html" class="pagination-link" aria-label="Exploratory analysis with DESeq2">
+        <span class="nav-page-text">Exploratory analysis with DESeq2</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

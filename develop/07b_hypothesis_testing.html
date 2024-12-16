@@ -2,12 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jose Alejandro Romero Herrera">
+<meta name="dcterms.date" content="2024-12-16">
 
-<title>Hypothesis testing – Bulk RNAseq data analysis</title>
+<title>Hypothesis testing with DESeq2 – Bulk RNAseq data analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,12 +73,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-74e5c8182057b581c8ce78f3c749e987.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-9f03a6b1aa4272b2c7f9d01b972febf4.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -105,35 +107,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -200,7 +173,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">Differential Expression</a></li><li class="breadcrumb-item"><a href="../develop/07b_hypothesis_testing.html">Hypothesis testing</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">Differential Expression</a></li><li class="breadcrumb-item"><a href="../develop/07b_hypothesis_testing.html">Hypothesis testing with DESeq2</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -210,7 +183,7 @@ window.Quarto = {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -229,7 +202,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/05b_count_matrix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">RNAseq count matrix</span></a>
+ <span class="menu-text">The RNAseq count matrix</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -244,13 +217,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/05c_count_normalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Normalization</span></a>
+ <span class="menu-text">Count normalization with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/06_exploratory_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Exploratory analysis</span></a>
+ <span class="menu-text">Exploratory analysis with DESeq2</span></a>
   </div>
 </li>
       </ul>
@@ -267,25 +240,25 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07_extra_contrast_design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Contrast designs</span></a>
+ <span class="menu-text">DESeq samples comparison: contrast designs</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07a_DEA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DESeq2</span></a>
+ <span class="menu-text">Gene-level differential expression analysis with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07b_hypothesis_testing.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Hypothesis testing</span></a>
+ <span class="menu-text">Hypothesis testing with DESeq2</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/07c_DEA_visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Visualization</span></a>
+ <span class="menu-text">Log Fold Shrinkage and DEA visualizations</span></a>
   </div>
 </li>
       </ul>
@@ -302,19 +275,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08a_FA_genomic_annotation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Gene annotation</span></a>
+ <span class="menu-text">Genomic annotations for functional analyses</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08b_FA_overrepresentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Analysis</span></a>
+ <span class="menu-text">Functional Analysis for RNA-seq</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/08c_FA_GSEA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional class scoring</span></a>
+ <span class="menu-text">Functional Class Scoring</span></a>
   </div>
 </li>
       </ul>
@@ -331,7 +304,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../develop/09_summarized_workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Summarised workflow</span></a>
+ <span class="menu-text">Summary of DGE workflow</span></a>
   </div>
 </li>
       </ul>
@@ -341,20 +314,56 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#deseq2-model-fitting-and-hypothesis-testing" id="toc-deseq2-model-fitting-and-hypothesis-testing" class="nav-link" data-scroll-target="#deseq2-model-fitting-and-hypothesis-testing">DESeq2: Model fitting and Hypothesis testing</a>
+  <ul class="collapse">
+  <li><a href="#generalized-linear-model" id="toc-generalized-linear-model" class="nav-link" data-scroll-target="#generalized-linear-model">Generalized Linear Model</a></li>
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing">Hypothesis testing</a></li>
+  </ul></li>
+  <li><a href="#exploring-results" id="toc-exploring-results" class="nav-link" data-scroll-target="#exploring-results">Exploring Results</a>
+  <ul class="collapse">
+  <li><a href="#specifying-contrasts" id="toc-specifying-contrasts" class="nav-link" data-scroll-target="#specifying-contrasts">Specifying contrasts</a></li>
+  </ul></li>
+  <li><a href="#the-results-table" id="toc-the-results-table" class="nav-link" data-scroll-target="#the-results-table">The results table</a>
+  <ul class="collapse">
+  <li><a href="#gene-level-filtering" id="toc-gene-level-filtering" class="nav-link" data-scroll-target="#gene-level-filtering">Gene-level filtering</a></li>
+  </ul></li>
+  <li><a href="#fold-changes" id="toc-fold-changes" class="nav-link" data-scroll-target="#fold-changes">Fold changes</a></li>
+  <li><a href="#summarizing-results" id="toc-summarizing-results" class="nav-link" data-scroll-target="#summarizing-results">Summarizing results</a></li>
+  <li><a href="#extracting-significant-differentially-expressed-genes" id="toc-extracting-significant-differentially-expressed-genes" class="nav-link" data-scroll-target="#extracting-significant-differentially-expressed-genes">Extracting significant differentially expressed genes</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">Differential Expression</a></li><li class="breadcrumb-item"><a href="../develop/07b_hypothesis_testing.html">Hypothesis testing</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">Differential Expression</a></li><li class="breadcrumb-item"><a href="../develop/07b_hypothesis_testing.html">Hypothesis testing with DESeq2</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Hypothesis testing</h1>
+<h1 class="title">Hypothesis testing with DESeq2</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-page-right">
+<div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jose Alejandro Romero Herrera </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 16, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -364,197 +373,65 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled" title="Section Overview">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Section Overview
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>⏰ <strong>Time Estimation:</strong> 90 minutes</p>
-<p>💬 <strong>Learning Objectives:</strong></p>
-<ol type="1">
-<li>Demonstrate the use of the design formula with simple and complex designs</li>
-<li>Construct R code to execute the differential expression analysis workflow with DESeq2</li>
-<li>Describe the process of model fitting</li>
-<li>Compare two methods for hypothesis testing (Wald test vs.&nbsp;LRT)</li>
+<p>Approximate time: 40 minutes</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<ul>
 <li>Discuss the steps required to generate a results table for pairwise comparisons (Wald test)</li>
 <li>Recognize the importance of multiple test correction</li>
 <li>Identify different methods for multiple test correction</li>
 <li>Summarize the different levels of gene filtering</li>
 <li>Evaluate the number of differentially expressed genes produced for each comparison</li>
 <li>Construct R objects containing significant genes from each comparison</li>
-</ol>
-</div>
-</div>
-<p><span style="font-size:30px;"> DESeq2: Model fitting and Hypothesis testing <span></span></span></p>
+</ul>
+</section>
+<section id="deseq2-model-fitting-and-hypothesis-testing" class="level2">
+<h2 class="anchored" data-anchor-id="deseq2-model-fitting-and-hypothesis-testing">DESeq2: Model fitting and Hypothesis testing</h2>
 <p>The final step in the DESeq2 workflow is taking the counts for each gene and fitting it to the model and testing for differential expression.</p>
-<p><img src="./img/07b_hypothesis_testing/deseq_steps_Slide5.png" class="img-fluid"></p>
-<section id="generalized-linear-model" class="level2">
-<h2 class="anchored" data-anchor-id="generalized-linear-model">Generalized Linear Model</h2>
-<p>As described <a href="../develop/05b_count_matrix.html">earlier</a>, the count data generated by RNA-seq exhibits overdispersion (variance &gt; mean) and the statistical distribution used to model the counts needs to account for this. As such, DESeq2 uses a <strong>negative binomial distribution to model the RNA-seq counts using the equation below</strong>:</p>
-<p><img src="./img/07b_hypothesis_testing/NB_model_formula.png" class="img-fluid"></p>
+<section id="generalized-linear-model" class="level3">
+<h3 class="anchored" data-anchor-id="generalized-linear-model">Generalized Linear Model</h3>
+<p>As described <a href="06a_count_matrix.md">earlier</a>, the count data generated by RNA-seq exhibits overdispersion (variance &gt; mean) and the statistical distribution used to model the counts needs to account for this. As such, DESeq2 uses a <strong>negative binomial distribution to model the RNA-seq counts using the equation below</strong>:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./img/07b_hypothesis_testing/NB_model_formula.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="392"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>The two parameters required are the <strong>size factor, and the dispersion estimate</strong>. Next, a generalized linear model (GLM) of the NB family is used to fit the data. Modeling is a mathematically formalized way to approximate how the data behaves given a set of parameters.</p>
-<div class="callout callout-style-default callout-definition callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-About GLMs
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-definition">
-<p>“In statistics, the generalized linear model (GLM) is a flexible generalization of ordinary linear regression that allows for response variables that have error distribution models other than a normal distribution. The GLM generalizes linear regression by allowing the linear model to be related to the response variable via a link function and by allowing the magnitude of the variance of each measurement to be a function of its predicted value.” (<a href="https://en.wikipedia.org/wiki/Generalized_linear_model">Wikipedia</a>).</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p>After the model is fit, coefficients are estimated for each sample group along with their standard error. The coefficients are the estimates for the <strong>log2 fold changes</strong>, and will be used as input for hypothesis testing. <img src="./img/07b_hypothesis_testing/deseq_steps_Slide6.png" class="img-fluid"></p>
+<p>After the model is fit, coefficients are estimated for each sample group along with their standard error. The coefficients are the estimates for the <strong>log2 fold changes</strong>, and will be used as input for hypothesis testing.</p>
 </section>
-<section id="hypothesis-testing" class="level2">
-<h2 class="anchored" data-anchor-id="hypothesis-testing">Hypothesis testing</h2>
-<p>The first step in hypothesis testing is to set up a <strong>null hypothesis</strong> for each gene. In our case, the null hypothesis is that there is <strong>no differential expression across the two sample groups (LFC == 0)</strong>. Notice that we can do this without observing any data, because it is based on a thought experiment. Second, we use a statistical test to determine if based on the observed data, the null hypothesis can be rejected.</p>
-<section id="wald-test" class="level3">
-<h3 class="anchored" data-anchor-id="wald-test">Wald test</h3>
-<p>In DESeq2, the <strong>Wald test is the default used for hypothesis testing when comparing two groups</strong>. The Wald test is a test usually performed on parameters that have been estimated by maximum likelihood. In our case we are testing each gene model coefficient (LFC) which was derived using parameters like dispersion, which were estimated using maximum likelihood.</p>
-<p>DESeq2 implements the Wald test by:</p>
-<ol type="1">
-<li>Taking the LFC and dividing it by its standard error, resulting in a z-statistic.</li>
-<li>The z-statistic is compared to a standard normal distribution, and a p-value is computed reporting the probability that a z-statistic at least as extreme as the observed value would be selected at random.</li>
-<li>If the p-value is small we reject the null hypothesis and state that there is evidence against the null (i.e.&nbsp;the gene is differentially expressed).</li>
-</ol>
+<section id="hypothesis-testing" class="level3">
+<h3 class="anchored" data-anchor-id="hypothesis-testing">Hypothesis testing</h3>
+<p>The first step in hypothesis testing is to set up a <strong>null hypothesis</strong> for each gene. In our case, the null hypothesis is that there is <strong>no differential expression across the two sample groups (LFC == 0)</strong>. Second, we use a statistical test to determine if based on the observed data, the null hypothesis can be rejected. In DESeq2, the <strong>Wald test is the default used for hypothesis testing when comparing two groups</strong>.</p>
+<p>The GLM and the statistical testing is done using the function <code>nbinomWaldTest()</code></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">nbinomWaldTest</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <p>The <strong>model fit and Wald test were already run previously as part of the <code>DESeq()</code> function</strong>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DO NOT RUN THIS CODE</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Create DESeq2Dataset object</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromTximport</span>(txi,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">design =</span> <span class="sc">~</span> condition)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Run analysis</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="likelihood-ratio-test-lrt" class="level3">
-<h3 class="anchored" data-anchor-id="likelihood-ratio-test-lrt">Likelihood ratio test (LRT)</h3>
-<p>An alternative to pair-wise comparisons is to <strong>analyze all levels of a factor at once</strong>. By default, the Wald test is used to generate the results table, but DESeq2 also offers the LRT which is used to identify any genes that show change in expression across the different levels. This type of test can be especially useful in analyzing time course experiments.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-LRT vs Wald test
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The <strong>Wald test</strong> evaluates whether a gene’s expression is up- or down-regulated in one group compared to another, while the LRT <strong>identifies genes that are changing in expression in any combination across the different sample groups</strong>. For example:</p>
-<ul>
-<li>Gene expression is equal between Control and Vampirium, but is less in Garlicum</li>
-<li>Gene expression of Vampirium is lower than Control and Control is lower than Garlicum</li>
-<li>Gene expression of Garlicum is equal to Control, but less than Vampirium.</li>
-</ul>
-<p>Using LRT, we are evaluating the <strong>null hypothesis that the full model fits just as well as the reduced model</strong>. If we reject the null hypothesis, this suggests that there is a significant amount of variation explained by the full model (and our main factor of interest), therefore the gene is differentially expressed across the different levels. Generally, this test will result in a larger number of genes than the individual pair-wise comparisons. However, while the LRT is a test of significance for differences of any level of the factor, one should not expect it to be exactly equal to the union of sets of genes using Wald tests (although we do expect a majority overlap).</p>
-</div>
-</div>
-<p>To use the LRT, we use the <code>DESeq()</code> function but this time adding two arguments:</p>
-<ol type="1">
-<li>specifying that we want to use the LRT test</li>
-<li>the “reduced” model</li>
-</ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The full model was specified previously with the `design = ~ condition`</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># dds &lt;- DESeqDataSetFromTximport(txi,</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># colData = meta %&gt;% column_to_rownames("sample"), </span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># design = ~ condition)</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Likelihood ratio test</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>dds_lrt <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds, <span class="at">test=</span><span class="st">"LRT"</span>, <span class="at">reduced =</span> <span class="sc">~</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Since our “full” model only has one factor (<code>sampletype</code>), the “reduced” model (removing that factor) is just the intercept (~ 1). You will find that similar columns are reported for the LRT test. One thing to note is, <strong>even though there are fold changes present they are not directly associated with the actual hypothesis test.</strong></p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Time course analysis with LTR
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>The LRT test can be especially helpful when performing time course analyses. We can use the LRT to explore whether there are any significant differences in treatment effect between any of the timepoints.</p>
-<p>For have an experiment looking at the effect of treatment over time on mice of two different genotypes. We could use a design formula for our “full model” that would include the major sources of variation in our data: genotype, treatment, time, and our main condition of interest, which is the difference in the effect of treatment over time (treatment:time).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>full_model <span class="ot">&lt;-</span> <span class="er">~</span> genotype <span class="sc">+</span> treatment <span class="sc">+</span> time <span class="sc">+</span> treatment<span class="sc">:</span>time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To perform the LRT test, we can determine all genes that have significant differences in expression between treatments across time points by giving the “reduced model” without the <code>treatment:time</code> term:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>reduced_model <span class="ot">&lt;-</span> <span class="er">~</span> genotype <span class="sc">+</span> treatment <span class="sc">+</span> time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Then, we could run our test by using the following code:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dds_lrt <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(<span class="at">countData =</span> data, <span class="at">colData =</span> metadata, <span class="at">design =</span> <span class="sc">~</span> genotype <span class="sc">+</span> treatment <span class="sc">+</span> time <span class="sc">+</span> treatment<span class="sc">:</span>time)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>dds_lrt_time <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds_lrt, <span class="at">test=</span><span class="st">"LRT"</span>, <span class="at">reduced =</span> <span class="sc">~</span> genotype <span class="sc">+</span> treatment <span class="sc">+</span> time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This analysis will not return genes where the treatment effect does not change over time, even though the genes may be differentially expressed between groups at a particular time point, as shown in the figure below:</p>
-<p><img src="./img/07b_hypothesis_testing/lrt_time_nodiff.png" class="img-fluid" width="300"></p>
-<p>The significant DE genes will represent those genes that have differences in the effect of treatment over time, an example is displayed in the figure below:</p>
-<p><img src="./img/07b_hypothesis_testing/lrt_time_yesdiff.png" class="img-fluid" width="300"></p>
-</div>
-</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DO NOT RUN THIS CODE</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Create DESeq2Dataset object</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromTximport</span>(txi,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">colData =</span> meta <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">"sample"</span>), </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                              <span class="at">design =</span> <span class="sc">~</span> condition)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Run analysis</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 </section>
-<section id="multiple-test-correction" class="level2">
-<h2 class="anchored" data-anchor-id="multiple-test-correction">Multiple test correction</h2>
-<p>Regardless of whether we use the Wald test or the LRT, each gene that has been tested will be associated with a p-value. It is this result which we use to determine which genes are considered significantly differentially expressed. However, <strong>we cannot use the p-value directly.</strong></p>
-<section id="what-does-the-p-value-mean" class="level3">
-<h3 class="anchored" data-anchor-id="what-does-the-p-value-mean">What does the p-value mean?</h3>
-<p>A gene with a significance cut-off of p &lt; 0.05, means there is a 5% chance it is a false positive. For example, if we test 20,000 genes for differential expression, at p &lt; 0.05 we would expect to find 1,000 DE genes by chance. If we found 3000 genes to be differentially expressed total, roughly one third of our genes are false positives! We would not want to sift through our “significant” genes to identify which ones are true positives.</p>
-<p>Since each p-value is the result of a single test (single gene). The more genes we test, the more we inflate the false positive rate. <strong>This is the multiple testing problem.</strong></p>
-</section>
-<section id="correcting-the-p-value-for-multiple-testing" class="level3">
-<h3 class="anchored" data-anchor-id="correcting-the-p-value-for-multiple-testing">Correcting the p-value for multiple testing</h3>
-<p>There are a few common approaches for multiple test correction:</p>
-<ul>
-<li><strong>Bonferroni:</strong> The adjusted p-value is calculated by: <span class="math inline">\(p-value*m\)</span> (<span class="math inline">\(m\)</span> = total number of tests). <strong>This is a very conservative approach with a high probability of false negatives</strong>, so is generally not recommended.</li>
-<li><strong>FDR/Benjamini-Hochberg:</strong> Benjamini and Hochberg (1995) defined the concept of False Discovery Rate (FDR) and created an algorithm to control the expected FDR below a specified level given a list of independent p-values. <a href="https://www.statisticshowto.com/benjamini-hochberg-procedure/">More info about BH</a>.</li>
-<li><strong>Q-value / Storey method:</strong> The minimum FDR that can be attained when calling that feature significant. For example, if gene X has a q-value of 0.013 it means that 1.3% of genes that show p-values at least as small as gene X are false positives.</li>
-</ul>
-<p>DESeq2 helps reduce the number of genes tested by removing those genes unlikely to be significantly DE prior to testing, such as those with low number of counts and outlier samples (<a href="../develop/07b_hypothesis_testing.html#gene-level-filtering">see below</a>). However, multiple test correction is also implemented to reduce the False Discovery Rate using an interpretation of the Benjamini-Hochberg procedure.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-So what does FDR &lt; 0.05 mean?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>By setting the FDR cutoff to &lt; 0.05, we’re saying that the proportion of false positives we expect amongst our differentially expressed genes is 5%. For example, if you call 500 genes as differentially expressed with an FDR cutoff of 0.05, you expect 25 of them to be false positives.</p>
-</div>
-</div>
-</section>
-</section>
-<section id="exploring-results-wald-test" class="level2">
-<h2 class="anchored" data-anchor-id="exploring-results-wald-test">Exploring Results (Wald test)</h2>
-<p>By default DESeq2 uses the Wald test to identify genes that are differentially expressed between two sample groups. Given the factor(s) used in the design formula, and how many factor levels are present, we can extract results for a number of different comparisons. Here, we will walk you through how to obtain results from the <code>dds</code> object and provide some explanations on how to interpret them.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Wald test on continuous variables”
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The Wald test can also be used with <strong>continuous variables</strong>. If the variable of interest provided in the design formula is continuous-valued, then the reported <code>log2FoldChange</code> is per unit of change of that variable.</p>
-</div>
-</div>
+<section id="exploring-results" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-results">Exploring Results</h2>
+<p>By default DESeq2 uses the Wald test to identify genes that are differentially expressed between two sample groups. Given the factor(s) used in the design formula, and how many factor levels are present, we can extract results for a number of different comparisons.</p>
 <section id="specifying-contrasts" class="level3">
 <h3 class="anchored" data-anchor-id="specifying-contrasts">Specifying contrasts</h3>
 <p>In our dataset, we have three sample groups so we can make three possible pairwise comparisons:</p>
@@ -563,337 +440,292 @@ Wald test on continuous variables”
 <li>Garlicum vs.&nbsp;Vampirium</li>
 <li>Garlicum vs.&nbsp;Control</li>
 </ol>
-<p><strong>We are really only interested in 1 and 2 from above</strong>. When we initially created our <code>dds</code> object we had provided <code>~ condition</code> as our design formula, indicating that <code>sampletype</code> is our main factor of interest.</p>
+<p><strong>We are really only interested in #1 and #2 from above</strong>. When we initially created our <code>dds</code> object we had provided <code>~ condition</code> as our design formula, indicating that <code>condition</code> is our main factor of interest.</p>
 <p>To indicate which two sample groups we are interested in comparing, we need to specify <strong>contrasts</strong>. The contrasts are used as input to the DESeq2 <code>results()</code> function to extract the desired results.</p>
 <p>Contrasts can be specified in three different ways:</p>
-<p>1.Contrasts can be supplied as a <strong>character vector with exactly three elements</strong>: the name of the factor (of interest) in the design formula, the name of the two factors levels to compare. The factor level given last is the base level for the comparison. The syntax is given below:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DO NOT RUN!</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"condition"</span>, <span class="st">"level_to_compare"</span>, <span class="st">"base_level"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">results</span>(dds, <span class="at">contrast =</span> contrast)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>2.Contrasts can be given as a <strong>list of 2 character vectors</strong>: the names of the fold changes for the level of interest, and the names of the fold changes for the base level. These names should match identically to the elements of <code>resultsNames(object)</code>. <em>This method can be useful for combining interaction terms and main effects.</em></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DO NOT RUN!</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds) <span class="co"># to see what names to use</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">resultsNames</span>(dds)[<span class="dv">1</span>], <span class="fu">resultsNames</span>(dds)[<span class="dv">2</span>])</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">results</span>(dds, <span class="at">contrast =</span> contrast)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>3.One of the results from <code>resultsNames(dds)</code> and the <code>name</code> argument. This one is the simplest but it can also be very restrictive:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DO NOT RUN!</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds) <span class="co"># to see what names to use</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">results</span>(dds, <span class="at">name =</span> <span class="fu">resultsNames</span>(dds)[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Alternatively, if you <strong>only had two factor levels you could do nothing</strong> and not worry about specifying contrasts (i.e.&nbsp;<code>results(dds)</code>). In this case, DESeq2 will choose what your base factor level based on alphabetical order of the levels.</p>
-<p>To start, we want to evaluate <strong>expression changes between the control samples and the vampirium samples</strong>. As such we will use the first method for specifying contrasts and create a character vector:</p>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<ol type="1">
+<li>One of the results from <code>resultsNames(dds)</code> and the <code>name</code> argument. This one is the simplest but it can also be very restricted:</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds) <span class="co"># to see what names to use</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-title-container flex-fill">
-Exercise 1
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">results</span>(dds, <span class="at">name =</span> <span class="fu">resultsNames</span>(dds)[<span class="dv">2</span>]) <span class="co"># here we specify the second comparison from the list.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+<ol start="2" type="1">
+<li>Contrasts can be supplied as a <strong>character vector with exactly three elements</strong>:</li>
+</ol>
+<p>The first element <code>design_var</code>, is one of the variables you provided to the design formula on the <code>DESeqDataSetFromTximport()</code> function, when you first created the <code>dds</code> object.</p>
+<p>The second element, <code>level_to_compare</code>, is your group of interest of the chosen variable. In our case it would be either Control samples or Garlicum samples. The group must match the name in your metadata.</p>
+<p>The last element, <code>base_level</code>, is, ofc, the base level for the comparison. This would be our vampirium samples. Again, the name must match the name in your metadata!</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DO NOT RUN!</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"design_var"</span>, <span class="st">"level_to_compare"</span>, <span class="st">"base_level"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">results</span>(dds, <span class="at">contrast =</span> contrast)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-exercise">
-<p>Define contrasts for Vampirium samples using one of the two methods above.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## your code here</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#contrast_cont &lt;- </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-solution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<ol start="3" type="1">
+<li>Contrasts can be given as a <strong>list of 2 character vectors</strong>: the names of the fold changes for the level of interest, and the names of the fold changes for the base level. These names should match identically to the elements of <code>resultsNames(object)</code>. <em>This method can be useful for combining interaction terms and main effects.</em></li>
+</ol>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DO NOT RUN!</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds) <span class="co"># to see what names to use</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">resultsNames</span>(dds)[<span class="dv">2</span>], <span class="fu">resultsNames</span>(dds)[<span class="dv">3</span>])</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">results</span>(dds, <span class="at">contrast =</span> contrast)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-title-container flex-fill">
-Solution
+<p>Alternatively, if you <strong>only had two factor levels you could do nothing</strong>:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">results</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>log2 fold change (MLE): condition garlicum vs vampirium 
+Wald test p-value: condition garlicum vs vampirium 
+DataFrame with 38872 rows and 6 columns
+                   baseMean log2FoldChange     lfcSE      stat      pvalue
+                  &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;
+ENSG00000000005   26.086073      -0.646861  0.501159 -1.290729   0.1967975
+ENSG00000000419 1614.076845      -0.149505  0.100881 -1.481997   0.1383411
+ENSG00000000457  509.265870       0.194316  0.109504  1.774518   0.0759776
+ENSG00000000938    0.403756       1.805083  4.476581  0.403228   0.6867805
+ENSG00000000971    8.381364      -1.884550  1.452071 -1.297836   0.1943437
+...                     ...            ...       ...       ...         ...
+ENSG00000291310    0.380754     -2.6717039  4.492548 -0.594697 0.552046156
+ENSG00000291312   20.825465     -1.6970593  1.002445 -1.692920 0.090470680
+ENSG00000291315   30.487909     -0.0768952  0.470023 -0.163599 0.870046849
+ENSG00000291316   73.844923      0.7412490  0.342495  2.164264 0.030444100
+ENSG00000291317  299.454400     -0.7642255  0.186602 -4.095488 0.000042128
+                       padj
+                  &lt;numeric&gt;
+ENSG00000000005    0.383132
+ENSG00000000419    0.299549
+ENSG00000000457    0.193966
+ENSG00000000938          NA
+ENSG00000000971    0.379530
+...                     ...
+ENSG00000291310          NA
+ENSG00000291312 0.220112812
+ENSG00000291315 0.937261738
+ENSG00000291316 0.097098441
+ENSG00000291317 0.000404955</code></pre>
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-solution">
-<p>First let’s check the metadata:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>meta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Since we have only given the <code>condition</code> column in the design formula, the first element should be <code>condition</code>. The second element is the condition we are interested, <code>control</code> and our base level is <code>vampirium</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>contrast_cont <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"condition"</span>, <span class="st">"control"</span>, <span class="st">"vampirium"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To start, we want to evaluate <strong>expression changes between the Control samples and the Vampirium samples</strong>. As such we will use the first method for specifying contrasts and create a character vector:</p>
+<hr>
+<p><strong>Exercise 1</strong></p>
+<p>Define contrasts for Control vs Vampirium samples using one of the two methods above.</p>
+<p><strong>Your code here</strong></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>contrast_cont <span class="ot">&lt;-</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Does it matter what I choose to be my base level?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Yes, it does matter. <strong>Deciding what level is the base level will determine how to interpret the fold change that is reported.</strong> So for example, if we observe a log2 fold change of -2 this would mean the gene expression is lower in factor level of interest relative to the base level. Thus, if leaving it up to DESeq2 to decide on the contrasts be sure to check that the alphabetical order coincides with the fold change direction you are anticipating.</p>
-</div>
-</div>
+<hr>
 </section>
 </section>
 <section id="the-results-table" class="level2">
 <h2 class="anchored" data-anchor-id="the-results-table">The results table</h2>
-<p>Now that we have our contrast created, we can use it as input to the <code>results()</code> function. Let’s take a quick look at the help manual for the function:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>?results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You will see we have the option to provide a wide array of arguments and tweak things from the defaults as needed. As we go through the lesson we will keep coming back to the help documentation to discuss some arguments that are good to know about.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract results for Control vs Vampirium samples</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast=</span>contrast_cont, <span class="at">alpha =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>Now that we have our contrast created, we can use it as input to the <code>results()</code> function.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>?results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-title-container flex-fill">
-Warning
+<p>You will see we have the option to provide a wide array of arguments and tweak things from the defaults as needed. For example:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract results for Contorl vs Vampirium with a pvalue &lt; 0.05</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast=</span>contrast_cont, <span class="at">alpha =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
+<p>The results table that is returned to us is <strong>a <code>DESeqResults</code> object</strong>, which is a simple subclass of DataFrame.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what type of object is returned</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(res_tableCont)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-body-container callout-body">
-<p>For our analysis, in addition to the <code>contrast</code> argument we will also provide a value of 0.05 for the <code>alpha</code> argument. We will describe this in more detail when we talk about gene-level filtering.</p>
-</div>
-</div>
-<p>The results table that is returned to us is <strong>a <code>DESeqResults</code> object</strong>, which is a simple subclass of DataFrame. In many ways it can be treated like a dataframe (i.e when accessing/subsetting data), however it is important to recognize that there are differences for downstream steps like visualization.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what type of object is returned</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(res_tableCont)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now let’s take a look at <strong>what information is stored</strong> in the results:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is stored in results?</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="sc">%&gt;%</span> </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We have six columns of information reported for each gene (row). We can use the <code>mcols()</code> function to extract information on what the values stored in each column represent:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get information on each column in results</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mcols</span>(res_tableCont, <span class="at">use.names=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is stored in results?</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We can use the <code>mcols()</code> function to extract information on what the values stored in each column represent:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get information on each column in results</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">mcols</span>(res_tableCont, <span class="at">use.names=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <ul>
-<li><code>baseMean</code>: mean of normalized counts for all samples</li>
+<li><code>baseMean</code>: mean of normalized counts for all samples in your count matrix</li>
 <li><code>log2FoldChange</code>: log2 fold change</li>
-<li><code>lfcSE</code>: standard error</li>
+<li><code>lfcSE</code>: standard error for the lfc calculation</li>
 <li><code>stat</code>: Wald statistic</li>
 <li><code>pvalue</code>: Wald test p-value</li>
 <li><code>padj</code>: BH adjusted p-values</li>
 </ul>
-</section>
-<section id="p-values" class="level2">
-<h2 class="anchored" data-anchor-id="p-values">p-values</h2>
-<p>The p-value is a probability value used to determine whether there is evidence to reject the null hypothesis. <strong>A smaller p-value means that there is stronger evidence in favor of the alternative hypothesis</strong>.</p>
-<p><strong>The <code>padj</code> column</strong> in the results table represents the p-value adjusted for multiple testing, and is the most important column of the results. Typically, a threshold such as <code>padj</code> &lt; 0.05 is a good starting point for identifying significant genes. The default method for <strong>multiple test correction</strong> in DESeq2 is the FDR. Other methods can be used with the <code>pAdjustMethod</code> argument in the <code>results()</code> function.</p>
 <section id="gene-level-filtering" class="level3">
 <h3 class="anchored" data-anchor-id="gene-level-filtering">Gene-level filtering</h3>
 <p>Let’s take a closer look at our results table. As we scroll through it, you will notice that for <strong>selected genes there are NA values in the <code>pvalue</code> and <code>padj</code> columns</strong>. What does this mean?</p>
-<p><img src="./img/07b_hypothesis_testing/gene_filtering.png" class="img-fluid"></p>
-<p>The missing values represent genes that have undergone filtering as part of the <code>DESeq()</code> function. Prior to differential expression analysis it is <strong>beneficial to omit genes that have little or no chance of being detected as differentially expressed.</strong> This will increase the power to detect differentially expressed genes. DESeq2 <strong>does not physically remove</strong> any genes from the original counts matrix, and so all genes will be present in your results table. The genes omitted by DESeq2 meet one of the <strong>three filtering criteria outlined below</strong>:</p>
-<p><strong>1. Genes with zero counts in all samples</strong></p>
-<p>If within a row, all samples have zero counts there is no expression information and therefore these genes are not tested. In our case, there are no genes that fulfill this criteria, since we have already filtered out these genes ourselves when we created our <code>dds</code> object.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show genes with zero expression</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="sc">%&gt;%</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"gene"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(baseMean<span class="sc">==</span><span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If there would be any genes meeting this criteria, the baseMean column for these genes will be zero, and the log2 fold change estimates, p-value and adjusted p-value will all be set to NA.</p>
-</div>
-</div>
-<p><strong>2. Genes with an extreme count outlier</strong></p>
-<p>The <code>DESeq()</code> function calculates, for every gene and for every sample, a diagnostic test for outliers called Cook’s distance. Cook’s distance is a measure of how much a single sample is influencing the fitted coefficients for a gene, and a large value of Cook’s distance is intended to indicate an outlier count. Genes which contain a Cook’s distance above a threshold are flagged, however at least 3 replicates are required for flagging, as it is difficult to judge which sample might be an outlier with only 2 replicates. We can turn off this filtering by using the <code>cooksCutoff</code> argument in the <code>results()</code> function.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show genes that have an extreme outlier</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="sc">%&gt;%</span> </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"gene"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">is.na</span>(pvalue) <span class="sc">&amp;</span> <span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> baseMean <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>It seems that we have some genes with outliers!</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If a gene contains a sample with an extreme count outlier then the p-value and adjusted p-value will be set to NA.</p>
-</div>
-</div>
-<p><strong>3. Genes with a low mean normalized counts</strong></p>
-<p>DESeq2 defines a low mean threshold, that is empirically determined from your data, in which the fraction of significant genes can be increased by reducing the number of genes that are considered for multiple testing. This is based on the notion that genes with very low counts are not likely to see significant differences typically due to high dispersion.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/07b_hypothesis_testing/indep_filt_scatterplus.png" class="img-fluid figure-img"></p>
-<figcaption>Image courtesy of <a href="https://www.slideshare.net/joachimjacob/5rna-seqpart5detecting-differentialexpression">slideshare presentation</a> from Joachim Jacob, 2014.</figcaption>
+<p><img src="./img/07b_hypothesis_testing/gene_filtering.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="736"></p>
 </figure>
 </div>
-<p>At a user-specified value (<code>alpha = 0.05</code>), DESeq2 evaluates the change in the number of significant genes as it filters out increasingly bigger portions of genes based on their mean counts, as shown in the figure above. The point at which the number of significant genes reaches a peak is the low mean threshold that is used to filter genes that undergo multiple testing. There is also an argument to turn off the filtering off by setting <code>independentFiltering = F</code>.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter genes below the low mean threshold</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="sc">%&gt;%</span> </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"gene"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(pvalue) <span class="sc">&amp;</span> <span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> baseMean <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>If a gene is filtered by independent filtering, then only the adjusted p-value will be set to NA.</p>
+<p>The missing values represent genes that have undergone filtering as part of the <code>DESeq()</code> function. Prior to differential expression analysis it is <strong>beneficial to omit genes that have little or no chance of being detected as differentially expressed.</strong> This will increase the power to detect differentially expressed genes. DESeq2 <strong>does not physically remove</strong> any genes from the original counts matrix, and so all genes will be present in your results table. The genes omitted by DESeq2 meet one of the <strong>three filtering criteria outlined below</strong>:</p>
+<p><strong>1. Genes with zero counts in all samples</strong></p>
+<p>If within a row, all samples have zero counts there is no expression information and therefore these genes are not tested. Since we have already filtered out these genes ourselves when we created our <code>dds</code> object.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show genes with zero expression</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"gene"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(baseMean<span class="sc">==</span><span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
+<blockquote class="blockquote">
+<p><strong>If there would be any genes meeting this criteria, the baseMean column for these genes will be zero, and the log2 fold change estimates, p-value and adjusted p-value will all be set to NA.</strong></p>
+</blockquote>
+<p><strong>2. Genes with an extreme count outlier</strong></p>
+<p>The <code>DESeq()</code> function calculates, for every gene and for every sample, a diagnostic test for outliers called Cook’s distance. If several samples are flagged for a certain gene, the gene is filtered out.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show genes that have an extreme outlier</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="sc">%&gt;%</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"gene"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">is.na</span>(pvalue) <span class="sc">&amp;</span> <span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> baseMean <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>It seems that we have some genes with outliers!</p>
+<blockquote class="blockquote">
+<p><strong>If a gene contains a sample with an extreme count outlier then the p-value and adjusted p-value will be set to NA.</strong></p>
+</blockquote>
+<p><strong>3. Genes with a low mean normalized counts</strong></p>
+<p>DESeq2 defines a low mean threshold, that is empirically determined from your data, in which the fraction of significant genes can be increased by reducing the number of genes that are considered for multiple testing. This is based on the notion that genes with very low counts are not likely to see significant differences typically due to high dispersion.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show genes below the low mean threshold</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>res_tableCont <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"gene"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(pvalue) <span class="sc">&amp;</span> <span class="fu">is.na</span>(padj) <span class="sc">&amp;</span> baseMean <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>DESeq2 will perform the filtering outlined above by default; however other DE tools, such as EdgeR will not. Filtering is a necessary step, even if you are using limma-voom and/or edgeR’s quasi-likelihood methods. Be sure to follow pre-filtering steps when using other tools, as outlined in their user guides found on Bioconductor as they generally perform much better.*</p>
-</div>
-</div>
+<blockquote class="blockquote">
+<p><strong>If a gene is filtered by independent filtering, then only the adjusted p-value will be set to NA.</strong></p>
+</blockquote>
+<blockquote class="blockquote">
+<p><em><strong>NOTE:</strong> DESeq2 will perform the filtering outlined above by default; however other DE tools, such as EdgeR will not. Filtering is a necessary step, even if you are using limma-voom and/or edgeR’s quasi-likelihood methods. Be sure to follow pre-filtering steps when using other tools, as outlined in their user guides found on Bioconductor as they generally perform much better.</em></p>
+</blockquote>
 </section>
 </section>
 <section id="fold-changes" class="level2">
 <h2 class="anchored" data-anchor-id="fold-changes">Fold changes</h2>
-<p>Another important column in the results table, is the <code>log2FoldChange</code>. With large significant gene lists it can be hard to extract meaningful biological relevance. To help increase stringency, one can also <strong>add a fold change threshold</strong>. Keep in mind when setting that value that we are working with log2 fold changes, so a cutoff of <code>log2FoldChange</code> &lt; 1 would translate to an actual fold change of 2.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-An alternative approach to add the fold change threshold
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-15" class="callout-15-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<p>With large significant gene lists it can be hard to extract meaningful biological relevance. To help increase stringency, one can also <strong>add a fold change threshold</strong>. Keep in mind when setting that value that we are working with log2 fold changes, so a cutoff of <code>log2FoldChange</code> &lt; 1 would translate to an actual fold change of 2.</p>
+<blockquote class="blockquote">
+<h3 id="an-alternative-approach-to-add-the-fold-change-threshold" class="anchored">An alternative approach to add the fold change threshold:</h3>
 <p>The <code>results()</code> function has an option to add a fold change threshold using the <code>lfcThreshold</code> argument. This method is more statistically motivated, and is recommended when you want a more confident set of genes based on a certain fold-change. It actually performs a statistical test against the desired threshold, by performing a two-tailed test for log2 fold changes greater than the absolute value specified. The user can change the alternative hypothesis using <code>altHypothesis</code> and perform two one-tailed tests as well. <strong>This is a more conservative approach, so expect to retrieve a much smaller set of genes!</strong></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>res_tableCont_LFC1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast=</span>contrast_cont, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">lfcThreshold =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</blockquote>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>res_tableCont_LFC1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast=</span>contrast_cont, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">lfcThreshold =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-</div>
-</div>
-<p>The fold changes reported in the results table are the coefficients calculated in the GLM mentioned in the <a href="#generalized-linear-model">previous section</a>.</p>
 </section>
 <section id="summarizing-results" class="level2">
 <h2 class="anchored" data-anchor-id="summarizing-results">Summarizing results</h2>
-<p>To summarize the results table, a handy function in DESeq2 is <code>summary()</code>. Confusingly it has the same name as the function used to inspect data frames. This function, when called with a DESeq results table as input, will summarize the results using a default threshold of padj &lt; 0.1. However, since we had set the <code>alpha</code> argument to 0.05 when creating our results table threshold: FDR &lt; 0.05 (padj/FDR is used even though the output says <code>p-value &lt; 0.05</code>). Let’s start with the OE vs control results:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Summarize results</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(res_tableCont, <span class="at">alpha =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To summarize the results table, a handy function in DESeq2 is <code>summary()</code>.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Summarize results</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(res_tableCont, <span class="at">alpha =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <p>In addition to the number of genes up- and down-regulated at the default threshold, <strong>the function also reports the number of genes that were tested (genes with non-zero total read count), and the number of genes not included in multiple test correction due to a low mean count</strong>.</p>
 </section>
 <section id="extracting-significant-differentially-expressed-genes" class="level2">
 <h2 class="anchored" data-anchor-id="extracting-significant-differentially-expressed-genes">Extracting significant differentially expressed genes</h2>
 <p>Let’s first create variables that contain our threshold criteria. We will only be using the adjusted p-values in our criteria:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Set thresholds</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>padj.cutoff <span class="ot">&lt;-</span> <span class="fl">0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Set thresholds</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>padj.cutoff <span class="ot">&lt;-</span> <span class="fl">0.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <p>We can easily subset the results table to only include those that are significant using the <code>dplyr::filter()</code> function, but first we will convert the results table into a tibble:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a tibble of results and add gene IDs to new object</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>res_tableCont_tb <span class="ot">&lt;-</span> res_tableCont <span class="sc">%&gt;%</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"gene"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(gene, <span class="at">.before =</span> baseMean)</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res_tableCont_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a tibble of results and add gene symbols to new object</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>res_tableCont_tb <span class="ot">&lt;-</span> res_tableCont <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"gene"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(gene, <span class="at">.before =</span> baseMean)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(res_tableCont_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <p>Now we can subset that table to only keep the significant genes using our pre-defined thresholds:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset the tibble to keep only significant genes</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>sigCont <span class="ot">&lt;-</span> res_tableCont_tb <span class="sc">%&gt;%</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(padj <span class="sc">&lt;</span> padj.cutoff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a quick look at this tibble</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>sigCont</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset the tibble to keep only significant genes</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>sigCont <span class="ot">&lt;-</span> res_tableCont_tb <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(padj <span class="sc">&lt;</span> padj.cutoff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a quick look at this tibble</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sigCont)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <p>Now that we have extracted the significant results, we are ready for visualization!</p>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="true" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise 2
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-17" class="callout-17-contents callout-collapse collapse show">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-exercise">
+<hr>
+<p><strong>Exercise 2</strong></p>
 <p><strong>Vampirium Differential Expression Analysis: Garlicum versus Vampirium</strong></p>
-<p>Now that we have results for the Control vs Vampirium results, do the same for the <strong>Garlicum vs Vampirium samples</strong>.</p>
+<p>Now that we have results for the Control vs Vampirium results, do the same for the <strong>Garlicum vs.&nbsp;Control samples</strong>.</p>
 <ol type="1">
 <li>Create a contrast vector called <code>contrast_gar</code>.</li>
 <li>Use contrast vector in the <code>results()</code> to extract a results table and store that to a variable called <code>res_tableGar</code>.</li>
-<li>Using a p-adjusted threshold of 0.05 (<code>padj.cutoff &lt; 0.05</code>), subset <code>res_tableGar</code> to report the number of genes that are up- and down-regulated in garlicum compared to vampirium.</li>
-<li>How many genes are differentially expressed in the Garlicum compared to Vampirium? How does this compare to the Control vs Vampirium significant gene list (in terms of numbers)?</li>
+<li>Using a p-adjusted threshold of 0.05 (<code>padj.cutoff &lt; 0.05</code>), subset <code>res_tableGar</code> to report the number of genes that are up- and down-regulated in Garlicum compared to Vampirium.</li>
+<li>How many genes are differentially expressed in the Garlicum vs Vampirium comparison? How does this compare to the Control vs Vampirium significant gene list (in terms of numbers)?</li>
 </ol>
-<div class="callout callout-style-default callout-solution callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solution
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-16" class="callout-16-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div>
-<div class="callout-solution">
-<ol type="1">
-<li>Contrast for Garlicum vs Vampirium</li>
-</ol>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>contrast_gar <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"condition"</span>, <span class="st">"garlicum"</span>, <span class="st">"vampirium"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol start="2" type="1">
-<li>Extract results</li>
-</ol>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>res_tableGar <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> contrast_gar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol start="3" type="1">
-<li>Significant genes</li>
-</ol>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>padj.cutoff <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>sigGar <span class="ot">&lt;-</span> res_tableGar <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"gene"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">relocate</span>(gene, <span class="at">.before =</span> baseMean) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(padj <span class="sc">&lt;</span> padj.cutoff)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>sigGar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol start="4" type="1">
-<li>Comparison against sigGar vs sigCont</li>
-</ol>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(sigGar) <span class="co">#number of significant genes in Garlicum vs Vampirium</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(sigCont) <span class="co">#number of significant genes in Control vs Vampirium</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(sigCont) <span class="sc">-</span> <span class="fu">nrow</span>(sigGar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>sigCont has almost 2000 more genes that are differentially expressed!</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<hr>
-<p><em>This lesson was originally developed by members of the teaching team (Mary Piper, Meeta Mistry, Radhika Khetani) at the <a href="http://bioinformatics.sph.harvard.edu/">Harvard Chan Bioinformatics Core (HBC)</a>.</em></p>
-<p><em>Some materials and hands-on activities were adapted from <a href="http://www.bioconductor.org/help/workflows/rnaseqGene/#de">RNA-seq workflow</a> on the Bioconductor website</em></p>
 
 
 </section>
@@ -1125,8 +957,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1237,7 +1067,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1463,15 +1292,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../develop/07a_DEA.html" class="pagination-link" aria-label="DESeq2">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">DESeq2</span>
+      <a href="../develop/07a_DEA.html" class="pagination-link" aria-label="Gene-level differential expression analysis with DESeq2">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Gene-level differential expression analysis with DESeq2</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../develop/07c_DEA_visualization.html" class="pagination-link" aria-label="Visualization">
-        <span class="nav-page-text">Visualization</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../develop/07c_DEA_visualization.html" class="pagination-link" aria-label="Log Fold Shrinkage and DEA visualizations">
+        <span class="nav-page-text">Log Fold Shrinkage and DEA visualizations</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
