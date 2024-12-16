@@ -123,7 +123,7 @@ library(ensembldb)
 
 #To avoid prompting from annotation hub
 setAnnotationHubOption("CACHE", "./AnnotationHub")
-setAnnotationHubOption("ASK", "FALSE")
+setAnnotationHubOption("ASK", FALSE)
 
 # Connect to AnnotationHub
 ah <- AnnotationHub()
