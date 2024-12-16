@@ -59,7 +59,7 @@ Next, wait until the screen looks like the figure below. This process usually ta
 
 Now, click on `Open terminal` on the top right-hand side of the screen. You will start terminal session through your browser! Once inside the terminal, you will need to do one last thing before starting the pipeline:
 
-```bash
+```{.bash}
 tmux 
 ```
 
