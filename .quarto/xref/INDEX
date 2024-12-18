@@ -1,0 +1,47 @@
+{
+  "develop/workshop_RNAseq_nov2024.qmd": {
+    "workshop_RNAseq_nov2024.html": "4974da28"
+  },
+  "develop/02_experimental_planning.qmd": {
+    "02_experimental_planning.html": "cfeb1bdb"
+  },
+  "develop/cards/AdrijaKalvisa.qmd": {
+    "AdrijaKalvisa.html": "6c1b2216"
+  },
+  "develop/cards/thildeTerkelsen.qmd": {
+    "thildeTerkelsen.html": "98aac7cc"
+  },
+  "develop/cards/HenrikeZschach.qmd": {
+    "HenrikeZschach.html": "2bb6b851"
+  },
+  "develop/cards/AlbaMartinez.qmd": {
+    "AlbaMartinez.html": "3fd3c4dd"
+  },
+  "develop/cards/extraCards/SamueleSoraggi.qmd": {
+    "SamueleSoraggi.html": "84497883"
+  },
+  "develop/cards/extraCards/JenniferBartell.qmd": {
+    "JenniferBartell.html": "1ec2595d"
+  },
+  "develop/05a_data_analysis_setup.qmd": {
+    "05a_data_analysis_setup.html": "850c31fd"
+  },
+  "develop/index.qmd": {
+    "index.html": "86e593ae"
+  },
+  "develop/summary.qmd": {
+    "summary.html": "4fd66b9f"
+  },
+  "develop/04a_preprocessing.qmd": {
+    "04a_preprocessing.html": "2d422176"
+  },
+  "develop/04b_pipelines.qmd": {
+    "04b_pipelines.html": "8adc50c1"
+  },
+  "develop/03_data_explanation.qmd": {
+    "03_data_explanation.html": "238635fe"
+  },
+  "develop/04c_preprocessing_nf3170.qmd": {
+    "04c_preprocessing_nf3170.html": "923597c6"
+  }
+}
