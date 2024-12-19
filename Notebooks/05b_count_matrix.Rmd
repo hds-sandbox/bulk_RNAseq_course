@@ -1,5 +1,10 @@
 ---
 title: "The RNAseq count matrix"
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding,
+                        output_format='all',
+                        output_dir='./')})
 format:
   html:
     toc: true # table of contents
