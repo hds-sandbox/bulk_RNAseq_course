@@ -12,7 +12,8 @@ output:
     theme: yeti # nice theme for the webpage
     toc: true # table of contents
     toc_float: true # table of contents "floats" in the document
-    code_folding: none 
+    code_folding: show
+    collapse: false
     df_print: paged # data frames are interactive
     dev: png # what format do you want for the figures?
 ---
