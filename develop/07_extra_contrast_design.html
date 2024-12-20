@@ -469,19 +469,19 @@ sample6   treat  </code></pre>
 <pre><code>log2 fold change (MLE): condition_treat_vs_control effect 
 Wald test p-value: condition_treat_vs_control effect 
 DataFrame with 1000 rows and 6 columns
-          baseMean log2FoldChange     lfcSE      stat      pvalue        padj
-         &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
-gene1      25.8214      -1.657436  0.746256 -2.221002 0.026350827  0.06788688
-gene2      25.6591      -1.545694  0.771022 -2.004735 0.044991347  0.10106431
-gene3     359.4599       0.304701  0.408977  0.745032 0.456252465  0.58632952
-gene4      10.7757      -4.525107  1.257925 -3.597279 0.000321563  0.00165687
-gene5      14.3918       0.905835  0.829287  1.092306 0.274698406  0.40864563
-...            ...            ...       ...       ...         ...         ...
-gene996    4.61750      -1.771386  1.342941 -1.319035 1.87158e-01 3.05892e-01
-gene997  121.62425      -4.059413  0.526814 -7.705591 1.30239e-14 4.94907e-13
-gene998   24.81257      -2.949839  0.720813 -4.092380 4.26969e-05 2.72305e-04
-gene999   23.15334       2.138521  0.710810  3.008571 2.62479e-03 1.00159e-02
-gene1000   9.74465       0.671829  0.977304  0.687431 4.91811e-01 6.18090e-01</code></pre>
+          baseMean log2FoldChange     lfcSE       stat      pvalue        padj
+         &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt;  &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
+gene1     67.06433    -0.00689895  0.507917 -0.0135828 0.989162808  0.99609846
+gene2     32.46454     0.88426700  0.803057  1.1011264 0.270841627  0.42995565
+gene3     41.70107    -2.46894026  0.710799 -3.4734721 0.000513771  0.00243119
+gene4     48.52745    -2.35826158  0.672725 -3.5055340 0.000455692  0.00222010
+gene5      6.70551    -3.80902735  1.360556 -2.7996107 0.005116428  0.01794378
+...            ...            ...       ...        ...         ...         ...
+gene996   10.50074       1.079985  0.961352   1.123403 2.61266e-01 4.17435e-01
+gene997   59.50013      -0.319877  0.616176  -0.519132 6.03668e-01 7.41125e-01
+gene998  160.34766       4.105860  0.619911   6.623306 3.51252e-11 8.90738e-10
+gene999   39.29958       1.066834  0.615995   1.731886 8.32938e-02 1.73062e-01
+gene1000   6.07362      -2.555036  1.291543  -1.978282 4.78970e-02 1.09907e-01</code></pre>
 </div>
 </div>
 <p>The above is a simple way to obtain the results of interest. But it is worth understanding how DESeq is getting to these results by looking at the model’s matrix. DESeq defines the model matrix using base R functionality:</p>
@@ -854,15 +854,15 @@ attr(,"contrasts")$bloodtype
 <pre><code>DataFrame with 9 rows and 3 columns
         bloodtype sizeFactor      A_B
          &lt;factor&gt;  &lt;numeric&gt; &lt;factor&gt;
-sample1    bloodA   0.960307    TRUE 
-sample2    bloodA   0.921604    TRUE 
-sample3    bloodA   0.954911    TRUE 
-sample4    bloodB   0.903013    TRUE 
-sample5    bloodB   0.947941    TRUE 
-sample6    bloodB   1.154076    TRUE 
-sample7    bloodO   1.163800    FALSE
-sample8    bloodO   1.140992    FALSE
-sample9    bloodO   1.086946    FALSE</code></pre>
+sample1    bloodA   0.933042    TRUE 
+sample2    bloodA   0.945626    TRUE 
+sample3    bloodA   1.003623    TRUE 
+sample4    bloodB   1.015760    TRUE 
+sample5    bloodB   0.956143    TRUE 
+sample6    bloodB   1.116913    TRUE 
+sample7    bloodO   1.082968    FALSE
+sample8    bloodO   1.144347    FALSE
+sample9    bloodO   1.118454    FALSE</code></pre>
 </div>
 </div>
 <p>and then re-run DESeq with a new design:</p>
