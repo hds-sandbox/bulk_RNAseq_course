@@ -7,15 +7,15 @@ knit: (function(inputFile, encoding) {
                         encoding=encoding,
                         output_format='all',
                         output_dir='./')})
-output:
-  html_document:
-    theme: yeti # nice theme for the webpage
-    toc: true # table of contents
-    toc_float: true # table of contents "floats" in the document
-    code_folding: show
-    collapse: false
-    df_print: paged # data frames are interactive
-    dev: png # what format do you want for the figures?
+#output:
+#  html_document:
+#    theme: yeti # nice theme for the webpage
+#    toc: true # table of contents
+#    toc_float: true # table of contents "floats" in the document
+#    code_folding: show
+#    collapse: false
+#    df_print: paged # data frames are interactive
+#    dev: png # what format do you want for the figures?
 ---
 
 ```{r knitr, include = FALSE}
@@ -43,7 +43,9 @@ Approximate time: 20 minutes
 
 For this analysis we will be using several R packages, some which have been installed from CRAN and others from Bioconductor. To use these packages (and the functions contained within them), we need to **load the libraries.**
 
-```{r, echo=TRUE}
+```{r}
+#| echo: true
+
 library(tidyverse)
 library(DESeq2)
 library(tximport)
@@ -170,7 +172,7 @@ To determine the appropriate statistical model, we need information about the di
 pdata <- data %>% 
   gather(key = Sample, value = Count)
 
-pdata
+head(pdata)
 ```
 
 And we plot our count distribution using all our samples:
