@@ -48,15 +48,27 @@ jobs:
   
 #      - name: Install R Dependencies
 #        uses: r-lib/actions/setup-renv@v2
+      - name: Install fgsea with C++14 compiler
+        run: |
+          # Set the C++14 compiler and flags for this session
+          export CXX=g++-11
+          export CXXFLAGS="-std=c++14"
+
+          # Verify which compiler is being used
+          g++-11 --version
+          echo "Using compiler: $CXX"
+          echo "Using CXXFLAGS: $CXXFLAGS"
+
+          # Print R's understanding of the compilation environment
+          R -e 'Sys.getenv(c("CXX", "CXXFLAGS"))'
+          
+          # Install fgsea from Bioconductor
+          R -e 'install.packages("BiocManager")'
+          R -e 'BiocManager::install(c("fgsea"))'
   
       - name: installations
         run: |
-          RENV_LIBRARY_PATH=$(Rscript -e 'cat(renv::paths$library())')
-          # Ensure renv Makevars exists and add the flags
-          echo "CXX=g++-11" >> "$RENV_LIBRARY_PATH/Makevars"
-          echo "CXXFLAGS=-std=c++14" >> "$RENV_LIBRARY_PATH/Makevars"
-          R -e 'install.packages(c("devtools","BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
-          R -e 'BiocManager::install("fgsea")
+          R -e 'install.packages(c("devtools", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
           R -e 'devtools::install_github("stephenturner/annotables")'
           R -e 'BiocManager::install(c("DESeq2", "clusterProfiler", "DOSE", "org.Hs.eg.db", "pathview", "DEGreport", "tximport", "AnnotationHub", "ensembldb","apeglm","ggnewscale"))'
           R -e 'install.packages(c("rmarkdown", "markdown", "knitr"))' 
