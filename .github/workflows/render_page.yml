@@ -51,7 +51,7 @@ jobs:
       - name: Install Renv and Dependencies
         run: |
           R -e 'install.packages("renv")'
-          R -e 'renv::restore(strict = TRUE)'
+          R -e 'renv::restore()'
         env:
           GITHUB_PAT: ${{ secrets.TOKEN }}
           
