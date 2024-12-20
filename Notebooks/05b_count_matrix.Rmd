@@ -12,7 +12,7 @@ output:
     theme: yeti # nice theme for the webpage
     toc: true # table of contents
     toc_float: true # table of contents "floats" in the document
-    code_folding: show 
+    code_folding: none 
     df_print: paged # data frames are interactive
     dev: png # what format do you want for the figures?
 ---
@@ -42,7 +42,7 @@ Approximate time: 20 minutes
 
 For this analysis we will be using several R packages, some which have been installed from CRAN and others from Bioconductor. To use these packages (and the functions contained within them), we need to **load the libraries.**
 
-```{r}
+```{r, echo=TRUE}
 library(tidyverse)
 library(DESeq2)
 library(tximport)
