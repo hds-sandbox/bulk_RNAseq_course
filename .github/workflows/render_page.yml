@@ -51,8 +51,10 @@ jobs:
   
       - name: installations
         run: |
-          echo "CXX=g++-11" >> $(Rscript -e 'cat(renv::paths$library())')/Makevars && \
-          echo "CXXFLAGS=-std=c++14" >> $(Rscript -e 'cat(renv::paths$library())')/Makevars && \
+          RENV_LIBRARY_PATH=$(Rscript -e 'cat(renv::paths$library())')
+          # Ensure renv Makevars exists and add the flags
+          echo "CXX=g++-11" >> "$RENV_LIBRARY_PATH/Makevars"
+          echo "CXXFLAGS=-std=c++14" >> "$RENV_LIBRARY_PATH/Makevars"
           R -e 'install.packages(c("devtools","BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
           R -e 'BiocManager::install("fgsea")
           R -e 'devtools::install_github("stephenturner/annotables")'
