@@ -48,7 +48,14 @@ jobs:
   
 #      - name: Install R Dependencies
 #        uses: r-lib/actions/setup-renv@v2
-
+      - name: Set C++14 flags for renv Makevars
+        run: |
+          # Ensure renv library exists and set the correct Makevars for renv
+          RENV_MAKEVARS_PATH=$(Rscript -e 'cat(renv::paths$library())')/Makevars
+          mkdir -p "$(dirname "$RENV_MAKEVARS_PATH")"
+          echo "CXX=g++-11" >> "$RENV_MAKEVARS_PATH"
+          echo "CXXFLAGS=-std=c++14" >> "$RENV_MAKEVARS_PATH"
+  
       - name: installations
         run: |
           R -e 'install.packages(c("devtools","BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
@@ -57,8 +64,6 @@ jobs:
           R -e 'install.packages(c("rmarkdown", "markdown", "knitr"))' 
         env:
           GITHUB_PAT: ${{ secrets.TOKEN }}
-          CXX14: g++-11
-          CXX14FLAGS: "-std=c++14"
 
       - name: Pull Notebooks folder content
         if: runner.os == 'Linux'
