@@ -48,27 +48,16 @@ jobs:
   
 #      - name: Install R Dependencies
 #        uses: r-lib/actions/setup-renv@v2
-      - name: Install fgsea with C++14 compiler
+      - name: Install Renv and Dependencies
         run: |
-          # Set the C++14 compiler and flags for this session
-          export CXX=g++-11
-          export CXXFLAGS="-std=c++14"
-
-          # Verify which compiler is being used
-          g++-11 --version
-          echo "Using compiler: $CXX"
-          echo "Using CXXFLAGS: $CXXFLAGS"
-
-          # Print R's understanding of the compilation environment
-          R -e 'Sys.getenv(c("CXX", "CXXFLAGS"))'
+          R -e 'install.packages("renv")'
+          R -e 'renv::restore(strict = TRUE)'
+        env:
+          GITHUB_PAT: ${{ secrets.TOKEN }}
           
-          # Install fgsea from Bioconductor
-          R -e 'install.packages("BiocManager")'
-          R -e 'BiocManager::install(c("fgsea"))'
-  
       - name: installations
         run: |
-          R -e 'install.packages(c("devtools", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
+          R -e 'install.packages(c("devtools", "BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
           R -e 'devtools::install_github("stephenturner/annotables")'
           R -e 'BiocManager::install(c("DESeq2", "clusterProfiler", "DOSE", "org.Hs.eg.db", "pathview", "DEGreport", "tximport", "AnnotationHub", "ensembldb","apeglm","ggnewscale"))'
           R -e 'install.packages(c("rmarkdown", "markdown", "knitr"))' 
