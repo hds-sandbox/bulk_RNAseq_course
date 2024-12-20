@@ -57,6 +57,8 @@ jobs:
           R -e 'install.packages(c("rmarkdown", "markdown", "knitr"))' 
         env:
           GITHUB_PAT: ${{ secrets.TOKEN }}
+          CXX14: g++-11
+          CXX14FLAGS: "-std=c++14"
 
       - name: Pull Notebooks folder content
         if: runner.os == 'Linux'
