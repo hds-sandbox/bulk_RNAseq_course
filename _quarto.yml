@@ -43,25 +43,25 @@ website:
     - title: "Data analyses"
       contents:
         - develop/05a_data_analysis_setup.qmd
-        - develop/05b_count_matrix.Rmd
-        - section: "Quality control"
-          contents: 
-            - develop/05c_count_normalization.Rmd
-            - develop/06_exploratory_analysis.Rmd
-        - section: "Differential Expression"
-          contents: 
-            - develop/07_extra_contrast_design.Rmd
-            - develop/07a_DEA.Rmd
-            - develop/07b_hypothesis_testing.Rmd
-            - develop/07c_DEA_visualization.Rmd
-        - section: "Functional Analysis"
-          contents: 
-            - develop/08a_FA_genomic_annotation.Rmd
-            - develop/08b_FA_overrepresentation.Rmd
-            - develop/08c_FA_GSEA.Rmd
-        - section: "Workflow summary"
-          contents: 
-            - develop/09_summarized_workflow.Rmd
+        # - develop/05b_count_matrix.Rmd
+        # - section: "Quality control"
+        #   contents: 
+        #     - develop/05c_count_normalization.Rmd
+        #     - develop/06_exploratory_analysis.Rmd
+        # - section: "Differential Expression"
+        #   contents: 
+        #     - develop/07_extra_contrast_design.Rmd
+        #     - develop/07a_DEA.Rmd
+        #     - develop/07b_hypothesis_testing.Rmd
+        #     - develop/07c_DEA_visualization.Rmd
+        # - section: "Functional Analysis"
+        #   contents: 
+        #     - develop/08a_FA_genomic_annotation.Rmd
+        #     - develop/08b_FA_overrepresentation.Rmd
+        #     - develop/08c_FA_GSEA.Rmd
+        # - section: "Workflow summary"
+        #   contents: 
+        #     - develop/09_summarized_workflow.Rmd
 format:
   html:
     theme: 
