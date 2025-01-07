@@ -49,20 +49,14 @@ jobs:
 #      - name: Install R Dependencies
 #        uses: r-lib/actions/setup-renv@v2
 
-      - name: few installations
-        run: |
-          R -e 'install.packages(c("tidyverse"))'
-          R -e 'BiocManager::install(c("DESeq2", tximport"))'
-          env:
-            GITHUB_PAT: ${{ secrets.TOKEN }}
 
-      # - name: installations
-      #   run: |
-      #     R -e 'install.packages(c("devtools", "remotes", "BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
-      #     R -e 'devtools::install_github("stephenturner/annotables")'
-      #     R -e 'remotes::install_github("ctlab/fgsea")'
-      #     R -e 'BiocManager::install(c("DESeq2", "clusterProfiler", "DOSE", "org.Hs.eg.db", "pathview", "DEGreport", "tximport", "AnnotationHub", "ensembldb","apeglm","ggnewscale"))'
-      #     R -e 'install.packages(c("rmarkdown", "markdown", "knitr"))' 
+      - name: installations
+        run: |
+          R -e 'install.packages(c("devtools", "remotes", "BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
+          R -e 'devtools::install_github("stephenturner/annotables")'
+          R -e 'remotes::install_github("ctlab/fgsea")'
+          R -e 'BiocManager::install(c("DESeq2", "clusterProfiler", "DOSE", "org.Hs.eg.db", "pathview", "DEGreport", "tximport", "AnnotationHub", "ensembldb","apeglm","ggnewscale"))'
+          R -e 'install.packages(c("rmarkdown", "markdown", "knitr"))' 
         env:
           GITHUB_PAT: ${{ secrets.TOKEN }}
 
