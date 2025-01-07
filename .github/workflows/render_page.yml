@@ -51,7 +51,7 @@ jobs:
 
       - name: few installations
         run: |
-          R -e 'install.packages(c("tidyverse")
+          R -e 'install.packages(c("tidyverse"))'
           R -e 'BiocManager::install(c("DESeq2", tximport"))'
           env:
             GITHUB_PAT: ${{ secrets.TOKEN }}
