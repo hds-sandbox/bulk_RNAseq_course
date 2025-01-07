@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.39">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="You!">
-<meta name="dcterms.date" content="2024-12-20">
+<meta name="dcterms.date" content="2025-01-07">
 
 <title>Functional Class Scoring – Bulk RNAseq data analysis</title>
 <style>
@@ -66,19 +66,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../develop/09_summarized_workflow.html" rel="next">
-<link href="../develop/08b_FA_overrepresentation.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-74e5c8182057b581c8ce78f3c749e987.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-9f03a6b1aa4272b2c7f9d01b972febf4.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-2cc6ea1fd150477f80888fa7a499a412.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-a2e2465e12904b56fd75c214dc7b3a5f.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -110,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -147,7 +145,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Data processing</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../develop/05a_data_analysis_setup.html" aria-current="page"> 
+    <a class="nav-link" href="../develop/05a_data_analysis_setup.html"> 
 <span class="menu-text">Data analyses</span></a>
   </li>  
   <li class="nav-item">
@@ -168,151 +166,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Functional Analysis</a></li><li class="breadcrumb-item"><a href="../develop/08c_FA_GSEA.html">Functional Class Scoring</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/05a_data_analysis_setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">UCloud setup</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/05b_count_matrix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">The RNAseq count matrix</span></a>
-  </div>
-</li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Quality control</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/05c_count_normalization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Count normalization with DESeq2</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/06_exploratory_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Exploratory analysis with DESeq2</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Differential Expression</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/07_extra_contrast_design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DESeq samples comparison: contrast designs</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/07a_DEA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Gene-level differential expression analysis with DESeq2</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/07b_hypothesis_testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hypothesis testing with DESeq2</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/07c_DEA_visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Log Fold Shrinkage and DEA visualizations</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Functional Analysis</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/08a_FA_genomic_annotation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Genomic annotations for functional analyses</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/08b_FA_overrepresentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Analysis for RNA-seq</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/08c_FA_GSEA.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Functional Class Scoring</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Workflow summary</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../develop/09_summarized_workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Summary of DGE workflow</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -331,7 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Functional Analysis</a></li><li class="breadcrumb-item"><a href="../develop/08c_FA_GSEA.html">Functional Class Scoring</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Functional Class Scoring</h1>
 </div>
@@ -350,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 20, 2024</p>
+      <p class="date">January 7, 2025</p>
     </div>
   </div>
   
@@ -435,28 +292,28 @@ hsa05322 hsa05322                      Systemic lupus erythematosus     122
 hsa04613 hsa04613           Neutrophil extracellular trap formation     174
 hsa05014 hsa05014                     Amyotrophic lateral sclerosis     307
 hsa05022 hsa05022 Pathways of neurodegeneration - multiple diseases     420
-hsa05016 hsa05016                                Huntington disease     267
+hsa05010 hsa05010                                 Alzheimer disease     342
          enrichmentScore       NES       pvalue     p.adjust       qvalue rank
-hsa03040       0.7191922  2.258903 1.000000e-10 0.0000000345 3.042105e-08 1565
-hsa05322      -0.6047195 -1.944187 8.910649e-06 0.0015370869 1.355357e-03 1326
-hsa04613      -0.5314809 -1.784992 3.703480e-05 0.0042590018 3.755459e-03 1394
-hsa05014       0.4505410  1.556592 1.004386e-04 0.0070771589 6.240424e-03 4922
-hsa05022       0.4268181  1.516054 1.025675e-04 0.0070771589 6.240424e-03 4202
-hsa05016       0.4430374  1.514514 3.211607e-04 0.0184667415 1.628341e-02 4918
+hsa03040       0.7191922  2.304014 1.000000e-10 0.0000000345 2.957895e-08 1565
+hsa05322      -0.6047195 -1.920040 5.470355e-06 0.0009436362 8.090367e-04 1326
+hsa04613      -0.5314809 -1.771720 2.064452e-05 0.0023741198 2.035477e-03 1394
+hsa05014       0.4505410  1.570373 1.117334e-04 0.0077096053 6.609913e-03 4922
+hsa05022       0.4268181  1.521203 1.115618e-04 0.0077096053 6.609913e-03 4202
+hsa05010       0.4227766  1.480715 3.529085e-04 0.0202922415 1.739777e-02 4306
                            leading_edge
 hsa03040  tags=20%, list=8%, signal=19%
 hsa05322  tags=21%, list=6%, signal=20%
 hsa04613  tags=19%, list=7%, signal=18%
 hsa05014 tags=43%, list=24%, signal=33%
 hsa05022 tags=37%, list=20%, signal=30%
-hsa05016 tags=46%, list=24%, signal=36%
+hsa05010 tags=39%, list=21%, signal=32%
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 core_enrichment
 hsa03040                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  124904135/124904136/124904137/124904138/124904139/124904140/124904141/124904142/124904143/124904144/124907963/124907964/124907965/10262/6634/6631/9939/220988/8683/9129/151903/3312/2521/84321/24148/4809/57819/84991
 hsa05322                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  8348/8353/3586/8347/440689/8970/92815/7124/8358/8336/942/1991/718/8343/8357/723790/8341/8349/128312/8329/8344/940/8360/3017/8367/8370
 hsa04613                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           3689/51284/8348/1183/8353/8347/7450/440689/8970/92815/6403/8358/1432/8336/2243/2266/1991/718/8343/8357/5330/723790/23569/8341/8349/128312/3683/8329/8344/8360/3017/8367/8370
 hsa05014                                                                                                   2902/1769/598/4541/25981/55567/4539/4519/2878/60/5608/11047/4747/7415/9776/572/22863/5532/4726/84516/10010/220988/5709/4720/4722/581/2521/10482/4702/5903/5715/26100/311/5708/4514/5701/81027/203068/2475/5707/5692/81929/3178/4725/5702/79902/5705/10762/5704/79139/4707/55916/5071/4717/5687/6647/5691/4686/8408/4718/8678/55860/9861/836/4723/317/9377/5606/64837/126328/4728/11258/3799/10671/515/5714/4715/10121/516/4713/9217/514/5684/283/4696/29982/1329/4716/842/1349/5603/129401/5706/6396/100101267/10376/5689/9972/4710/201625/513/518/4694/8480/29979/55746/23435/5683/5682/1337/642659/10476/5718/596/9688/1537/55967/23064/51079/9818/3800/57122/23165/506/2876/7186/2891/1965/1351/10718/51807/25978
 hsa05022 2902/1769/598/4541/25981/81029/55567/1536/4539/4519/5970/2878/11211/50507/2776/5608/11047/4747/7415/7345/2932/22943/9776/572/7332/5664/22863/4893/1020/5532/818/4726/356/84516/8312/10010/120892/10105/5709/4720/4722/7326/3845/3552/581/2521/355/5599/808/3569/3265/5578/4702/7473/23236/578/1857/5609/5715/26100/5708/488/4514/5701/8851/81027/203068/2475/5707/11315/5692/27035/4725/5702/8322/1855/5705/5602/7477/3553/10131/324/5704/1131/79139/1139/4707/5071/4717/5687/6647/5691/8408/4718/54361/8678/55860/9861/7311/8326/836/3064/4723/317/9377/805/5606/9927/64837/126328/4728/11258/3799/10671/515/5714/7419/4715/10121/51465/516/4713/9217/514/5684/1459/4696/29982/5335/292/369/1329/4716/842/1349/5603/5706/7327/10376/5689/27429/4710/201625/1460/5481/513/518/4694/10297/776/23435/5663/5683/5682/1337
-hsa05016                                                                                                                                                                  2902/1769/4541/25981/55567/4539/4519/2878/2776/11047/9776/5439/22863/5434/4726/84516/10105/5709/4720/4722/5438/581/548644/5599/3065/4702/23236/5609/5715/26100/5708/10488/4514/5701/81027/203068/2475/5707/7019/5692/4725/5702/5705/5602/1175/5704/1211/4707/4717/5687/6647/5691/8408/4718/1173/8678/55860/9861/836/3064/4723/317/9377/64837/126328/4728/11258/3799/10671/515/5714/7419/4715/10121/516/4713/514/5684/4899/4696/29982/292/1329/4716/842/5432/1349/5706/10376/5689/6908/4710/201625/1212/5433/513/5431/518/4694/161/5683/160/1387/5682/6648/1337/5468/10476/5718/1537/5437/55967/51079/3800/506/2876/7186/6874/5440/2891/1351/51807/841</code></pre>
+hsa05010                                                                                                                2902/4541/81029/1536/4539/4519/5970/11211/50507/2776/11047/2932/22943/5295/9776/572/5664/22863/4893/4311/1020/5532/4726/55851/8312/10105/5709/4720/4891/4722/3845/3552/355/5599/808/3569/3265/4702/7473/23236/1857/5609/5715/26100/5708/488/4514/5701/8851/81027/203068/2475/5707/5692/27035/4725/5702/8322/1855/5705/5602/7477/3553/23516/324/5704/1131/1139/64116/4707/4717/5687/5691/8408/4718/54361/8678/9861/8326/836/4723/317/9377/805/5293/91252/64837/10313/126328/4728/8517/3799/515/5714/7419/4715/516/4713/55334/4035/514/5684/1459/4696/3630/29982/8503/292/369/1329/4716/842/1349/5706/10376/5689/29985/4710/1460/5481/513/207/518/4694/8660/10297/776/5663/5683/5682/1337/8883/10476/5718</code></pre>
 </div>
 </div>
 <blockquote class="blockquote">
@@ -536,34 +393,41 @@ hsa05016                                                                        
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gseaGO_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>                   ID                          Description setSize
-GO:0022613 GO:0022613 ribonucleoprotein complex biogenesis     394
-GO:0042254 GO:0042254                  ribosome biogenesis     258
-GO:0006334 GO:0006334                  nucleosome assembly     101
-GO:0007005 GO:0007005           mitochondrion organization     391
-GO:0002385 GO:0002385              mucosal immune response      35
-GO:0006364 GO:0006364                      rRNA processing     182
-           enrichmentScore       NES       pvalue     p.adjust       qvalue
-GO:0022613       0.4821523  1.715050 7.090003e-08 0.0002854435 0.0002636735
-GO:0042254       0.5016453  1.728272 7.556806e-06 0.0152118514 0.0140516828
-GO:0006334      -0.6352465 -1.969317 1.447799e-05 0.0194294660 0.0179476308
-GO:0007005       0.4365947  1.552053 3.145319e-05 0.0316576325 0.0292431865
-GO:0002385      -0.7660692 -1.976019 5.813500e-05 0.0365246263 0.0337389873
-GO:0006364       0.5061339  1.676144 7.257750e-05 0.0365246263 0.0337389873
-           rank                   leading_edge
-GO:0022613 4529 tags=43%, list=22%, signal=34%
-GO:0042254 4529 tags=47%, list=22%, signal=37%
-GO:0006334 1326  tags=21%, list=6%, signal=20%
-GO:0007005 4346 tags=41%, list=21%, signal=33%
-GO:0002385  933  tags=20%, list=5%, signal=19%
-GO:0006364 5185 tags=51%, list=25%, signal=38%
+<pre><code>                   ID
+GO:0022613 GO:0022613
+GO:0006334 GO:0006334
+GO:0042254 GO:0042254
+GO:0002385 GO:0002385
+GO:0016339 GO:0016339
+GO:0034728 GO:0034728
+                                                                                Description
+GO:0022613                                             ribonucleoprotein complex biogenesis
+GO:0006334                                                              nucleosome assembly
+GO:0042254                                                              ribosome biogenesis
+GO:0002385                                                          mucosal immune response
+GO:0016339 calcium-dependent cell-cell adhesion via plasma membrane cell adhesion molecules
+GO:0034728                                                          nucleosome organization
+           setSize enrichmentScore       NES       pvalue     p.adjust
+GO:0022613     394       0.4821523  1.704270 1.462873e-07 0.0005889528
+GO:0006334     101      -0.6352465 -1.954030 3.241300e-06 0.0065247367
+GO:0042254     258       0.5016453  1.708477 6.124037e-06 0.0082184580
+GO:0002385      35      -0.7660692 -1.997818 1.484955e-05 0.0149460674
+GO:0016339      46      -0.7143378 -1.962812 3.402204e-05 0.0229326812
+GO:0034728     117      -0.5846486 -1.848114 4.868230e-05 0.0229326812
+                qvalue rank                   leading_edge
+GO:0022613 0.000542341 4529 tags=43%, list=22%, signal=34%
+GO:0006334 0.006008346 1326  tags=21%, list=6%, signal=20%
+GO:0042254 0.007568021 4529 tags=47%, list=22%, signal=37%
+GO:0002385 0.013763184  933  tags=20%, list=5%, signal=19%
+GO:0016339 0.021117709 2393 tags=28%, list=12%, signal=25%
+GO:0034728 0.021117709 1326  tags=21%, list=6%, signal=19%
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 core_enrichment
 GO:0022613 58155/27340/57647/10514/9136/84881/55702/115939/10262/84864/8161/388524/8850/6634/6631/708/25926/10078/7520/10978/26155/55153/8683/9129/25980/79979/23481/4839/5822/54555/8241/8886/51018/6895/26574/8661/8663/728689/24148/8451/4809/51504/29777/1653/57819/114049/54496/81875/387338/27341/5036/22803/51121/5394/55299/56915/51096/1736/3692/27043/23195/23246/51388/51010/2091/91893/5591/10600/11325/9169/84549/51491/7375/79631/26523/79707/4686/6637/10969/6635/84946/5303/55027/2068/3326/55272/81554/79066/55505/25879/79050/64282/4869/8450/9775/10412/84769/51550/54663/2197/121053/51119/6234/54433/10885/54913/92856/6209/25983/6636/79760/10856/130916/8669/90121/11218/6839/163859/8662/10658/134430/51001/26284/51631/51441/54955/57109/10992/51116/79033/6632/90459/55695/9669/83939/6203/6191/6838/54059/6426/55720/23451/8568/8666/51367/10728/7514/100101490/64794/10480/8665/56902/102157402/28985/1660/2971/54512/10200/9733/55178/11171/55003/23560/117246/50628/285855/54853/6232/79833/55226
-GO:0042254                                                                                                                                                                                                                                                                                           27340/57647/10514/9136/84881/115939/84864/388524/8850/708/25926/7520/26155/55153/79979/23481/4839/5822/54555/8241/8886/51018/26574/8451/4809/51504/29777/114049/81875/387338/27341/5036/22803/51121/5394/55299/56915/51096/1736/3692/27043/23195/23246/51388/51010/2091/91893/5591/10600/84549/51491/79631/79707/10969/84946/5303/55027/2068/55272/81554/79066/55505/25879/79050/64282/4869/8450/9775/10412/84769/51550/54663/2197/51119/6234/54433/10885/54913/92856/6209/25983/130916/90121/6839/163859/134430/51001/26284/51441/54955/57109/51116/79033/90459/55695/9669/83939/6203/6191/6838/54059/55720/8568/51367/7514/64794/56902/102157402/2971/54512/10200/55178/55003/23560/117246/50628/285855/54853/6232/55226
 GO:0006334                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            8348/8353/546/64754/8347/6046/8970/8358/8343/8357/23569/8341/8349/3008/3007/8344/8360/3006/3005/8367/8370
-GO:0007005                                                                                          2852/598/4541/2931/80119/597/51499/84883/64756/55737/2932/116228/5566/7015/572/80224/51024/57190/10017/27166/120892/10105/5027/4720/1267/192111/6240/4722/51295/581/4318/4846/23682/4702/578/117145/1050/125170/25813/29108/2034/5339/84895/2395/28978/25994/11315/7019/10063/92609/4725/23369/7755/26515/23761/51287/51537/23277/9804/55210/84987/3313/84275/1634/56947/3479/64429/66008/4707/10059/5071/23400/4717/64423/84233/26517/4718/83982/8546/2189/790955/81892/8326/54832/55750/81554/28976/5830/2810/3082/23787/29928/55572/26521/79784/9927/79017/126328/7351/4728/401505/3799/8192/4082/142/4715/9026/139341/51204/4713/647087/55245/54332/219293/125988/3954/8834/91137/55186/131474/5819/3308/1352/4696/55187/57143/292/4716/1906/55744/6742/4170/57226/5516/22906/54974/137392/6548/27429/4710/80821/10989/513/207/137682/4694/284114/2729/84266/90624/8936/51571/6648/3329/54927/5468/79064/84461/5864/596
+GO:0042254                                                                                                                                                                                                                                                                                           27340/57647/10514/9136/84881/115939/84864/388524/8850/708/25926/7520/26155/55153/79979/23481/4839/5822/54555/8241/8886/51018/26574/8451/4809/51504/29777/114049/81875/387338/27341/5036/22803/51121/5394/55299/56915/51096/1736/3692/27043/23195/23246/51388/51010/2091/91893/5591/10600/84549/51491/79631/79707/10969/84946/5303/55027/2068/55272/81554/79066/55505/25879/79050/64282/4869/8450/9775/10412/84769/51550/54663/2197/51119/6234/54433/10885/54913/92856/6209/25983/130916/90121/6839/163859/134430/51001/26284/51441/54955/57109/51116/79033/90459/55695/9669/83939/6203/6191/6838/54059/55720/8568/51367/7514/64794/56902/102157402/2971/54512/10200/55178/55003/23560/117246/50628/285855/54853/6232/55226
 GO:0002385                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 8347/8970/11126/64127/8343/8349/8344
-GO:0006364                                                                                                                                                                                                                                                                                                                                                                                                                                                     27340/57647/9136/84881/115939/8850/25926/79979/23481/4839/5822/54555/8886/51018/4809/51504/29777/114049/387338/27341/5036/22803/5394/55299/56915/51096/1736/3692/27043/23246/51010/2091/91893/5591/84549/79707/10969/5303/2068/55272/79066/55505/25879/79050/64282/9775/10412/54663/51119/6234/54433/10885/54913/92856/6209/25983/130916/90121/6839/163859/134430/51441/57109/79033/90459/55695/54059/55720/8568/51367/102157402/54512/10200/55178/55003/23560/117246/50628/285855/54853/6232/55226/27079/51013/55646/23404/84135/260294/10248/79922/91695/54680</code></pre>
+GO:0016339                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             56122/53827/22871/9378/84962/6402/56123/6403/1002/56125/1001/56126/64072
+GO:0034728                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          8289/126961/8348/8353/546/64754/8347/6046/8970/92815/8358/8343/8357/23569/8341/8349/3008/3007/8344/8360/3006/3005/8367/8370</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
@@ -1156,18 +1020,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="../develop/08b_FA_overrepresentation.html" class="pagination-link" aria-label="Functional Analysis for RNA-seq">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Functional Analysis for RNA-seq</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="../develop/09_summarized_workflow.html" class="pagination-link" aria-label="Summary of DGE workflow">
-        <span class="nav-page-text">Summary of DGE workflow</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 
 
