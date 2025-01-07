@@ -2,20 +2,15 @@
 title: "The RNAseq count matrix"
 author: "You!"
 date: '`r Sys.Date()`'
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./')})
-#output:
-#  html_document:
-#    theme: yeti # nice theme for the webpage
-#    toc: true # table of contents
-#    toc_float: true # table of contents "floats" in the document
-#    code_folding: show
-#    collapse: false
-#    df_print: paged # data frames are interactive
-#    dev: png # what format do you want for the figures?
+output:
+  html_document:
+    theme: yeti # nice theme for the webpage
+    toc: true # table of contents
+    toc_float: true # table of contents "floats" in the document
+    code_folding: show
+    collapse: false
+    df_print: paged # data frames are interactive
+    dev: png # what format do you want for the figures?
 ---
 
 ```{r knitr, include = FALSE}
