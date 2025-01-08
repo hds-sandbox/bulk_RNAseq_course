@@ -2,21 +2,13 @@
 title: "DESeq samples comparison: contrast designs"
 author: "You!"
 date: '`r Sys.Date()`'
-knit: (function(inputFile, encoding) { 
-      rmarkdown::render(inputFile,
-                        encoding=encoding,
-                        output_format='all',
-                        output_dir='./')})
-output:
-  # To create PDF report, uncomment below
-  #pdf_document:
-  #  toc: yes  
-  html_document:
-    theme: yeti # nice theme for the webpage
-    toc: yes # table of contents
-    toc_float: yes # table of contents "floats" in the document
-    df_print: paged # data frames are interactive
-    dev: png # what format do you want for the figures?
+format:
+  html:
+    toc: true
+    toc_float: true
+    code-fold: false
+    code-overflow: wrap
+    df-print: paged
 ---
 
 ```{r knitr, include = FALSE}
