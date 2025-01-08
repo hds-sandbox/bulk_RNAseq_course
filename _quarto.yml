@@ -43,7 +43,7 @@ website:
     - title: "Data analyses"
       contents:
         - develop/05a_data_analysis_setup.qmd
-        # - develop/05b_count_matrix.Rmd
+        - develop/05b_count_matrix.Rmd
         # - section: "Quality control"
         #   contents: 
         #     - develop/05c_count_normalization.Rmd
