@@ -66,6 +66,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../develop/07a_DEA.html" rel="next">
+<link href="../develop/06_exploratory_analysis.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -75,8 +77,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-2cc6ea1fd150477f80888fa7a499a412.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-a2e2465e12904b56fd75c214dc7b3a5f.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-f8b02ad148a82fc552ded4b140ad6cfe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-caab8ed4655923ab2a66262bd1f5b826.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,11 +106,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 </head>
 
-<body class="nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -145,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Data processing</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../develop/05a_data_analysis_setup.html"> 
+    <a class="nav-link active" href="../develop/05a_data_analysis_setup.html" aria-current="page"> 
 <span class="menu-text">Data analyses</span></a>
   </li>  
   <li class="nav-item">
@@ -166,10 +170,151 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
       </div> <!-- /container-fluid -->
     </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">Differential Expression</a></li><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">DESeq samples comparison: contrast designs</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/05a_data_analysis_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">UCloud setup</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/05b_count_matrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The RNAseq count matrix</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Quality control</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/05c_count_normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Count normalization with DESeq2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/06_exploratory_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploratory analysis with DESeq2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Differential Expression</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07_extra_contrast_design.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">DESeq samples comparison: contrast designs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07a_DEA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gene-level differential expression analysis with DESeq2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07b_hypothesis_testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hypothesis testing with DESeq2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07c_DEA_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Log Fold Shrinkage and DEA visualizations</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Functional Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/08a_FA_genomic_annotation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Genomic annotations for functional analyses</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/08b_FA_overrepresentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Functional Analysis for RNA-seq</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/08c_FA_GSEA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Functional Class Scoring</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Workflow summary</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/09_summarized_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary of DGE workflow</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -192,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">Differential Expression</a></li><li class="breadcrumb-item"><a href="../develop/07_extra_contrast_design.html">DESeq samples comparison: contrast designs</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">DESeq samples comparison: contrast designs</h1>
 </div>
@@ -236,8 +381,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A design formula tells the statistical software the known sources of variation to control for, as well as, the factor of interest to test for during differential expression testing. For example, if you know that sex is a significant source of variation in your data, then <code>sex</code> should be included in your model. <strong>The design formula should have all of the factors in your metadata that account for major sources of variation in your data. The last factor entered in the formula should be the condition of interest.</strong></p>
 <p>For example, suppose you have the following metadata:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">row.names =</span> <span class="fu">paste0</span>(<span class="st">"sample"</span>, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>)), </span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">condition =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"control"</span>,<span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">"treat"</span>,<span class="dv">3</span>)), <span class="dv">2</span>),</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">bloodtype =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"bloodO"</span>,<span class="dv">6</span>), <span class="fu">rep</span>(<span class="st">"bloodA"</span>,<span class="dv">6</span>)),</span>
@@ -245,21 +388,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>metadata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>         condition bloodtype  patient
-sample1    control    bloodO patient1
-sample2    control    bloodO patient2
-sample3    control    bloodO patient3
-sample4      treat    bloodO patient1
-sample5      treat    bloodO patient2
-sample6      treat    bloodO patient3
-sample7    control    bloodA patient1
-sample8    control    bloodA patient2
-sample9    control    bloodA patient3
-sample10     treat    bloodA patient1
-sample11     treat    bloodA patient2
-sample12     treat    bloodA patient3</code></pre>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["condition"],"name":[1],"type":["chr"],"align":["left"]},{"label":["bloodtype"],"name":[2],"type":["chr"],"align":["left"]},{"label":["patient"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"control","2":"bloodO","3":"patient1","_rn_":"sample1"},{"1":"control","2":"bloodO","3":"patient2","_rn_":"sample2"},{"1":"control","2":"bloodO","3":"patient3","_rn_":"sample3"},{"1":"treat","2":"bloodO","3":"patient1","_rn_":"sample4"},{"1":"treat","2":"bloodO","3":"patient2","_rn_":"sample5"},{"1":"treat","2":"bloodO","3":"patient3","_rn_":"sample6"},{"1":"control","2":"bloodA","3":"patient1","_rn_":"sample7"},{"1":"control","2":"bloodA","3":"patient2","_rn_":"sample8"},{"1":"control","2":"bloodA","3":"patient3","_rn_":"sample9"},{"1":"treat","2":"bloodA","3":"patient1","_rn_":"sample10"},{"1":"treat","2":"bloodA","3":"patient2","_rn_":"sample11"},{"1":"treat","2":"bloodA","3":"patient3","_rn_":"sample12"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 </div>
 </div>
 <p>If you want to examine the expression differences between <code>condition</code>, and you know that major sources of variation include <code>bloodtype</code> and <code>patient</code>, then your design formula would be:</p>
@@ -271,19 +405,13 @@ sample12     treat    bloodA patient3</code></pre>
 <section id="one-factor-two-levels" class="level2">
 <h2 class="anchored" data-anchor-id="one-factor-two-levels">One factor, two levels</h2>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate data</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">makeExampleDESeqDataSet</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">m =</span> <span class="dv">6</span>, <span class="at">betaSD =</span> <span class="dv">2</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"control"</span>, <span class="st">"treat"</span>), <span class="at">each =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">makeExampleDESeqDataSet</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">m =</span> <span class="dv">6</span>, <span class="at">betaSD =</span> <span class="dv">2</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"control"</span>, <span class="st">"treat"</span>), <span class="at">each =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First we can look at our sample information:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DataFrame with 6 rows and 1 column
         condition
@@ -298,18 +426,12 @@ sample6   treat  </code></pre>
 </div>
 <p>Our factor of interest is <code>condition</code> and so we define our design and run the DESeq model fitting routine:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">1</span> <span class="sc">+</span> condition <span class="co"># or just `~ condition`</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds) <span class="co"># equivalent to edgeR::glmFit()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">1</span> <span class="sc">+</span> condition <span class="co"># or just `~ condition`</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds) <span class="co"># equivalent to edgeR::glmFit()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then check what coefficients DESeq estimated:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Intercept"                  "condition_treat_vs_control"</code></pre>
 </div>
@@ -317,36 +439,30 @@ sample6   treat  </code></pre>
 <p>We can see that we have a coefficient for our <code>intercept</code> and coefficient for the effect of <code>treat</code> (i.e.&nbsp;differences between treat versus control).</p>
 <p>Using the more standard syntax, we can obtain the results for the effect of treat as such:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"condition_treat_vs_control"</span>))</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>res1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"condition_treat_vs_control"</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>res1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>log2 fold change (MLE): condition_treat_vs_control effect 
 Wald test p-value: condition_treat_vs_control effect 
 DataFrame with 1000 rows and 6 columns
-          baseMean log2FoldChange     lfcSE      stat      pvalue        padj
-         &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
-gene1      6.90971      -0.576632  1.229081 -0.469157 6.38958e-01 0.748677480
-gene2      2.41435      -3.773751  2.143596 -1.760477 7.83270e-02 0.170694959
-gene3     20.64738      -3.472563  0.906149 -3.832218 1.26993e-04 0.000829926
-gene4     32.45399      -2.893077  0.719469 -4.021128 5.79202e-05 0.000410305
-gene5     18.36501       1.766278  0.894595  1.974389 4.83376e-02 0.118984739
-...            ...            ...       ...       ...         ...         ...
-gene996    0.17078       -1.14069  4.080473 -0.279549 0.779823414          NA
-gene997   36.27780        2.94521  0.758808  3.881364 0.000103872 0.000698503
-gene998    3.54405       -1.47979  1.674578 -0.883678 0.376870079 0.532321816
-gene999   44.25450        1.39833  0.556407  2.513151 0.011965812 0.038690847
-gene1000   6.70656       -1.40978  1.180203 -1.194523 0.232273614 0.372734771</code></pre>
+          baseMean log2FoldChange     lfcSE       stat      pvalue        padj
+         &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt;  &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
+gene1     70.09225      0.3306839  0.547099  0.6044311   0.5455571    0.678072
+gene2     87.15786     -0.0261119  0.541142 -0.0482533   0.9615144    0.974960
+gene3      2.46673     -2.8896493  2.238306 -1.2909984   0.1967042          NA
+gene4     18.25102      1.7415195  0.889021  1.9589188   0.0501223    0.112166
+gene5     20.91273      0.8723612  0.858692  1.0159187   0.3096681    0.453051
+...            ...            ...       ...        ...         ...         ...
+gene996    16.9893      4.9127382  1.302003  3.7732156 0.000161157 0.000946391
+gene997    53.7381      0.0368984  0.530053  0.0696127 0.944501966 0.963493926
+gene998   239.4049      0.4552256  0.403227  1.1289553 0.258916683 0.395378879
+gene999   145.7851     -1.4193350  0.473911 -2.9949389 0.002744999 0.010868207
+gene1000   60.1577      0.4563993  0.521589  0.8750174 0.381564414 0.521670097</code></pre>
 </div>
 </div>
 <p>The above is a simple way to obtain the results of interest. But it is worth understanding how DESeq is getting to these results by looking at the model’s matrix. DESeq defines the model matrix using base R functionality:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        (Intercept) conditiontreat
 sample1           1              0
@@ -372,12 +488,9 @@ attr(,"contrasts")$condition
 </ul>
 <p>Let’s see this example in action:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the model matrix</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>mod_mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the model matrix</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>mod_mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        (Intercept) conditiontreat
 sample1           1              0
@@ -394,35 +507,26 @@ attr(,"contrasts")$condition
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the vector of coefficient weights in the treat</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>treat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the vector of coefficient weights in the treat</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>treat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   (Intercept) conditiontreat 
              1              1 </code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the vector of coefficient weights in the control</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the vector of coefficient weights in the control</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   (Intercept) conditiontreat 
              1              0 </code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The contrast we are interested in is the difference between treat and control</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>treat <span class="sc">-</span> control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The contrast we are interested in is the difference between treat and control</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>treat <span class="sc">-</span> control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   (Intercept) conditiontreat 
              0              1 </code></pre>
@@ -430,18 +534,12 @@ attr(,"contrasts")$condition
 </div>
 <p>That last step is where we define our contrast vector, and we can give this directly to the <code>results</code> function:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the results for this contrast</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> treat <span class="sc">-</span> control)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the results for this contrast</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> treat <span class="sc">-</span> control)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This gives us exactly the same results as before, which we can check for example by plotting the log-fold-changes between the first and second approach:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1<span class="sc">$</span>log2FoldChange, res2<span class="sc">$</span>log2FoldChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1<span class="sc">$</span>log2FoldChange, res2<span class="sc">$</span>log2FoldChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -455,12 +553,9 @@ attr(,"contrasts")$condition
 <h2 class="anchored" data-anchor-id="recoding-the-design">Recoding the design</h2>
 <p>Often, we can use different model matrices that essentially correspond to the same design. For example, we could recode our design above by removing the intercept:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">0</span> <span class="sc">+</span> condition</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">0</span> <span class="sc">+</span> condition</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "conditioncontrol" "conditiontreat"  </code></pre>
 </div>
@@ -468,12 +563,9 @@ attr(,"contrasts")$condition
 <p>In this case we get a coefficient corresponding to the average expression in control and the average expression in the treat (rather than the <em>difference</em> between treat and control).</p>
 <p>If we use the same contrast trick as before (using the model matrix), we can see the result is the same:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the model matrix</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>mod_mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the model matrix</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>mod_mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        conditioncontrol conditiontreat
 sample1                1              0
@@ -490,21 +582,15 @@ attr(,"contrasts")$condition
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate weights for coefficients in each condition</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[<span class="fu">which</span>(dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>), ])</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[<span class="fu">which</span>(dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>), ])</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get the results for our contrast</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>res3 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> treat <span class="sc">-</span> control)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate weights for coefficients in each condition</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[<span class="fu">which</span>(dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>), ])</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[<span class="fu">which</span>(dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>), ])</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get the results for our contrast</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>res3 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> treat <span class="sc">-</span> control)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Again, the results are essentially the same:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1<span class="sc">$</span>log2FoldChange, res3<span class="sc">$</span>log2FoldChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1<span class="sc">$</span>log2FoldChange, res3<span class="sc">$</span>log2FoldChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -518,21 +604,15 @@ attr(,"contrasts")$condition
 <section id="one-factor-three-levels" class="level2">
 <h2 class="anchored" data-anchor-id="one-factor-three-levels">One factor, three levels</h2>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate data</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">makeExampleDESeqDataSet</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">m =</span> <span class="dv">9</span>, <span class="at">betaSD =</span> <span class="dv">2</span>)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"bloodA"</span>, <span class="st">"bloodB"</span>, <span class="st">"bloodO"</span>), <span class="at">each =</span> <span class="dv">3</span>))</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">relevel</span>(dds<span class="sc">$</span>bloodtype, <span class="st">"bloodO"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate data</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">makeExampleDESeqDataSet</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">m =</span> <span class="dv">9</span>, <span class="at">betaSD =</span> <span class="dv">2</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"bloodA"</span>, <span class="st">"bloodB"</span>, <span class="st">"bloodO"</span>), <span class="at">each =</span> <span class="dv">3</span>))</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">relevel</span>(dds<span class="sc">$</span>bloodtype, <span class="st">"bloodO"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First we can look at our sample information:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DataFrame with 9 rows and 1 column
         bloodtype
@@ -550,13 +630,10 @@ sample9    bloodO</code></pre>
 </div>
 <p>As in the previous example, we only have one factor of interest, <code>bloodtype</code>, and so we define our design and run the DESeq as before:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">1</span> <span class="sc">+</span> bloodtype</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># check the coefficients estimated by DEseq</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">1</span> <span class="sc">+</span> bloodtype</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># check the coefficients estimated by DEseq</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Intercept"                  "bloodtype_bloodA_vs_bloodO"
 [3] "bloodtype_bloodB_vs_bloodO"</code></pre>
@@ -570,28 +647,19 @@ sample9    bloodO</code></pre>
 </ul>
 <p>We could obtain the difference between bloodO and any of the two bloodtypes easily:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>res1_bloodA_bloodO <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"bloodtype_bloodA_vs_bloodO"</span>))</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>res1_bloodB_bloodO <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"bloodtype_bloodB_vs_bloodO"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>res1_bloodA_bloodO <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"bloodtype_bloodA_vs_bloodO"</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>res1_bloodB_bloodO <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"bloodtype_bloodB_vs_bloodO"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For comparing bloodA vs bloodB, however, we need to compare two coefficients with each other to check whether they are themselves different (check the slide to see the illustration). This is how the standard DESeq syntax would be:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>res1_bloodA_bloodB <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"bloodtype_bloodA_vs_bloodO"</span>, </span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>                                                 <span class="st">"bloodtype_bloodB_vs_bloodO"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>res1_bloodA_bloodB <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"bloodtype_bloodA_vs_bloodO"</span>, </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                                                 <span class="st">"bloodtype_bloodB_vs_bloodO"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, following our three steps detailed in the first section, we can define our comparisons from the design matrix:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define the model matrix</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>mod_mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define the model matrix</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>mod_mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        (Intercept) bloodtypebloodA bloodtypebloodB
 sample1           1               1               0
@@ -611,25 +679,19 @@ attr(,"contrasts")$bloodtype
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate coefficient vectors for each group</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>bloodA <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span>, ])</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>bloodB <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodB"</span>, ])</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>bloodO <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate coefficient vectors for each group</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>bloodA <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span>, ])</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>bloodB <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodB"</span>, ])</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>bloodO <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And we can now define any contrasts we want:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain results for each pairwise contrast</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>res2_bloodA_bloodO <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodA <span class="sc">-</span> bloodO)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>res2_bloodB_bloodO <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodB <span class="sc">-</span> bloodO)</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>res2_bloodA_bloodB <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodA <span class="sc">-</span> bloodB)</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the results from the two approaches to check that they are identical</span></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1_bloodA_bloodO<span class="sc">$</span>log2FoldChange, res2_bloodA_bloodO<span class="sc">$</span>log2FoldChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain results for each pairwise contrast</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>res2_bloodA_bloodO <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodA <span class="sc">-</span> bloodO)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>res2_bloodB_bloodO <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodB <span class="sc">-</span> bloodO)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>res2_bloodA_bloodB <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodA <span class="sc">-</span> bloodB)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the results from the two approaches to check that they are identical</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1_bloodA_bloodO<span class="sc">$</span>log2FoldChange, res2_bloodA_bloodO<span class="sc">$</span>log2FoldChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -637,10 +699,7 @@ attr(,"contrasts")$bloodtype
 </figure>
 </div>
 </div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1_bloodB_bloodO<span class="sc">$</span>log2FoldChange, res2_bloodB_bloodO<span class="sc">$</span>log2FoldChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1_bloodB_bloodO<span class="sc">$</span>log2FoldChange, res2_bloodB_bloodO<span class="sc">$</span>log2FoldChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -648,10 +707,7 @@ attr(,"contrasts")$bloodtype
 </figure>
 </div>
 </div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1_bloodA_bloodB<span class="sc">$</span>log2FoldChange, res2_bloodA_bloodB<span class="sc">$</span>log2FoldChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1_bloodA_bloodB<span class="sc">$</span>log2FoldChange, res2_bloodA_bloodB<span class="sc">$</span>log2FoldChange)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -665,13 +721,10 @@ attr(,"contrasts")$bloodtype
 <h2 class="anchored" data-anchor-id="a-and-b-against-o">A and B against O</h2>
 <p>With this approach, we could even define a more unusual contrast, for example to find genes that differ between A and B against and O samples:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define vector of coefficients for A_B samples</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>A_B <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"bloodA"</span>, <span class="st">"bloodB"</span>),])</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Our contrast of interest is</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>A_B <span class="sc">-</span> bloodO</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define vector of coefficients for A_B samples</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>A_B <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"bloodA"</span>, <span class="st">"bloodB"</span>),])</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Our contrast of interest is</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>A_B <span class="sc">-</span> bloodO</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    (Intercept) bloodtypebloodA bloodtypebloodB 
             0.0             0.5             0.5 </code></pre>
@@ -679,11 +732,8 @@ attr(,"contrasts")$bloodtype
 </div>
 <p>Notice the contrast vector in this case assigns a “weight” of 0.5 to each of <code>bloodtypebloodA</code> and <code>bloodtypebloodB</code>. This is equivalent to saying that we want to consider the average of bloodA and bloodB expression. In fact, we could have also defined our contrast vector like this:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># average of bloodA and bloodB minus bloodO</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>(bloodA <span class="sc">+</span> bloodB)<span class="sc">/</span><span class="dv">2</span> <span class="sc">-</span> bloodO</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># average of bloodA and bloodB minus bloodO</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>(bloodA <span class="sc">+</span> bloodB)<span class="sc">/</span><span class="dv">2</span> <span class="sc">-</span> bloodO</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    (Intercept) bloodtypebloodA bloodtypebloodB 
             0.0             0.5             0.5 </code></pre>
@@ -691,64 +741,49 @@ attr(,"contrasts")$bloodtype
 </div>
 <p>To obtain our results, we use the <code>results()</code> function as before:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the results between A_B and bloodA</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>res2_AB <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> A_B <span class="sc">-</span> bloodO)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the results between A_B and bloodA</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>res2_AB <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> A_B <span class="sc">-</span> bloodO)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="extra-why-not-define-a-new-group-in-our-design-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="extra-why-not-define-a-new-group-in-our-design-matrix">Extra: why not define a new group in our design matrix?</h2>
 <p>For this last example (A_B vs bloodO), we may have considered creating a new variable in our column data:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>A_B <span class="ot">&lt;-</span> <span class="fu">factor</span>(dds<span class="sc">$</span>bloodtype <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"bloodA"</span>, <span class="st">"bloodB"</span>))</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>A_B <span class="ot">&lt;-</span> <span class="fu">factor</span>(dds<span class="sc">$</span>bloodtype <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"bloodA"</span>, <span class="st">"bloodB"</span>))</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DataFrame with 9 rows and 3 columns
         bloodtype sizeFactor      A_B
          &lt;factor&gt;  &lt;numeric&gt; &lt;factor&gt;
-sample1    bloodA   1.035613    TRUE 
-sample2    bloodA   0.969858    TRUE 
-sample3    bloodA   0.938876    TRUE 
-sample4    bloodB   0.987101    TRUE 
-sample5    bloodB   0.989108    TRUE 
-sample6    bloodB   1.064008    TRUE 
-sample7    bloodO   1.104712    FALSE
-sample8    bloodO   1.108854    FALSE
-sample9    bloodO   1.061193    FALSE</code></pre>
+sample1    bloodA   0.944107    TRUE 
+sample2    bloodA   0.941566    TRUE 
+sample3    bloodA   0.962169    TRUE 
+sample4    bloodB   0.963952    TRUE 
+sample5    bloodB   0.938568    TRUE 
+sample6    bloodB   1.134860    TRUE 
+sample7    bloodO   1.128999    FALSE
+sample8    bloodO   1.163539    FALSE
+sample9    bloodO   1.095781    FALSE</code></pre>
 </div>
 </div>
 <p>and then re-run DESeq with a new design:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">1</span> <span class="sc">+</span> A_B</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">1</span> <span class="sc">+</span> A_B</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Intercept"         "A_B_TRUE_vs_FALSE"</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>res1_A_B <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"A_B_TRUE_vs_FALSE"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>res1_A_B <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"A_B_TRUE_vs_FALSE"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, in this model the gene dispersion is estimated together for bloodA and bloodB samples as if they were replicates of each other, which may result in inflated/deflated estimates. Instead, our approach above estimates the error within each of those groups.</p>
 <p>To check the difference one could compare the two approaches visually:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the log-fold-changes between the two approaches</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1_A_B<span class="sc">$</span>log2FoldChange, res2_AB<span class="sc">$</span>log2FoldChange)</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"brown"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the log-fold-changes between the two approaches</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1_A_B<span class="sc">$</span>log2FoldChange, res2_AB<span class="sc">$</span>log2FoldChange)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"brown"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -758,12 +793,9 @@ sample9    bloodO   1.061193    FALSE</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the errors between the two approaches</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1_A_B<span class="sc">$</span>lfcSE, res2_AB<span class="sc">$</span>lfcSE)</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"brown"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the errors between the two approaches</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res1_A_B<span class="sc">$</span>lfcSE, res2_AB<span class="sc">$</span>lfcSE)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"brown"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -776,23 +808,17 @@ sample9    bloodO   1.061193    FALSE</code></pre>
 <section id="two-factors-with-interaction" class="level2">
 <h2 class="anchored" data-anchor-id="two-factors-with-interaction">Two factors with interaction</h2>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate data</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">makeExampleDESeqDataSet</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">m =</span> <span class="dv">12</span>, <span class="at">betaSD =</span> <span class="dv">2</span>)</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"bloodO"</span>, <span class="st">"bloodA"</span>), <span class="at">each =</span> <span class="dv">6</span>))</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">relevel</span>(dds<span class="sc">$</span>bloodtype, <span class="st">"bloodO"</span>)</span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"treat"</span>, <span class="st">"control"</span>), <span class="dv">6</span>))</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[, <span class="fu">order</span>(dds<span class="sc">$</span>bloodtype, dds<span class="sc">$</span>condition)]</span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dds) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"sample"</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate data</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">makeExampleDESeqDataSet</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">m =</span> <span class="dv">12</span>, <span class="at">betaSD =</span> <span class="dv">2</span>)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"bloodO"</span>, <span class="st">"bloodA"</span>), <span class="at">each =</span> <span class="dv">6</span>))</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">relevel</span>(dds<span class="sc">$</span>bloodtype, <span class="st">"bloodO"</span>)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"treat"</span>, <span class="st">"control"</span>), <span class="dv">6</span>))</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[, <span class="fu">order</span>(dds<span class="sc">$</span>bloodtype, dds<span class="sc">$</span>condition)]</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dds) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"sample"</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First let’s look at our sample information:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DataFrame with 12 rows and 2 columns
          condition bloodtype
@@ -812,12 +838,9 @@ sample12   treat      bloodA</code></pre>
 </div>
 <p>This time we have two factors of interest, and we want to model both with an interaction (i.e.&nbsp;we assume that bloodA and bloodO samples may respond differently to treat/control). We define our design accordingly and fit the model:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">1</span> <span class="sc">+</span> bloodtype <span class="sc">+</span> condition <span class="sc">+</span> bloodtype<span class="sc">:</span>condition</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">1</span> <span class="sc">+</span> bloodtype <span class="sc">+</span> condition <span class="sc">+</span> bloodtype<span class="sc">:</span>condition</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Intercept"                      "bloodtype_bloodA_vs_bloodO"    
 [3] "condition_treat_vs_control"     "bloodtypebloodA.conditiontreat"</code></pre>
@@ -825,90 +848,66 @@ sample12   treat      bloodA</code></pre>
 </div>
 <p>Because we have two factors and an interaction, the number of comparisons we can do is larger. Using our three-step approach from the model matrix, we do things exactly as we’ve been doing so far:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the model matrix</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define coefficient vectors for each condition</span></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>bloodO_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>bloodO_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>bloodA_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>bloodA_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the model matrix</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define coefficient vectors for each condition</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>bloodO_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>bloodO_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>bloodA_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>bloodA_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We are now ready to define any contrast of interest from these vectors (for completeness we show the equivalent syntax using the coefficient’s names from DESeq).</p>
 <p>bloodA vs bloodO (in the control):</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodA_control <span class="sc">-</span> bloodO_control)</span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"bloodtype_bloodA_vs_bloodO"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodA_control <span class="sc">-</span> bloodO_control)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"bloodtype_bloodA_vs_bloodO"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>bloodA vs bloodO (in the treatment):</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodO_treat <span class="sc">-</span> bloodA_treat)</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"bloodtype_bloodA_vs_bloodO"</span>,</span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"bloodtypebloodA.conditiontreat"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodO_treat <span class="sc">-</span> bloodA_treat)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"bloodtype_bloodA_vs_bloodO"</span>,</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"bloodtypebloodA.conditiontreat"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>treat vs control (for bloodtypes O):</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodO_treat <span class="sc">-</span> bloodO_control)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"condition_treat_vs_control"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodO_treat <span class="sc">-</span> bloodO_control)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"condition_treat_vs_control"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>treat vs control (for bloodtypes A):</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodA_treat <span class="sc">-</span> bloodA_control)</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"condition_treat_vs_control"</span>, </span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"bloodtypebloodA.conditiontreat"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodA_treat <span class="sc">-</span> bloodA_control)</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"condition_treat_vs_control"</span>, </span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"bloodtypebloodA.conditiontreat"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Interaction between bloodtype and condition</p>
 <p>I.e. do bloodAs and bloodOs respond differently to the treatment?</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, </span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">contrast =</span> (bloodA_treat <span class="sc">-</span> bloodA_control) <span class="sc">-</span> (bloodO_treat <span class="sc">-</span> bloodO_control))</span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"bloodtypebloodA.conditiontreat"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, </span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">contrast =</span> (bloodA_treat <span class="sc">-</span> bloodA_control) <span class="sc">-</span> (bloodO_treat <span class="sc">-</span> bloodO_control))</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">list</span>(<span class="st">"bloodtypebloodA.conditiontreat"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In conclusion, although we can define these contrasts using DESeq coefficient names, it is somewhat more explicit (and perhaps intuitive?) what it is we’re comparing using matrix-based contrasts.</p>
 </section>
 <section id="three-factors-with-nesting" class="level2">
 <h2 class="anchored" data-anchor-id="three-factors-with-nesting">Three factors, with nesting</h2>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate data</span></span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">makeExampleDESeqDataSet</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">m =</span> <span class="dv">24</span>, <span class="at">betaSD =</span> <span class="dv">2</span>)</span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"bloodA"</span>, <span class="st">"bloodO"</span>), <span class="at">each =</span> <span class="dv">12</span>))</span>
-<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">relevel</span>(dds<span class="sc">$</span>bloodtype, <span class="st">"bloodO"</span>)</span>
-<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>patient <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="at">each =</span> <span class="dv">6</span>))</span>
-<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"treat"</span>, <span class="st">"control"</span>), <span class="dv">12</span>))</span>
-<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[, <span class="fu">order</span>(dds<span class="sc">$</span>bloodtype, dds<span class="sc">$</span>patient, dds<span class="sc">$</span>condition)]</span>
-<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dds) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"sample"</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate data</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">makeExampleDESeqDataSet</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">m =</span> <span class="dv">24</span>, <span class="at">betaSD =</span> <span class="dv">2</span>)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"bloodA"</span>, <span class="st">"bloodO"</span>), <span class="at">each =</span> <span class="dv">12</span>))</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>bloodtype <span class="ot">&lt;-</span> <span class="fu">relevel</span>(dds<span class="sc">$</span>bloodtype, <span class="st">"bloodO"</span>)</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>patient <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="at">each =</span> <span class="dv">6</span>))</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>dds<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"treat"</span>, <span class="st">"control"</span>), <span class="dv">12</span>))</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[, <span class="fu">order</span>(dds<span class="sc">$</span>bloodtype, dds<span class="sc">$</span>patient, dds<span class="sc">$</span>condition)]</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dds) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"sample"</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First let’s look at our sample information:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DataFrame with 24 rows and 3 columns
          condition bloodtype  patient
@@ -928,12 +927,9 @@ sample24   treat      bloodA        B</code></pre>
 </div>
 <p>Now we have three factors, but patient is <em>nested</em> within bloodtype (i.e.&nbsp;a patient is either bloodA or bloodO, it cannot be both). Therefore, bloodtype is a linear combination with patient (or, another way to think about it is that bloodtype is redundant with patient). Because of this, we will define our design without including “bloodtype”, although later we can compare groups of patient of the same bloodtype with each other.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">1</span> <span class="sc">+</span> patient <span class="sc">+</span> condition <span class="sc">+</span> patient<span class="sc">:</span>condition</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds) <span class="ot">&lt;-</span> <span class="er">~</span> <span class="dv">1</span> <span class="sc">+</span> patient <span class="sc">+</span> condition <span class="sc">+</span> patient<span class="sc">:</span>condition</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Intercept"                  "patient_B_vs_A"            
 [3] "patient_C_vs_A"             "patient_D_vs_A"            
@@ -944,23 +940,17 @@ sample24   treat      bloodA        B</code></pre>
 <p>Now it’s harder to define contrasts between groups of patient of the same bloodtype using DESeq’s coefficient names (although still possible). But using the model matrix approach, we do it in exactly the same way we have done so far!</p>
 <p>Again, let’s define our groups from the model matrix:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the model matrix</span></span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="co"># define coefficient vectors for each group</span></span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>bloodO_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>bloodA_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
-<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>bloodO_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span>
-<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>bloodA_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the model matrix</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="co"># define coefficient vectors for each group</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>bloodO_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>bloodA_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>bloodO_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>bloodA_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>It’s worth looking at some of these vectors, to see that they are composed of weighted coefficients from different patient. For example, for “bloodO” patient, we have equal contribution from “patientC” and “patientD”:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>bloodO_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>bloodO_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            (Intercept)                patientB                patientC 
                     1.0                     0.0                     0.5 
@@ -972,10 +962,7 @@ patientC:conditiontreat patientD:conditiontreat
 </div>
 <p>And so, when we define our contrasts, each patient will be correctly weighted:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>bloodO_treat <span class="sc">-</span> bloodO_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>bloodO_treat <span class="sc">-</span> bloodO_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            (Intercept)                patientB                patientC 
                     0.0                     0.0                     0.0 
@@ -988,30 +975,24 @@ patientC:conditiontreat patientD:conditiontreat
 <p>We can set our contrasts in exactly the same way as we did in the previous section (for completeness, we also give the contrasts using DESeq’s named coefficients).</p>
 <p>bloodA vs bloodO (in the control):</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>res1_bloodA_bloodO_control <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodA_control <span class="sc">-</span> bloodO_control)</span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>res2_bloodA_bloodO_control <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, </span>
-<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">contrast =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"patient_B_vs_A"</span>), <span class="co"># Blood type A</span></span>
-<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="fu">c</span>(<span class="st">"patient_C_vs_A"</span>, <span class="co"># Blood type O</span></span>
-<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">"patient_D_vs_A"</span>))) <span class="co"># Blood type O</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>res1_bloodA_bloodO_control <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodA_control <span class="sc">-</span> bloodO_control)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>res2_bloodA_bloodO_control <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, </span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">contrast =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"patient_B_vs_A"</span>), <span class="co"># Blood type A</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="fu">c</span>(<span class="st">"patient_C_vs_A"</span>, <span class="co"># Blood type O</span></span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>                                                   <span class="st">"patient_D_vs_A"</span>))) <span class="co"># Blood type O</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>bloodA vs bloodO (in the treat):</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>res1_bloodO_bloodA_treat <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodO_treat <span class="sc">-</span> bloodA_treat)</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>res2_bloodO_bloodA_treat <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, </span>
-<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">contrast =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"patient_B_vs_A"</span>, <span class="co"># Blood type A</span></span>
-<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"patientB.conditiontreat"</span>), <span class="co"># Interaction of patient B with treatment</span></span>
-<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>                                           <span class="fu">c</span>(<span class="st">"patient_C_vs_A"</span>, <span class="co"># Blood type O</span></span>
-<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"patient_D_vs_A"</span>, <span class="co"># Blood type O</span></span>
-<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"patientC.conditiontreat"</span>, <span class="co"># Interaction of patient C with treatment</span></span>
-<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"patientD.conditiontreat"</span>))) <span class="co"># Interaction of patient B with treatment</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>res1_bloodO_bloodA_treat <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> bloodO_treat <span class="sc">-</span> bloodA_treat)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or equivalently</span></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>res2_bloodO_bloodA_treat <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, </span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">contrast =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"patient_B_vs_A"</span>, <span class="co"># Blood type A</span></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"patientB.conditiontreat"</span>), <span class="co"># Interaction of patient B with treatment</span></span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>                                           <span class="fu">c</span>(<span class="st">"patient_C_vs_A"</span>, <span class="co"># Blood type O</span></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"patient_D_vs_A"</span>, <span class="co"># Blood type O</span></span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"patientC.conditiontreat"</span>, <span class="co"># Interaction of patient C with treatment</span></span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a>                                             <span class="st">"patientD.conditiontreat"</span>))) <span class="co"># Interaction of patient B with treatment</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And so on, for other contrasts of interest…</p>
 <hr>
@@ -1020,12 +1001,9 @@ patientC:conditiontreat patientD:conditiontreat
 <h2 class="anchored" data-anchor-id="extra-imbalanced-design">Extra: imbalanced design</h2>
 <p>Let’s take our previous example, but drop one of the samples from the data, so that we only have 2 replicates for it.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[, <span class="sc">-</span><span class="dv">1</span>] <span class="co"># drop one of the patient C samples</span></span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
-<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> dds[, <span class="sc">-</span><span class="dv">1</span>] <span class="co"># drop one of the patient C samples</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="fu">resultsNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Intercept"                  "patient_B_vs_A"            
 [3] "patient_C_vs_A"             "patient_D_vs_A"            
@@ -1035,11 +1013,8 @@ patientC:conditiontreat patientD:conditiontreat
 </div>
 <p>Define our model matrix and coefficient vectors:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>mod_mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>mod_mat <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="fu">design</span>(dds), <span class="fu">colData</span>(dds))</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>mod_mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         (Intercept) patientB patientC patientD conditiontreat
 sample2            1        0        1        0              0
@@ -1124,21 +1099,15 @@ attr(,"contrasts")$condition
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define coefficient vectors for each group</span></span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>bloodO_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
-<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>bloodA_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
-<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>bloodO_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span>
-<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>bloodA_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define coefficient vectors for each group</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>bloodO_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>bloodA_control <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"control"</span>, ])</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>bloodO_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodO"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>bloodA_treat <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(mod_mat[dds<span class="sc">$</span>bloodtype <span class="sc">==</span> <span class="st">"bloodA"</span> <span class="sc">&amp;</span> dds<span class="sc">$</span>condition <span class="sc">==</span> <span class="st">"treat"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now let’s check what happens to the bloodO_control group:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>bloodO_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>bloodO_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            (Intercept)                patientB                patientC 
                     1.0                     0.0                     0.4 
@@ -1151,11 +1120,8 @@ patientC:conditiontreat patientD:conditiontreat
 <p>Notice that whereas before “patientC” and “patientD” had each a weight of 0.5, now they have different weights. That’s because for patientC there’s only 2 replicates. So, we have a total of 5 bloodtype O individuals in the control (2 from patient C and 3 from D). Therefore, when we calculate the average coefficients for bloodOs, we need to do it as 0.4 x patientC + 0.6 x patientD.</p>
 <p>The nice thing about this approach is that we do not need to worry about any of this, the weights come from our <code>colMeans()</code> call automatically. And now, any contrasts that we make will take these weights into account:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bloodA vs bloodO (in the control)</span></span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>bloodA_control <span class="sc">-</span> bloodO_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bloodA vs bloodO (in the control)</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>bloodA_control <span class="sc">-</span> bloodO_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            (Intercept)                patientB                patientC 
                     0.0                     0.5                    -0.4 
@@ -1166,11 +1132,8 @@ patientC:conditiontreat patientD:conditiontreat
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interaction</span></span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>(bloodA_treat <span class="sc">-</span> bloodA_control) <span class="sc">-</span> (bloodO_treat <span class="sc">-</span> bloodO_control)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interaction</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>(bloodA_treat <span class="sc">-</span> bloodA_control) <span class="sc">-</span> (bloodO_treat <span class="sc">-</span> bloodO_control)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            (Intercept)                patientB                patientC 
                     0.0                     0.0                    -0.1 
@@ -1746,6 +1709,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../develop/06_exploratory_analysis.html" class="pagination-link" aria-label="Exploratory analysis with DESeq2">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Exploratory analysis with DESeq2</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../develop/07a_DEA.html" class="pagination-link" aria-label="Gene-level differential expression analysis with DESeq2">
+        <span class="nav-page-text">Gene-level differential expression analysis with DESeq2</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

@@ -66,6 +66,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../develop/09_summarized_workflow.html" rel="next">
+<link href="../develop/08b_FA_overrepresentation.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -75,8 +77,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-2cc6ea1fd150477f80888fa7a499a412.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-a2e2465e12904b56fd75c214dc7b3a5f.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-f8b02ad148a82fc552ded4b140ad6cfe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-caab8ed4655923ab2a66262bd1f5b826.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,11 +106,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 </head>
 
-<body class="nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -145,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Data processing</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../develop/05a_data_analysis_setup.html"> 
+    <a class="nav-link active" href="../develop/05a_data_analysis_setup.html" aria-current="page"> 
 <span class="menu-text">Data analyses</span></a>
   </li>  
   <li class="nav-item">
@@ -166,10 +170,151 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
       </div> <!-- /container-fluid -->
     </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Functional Analysis</a></li><li class="breadcrumb-item"><a href="../develop/08c_FA_GSEA.html">Functional Class Scoring</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/05a_data_analysis_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">UCloud setup</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/05b_count_matrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The RNAseq count matrix</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Quality control</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/05c_count_normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Count normalization with DESeq2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/06_exploratory_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploratory analysis with DESeq2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Differential Expression</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07_extra_contrast_design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DESeq samples comparison: contrast designs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07a_DEA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gene-level differential expression analysis with DESeq2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07b_hypothesis_testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hypothesis testing with DESeq2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07c_DEA_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Log Fold Shrinkage and DEA visualizations</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Functional Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/08a_FA_genomic_annotation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Genomic annotations for functional analyses</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/08b_FA_overrepresentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Functional Analysis for RNA-seq</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/08c_FA_GSEA.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Functional Class Scoring</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Workflow summary</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../develop/09_summarized_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary of DGE workflow</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -188,7 +333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../develop/08a_FA_genomic_annotation.html">Functional Analysis</a></li><li class="breadcrumb-item"><a href="../develop/08c_FA_GSEA.html">Functional Class Scoring</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Functional Class Scoring</h1>
 </div>
@@ -236,33 +381,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="preparation-for-gsea">Preparation for GSEA</h3>
 <p>clusterProfiler offers several functions to perform GSEA using different genes sets, including but not limited to GO, KEGG, and MSigDb. We will use the KEGG gene sets, which identify genes using their Entrez IDs. Therefore, to perform the analysis, we will need to acquire the Entrez IDs. We will also need to remove the Entrez ID NA values and duplicates (due to gene ID conversion) prior to the analysis:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Remove any NA values (reduces the data by quite a bit) and duplicates</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>res_entrez <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(res_ids, entrez <span class="sc">!=</span> <span class="st">"NA"</span> <span class="sc">&amp;</span> <span class="fu">duplicated</span>(entrez)<span class="sc">==</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 <p>Finally, extract and name the fold changes:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract the foldchanges</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>foldchanges <span class="ot">&lt;-</span> res_entrez<span class="sc">$</span>log2FoldChange</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Name each fold change with the corresponding Entrez ID</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(foldchanges) <span class="ot">&lt;-</span> res_entrez<span class="sc">$</span>entrez</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 <p>Next we need to order the fold changes in decreasing order. To do this we’ll use the <code>sort()</code> function, which takes a vector as input. This is in contrast to Tidyverse’s <code>arrange()</code>, which requires a data frame.</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Sort fold changes in decreasing order</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>foldchanges <span class="ot">&lt;-</span> <span class="fu">sort</span>(foldchanges, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(foldchanges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>     1297      1501 100996732 107985200      3263      3934 
  4.182128  3.467430  3.280630  3.280630  3.001757  2.922119 </code></pre>
@@ -273,8 +409,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="performing-gsea">Performing GSEA</h3>
 <p>To perform the GSEA using KEGG gene sets with clusterProfiler, we can use the <code>gseKEGG()</code> function:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## GSEA using gene sets from KEGG pathways</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>gseaKEGG <span class="ot">&lt;-</span> <span class="fu">gseKEGG</span>(<span class="at">geneList =</span> foldchanges, <span class="co"># ordered named vector of fold changes (Entrez IDs are the associated names)</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">organism =</span> <span class="st">"hsa"</span>, <span class="co"># supported organisms listed below</span></span>
@@ -284,36 +418,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract the GSEA results</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>gseaKEGG_results <span class="ot">&lt;-</span> gseaKEGG<span class="sc">@</span>result</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gseaKEGG_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>               ID                                       Description setSize
-hsa03040 hsa03040                                       Spliceosome     140
-hsa05322 hsa05322                      Systemic lupus erythematosus     122
-hsa04613 hsa04613           Neutrophil extracellular trap formation     174
-hsa05022 hsa05022 Pathways of neurodegeneration - multiple diseases     420
-hsa05014 hsa05014                     Amyotrophic lateral sclerosis     307
-hsa05010 hsa05010                                 Alzheimer disease     342
-         enrichmentScore       NES       pvalue     p.adjust       qvalue rank
-hsa03040       0.7191922  2.302357 1.000000e-10 0.0000000345 3.031579e-08 1565
-hsa05322      -0.6047195 -1.951354 2.868729e-06 0.0004948558 4.348389e-04 1326
-hsa04613      -0.5314809 -1.779682 4.473805e-05 0.0040182426 3.530904e-03 1394
-hsa05022       0.4268181  1.516611 4.658832e-05 0.0040182426 3.530904e-03 4202
-hsa05014       0.4505410  1.558432 1.733573e-04 0.0119616512 1.051092e-02 4922
-hsa05010       0.4227766  1.475465 2.677982e-04 0.0153983956 1.353086e-02 4306
-                           leading_edge
-hsa03040  tags=20%, list=8%, signal=19%
-hsa05322  tags=21%, list=6%, signal=20%
-hsa04613  tags=19%, list=7%, signal=18%
-hsa05022 tags=37%, list=20%, signal=30%
-hsa05014 tags=43%, list=24%, signal=33%
-hsa05010 tags=39%, list=21%, signal=32%
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                core_enrichment
-hsa03040                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  124904135/124904136/124904137/124904138/124904139/124904140/124904141/124904142/124904143/124904144/124907963/124907964/124907965/10262/6634/6631/9939/220988/8683/9129/151903/3312/2521/84321/24148/4809/57819/84991
-hsa05322                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  8348/8353/3586/8347/440689/8970/92815/7124/8358/8336/942/1991/718/8343/8357/723790/8341/8349/128312/8329/8344/940/8360/3017/8367/8370
-hsa04613                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           3689/51284/8348/1183/8353/8347/7450/440689/8970/92815/6403/8358/1432/8336/2243/2266/1991/718/8343/8357/5330/723790/23569/8341/8349/128312/3683/8329/8344/8360/3017/8367/8370
-hsa05022 2902/1769/598/4541/25981/81029/55567/1536/4539/4519/5970/2878/11211/50507/2776/5608/11047/4747/7415/7345/2932/22943/9776/572/7332/5664/22863/4893/1020/5532/818/4726/356/84516/8312/10010/120892/10105/5709/4720/4722/7326/3845/3552/581/2521/355/5599/808/3569/3265/5578/4702/7473/23236/578/1857/5609/5715/26100/5708/488/4514/5701/8851/81027/203068/2475/5707/11315/5692/27035/4725/5702/8322/1855/5705/5602/7477/3553/10131/324/5704/1131/79139/1139/4707/5071/4717/5687/6647/5691/8408/4718/54361/8678/55860/9861/7311/8326/836/3064/4723/317/9377/805/5606/9927/64837/126328/4728/11258/3799/10671/515/5714/7419/4715/10121/51465/516/4713/9217/514/5684/1459/4696/29982/5335/292/369/1329/4716/842/1349/5603/5706/7327/10376/5689/27429/4710/201625/1460/5481/513/518/4694/10297/776/23435/5663/5683/5682/1337
-hsa05014                                                                                                   2902/1769/598/4541/25981/55567/4539/4519/2878/60/5608/11047/4747/7415/9776/572/22863/5532/4726/84516/10010/220988/5709/4720/4722/581/2521/10482/4702/5903/5715/26100/311/5708/4514/5701/81027/203068/2475/5707/5692/81929/3178/4725/5702/79902/5705/10762/5704/79139/4707/55916/5071/4717/5687/6647/5691/4686/8408/4718/8678/55860/9861/836/4723/317/9377/5606/64837/126328/4728/11258/3799/10671/515/5714/4715/10121/516/4713/9217/514/5684/283/4696/29982/1329/4716/842/1349/5603/129401/5706/6396/100101267/10376/5689/9972/4710/201625/513/518/4694/8480/29979/55746/23435/5683/5682/1337/642659/10476/5718/596/9688/1537/55967/23064/51079/9818/3800/57122/23165/506/2876/7186/2891/1965/1351/10718/51807/25978
-hsa05010                                                                                                                2902/4541/81029/1536/4539/4519/5970/11211/50507/2776/11047/2932/22943/5295/9776/572/5664/22863/4893/4311/1020/5532/4726/55851/8312/10105/5709/4720/4891/4722/3845/3552/355/5599/808/3569/3265/4702/7473/23236/1857/5609/5715/26100/5708/488/4514/5701/8851/81027/203068/2475/5707/5692/27035/4725/5702/8322/1855/5705/5602/7477/3553/23516/324/5704/1131/1139/64116/4707/4717/5687/5691/8408/4718/54361/8678/9861/8326/836/4723/317/9377/805/5293/91252/64837/10313/126328/4728/8517/3799/515/5714/7419/4715/516/4713/55334/4035/514/5684/1459/4696/3630/29982/8503/292/369/1329/4716/842/1349/5706/10376/5689/29985/4710/1460/5481/513/207/518/4694/8660/10297/776/5663/5683/5682/1337/8883/10476/5718</code></pre>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["ID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Description"],"name":[2],"type":["chr"],"align":["left"]},{"label":["setSize"],"name":[3],"type":["int"],"align":["right"]},{"label":["enrichmentScore"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["NES"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["pvalue"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["p.adjust"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["qvalue"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["rank"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["leading_edge"],"name":[10],"type":["chr"],"align":["left"]},{"label":["core_enrichment"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"hsa03040","2":"Spliceosome","3":"140","4":"0.7191922","5":"2.300635","6":"1.000000e-10","7":"0.0000000345","8":"3.105263e-08","9":"1565","10":"tags=20%, list=8%, signal=19%","11":"124904135/124904136/124904137/124904138/124904139/124904140/124904141/124904142/124904143/124904144/124907963/124907964/124907965/10262/6634/6631/9939/220988/8683/9129/151903/3312/2521/84321/24148/4809/57819/84991","_rn_":"hsa03040"},{"1":"hsa05322","2":"Systemic lupus erythematosus","3":"122","4":"-0.6047195","5":"-1.946708","6":"2.430926e-05","7":"0.0036168221","8":"3.255416e-03","9":"1326","10":"tags=21%, list=6%, signal=20%","11":"8348/8353/3586/8347/440689/8970/92815/7124/8358/8336/942/1991/718/8343/8357/723790/8341/8349/128312/8329/8344/940/8360/3017/8367/8370","_rn_":"hsa05322"},{"1":"hsa04613","2":"Neutrophil extracellular trap formation","3":"174","4":"-0.5314809","5":"-1.788482","6":"3.145063e-05","7":"0.0036168221","8":"3.255416e-03","9":"1394","10":"tags=19%, list=7%, signal=18%","11":"3689/51284/8348/1183/8353/8347/7450/440689/8970/92815/6403/8358/1432/8336/2243/2266/1991/718/8343/8357/5330/723790/23569/8341/8349/128312/3683/8329/8344/8360/3017/8367/8370","_rn_":"hsa04613"},{"1":"hsa05014","2":"Amyotrophic lateral sclerosis","3":"307","4":"0.4505410","5":"1.571299","6":"5.926620e-05","7":"0.0051117096","8":"4.600929e-03","9":"4922","10":"tags=43%, list=24%, signal=33%","11":"2902/1769/598/4541/25981/55567/4539/4519/2878/60/5608/11047/4747/7415/9776/572/22863/5532/4726/84516/10010/220988/5709/4720/4722/581/2521/10482/4702/5903/5715/26100/311/5708/4514/5701/81027/203068/2475/5707/5692/81929/3178/4725/5702/79902/5705/10762/5704/79139/4707/55916/5071/4717/5687/6647/5691/4686/8408/4718/8678/55860/9861/836/4723/317/9377/5606/64837/126328/4728/11258/3799/10671/515/5714/4715/10121/516/4713/9217/514/5684/283/4696/29982/1329/4716/842/1349/5603/129401/5706/6396/100101267/10376/5689/9972/4710/201625/513/518/4694/8480/29979/55746/23435/5683/5682/1337/642659/10476/5718/596/9688/1537/55967/23064/51079/9818/3800/57122/23165/506/2876/7186/2891/1965/1351/10718/51807/25978","_rn_":"hsa05014"},{"1":"hsa05022","2":"Pathways of neurodegeneration - multiple diseases","3":"420","4":"0.4268181","5":"1.527988","6":"9.425273e-05","7":"0.0065034383","8":"5.853591e-03","9":"4202","10":"tags=37%, list=20%, signal=30%","11":"2902/1769/598/4541/25981/81029/55567/1536/4539/4519/5970/2878/11211/50507/2776/5608/11047/4747/7415/7345/2932/22943/9776/572/7332/5664/22863/4893/1020/5532/818/4726/356/84516/8312/10010/120892/10105/5709/4720/4722/7326/3845/3552/581/2521/355/5599/808/3569/3265/5578/4702/7473/23236/578/1857/5609/5715/26100/5708/488/4514/5701/8851/81027/203068/2475/5707/11315/5692/27035/4725/5702/8322/1855/5705/5602/7477/3553/10131/324/5704/1131/79139/1139/4707/5071/4717/5687/6647/5691/8408/4718/54361/8678/55860/9861/7311/8326/836/3064/4723/317/9377/805/5606/9927/64837/126328/4728/11258/3799/10671/515/5714/7419/4715/10121/51465/516/4713/9217/514/5684/1459/4696/29982/5335/292/369/1329/4716/842/1349/5603/5706/7327/10376/5689/27429/4710/201625/1460/5481/513/518/4694/10297/776/23435/5663/5683/5682/1337","_rn_":"hsa05022"},{"1":"hsa05016","2":"Huntington disease","3":"267","4":"0.4430374","5":"1.526510","6":"3.667349e-04","7":"0.0210872571","8":"1.898014e-02","9":"4918","10":"tags=46%, list=24%, signal=36%","11":"2902/1769/4541/25981/55567/4539/4519/2878/2776/11047/9776/5439/22863/5434/4726/84516/10105/5709/4720/4722/5438/581/548644/5599/3065/4702/23236/5609/5715/26100/5708/10488/4514/5701/81027/203068/2475/5707/7019/5692/4725/5702/5705/5602/1175/5704/1211/4707/4717/5687/6647/5691/8408/4718/1173/8678/55860/9861/836/3064/4723/317/9377/64837/126328/4728/11258/3799/10671/515/5714/7419/4715/10121/516/4713/514/5684/4899/4696/29982/292/1329/4716/842/5432/1349/5706/10376/5689/6908/4710/201625/1212/5433/513/5431/518/4694/161/5683/160/1387/5682/6648/1337/5468/10476/5718/1537/5437/55967/51079/3800/506/2876/7186/6874/5440/2891/1351/51807/841","_rn_":"hsa05016"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 </div>
 </div>
 <blockquote class="blockquote">
@@ -322,22 +432,16 @@ hsa05010                                                                        
 <p><strong>How many pathways are enriched?</strong></p>
 <p>View the enriched pathways:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Write GSEA results to file</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(gseaKEGG_results, <span class="st">"../Results/gsea_Cont-Vamp_kegg.csv"</span>, <span class="at">quote=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Write GSEA results to file</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(gseaKEGG_results, <span class="st">"../Results/gsea_Cont-Vamp_kegg.csv"</span>, <span class="at">quote=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote class="blockquote">
 <p><em><strong>NOTE:</strong> We will all get different results for the GSEA because the permutations performed use random reordering. If we would like to use the same permutations every time we run a function (i.e.&nbsp;we would like the same results every time we run the function), then we could use the <code>set.seed(123456)</code> function prior to running. The input to <code>set.seed()</code> could be any number, but if you would want the same results, then you would need to use the same number as input.</em></p>
 </blockquote>
 <p>Explore the GSEA plot of enrichment of one of the pathways in the ranked list:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot the GSEA plot for a single enriched pathway:</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(gseaKEGG, <span class="at">geneSetID =</span> gseaKEGG_results<span class="sc">$</span>ID[<span class="dv">1</span>], <span class="at">title =</span> gseaKEGG_results<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot the GSEA plot for a single enriched pathway:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(gseaKEGG, <span class="at">geneSetID =</span> gseaKEGG_results<span class="sc">$</span>ID[<span class="dv">1</span>], <span class="at">title =</span> gseaKEGG_results<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -349,85 +453,50 @@ hsa05010                                                                        
 <p>In this plot, the lines in plot represent the genes in the gene set, and where they occur among the log2 fold changes. The largest positive log2 fold changes are on the left-hand side of the plot, while the largest negative log2 fold changes are on the right. The top plot shows the magnitude of the log2 fold changes for each gene, while the bottom plot shows the running sum, with the enrichment score peaking at the red dotted line (which is among the negative log2 fold changes).</p>
 <p>Use the <a href="http://bioconductor.org/packages/release/bioc/html/pathview.html">Pathview R package</a> to integrate the KEGG pathway data from clusterProfiler into pathway images:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Output images for a single significant KEGG pathway</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pathview</span>(<span class="at">gene.data =</span> foldchanges,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">pathway.id =</span> gseaKEGG_results<span class="sc">$</span>ID[<span class="dv">1</span>],</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">species =</span> <span class="st">"hsa"</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">limit =</span> <span class="fu">list</span>(<span class="at">gene =</span> <span class="dv">2</span>, <span class="co"># value gives the max/min limit for foldchanges</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">cpd =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Output images for a single significant KEGG pathway</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pathview</span>(<span class="at">gene.data =</span> foldchanges,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">pathway.id =</span> gseaKEGG_results<span class="sc">$</span>ID[<span class="dv">1</span>],</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">species =</span> <span class="st">"hsa"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">limit =</span> <span class="fu">list</span>(<span class="at">gene =</span> <span class="dv">2</span>, <span class="co"># value gives the max/min limit for foldchanges</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">cpd =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote class="blockquote">
 <p><strong>NOTE:</strong> Printing out Pathview images for all significant pathways can be easily performed as follows:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Output images for all significant KEGG pathways</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>get_kegg_plots <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">pathview</span>(<span class="at">gene.data =</span> foldchanges, </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">pathway.id =</span> gseaKEGG_results<span class="sc">$</span>ID[x], </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">species =</span> <span class="st">"hsa"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">limit =</span> <span class="fu">list</span>(<span class="at">gene =</span> <span class="dv">2</span>, <span class="at">cpd =</span> <span class="dv">1</span>))</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(gseaKEGG_results<span class="sc">$</span>ID), </span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>           get_kegg_plots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Output images for all significant KEGG pathways</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>get_kegg_plots <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">pathview</span>(<span class="at">gene.data =</span> foldchanges, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">pathway.id =</span> gseaKEGG_results<span class="sc">$</span>ID[x], </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">species =</span> <span class="st">"hsa"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">limit =</span> <span class="fu">list</span>(<span class="at">gene =</span> <span class="dv">2</span>, <span class="at">cpd =</span> <span class="dv">1</span>))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(gseaKEGG_results<span class="sc">$</span>ID), </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>           get_kegg_plots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </blockquote>
 <p>Instead of exploring enrichment of KEGG gene sets, we can also explore the enrichment of BP Gene Ontology terms using gene set enrichment analysis:</p>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GSEA using gene sets associated with BP Gene Ontology terms</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>gseaGO <span class="ot">&lt;-</span> <span class="fu">gseGO</span>(<span class="at">geneList =</span> foldchanges, </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">OrgDb =</span> org.Hs.eg.db, </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">ont =</span> <span class="st">'BP'</span>, </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">minGSSize =</span> <span class="dv">20</span>, </span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="cn">FALSE</span>) </span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>gseaGO_results <span class="ot">&lt;-</span> gseaGO<span class="sc">@</span>result</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gseaGO_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>                   ID                                               Description
-GO:0022613 GO:0022613                      ribonucleoprotein complex biogenesis
-GO:0006334 GO:0006334                                       nucleosome assembly
-GO:0042254 GO:0042254                                       ribosome biogenesis
-GO:0034728 GO:0034728                                   nucleosome organization
-GO:0098742 GO:0098742 cell-cell adhesion via plasma-membrane adhesion molecules
-GO:0006302 GO:0006302                                double-strand break repair
-           setSize enrichmentScore       NES       pvalue    p.adjust
-GO:0022613     394       0.4821523  1.702442 3.016422e-07 0.001214411
-GO:0006334     101      -0.6352465 -1.986413 4.188350e-06 0.008431149
-GO:0042254     258       0.5016453  1.700218 6.468771e-06 0.008681091
-GO:0034728     117      -0.5846486 -1.852207 1.629840e-05 0.016404338
-GO:0098742     259      -0.4757274 -1.650156 5.422218e-05 0.036383083
-GO:0006302     285       0.4689911  1.607636 5.326030e-05 0.036383083
-                qvalue rank                   leading_edge
-GO:0022613 0.001125919 4529 tags=43%, list=22%, signal=34%
-GO:0006334 0.007816784 1326  tags=21%, list=6%, signal=20%
-GO:0042254 0.008048513 4529 tags=47%, list=22%, signal=37%
-GO:0034728 0.015208979 1326  tags=21%, list=6%, signal=19%
-GO:0098742 0.033731903 2728 tags=22%, list=13%, signal=19%
-GO:0006302 0.033731903 4312 tags=41%, list=21%, signal=33%
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                core_enrichment
-GO:0022613 58155/27340/57647/10514/9136/84881/55702/115939/10262/84864/8161/388524/8850/6634/6631/708/25926/10078/7520/10978/26155/55153/8683/9129/25980/79979/23481/4839/5822/54555/8241/8886/51018/6895/26574/8661/8663/728689/24148/8451/4809/51504/29777/1653/57819/114049/54496/81875/387338/27341/5036/22803/51121/5394/55299/56915/51096/1736/3692/27043/23195/23246/51388/51010/2091/91893/5591/10600/11325/9169/84549/51491/7375/79631/26523/79707/4686/6637/10969/6635/84946/5303/55027/2068/3326/55272/81554/79066/55505/25879/79050/64282/4869/8450/9775/10412/84769/51550/54663/2197/121053/51119/6234/54433/10885/54913/92856/6209/25983/6636/79760/10856/130916/8669/90121/11218/6839/163859/8662/10658/134430/51001/26284/51631/51441/54955/57109/10992/51116/79033/6632/90459/55695/9669/83939/6203/6191/6838/54059/6426/55720/23451/8568/8666/51367/10728/7514/100101490/64794/10480/8665/56902/102157402/28985/1660/2971/54512/10200/9733/55178/11171/55003/23560/117246/50628/285855/54853/6232/79833/55226
-GO:0006334                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            8348/8353/546/64754/8347/6046/8970/8358/8343/8357/23569/8341/8349/3008/3007/8344/8360/3006/3005/8367/8370
-GO:0042254                                                                                                                                                                                                                                                                                           27340/57647/10514/9136/84881/115939/84864/388524/8850/708/25926/7520/26155/55153/79979/23481/4839/5822/54555/8241/8886/51018/26574/8451/4809/51504/29777/114049/81875/387338/27341/5036/22803/51121/5394/55299/56915/51096/1736/3692/27043/23195/23246/51388/51010/2091/91893/5591/10600/84549/51491/79631/79707/10969/84946/5303/55027/2068/55272/81554/79066/55505/25879/79050/64282/4869/8450/9775/10412/84769/51550/54663/2197/51119/6234/54433/10885/54913/92856/6209/25983/130916/90121/6839/163859/134430/51001/26284/51441/54955/57109/51116/79033/90459/55695/9669/83939/6203/6191/6838/54059/55720/8568/51367/7514/64794/56902/102157402/2971/54512/10200/55178/55003/23560/117246/50628/285855/54853/6232/55226
-GO:0034728                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          8289/126961/8348/8353/546/64754/8347/6046/8970/92815/8358/8343/8357/23569/8341/8349/3008/3007/8344/8360/3006/3005/8367/8370
-GO:0098742                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            9074/30835/81607/3678/256158/91179/91624/56105/56122/53827/54798/57575/91663/1824/214/3688/56128/64221/1952/64881/9620/9069/221935/2239/22871/79633/5101/9378/3689/392617/3586/4155/7048/84962/650/3675/9746/54549/23767/6402/5097/1366/54510/1364/56123/6403/6401/1432/1002/56125/1001/56126/3383/3683/92211/64072/53841
-GO:0006302                                                                                                                                                                                                                                                                                                                                 79035/286257/55317/10039/57492/10111/60/29128/9274/387893/79173/7415/27434/126549/675/2305/29117/79913/51548/24144/708/51750/5888/196528/7520/9400/6598/25900/2521/22992/84309/126074/11200/4683/80010/10519/10524/10097/4292/3297/605/29935/1653/1108/5932/3276/5536/25/83695/4176/7468/54537/8295/11144/55063/84296/28990/5531/80198/8438/3146/8193/5591/5422/26122/79000/3364/125150/3014/50485/6944/6603/151987/79840/4255/51149/51588/55719/10459/78996/8089/142/29072/10856/11073/27343/65123/54556/2067/84717/1459/64710/55086/25939/4796/353497/8317/58493/22891/57223/80314/55671/79728/26168/375757/6421/7913/84515/5965/253714/4436/1387/83666/9025/10721/23028/6502/2177</code></pre>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GSEA using gene sets associated with BP Gene Ontology terms</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gseaGO <span class="ot">&lt;-</span> <span class="fu">gseGO</span>(<span class="at">geneList =</span> foldchanges, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">OrgDb =</span> org.Hs.eg.db, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">ont =</span> <span class="st">'BP'</span>, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">minGSSize =</span> <span class="dv">20</span>, </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="cn">FALSE</span>) </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>gseaGO_results <span class="ot">&lt;-</span> gseaGO<span class="sc">@</span>result</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gseaGO_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["ID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Description"],"name":[2],"type":["chr"],"align":["left"]},{"label":["setSize"],"name":[3],"type":["int"],"align":["right"]},{"label":["enrichmentScore"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["NES"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["pvalue"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["p.adjust"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["qvalue"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["rank"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["leading_edge"],"name":[10],"type":["chr"],"align":["left"]},{"label":["core_enrichment"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"GO:0022613","2":"ribonucleoprotein complex biogenesis","3":"394","4":"0.4821523","5":"1.695839","6":"1.422604e-07","7":"0.0005727404","8":"0.000526064","9":"4529","10":"tags=43%, list=22%, signal=34%","11":"58155/27340/57647/10514/9136/84881/55702/115939/10262/84864/8161/388524/8850/6634/6631/708/25926/10078/7520/10978/26155/55153/8683/9129/25980/79979/23481/4839/5822/54555/8241/8886/51018/6895/26574/8661/8663/728689/24148/8451/4809/51504/29777/1653/57819/114049/54496/81875/387338/27341/5036/22803/51121/5394/55299/56915/51096/1736/3692/27043/23195/23246/51388/51010/2091/91893/5591/10600/11325/9169/84549/51491/7375/79631/26523/79707/4686/6637/10969/6635/84946/5303/55027/2068/3326/55272/81554/79066/55505/25879/79050/64282/4869/8450/9775/10412/84769/51550/54663/2197/121053/51119/6234/54433/10885/54913/92856/6209/25983/6636/79760/10856/130916/8669/90121/11218/6839/163859/8662/10658/134430/51001/26284/51631/51441/54955/57109/10992/51116/79033/6632/90459/55695/9669/83939/6203/6191/6838/54059/6426/55720/23451/8568/8666/51367/10728/7514/100101490/64794/10480/8665/56902/102157402/28985/1660/2971/54512/10200/9733/55178/11171/55003/23560/117246/50628/285855/54853/6232/79833/55226","_rn_":"GO:0022613"},{"1":"GO:0042254","2":"ribosome biogenesis","3":"258","4":"0.5016453","5":"1.712592","6":"1.675749e-06","7":"0.0033732835","8":"0.003098372","9":"4529","10":"tags=47%, list=22%, signal=37%","11":"27340/57647/10514/9136/84881/115939/84864/388524/8850/708/25926/7520/26155/55153/79979/23481/4839/5822/54555/8241/8886/51018/26574/8451/4809/51504/29777/114049/81875/387338/27341/5036/22803/51121/5394/55299/56915/51096/1736/3692/27043/23195/23246/51388/51010/2091/91893/5591/10600/84549/51491/79631/79707/10969/84946/5303/55027/2068/55272/81554/79066/55505/25879/79050/64282/4869/8450/9775/10412/84769/51550/54663/2197/51119/6234/54433/10885/54913/92856/6209/25983/130916/90121/6839/163859/134430/51001/26284/51441/54955/57109/51116/79033/90459/55695/9669/83939/6203/6191/6838/54059/55720/8568/51367/7514/64794/56902/102157402/2971/54512/10200/55178/55003/23560/117246/50628/285855/54853/6232/55226","_rn_":"GO:0042254"},{"1":"GO:0006334","2":"nucleosome assembly","3":"101","4":"-0.6352465","5":"-1.974939","6":"8.551686e-06","7":"0.0114763627","8":"0.010541078","9":"1326","10":"tags=21%, list=6%, signal=20%","11":"8348/8353/546/64754/8347/6046/8970/8358/8343/8357/23569/8341/8349/3008/3007/8344/8360/3006/3005/8367/8370","_rn_":"GO:0006334"},{"1":"GO:0034728","2":"nucleosome organization","3":"117","4":"-0.5846486","5":"-1.863779","6":"2.368920e-05","7":"0.0183795866","8":"0.016881713","9":"1326","10":"tags=21%, list=6%, signal=19%","11":"8289/126961/8348/8353/546/64754/8347/6046/8970/92815/8358/8343/8357/23569/8341/8349/3008/3007/8344/8360/3006/3005/8367/8370","_rn_":"GO:0034728"},{"1":"GO:0098742","2":"cell-cell adhesion via plasma-membrane adhesion molecules","3":"259","4":"-0.4757274","5":"-1.653337","6":"1.880852e-05","7":"0.0183795866","8":"0.016881713","9":"2728","10":"tags=22%, list=13%, signal=19%","11":"9074/30835/81607/3678/256158/91179/91624/56105/56122/53827/54798/57575/91663/1824/214/3688/56128/64221/1952/64881/9620/9069/221935/2239/22871/79633/5101/9378/3689/392617/3586/4155/7048/84962/650/3675/9746/54549/23767/6402/5097/1366/54510/1364/56123/6403/6401/1432/1002/56125/1001/56126/3383/3683/92211/64072/53841","_rn_":"GO:0098742"},{"1":"GO:0006302","2":"double-strand break repair","3":"285","4":"0.4689911","5":"1.613648","6":"2.739134e-05","7":"0.0183795866","8":"0.016881713","9":"4312","10":"tags=41%, list=21%, signal=33%","11":"79035/286257/55317/10039/57492/10111/60/29128/9274/387893/79173/7415/27434/126549/675/2305/29117/79913/51548/24144/708/51750/5888/196528/7520/9400/6598/25900/2521/22992/84309/126074/11200/4683/80010/10519/10524/10097/4292/3297/605/29935/1653/1108/5932/3276/5536/25/83695/4176/7468/54537/8295/11144/55063/84296/28990/5531/80198/8438/3146/8193/5591/5422/26122/79000/3364/125150/3014/50485/6944/6603/151987/79840/4255/51149/51588/55719/10459/78996/8089/142/29072/10856/11073/27343/65123/54556/2067/84717/1459/64710/55086/25939/4796/353497/8317/58493/22891/57223/80314/55671/79728/26168/375757/6421/7913/84515/5965/253714/4436/1387/83666/9025/10721/23028/6502/2177","_rn_":"GO:0006302"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(gseaGO, <span class="at">geneSetID =</span> gseaGO_results<span class="sc">$</span>ID[<span class="dv">1</span>], <span class="at">title =</span> gseaGO_results<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(gseaGO, <span class="at">geneSetID =</span> gseaGO_results<span class="sc">$</span>ID[<span class="dv">1</span>], <span class="at">title =</span> gseaGO_results<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1013,6 +1082,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../develop/08b_FA_overrepresentation.html" class="pagination-link" aria-label="Functional Analysis for RNA-seq">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Functional Analysis for RNA-seq</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../develop/09_summarized_workflow.html" class="pagination-link" aria-label="Summary of DGE workflow">
+        <span class="nav-page-text">Summary of DGE workflow</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
