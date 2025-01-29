@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="You!">
-<meta name="dcterms.date" content="2025-01-08">
+<meta name="dcterms.date" content="2025-01-29">
 
 <title>DESeq samples comparison: contrast designs – Bulk RNAseq data analysis</title>
 <style>
@@ -77,8 +77,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f8b02ad148a82fc552ded4b140ad6cfe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-caab8ed4655923ab2a66262bd1f5b826.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-e2e79cc1d216621b5e60e2ec85de2f1f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-e34cbc831fd0044b4973557130960f05.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -356,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 8, 2025</p>
+      <p class="date">January 29, 2025</p>
     </div>
   </div>
   
@@ -447,17 +447,17 @@ Wald test p-value: condition_treat_vs_control effect
 DataFrame with 1000 rows and 6 columns
           baseMean log2FoldChange     lfcSE       stat      pvalue        padj
          &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt;  &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
-gene1     70.09225      0.3306839  0.547099  0.6044311   0.5455571    0.678072
-gene2     87.15786     -0.0261119  0.541142 -0.0482533   0.9615144    0.974960
-gene3      2.46673     -2.8896493  2.238306 -1.2909984   0.1967042          NA
-gene4     18.25102      1.7415195  0.889021  1.9589188   0.0501223    0.112166
-gene5     20.91273      0.8723612  0.858692  1.0159187   0.3096681    0.453051
+gene1      6.99478       0.827958  1.164165   0.711203 4.76958e-01 0.602507693
+gene2    111.94803       1.425660  0.461628   3.088334 2.01282e-03 0.007743544
+gene3     11.69847      -0.625382  1.120365  -0.558195 5.76711e-01 0.687474997
+gene4     61.31487      -3.146315  0.760285  -4.138335 3.49836e-05 0.000234371
+gene5      2.37825      -3.811160  2.626004  -1.451315 1.46692e-01 0.260588553
 ...            ...            ...       ...        ...         ...         ...
-gene996    16.9893      4.9127382  1.302003  3.7732156 0.000161157 0.000946391
-gene997    53.7381      0.0368984  0.530053  0.0696127 0.944501966 0.963493926
-gene998   239.4049      0.4552256  0.403227  1.1289553 0.258916683 0.395378879
-gene999   145.7851     -1.4193350  0.473911 -2.9949389 0.002744999 0.010868207
-gene1000   60.1577      0.4563993  0.521589  0.8750174 0.381564414 0.521670097</code></pre>
+gene996    2.25406      0.1704427  2.115898  0.0805534 9.35797e-01 9.59501e-01
+gene997  288.94559      0.0622391  0.394597  0.1577286 8.74671e-01 9.21175e-01
+gene998  895.65622      3.1721701  0.416109  7.6234095 2.47062e-14 7.93153e-13
+gene999   35.35022      0.5104178  0.576830  0.8848664 3.76229e-01 5.02538e-01
+gene1000   4.37311     -2.6796029  1.988946 -1.3472474 1.77901e-01 2.96820e-01</code></pre>
 </div>
 </div>
 <p>The above is a simple way to obtain the results of interest. But it is worth understanding how DESeq is getting to these results by looking at the model’s matrix. DESeq defines the model matrix using base R functionality:</p>
@@ -755,15 +755,15 @@ attr(,"contrasts")$bloodtype
 <pre><code>DataFrame with 9 rows and 3 columns
         bloodtype sizeFactor      A_B
          &lt;factor&gt;  &lt;numeric&gt; &lt;factor&gt;
-sample1    bloodA   0.944107    TRUE 
-sample2    bloodA   0.941566    TRUE 
-sample3    bloodA   0.962169    TRUE 
-sample4    bloodB   0.963952    TRUE 
-sample5    bloodB   0.938568    TRUE 
-sample6    bloodB   1.134860    TRUE 
-sample7    bloodO   1.128999    FALSE
-sample8    bloodO   1.163539    FALSE
-sample9    bloodO   1.095781    FALSE</code></pre>
+sample1    bloodA   0.964674    TRUE 
+sample2    bloodA   0.917232    TRUE 
+sample3    bloodA   0.895324    TRUE 
+sample4    bloodB   0.995566    TRUE 
+sample5    bloodB   0.921173    TRUE 
+sample6    bloodB   1.182643    TRUE 
+sample7    bloodO   1.141209    FALSE
+sample8    bloodO   1.106591    FALSE
+sample9    bloodO   1.156398    FALSE</code></pre>
 </div>
 </div>
 <p>and then re-run DESeq with a new design:</p>
