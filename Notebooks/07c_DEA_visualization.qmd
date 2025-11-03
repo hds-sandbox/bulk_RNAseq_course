@@ -218,7 +218,7 @@ However, we see that the table has many duplicates per gene, due to the fact tha
 We remove the transcript ID column and duplicated rows from the tx2gene table using tidyverse syntax. We merge the tables using the `merge` function, which has many options for merging. Since our tables have different column names for the gene ID variable, we provide them with the `by.x` and `by.y` arguments. We also want to keep all of our results, so we use the argument `all.x` as well.
 
 ```{r}
-res_tableCont_tb <- merge(res_tableCont_tb, tx2gene %>% select(-transcript_ID) %>% distinct(),
+res_tableCont_tb <- merge(res_tableCont_tb, tx2gene %>% dplyr::select(-transcript_ID) %>% distinct(),
                         by.x = "gene", by.y = "gene_ID", all.x = T)
 
 res_tableCont_tb
