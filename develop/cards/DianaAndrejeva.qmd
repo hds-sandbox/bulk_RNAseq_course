@@ -1,0 +1,8 @@
+---
+title: "Diana Andrejeva"
+description: "Data Scientist"
+---
+
+![](../img/cards/diana_andrejeva.jpg){width=300}
+
+[![](LinkedIN.png){width=50}](https://www.linkedin.com/in/diana-andrejeva-766058155/)   [![](Github_black.png){width=50}](https://github.com/andrejeva-d)

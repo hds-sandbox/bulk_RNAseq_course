@@ -15,13 +15,6 @@ format:
     toc: false
 ---
 
-<!--
-# Put above to hide navigation (left), toc (right) or footer (bottom)
-hide: navigation, toc or footer
-
-# You should hide the navigation if there are no subsections
-# You should hide the Table of Contents if there are no important titles
--->
 
 ::: {.hero-banner}
 # Welcome to the bulk RNA-seq analysis workshop
@@ -83,7 +76,7 @@ We recognize the substantial contribution of José Alejandro Romero Herrera, a f
 | Member                        | Role                                | Institution                        | PI                                 |
 |-------------------------------|-------------------------------------|------------------------------------|------------------------------------|
 | Jennifer Bartell              | Project Manager, Data Scientist | Center for Health Data Science, KU |Anders Krogh                        |
-| Diana Andrejeva          | Data Scientist                      | Center for Health Data Science, KU |Anders Krogh                        |
+| Henrike Zschach               | Data Scientist                      | Center for Health Data Science, KU |Anders Krogh                        |
 | Samuele Soraggi               | Data Scientist                      | Bioinformatics Research Centre, AU |Mikkel Schierup                     |
 
 We would also like to extend our gratitude to:
@@ -94,10 +87,4 @@ We would also like to extend our gratitude to:
 - [Harvard Chan Bioinformatics Core (HBC)](http://bioinformatics.sph.harvard.edu/), check out their [github repo](https://github.com/hbctraining/DGE_workshop_salmon_online)
 - [nf-core community](https://nf-co.re/)
 
-### Course Instructors 
-
-<!-- AUTHORS  Format: [author name](link to author page){ .md-button } 
-<h4>Authors</h4>
-
-[cards cols="6"(./develop/cards/cards.yaml)]
--->
+### Course Instructors

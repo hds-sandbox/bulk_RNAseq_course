@@ -1,0 +1,8 @@
+---
+title: "Suze Roostee"
+description: "Data Scientist"
+---
+
+![](../img/cards/suze_roostee.png){width=300}
+
+[![](Outlook.png){width=50}](mailto:suze.roostee@sund.ku.dk)   [![](mapPin.png){width=50}](https://heads.ku.dk/)

@@ -1,6 +1,8 @@
 ---
 format: html
 css: ../css/agenda.css
+filters:
+  - ../css/agenda.lua
 ---
 
 :::{.hero-banner}
@@ -44,6 +46,7 @@ Our first choice is to provide all the **training materials, tutorials, and tool
 
 &nbsp;
 
+<!-- 
 4. Additional files needed for exercises from Day 1 - Lecture 2 (QC report files)
 
 <div style="display: flex; justify-content: center; padding: 10px 20px;">
@@ -52,7 +55,6 @@ Our first choice is to provide all the **training materials, tutorials, and tool
   </a>
 </div>
 
-<!-- 
 5. Course slides
 
 <div style="display: flex; justify-content: center; padding: 10px 20px">
@@ -79,176 +81,68 @@ Our first choice is to provide all the **training materials, tutorials, and tool
 
 # Workshop Agenda
 
-::: {.agenda-legend}
-[Lecture]{.agenda-tag .lecture} [Exercise]{.agenda-tag .exercise} [Discussion]{.agenda-tag .qa} [Break]{.agenda-tag .break}
-:::
 
 ::: {.panel-tabset}
 
 ## Day 1
 
 ::: {.agenda}
-
-::: {.agenda-item .lecture}
-[9:00]{.agenda-time} [Intro to course]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .lecture}
-[9:15]{.agenda-time} [Experimental design]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .lecture}
-[9:45]{.agenda-time} [Preprocessing and library prep]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .break}
-[10:15]{.agenda-time} [Coffee break]{.agenda-title}
-:::
-
-::: {.agenda-item .lecture}
-[10:30]{.agenda-time} [Trimming, QC, and alignment]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .lecture}
-[11:30]{.agenda-time} [Feature counts and MultiQC]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .break}
-[12:00]{.agenda-time} [Lunch break]{.agenda-title}
-:::
-
-::: {.agenda-item .exercise}
-[13:00]{.agenda-time} [Feature counts, MultiQC, and alignment]{.agenda-title} [Exercise]{.agenda-tag .exercise}
-:::
-
-::: {.agenda-item .lecture}
-[13:45]{.agenda-time} [Intro to HPC and UCloud]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .break}
-[14:30]{.agenda-time} [Coffee break]{.agenda-title}
-:::
-
-::: {.agenda-item .exercise}
-[15:00]{.agenda-time} [Nextflow pipelines, nf-core, and UCloud]{.agenda-title} [Exercise]{.agenda-tag .exercise}
-:::
-
-::: {.agenda-item .lecture}
-[16:00]{.agenda-time} [RNAseq results from pipeline]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .qa}
-[16:30]{.agenda-time} [Q & A]{.agenda-title} [Discussion]{.agenda-tag .qa}
-:::
-
+| Time  | Session                        | Type       |
+|-------|--------------------------------|------------|
+| 9:00  | Intro to course                | lecture    |
+| 9:15  | Experimental planning          | lecture    |
+| 9:45  | Preprocessing and library prep | lecture    |
+| 10:15 | Coffee break                   | break      |
+| 10:30 | Preprocessing and library prep | lecture    |
+| 11:00 | Trimming and QC                | lecture    |
+| 12:00 | Lunch break                    | break      |
+| 13:00 | Alignment and duplicates       | lecture    |
+| 13:30 | Feature counts and QC          | lecture    |
+| 14:20 | Pseudoaligners                 | lecture    |
+| 14:30 | Coffee break                   | break      |
+| 14:45 | Nextflow pipelines             | lecture    |
+| 15:30 | Pipeline exercise              | exercise   |
+| 16:30 | Q & A                          | discussion |
 :::
 
 ## Day 2
 
 ::: {.agenda}
-
-::: {.agenda-item .lecture}
-[9:00]{.agenda-time} [UCloud setup / recap]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .lecture}
-[9:30]{.agenda-time} [RNAseq count matrix and normalization]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .break}
-[10:15]{.agenda-time} [Coffee break]{.agenda-title}
-:::
-
-::: {.agenda-item .exercise}
-[10:30]{.agenda-time} [Count matrices]{.agenda-title} [Exercise]{.agenda-tag .exercise}
-:::
-
-::: {.agenda-item .lecture}
-[11:30]{.agenda-time} [Exploratory data analysis]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .break}
-[12:00]{.agenda-time} [Lunch break]{.agenda-title}
-:::
-
-::: {.agenda-item .exercise}
-[13:00]{.agenda-time} [Exploratory data analysis]{.agenda-title} [Exercise]{.agenda-tag .exercise}
-:::
-
-::: {.agenda-item .break}
-[14:30]{.agenda-time} [Coffee break]{.agenda-title}
-:::
-
-::: {.agenda-item .lecture}
-[14:45]{.agenda-time} [Differential expression analysis]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .qa}
-[16:30]{.agenda-time} [Q & A]{.agenda-title} [Discussion]{.agenda-tag .qa}
-:::
-
+| Time  | Session                               | Type       |
+|-------|---------------------------------------|------------|
+| 9:00  | Recap from last session               | lecture    |
+| 9:15  | UCloud                                | lecture    |
+| 9:30  | Intro to RStudio and R Markdown       | lecture    |
+| 9:45  | RNAseq count matrix and normalization | lecture    |
+| 10:15 | Coffee break                          | break      |
+| 10:30 | RNAseq count matrix and normalization | lecture    |
+| 12:00 | Lunch break                           | break      |
+| 13:00 | Exploratory analysis                  | lecture    |
+| 14:30 | Coffee break                          | break      |
+| 14:45 | Differential expression analysis      | lecture    |
+| 16:30 | Q & A                                 | discussion |
 :::
 
 ## Day 3
 
 ::: {.agenda}
-
-::: {.agenda-item .lecture}
-[9:00]{.agenda-time} [UCloud setup / recap]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .lecture}
-[9:45]{.agenda-time} [DEA visualization]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .break}
-[10:30]{.agenda-time} [Coffee break]{.agenda-title}
-:::
-
-::: {.agenda-item .lecture}
-[10:45]{.agenda-time} [Gene annotation and databases]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .exercise}
-[11:15]{.agenda-time} [Gene annotation]{.agenda-title} [Exercise]{.agenda-tag .exercise}
-:::
-
-::: {.agenda-item .break}
-[12:00]{.agenda-time} [Lunch break]{.agenda-title}
-:::
-
-::: {.agenda-item .exercise}
-[13:00]{.agenda-time} [Gene annotation]{.agenda-title} [Exercise]{.agenda-tag .exercise}
-:::
-
-::: {.agenda-item .lecture}
-[13:30]{.agenda-time} [Functional analysis]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .break}
-[14:15]{.agenda-time} [Coffee break]{.agenda-title}
-:::
-
-::: {.agenda-item .exercise}
-[14:30]{.agenda-time} [Functional analysis]{.agenda-title} [Exercise]{.agenda-tag .exercise}
-:::
-
-::: {.agenda-item .lecture}
-[15:15]{.agenda-time} [Workflow summary]{.agenda-title} [Lecture]{.agenda-tag .lecture}
-:::
-
-::: {.agenda-item .exercise}
-[15:30]{.agenda-time} [Bring your own data]{.agenda-title} [Exercise]{.agenda-tag .exercise}
-:::
-
-::: {.agenda-item .qa}
-[16:30]{.agenda-time} [Wrap-up & course evaluation]{.agenda-title} [Discussion]{.agenda-tag .qa}
+| Time  | Session                       | Type       |
+|-------|-------------------------------|------------|
+| 9:00  | UCloud setup                  | lecture    |
+| 9:15  | Recap from last session       | lecture    |
+| 9:45  | DEA visualization             | lecture    |
+| 10:15 | Coffee break                  | break      |
+| 10:30 | DEA visualization             | lecture    |
+| 11:30 | Gene annotation and databases | lecture    |
+| 12:00 | Lunch break                   | break      |
+| 13:00 | Gene annotation and databases | lecture    |
+| 13:30 | Functional analysis           | lecture    |
+| 15:00 | Coffee break                  | break      |
+| 15:15 | Workflow summary              | lecture    |
+| 15:30 | Bring your own data           | exercise   |
 :::
 
 :::
-
-:::
-
 
 # Workshop
 

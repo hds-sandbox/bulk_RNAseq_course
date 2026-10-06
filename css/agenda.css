@@ -1,9 +1,7 @@
-/* Workshop agenda: timeline-style schedule with colour-coded session types */
+/* Workshop agenda */
 
 .agenda {
-  border-left: 3px solid #4266A1;
-  margin: 1rem 0 1.5rem 0.5rem;
-  padding-left: 0;
+  margin: 1rem 0 1.5rem 0;
 }
 
 .agenda-item {
@@ -11,9 +9,9 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.55rem 0.9rem 0.55rem 1.4rem;
+  padding: 0.55rem 0.9rem;
   margin: 0.35rem 0;
-  border-radius: 0 6px 6px 0;
+  border-radius: 6px;
   background-color: rgba(66, 102, 161, 0.06);
 }
 
@@ -23,20 +21,6 @@
   gap: 1rem;
   width: 100%;
   margin: 0;
-}
-
-/* timeline dot */
-.agenda-item::before {
-  content: "";
-  position: absolute;
-  left: -8px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  background-color: #4266A1;
-  border: 2px solid var(--bs-body-bg, #fff);
 }
 
 .agenda-time {
@@ -51,27 +35,9 @@
   font-weight: 500;
 }
 
-.agenda-tag {
-  flex: 0 0 auto;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  padding: 0.15rem 0.55rem;
-  border-radius: 999px;
-  color: #fff;
-}
-
-.agenda-tag.lecture  { background-color: #4266A1; }
-.agenda-tag.exercise { background-color: #3eab1f; }
-.agenda-tag.qa       { background-color: #f7b604; color: #222; }
-.agenda-tag.break    { background-color: #9aa3ad; }
-
 .agenda-item.exercise { background-color: rgba(62, 171, 31, 0.08); }
-.agenda-item.exercise::before { background-color: #3eab1f; }
 
-.agenda-item.qa { background-color: rgba(247, 182, 4, 0.12); }
-.agenda-item.qa::before { background-color: #f7b604; }
+.agenda-item.discussion { background-color: rgba(247, 182, 4, 0.12); }
 
 /* breaks are lighter and more compact */
 .agenda-item.break {
@@ -81,22 +47,9 @@
   opacity: 0.65;
   font-style: italic;
 }
-.agenda-item.break::before {
-  width: 9px;
-  height: 9px;
-  left: -6px;
-  background-color: #9aa3ad;
-}
 .agenda-item.break .agenda-title::before {
   content: "\2615\00a0"; /* coffee cup */
   font-style: normal;
-}
-
-.agenda-legend p {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.5rem 0 1rem 0;
 }
 
 @media (max-width: 576px) {
