@@ -1,4 +1,4 @@
-on: 
+on:
   push:
     branches:
       - webpage
@@ -7,68 +7,54 @@ on:
 
 name: Quarto Publish
 
+env:
+  # Render inside the UCloud Transcriptomics app container,
+  # so the website uses the app's R and package versions
+  APP_IMAGE: hdssandbox/transcriptomicsapp:latest
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - name: Install libcurl on Linux
-        if: runner.os == 'Linux'
-        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev libharfbuzz-dev libfribidi-dev libglpk40 libglpk-dev libboost-all-dev libgit2-dev
+      - name: Free disk space for the app image
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          sudo docker image prune --all --force
 
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-
-      - name: make work folder with data
-        if: runner.os == 'Linux'
-        run: sudo mkdir -p /work/Intro_to_bulkRNAseq/
-
       - name: Get data
-        if: runner.os == 'Linux'
-        run: | 
+        run: |
           wget -O Data.zip  https://zenodo.org/records/12090853/files/Data.zip?download=1
           unzip Data.zip
           rm Data.zip
           mkdir -p Results
 
-      - name: Install R and setup-renv
-        uses: r-lib/actions/setup-r@v2
-
-#      - name: Check renv paths
-#        run: |
-#          Rscript -e 'cat("Project Library:", renv::paths$library(), "\n")'
-#          Rscript -e 'cat("Global Cache:", renv::paths$cache(), "\n")'
-
-#      - name: Set custom renv library path
-#        run: echo "RENV_PATHS_LIBRARY=~/renv/library/4.4.2/" >> $GITHUB_ENV
-  
-#      - name: Install R Dependencies
-#        uses: r-lib/actions/setup-renv@v2
-
-
-      - name: installations
-        run: |
-          R -e 'install.packages(c("devtools", "remotes", "BiocManager", "tidyverse", "RColorBrewer", "pheatmap", "ggrepel", "cowplot"))' 
-          R -e 'devtools::install_github("stephenturner/annotables")'
-          R -e 'remotes::install_github("ctlab/fgsea")'
-          R -e 'BiocManager::install(c("DESeq2", "clusterProfiler", "DOSE", "org.Hs.eg.db", "pathview", "DEGreport", "tximport", "AnnotationHub", "ensembldb","apeglm","ggnewscale"))'
-          R -e 'install.packages(c("rmarkdown", "markdown", "knitr"))' 
-        env:
-          GITHUB_PAT: ${{ secrets.TOKEN }}
-
       - name: Pull Notebooks folder content
-        if: runner.os == 'Linux'
         run: |
           git clone https://github.com/hds-sandbox/bulk_RNAseq_course.git temp_repo
           cp -r temp_repo/Notebooks/*.Rmd develop
           cp -r temp_repo/Notebooks/img/* develop/img/
           rm -rf temp_repo
 
-      - name: Render and Publish
+      - name: Render site in the app container
+        run: |
+          docker pull "$APP_IMAGE"
+          docker run --rm --user root \
+            -v "$PWD":"$PWD" -w "$PWD" \
+            -e RENV_CONFIG_AUTOLOADER_ENABLED=FALSE \
+            "$APP_IMAGE" \
+            bash -c 'mkdir -p /work/Intro_to_bulkRNAseq && quarto render'
+          sudo chown -R "$(id -u):$(id -g)" .
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
+          render: false
