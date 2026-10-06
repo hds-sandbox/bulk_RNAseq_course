@@ -10,8 +10,8 @@ website:
     logo-href: http://hds-sandbox.github.io/ 
     background: primary
     left:
-      - href: develop/workshop_RNAseq_nov2024.qmd
-        text: Info Nov '24
+      - href: develop/workshop_RNAseq_oct2026.qmd
+        text: Info Autumn '26
       - href: develop/index.qmd
         text: Start
       - text: Experiment design
