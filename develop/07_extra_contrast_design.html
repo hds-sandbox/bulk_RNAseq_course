@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="You!">
-<meta name="dcterms.date" content="2026-10-06">
+<meta name="dcterms.date" content="2026-10-13">
 
 <title>DESeq samples comparison: contrast designs – Bulk RNAseq data analysis</title>
 <style>
@@ -356,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 6, 2026</p>
+      <p class="date">October 13, 2026</p>
     </div>
   </div>
   
@@ -447,17 +447,17 @@ Wald test p-value: condition_treat_vs_control effect
 DataFrame with 1000 rows and 6 columns
           baseMean log2FoldChange     lfcSE      stat      pvalue        padj
          &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
-gene1     106.1953        1.17142  0.500557   2.34023 1.92720e-02 5.37493e-02
-gene2      36.1548        2.17121  0.681327   3.18674 1.43886e-03 6.40195e-03
-gene3      20.3373        3.23259  1.004813   3.21710 1.29492e-03 5.90485e-03
-gene4     156.8746       -1.69025  0.534131  -3.16448 1.55359e-03 6.74321e-03
-gene5      82.8275       -4.17285  0.576788  -7.23463 4.66790e-13 1.33035e-11
+gene1     30.91205      1.3193298  0.678121  1.945566 5.17068e-02 0.120093316
+gene2     85.54618      1.4935480  0.498935  2.993473 2.75822e-03 0.010893207
+gene3     50.86395      2.5430991  0.625924  4.062952 4.84559e-05 0.000323963
+gene4     48.92986      0.0981902  0.599977  0.163657 8.70002e-01 0.927570506
+gene5      6.65003     -3.8150663  1.460366 -2.612405 8.99077e-03 0.029841692
 ...            ...            ...       ...       ...         ...         ...
-gene996    7.01666      -6.393550  1.731990  -3.69145 0.000222981  0.00129528
-gene997    4.61042      -4.777896  1.782098  -2.68105 0.007339149  0.02543672
-gene998    3.56340      -1.901757  1.627484  -1.16853 0.242594771  0.39228091
-gene999    6.13422      -2.277280  1.292577  -1.76181 0.078100740  0.15934648
-gene1000  31.06646       0.289007  0.660211   0.43775 0.661567359  0.79707384</code></pre>
+gene996    3.88139       1.698435  1.549360  1.096217 2.72984e-01 4.12783e-01
+gene997   21.73172      -4.329837  0.896065 -4.832058 1.35129e-06 1.43728e-05
+gene998  132.73401       0.469325  0.414345  1.132692 2.57344e-01 3.96827e-01
+gene999   41.72083      -2.877536  0.601060 -4.787439 1.68923e-06 1.73749e-05
+gene1000  15.76284      -0.302723  1.000567 -0.302551 7.62232e-01 8.47327e-01</code></pre>
 </div>
 </div>
 <p>The above is a simple way to obtain the results of interest. But it is worth understanding how DESeq is getting to these results by looking at the model’s matrix. DESeq defines the model matrix using base R functionality:</p>
@@ -755,15 +755,15 @@ attr(,"contrasts")$bloodtype
 <pre><code>DataFrame with 9 rows and 3 columns
         bloodtype sizeFactor      A_B
          &lt;factor&gt;  &lt;numeric&gt; &lt;factor&gt;
-sample1    bloodA   0.957390    TRUE 
-sample2    bloodA   0.989702    TRUE 
-sample3    bloodA   0.945522    TRUE 
-sample4    bloodB   0.973081    TRUE 
-sample5    bloodB   0.974031    TRUE 
-sample6    bloodB   1.083889    TRUE 
-sample7    bloodO   1.072997    FALSE
-sample8    bloodO   1.104004    FALSE
-sample9    bloodO   1.081128    FALSE</code></pre>
+sample1    bloodA   0.908923    TRUE 
+sample2    bloodA   0.909102    TRUE 
+sample3    bloodA   0.903703    TRUE 
+sample4    bloodB   0.953459    TRUE 
+sample5    bloodB   0.918156    TRUE 
+sample6    bloodB   1.144173    TRUE 
+sample7    bloodO   1.142612    FALSE
+sample8    bloodO   1.153122    FALSE
+sample9    bloodO   1.141055    FALSE</code></pre>
 </div>
 </div>
 <p>and then re-run DESeq with a new design:</p>
