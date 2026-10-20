@@ -1,9 +1,10 @@
 ---
-title: "nf-core/rnaseq 3.17.0"
+title: "nf-core/rnaseq 3.27.0"
 lightbox: true
 format:
   html:
     page-layout: full
+    toc-location: left
 summary: In this lesson, we explain how to run the nf-core pipeline in the UCloud computing system
 ---
 
@@ -13,9 +14,9 @@ summary: In this lesson, we explain how to run the nf-core pipeline in the UClou
 
 1. Learn about the UCloud computing system.
 2. Learn how to submit a job and explore your results folders.
-3. Submit a nf-core/rnaseq 3.17.0 run on our data
+3. Submit a nf-core/rnaseq 3.27.0 run on our data
 
-We will be running the nf-core/rnaseq pipeline. Please refer to their detailed documentation here: <https://nf-co.re/rnaseq/3.17.0/>. We highly recommend reading through all the sections to fully understand how to run the pipeline, explore the optional parameters you can set, and learn about the output format.
+We will be running the nf-core/rnaseq pipeline. Please refer to their detailed documentation here: <https://nf-co.re/rnaseq/3.27.0/>. We highly recommend reading through all the sections to fully understand how to run the pipeline, explore the optional parameters you can set, and learn about the output format.
 :::
 
 ## Submit a job
@@ -31,9 +32,10 @@ Click on `Apps` on the left-side menu, search for the application `nf-core rnase
 Next, let's set up the parameters to run the pipeline. Your screen should resemble the image below—please verify it does.
 
 1. Assign a job title using your name and the task (e.g., "preprocessing salmon"). 
-2. Select 8 cores and a runtime of 4 hours.
-3. Choose the **sequencing data** drive containing the sequencing reads and scripts needed for the pipeline. Please, also add your personal drive—the one with your name (e.g.`Yourname#xxxx`). 
-4. Enable **interactive mode** to start a session through the terminal app, allowing us to work with the command line and monitor the progress of the pipeline. 
+2. Select 16 vCPU and a runtime of 4 hours. 
+3. Storage. Choose the **nfcore-files** in the **sequencing data** drive containing the sequencing reads and scripts needed for the pipeline. 
+4. Storage. Please, also create a folder under your personal drive—the one with your name (e.g.`Yourname#xxxx`) named **nfcore-results**. 
+5. Enable **interactive mode** to start a session through the terminal app, allowing us to work with the command line and monitor the progress of the pipeline. 
 
 :::{.callout-warning}
 **Ensure that the hard-drive icon is labeled "sequencing_data" and you are in the "sandbox_bulkRNAseq" workspace.**
@@ -41,11 +43,13 @@ Next, let's set up the parameters to run the pipeline. Your screen should resemb
 You can select the drive by clicking the down arrow (**&or;**) icon to open a dropdown menu.
 :::
 
-![](./img/04c_preprocessing_setup/select_options_rnaseq.png)
+![](./img/04c_preprocessing_setup/resources.png)
+
+![](./img/04c_preprocessing_setup/select_folders.png)
 
 You are almost ready to run the app! But first, make sure your screen looks like the one shown here. Review the arguments used to run the job: we have specified a `Job name`, `Hours`, `Machine type`, and an additional parameter, `Interactive mode`.
 
-![](./img/04c_preprocessing_setup/final_jobParams.png)
+![](./img/04c_preprocessing_setup/other_params.png)
 
 Now, click the button on the top-right of the screen (`submit`) to start the job.
 
@@ -60,7 +64,7 @@ Now, click on `Open terminal` on the top right-hand side of the screen. You will
 tmux 
 
 # Alternatively, 
-tmux new -s session_name
+tmux new -s <session_name>
 ```
 
 ![](./img/04c_preprocessing_setup/tmux.png)
@@ -74,22 +78,18 @@ The `tmux` command initiates a **persistent virtual command line session**. This
 If you want to leave the tmux session (*and not kill it*), you can do so by pressing simultaneously `Ctrl` and `B` keys, and then pressing `D`. Then, you can reconnect to the session using the command:
 
 ```{.bash filename="Terminal"}
-tmux attach -t 0 # abbreviated as tmux a -t0
+tmux attach -t <session_name> # or index if you didn't provide a session name
 ```
 :::
 
-Let's prepare to run the pipeline. First, navigate to your personal drive—the one with your name (e.g.`Yourname#xxxx`)—and create a directory to serve as your working directory where all pipeline results will be saved (e.g., `nfcore-results`). Make sure you’re now located within this new directory. Finally, copy the bash script that runs the Nextflow command into this directory. Check the commands you need to run below: 
+Let's prepare to run the pipeline. First, navigate to the `nfcore-results` which will serve as your working directory where all pipeline results will be saved (the folder belongs to your personal drive). Make sure you’re now located within this new directory. Finally, copy the bash script that runs the Nextflow command into this directory. Check the commands you need to run below: 
 
 ```{.bash filename="Terminal"}
-# Change location to your personal drive and create a new directory
-# cd /work/<YourName#xxxx>
-mkdir nfcore-results
-
-# Make the new dir your current working dir!
-cd nfcore-results # You might have named it differently 
+# Change location to your personal drive
+# cd /work/nfcore-results
 
 # Copy our bash script to your directory 
-cp /work/sequencing_data/scripts_v3.17.0/preprocessing_salmon.sh .
+cp /work/nfcore-files/scripts_v3.27.0/preprocessing_salmon.sh .
 
 # Make sure you have copied the bash script using the ls command 
 ls . 
@@ -105,27 +105,27 @@ Once copied, review the bash script:
 ```{.bash filename="preprocessing_salmon.sh"}
 #!/bin/bash  # Specifies the script that should be run in the bash shell
 
-VRNASEQ="3.17.0"    # Defines the version of the rnaseq pipeline to use
-PARAMSF="/work/sequencing_data/scripts_v3.17.0/nf-params_salmon.json"   # Set path to configuration pipeline parameters (e.g. aligner software)
-CONFIGF="/work/sequencing_data/scripts_v3.17.0/maxcores.config"     # Set path to maximum cores and memory usage (e.g. what you requested on UCloud)
+VRNASEQ="3.27.0"    # Defines the version of the rnaseq pipeline to use
+PARAMSF="/work/nfcore-files/scripts_v3.27.0/nf-params_salmon.json"   # Set path to configuration pipeline parameters (e.g. aligner software)
+CONFIGF="/work/nfcore-files/scripts_v3.27.0/maxcores.config"     # Set path to maximum cores and memory usage (e.g. what you requested on UCloud)
 
 nextflow run nf-core/rnaseq -r $VRNASEQ -params-file $PARAMSF -profile conda -c $CONFIGF
 ```
 
-This small bash script initiates the `nf-core/rnaseq` pipeline. It’s a good practice to save the command used to run the pipeline, and now you’ve copied it into your results folder! You’ll notice extra parameters and configuration settings defined in the script, which we’ll explore shortly. The final line of the script runs the RNA-seq pipeline with the specified version, parameters, Conda profile, and configuration file. **We will inspect each part of the Nextflow command below in the section [Understanding the pipeline arguments](#understanding-pipeline-options) but we will first look at the different input files.**
+This small bash script initiates the `nf-core/rnaseq` pipeline. It’s a good practice to save the command used to run the pipeline, and now you’ve copied it into your results folder! You’ll notice extra parameters and configuration settings defined in the script, which we’ll explore shortly. The final line of the script runs the RNA-seq pipeline with the specified version, parameters, Conda profile, and configuration file. **We will inspect each part of the Nextflow command below in the section ["Understanding the pipeline arguments"](#understanding-pipeline-options) but we will first look at the different input files.**
 
 #### Parameters file 
 
-The **parameters JSON file** is used in nf-core pipelines to define various arguments and software options that can be utilized within the pipeline. You can find a full list of all parameters on the official page: https://nf-co.re/rnaseq/3.17.0/parameters/. Let's take a look at the different configuration files we're using.
+The **parameters JSON file** is used in nf-core pipelines to define various arguments and software options that can be utilized within the pipeline. You can find a full list of all parameters on the official page: https://nf-co.re/rnaseq/3.27.0/parameters/. Let's take a look at the different configuration files we're using.
 
 In the parameters file, we specify that we want to use the pseudoaligner Salmon for this pipeline. The key elements we need to define are the location of the samplesheet, the output directory where Nextflow will save the results, and the paths to the FASTA and GTF files.  It is important to use full paths for these locations to ensure that Nextflow can correctly access the required files, regardless of the working directory.
 
-```{.json filename="nf-params.json"}
+```{.json filename="nf-params_salmon.json"}
 {
-    "input": "/work/sequencing_data/raw_reads/samplesheet_v3.17.0.csv",
+    "input": "/work/nfcore-files/raw_reads/samplesheet_v3.27.0.csv",
     "outdir": "preprocessing_results_salmon",
-    "fasta": "/work/sequencing_data/genomic_resources/homo_sapiens/GRCh38/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz",
-    "gtf": "/work/sequencing_data/genomic_resources/homo_sapiens/GRCh38/Homo_sapiens.GRCh38.109.MODIFIED.gtf.gz",
+    "fasta": "/work/nfcore-files/genomic_resources/homo_sapiens/GRCh38/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz",
+    "gtf": "/work/nfcore-files/genomic_resources/homo_sapiens/GRCh38/Homo_sapiens.GRCh38.109.MODIFIED.gtf.gz",
     "pseudo_aligner": "salmon",
     "skip_stringtie": true,
     "skip_rseqc": true,
@@ -167,18 +167,18 @@ Finally, we are skipping several QC and extra steps that we did not explain in t
 
 #### Samples' sheet
 
-Let's quickly explore our `samplesheet.csv` file (we named it `samplesheet_v3.17.0.csv` to differentiate it from other formats, as the file may have slightly changed with Nextflow updates—don't worry about this). Additional details, including descriptions of the columns [here](https://nf-co.re/rnaseq/3.17.0/docs/usage/#full-samplesheet)
+Let's quickly explore our `samplesheet.csv` file (we named it `samplesheet_v3.27.0.csv` to differentiate it from other formats, as the file may have slightly changed with Nextflow updates—don't worry about this). Additional details, including descriptions of the columns [here](https://nf-co.re/rnaseq/3.27.0/docs/usage/#full-samplesheet)
 
-```{.plaintext filename="samplesheet_v3.17.0.csv"}
+```{.plaintext filename="samplesheet_v3.27.0.csv"}
 sample,fastq_1,fastq_2,strandedness
-control_3,/work/sequencing_data/raw_reads/Control_3.fastq.gz,,unstranded
-control_2,/work/sequencing_data/raw_reads/Control_2.fastq.gz,,unstranded
-control_1,/work/sequencing_data/raw_reads/Control_1.fastq.gz,,unstranded
-vampirium_3,/work/sequencing_data/raw_reads/Vampirium_3.fastq.gz,,unstranded
-vampirium_2,/work/sequencing_data/raw_reads/Vampirium_2.fastq.gz,,unstranded
-vampirium_1,/work/sequencing_data/raw_reads/Vampirium_1.fastq.gz,,unstranded
-garlicum_3,/work/sequencing_data/raw_reads/Garlicum_3.fastq.gz,,unstranded
-garlicum_2,/work/sequencing_data/raw_reads/Garlicum_2.fastq.gz,,unstranded
+control_3,/work/nfcore-files/raw_reads/Control_3.fastq.gz,,unstranded
+control_2,/work/nfcore-files/raw_reads/Control_2.fastq.gz,,unstranded
+control_1,/work/nfcore-files/raw_reads/Control_1.fastq.gz,,unstranded
+vampirium_3,/work/nfcore-files/raw_reads/Vampirium_3.fastq.gz,,unstranded
+vampirium_2,/work/nfcore-files/raw_reads/Vampirium_2.fastq.gz,,unstranded
+vampirium_1,/work/nfcore-files/raw_reads/Vampirium_1.fastq.gz,,unstranded
+garlicum_3,/work/nfcore-files/raw_reads/Garlicum_3.fastq.gz,,unstranded
+garlicum_2,/work/nfcore-files/raw_reads/Garlicum_2.fastq.gz,,unstranded
 ```
 **It is crucial that the FASTQ paths inside this file match the paths in your job exactly!** A good practice is to use the full paths to avoid any discrepancies.
 
@@ -209,7 +209,7 @@ nextflow run \
 
 :::{.callout-note}
 # Bash scripting 
-The notation used in the command to run Nextflow is a common practice in bash scripting. It involves defining a variable for the file path (e.g., `PARAMSF="/work/sequencing_data/scripts_v3.17.0/nf-params_salmon.json"`) and then referencing the variable in the command (e.g., `-params-file $PARAMSF`). This approach enhances the readability and manageability of the script. 
+The notation used in the command to run Nextflow is a common practice in bash scripting. It involves defining a variable for the file path (e.g., `PARAMSF="/work/nfcore-files/scripts_v3.27.0/nf-params_salmon.json"`) and then referencing the variable in the command (e.g., `-params-file $PARAMSF`). This approach enhances the readability and manageability of the script. 
 
 You can easily define other paths and reuse the script!
 :::
@@ -217,10 +217,10 @@ You can easily define other paths and reuse the script!
 First we have:
 
 ```{.bash}
-nextflow run nf-core/rnaseq -r 3.17.0
+nextflow run nf-core/rnaseq -r 3.27.0
 ```
 
-While usually one would run an nf-core pipeline using `nextflow run nf-core/rnaseq` and fetch the pipeline remotely, UCloud has installed the pipelines locally. Specifically, we are using the latest version by using the argument `-r 3.17.0`. 
+While usually one would run an nf-core pipeline using `nextflow run nf-core/rnaseq` and fetch the pipeline remotely, UCloud has installed the pipelines locally. Specifically, we are using the latest version by using the argument `-r 3.27.0`. 
 
 ***
 
@@ -253,7 +253,7 @@ These are nf-core specific arguments that indicate Nextflow to only use as maxim
 :::{.callout-warning}
 # Need more help?
 - Ask your instructors if you have any questions before we start running it. 
-- You can also check nf-core usage documentation [here](https://nf-co.re/rnaseq/3.17.0/docs/usage/). 
+- You can also check nf-core usage documentation [here](https://nf-co.re/rnaseq/3.27.0/docs/usage/). 
 :::
 
 ## Running the pipeline 

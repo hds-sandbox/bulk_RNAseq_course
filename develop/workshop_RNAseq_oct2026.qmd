@@ -38,7 +38,7 @@ Our first choice is to provide all the **training materials, tutorials, and tool
  &nbsp;
 
  <p align="center">
-  <a href="https://cloud.sdu.dk/app/projects/invite/3a8e1744-7382-4621-8c4b-f15358a9a5a8" style="background-color: #4266A1; color: #FFFFFF; padding: 30px 20px; text-decoration: none; border-radius: 5px;">
+  <a href="https://cloud.sdu.dk/app/projects/invite/cab4a3a1-6ec2-4a35-b1b7-f7cc1821cb44" style="background-color: #4266A1; color: #FFFFFF; padding: 30px 20px; text-decoration: none; border-radius: 5px;">
     Invite link to
     uCloud workspace
   </a>

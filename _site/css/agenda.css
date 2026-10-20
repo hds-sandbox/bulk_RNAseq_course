@@ -1,0 +1,58 @@
+/* Workshop agenda */
+
+.agenda {
+  margin: 1rem 0 1.5rem 0;
+}
+
+.agenda-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.55rem 0.9rem;
+  margin: 0.35rem 0;
+  border-radius: 6px;
+  background-color: rgba(66, 102, 161, 0.06);
+}
+
+.agenda-item p {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  margin: 0;
+}
+
+.agenda-time {
+  flex: 0 0 3.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #4266A1;
+}
+
+.agenda-title {
+  flex: 1 1 auto;
+  font-weight: 500;
+}
+
+.agenda-item.exercise { background-color: rgba(62, 171, 31, 0.08); }
+
+.agenda-item.discussion { background-color: rgba(247, 182, 4, 0.12); }
+
+/* breaks are lighter and more compact */
+.agenda-item.break {
+  background-color: transparent;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  opacity: 0.65;
+  font-style: italic;
+}
+.agenda-item.break .agenda-title::before {
+  content: "\2615\00a0"; /* coffee cup */
+  font-style: normal;
+}
+
+@media (max-width: 576px) {
+  .agenda-item p { flex-wrap: wrap; gap: 0.25rem 0.75rem; }
+  .agenda-title { flex-basis: 100%; order: 3; }
+}

@@ -10,10 +10,10 @@ website:
     logo-href: http://hds-sandbox.github.io/ 
     background: primary
     left:
-      - href: develop/workshop_RNAseq_oct2026.qmd
-        text: Info Autumn '26
       - href: develop/index.qmd
         text: Start
+      - href: develop/workshop_RNAseq_oct2026.qmd
+        text: Info Autumn '26
       - text: Experiment design
         file: develop/02_experimental_planning.qmd
       - text: Data processing
@@ -39,7 +39,7 @@ website:
         - develop/04b_pipelines.qmd
         - section: "UCloud setup"
           contents: 
-          - develop/04c_preprocessing_nf3170.qmd
+          - develop/04c_preprocessing_nf3270.qmd
     - title: "Data analyses"
       contents:
         - develop/05a_data_analysis_setup.qmd
