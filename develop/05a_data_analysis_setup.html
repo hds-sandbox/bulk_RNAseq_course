@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -347,68 +381,83 @@ Warning
 <li>Check the App version (we recommend using the latest).</li>
 <li>Note that Documentation is available (though it redirects you to this website).</li>
 <li>If you have previously run the app, you can import job parameters from that run. We’ll get to that later.</li>
-<li>Set your job name (pick something original / with your initials!), your hours of use (you can top up later as the job runs, but give a good estimate), and your machine type (if you simply want to do the downstream analysis, you only need 1 core, but running the full pipeline will take 8-12 cores).</li>
-<li>Add folders containing any material that your job needs to run. For first time use, without your own data, you don’t need a folder. However, we recommend making your own working directory in your member files (see my work_JAB example below) and eventually copying files to and editing files from there (e.g.&nbsp;<code>work_&lt;YourInitials&gt;</code>).</li>
-<li>Select the module you want to use. In this example, we select ‘Introduction to bulk RNAseq analysis in R’.</li>
+<li>Set your job name (pick something original / with your initials!), your hours of use (you can top up later as the job runs, but give a good estimate), and your machine type (if you simply want to do the downstream analysis, you only need 1 CPU).</li>
+<li>Add folders containing any material that your job needs to run. For first time use, without your own data, you don’t need a folder. However, we recommend making your own working directory in your member files (see my bulk_ARM example below) and eventually copying files to and editing files from there (e.g.&nbsp;<code>bulk_&lt;YourInitials&gt;</code>).</li>
+<li>Select the module you want to use. In this example, we select ‘Intro to bulk RNAseq with Rstudio’.</li>
 <li>Then you can submit your job.</li>
 </ol>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="./img/05a_data_analysis_setup/1124_setupUCloudJob.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Job setting using user preprocessing results"><img src="./img/05a_data_analysis_setup/1124_setupUCloudJob.png" class="img-fluid figure-img" alt="Job setting using user preprocessing results"></a></p>
-<figcaption>Job setting using user preprocessing results</figcaption>
-</figure>
-</div>
+<p><img src="./img/05a_data_analysis_setup/setup1.png" class="img-fluid" alt="Job setting part 1"> <img src="./img/05a_data_analysis_setup/setup2.png" class="img-fluid" alt="Job setting part 2"> <img src="./img/05a_data_analysis_setup/setup3.png" class="img-fluid" alt="Job setting part 2"></p>
 <p>Now, you are ready to run the app by clicking on the button on the right column of the screen (<code>submit</code>).</p>
 <p>Next, wait until the screen looks like the figure below. This process usually takes a few minutes. You can always come back to this screen via the <code>Runs</code> button in the left menu on UCloud. From there, you can add extra time or stop the app if you no longer need it.</p>
-<p><a href="./img/05a_data_analysis_setup/startappTrans.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="./img/05a_data_analysis_setup/startappTrans.png" class="img-fluid"></a></p>
+<p><a href="./img/05a_data_analysis_setup/setup4.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="./img/05a_data_analysis_setup/setup4.png" class="img-fluid"></a></p>
 <p>Click on <code>open interface</code> on the top right-hand side of the screen. You will start Rstudio through your browser!</p>
-<p>On the lower right side of Rstudio, in the file explorer, you should see a folder called <code>Intro_to_bulkRNAseq</code>. Here you will find the materials of the course. If you have added your own preprocessing results, they will also listed here.</p>
-<p><a href="./img/05a_data_analysis_setup/courseMaterial.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="./img/05a_data_analysis_setup/courseMaterial.png" class="img-fluid"></a></p>
-<p>You are ready to start analysing your data!</p>
+<p>On the lower right side of Rstudio, in the file explorer, you should see a couple of folders <code>Notebooks</code>, <code>Data</code>, <code>Scripts</code> and <code>Results</code>. Here you will find the materials of the course. If you have added your own folder <code>bulk_&lt;YourInitials&gt;</code>, it will also listed here.</p>
+<p>Let’s move all the course material into your personal folder so we can reuse it in future sessions without downloading a fresh copy each time. You can do this either from the terminal in RStudio (option A. in the image below) or with option B.</p>
+<p><a href="./img/05a_data_analysis_setup/setup5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="./img/05a_data_analysis_setup/setup5.png" class="img-fluid"></a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode .bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> Data Scripts Results Notebooks bulk_ARM/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then, navigate to the Notebooks folder (bulk_XXX &gt; Notebooks). You are ready to start analysing your data!</p>
+<p>Open one of the notebooks and test that you can run it.</p>
+<p><a href="./img/05a_data_analysis_setup/setup6.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="./img/05a_data_analysis_setup/setup6.png" class="img-fluid"></a></p>
 <div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Warning
+Does your session not seem to be starting properly?
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><strong>Does your session not seem to be starting properly?</strong> If your ‘Messages’ window indicates the job has started, but your <code>open interface</code> button is not clickable, hit refresh. If it IS clickable, but the new tab that opens is just spinning without showing an interface, wait a few seconds and then hit refresh. It’s probably there, but UCloud just takes a moment sometimes to gather its thoughts.</p>
+<p>If your ‘Messages’ window indicates the job has started, but your <code>open interface</code> button is not clickable, hit refresh. If it IS clickable, but the new tab that opens is just spinning without showing an interface, wait a few seconds and then hit refresh. It’s probably there, but UCloud just takes a moment sometimes to gather its thoughts.</p>
+</div>
 </div>
 </div>
 </section>
 <section id="stopping-the-app" class="level2">
 <h2 class="anchored" data-anchor-id="stopping-the-app">Stopping the app</h2>
-<p>When you are finished, go to <code>Runs</code> &gt; <code>Running jobs</code> in uCloud and click on the <code>Job name</code> you want to stop if you have several running. It is important to stop the job to prevent it from using unnecessary resources. Here, you can also click on the job and add extra time!</p>
+<p>When you are finished, go to <code>Runs</code> &gt; <code>Running jobs</code> in UCloud and click on the <code>Job name</code> you want to stop if you have several running. It is important to stop the job to prevent it from using unnecessary resources. Here, you can also click on the job and add extra time!</p>
 </section>
 <section id="saved-work" class="level2">
 <h2 class="anchored" data-anchor-id="saved-work">Saved work</h2>
-<p>After running a first work session, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal <em>“Jobs”</em> folder. Inside this folder there will be a subfolder called <em>Transcriptomics Sandbox</em>, which will contain all the jobs you have run with the Transcriptomics Sandbox app. Inside this folder, you will find your folder named after the job name you gave in the previous step.</p>
+<p>After running a first work session, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal folder you created.</p>
 <ol type="1">
 <li>Your material will be saved in a volume with your username, that you should be able to see under the menu <code>Files</code>.</li>
 </ol>
 <p><a href="./img/04c_preprocessing_setup/fileDrives.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="./img/04c_preprocessing_setup/fileDrives.png" class="img-fluid"></a></p>
-<ol type="1">
-<li>Go to <code>Jobs → Transcriptomics Sandbox → &lt;Job name&gt; → Intro_to_bulkRNAseq</code></li>
+<ol start="2" type="1">
+<li>Go to Member Files: YourName…</li>
 </ol>
-<p><a href="./img/05a_data_analysis_setup/fileTranscript.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="./img/05a_data_analysis_setup/fileTranscript.png" class="img-fluid"></a></p>
-</section>
-<section id="restarting-the-rstudio-session" class="level2">
-<h2 class="anchored" data-anchor-id="restarting-the-rstudio-session">Restarting the Rstudio session</h2>
+<p><a href="./img/05a_data_analysis_setup/fileDrives.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="./img/05a_data_analysis_setup/fileDrives.png" class="img-fluid"></a></p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Did you not move the course material to your own folder?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Then, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal <em>“Jobs”</em> folder. Inside this folder there will be a subfolder called <em>Transcriptomics Sandbox</em>, which will contain all the jobs you have run with the Transcriptomics Sandbox app. Inside this folder, you will find your folder named after the job name you gave in the previous step or an ID attached to that session.</p>
+<ol type="1">
+<li>Go to <code>Jobs → Transcriptomics Sandbox → &lt;Job name&gt; →</code>. Here you will find the Data, Notebooks, and all the other folders needed for the exercises.</li>
+</ol>
+<p><a href="./img/05a_data_analysis_setup/fileTranscript.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="./img/05a_data_analysis_setup/fileTranscript.png" class="img-fluid"></a></p>
 <section id="starting-from-in-progress-work" class="level3">
 <h3 class="anchored" data-anchor-id="starting-from-in-progress-work">Starting from in-progress work</h3>
-<p>If you want to keep working on your previous results, it makes sense to copy the <code>Intro_to_bulkRNAseq</code> folder to your own working directory, and reload this folder for new jobs. If this exact folder with this exact name is available in the root directory of your job workspace, the app will not download fresh directories, and you will instead have your own edited/editable files.</p>
+<p>If you want to keep working on your previous results, it makes sense to copy the course material to your own working directory, and reload this folder for new jobs. If this exact folder with this exact name is available in the root directory of your job workspace, the app will not download fresh directories, and you will instead have your own edited/editable files.</p>
 <p>To copy the directory, complete the following steps:</p>
 <ol type="1">
-<li>Go to <code>Jobs → Transcriptomics Sandbox → &lt;Job name&gt; → Intro_to_bulkRNAseq</code></li>
-<li>Click ONCE to select <code>Intro_to_bulkRNAseq</code></li>
+<li>Go to <code>Jobs → Transcriptomics Sandbox → &lt;Job name&gt; →</code></li>
+<li>Click ONCE to select <code>Data</code>, <code>Notebooks</code>, <code>Scripts</code> and <code>Results</code></li>
 <li>Click ‘Copy to…’</li>
 <li>Click on your root member files directory</li>
 <li>Select ‘Copy to’ the custom working directory you made (you can <code>Create folder</code> now if you haven’t previously)</li>
 </ol>
-<p><a href="./img/05a_data_analysis_setup/1124_setupUCloudwriteabledir.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="./img/05a_data_analysis_setup/1124_setupUCloudwriteabledir.png" class="img-fluid"></a></p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -422,7 +471,13 @@ Ta-da
 <p><strong>Now you will always have your own, writeable copy of this directory… AS LONG AS YOU LOAD IT IN YOUR NEXT JOB!</strong></p>
 </div>
 </div>
-<p><a href="./img/05a_data_analysis_setup/1124_setupUCloudjob_owndir.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="./img/05a_data_analysis_setup/1124_setupUCloudjob_owndir.png" class="img-fluid"></a></p>
+</section>
+</div>
+</div>
+</div>
+</section>
+<section id="restarting-the-rstudio-session" class="level2">
+<h2 class="anchored" data-anchor-id="restarting-the-rstudio-session">Restarting the Rstudio session</h2>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -436,13 +491,22 @@ Warning
 <p><strong>Remember to save your notebooks while working in an interactive session.</strong> Otherwise you might lose edits to your .Rmd files.</p>
 </div>
 </div>
-</section>
+<p>You will need to mount the course materials saved in your own member files. To do this, go to <code>Storage</code> and select the following folder: <code>Data</code>, <code>Scripts</code>, <code>Notebooks</code> and <code>Results</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./img/05a_data_analysis_setup/mountData.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="How to mount the data?"><img src="./img/05a_data_analysis_setup/mountData.png" class="img-fluid figure-img" alt="How to mount the data?"></a></p>
+<figcaption>How to mount the data?</figcaption>
+</figure>
+</div>
+<p>Make sure your Storage window looks as follows:</p>
+<p><a href="./img/05a_data_analysis_setup/mountData2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="./img/05a_data_analysis_setup/mountData2.png" class="img-fluid"></a></p>
+<p>Before you <code>Open Interface</code>, make sure that the job stats says using your own data.</p>
+<p><a href="./img/05a_data_analysis_setup/jobMessage.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="./img/05a_data_analysis_setup/jobMessage.png" class="img-fluid"></a></p>
 <section id="reusing-old-job-parameters" class="level3">
 <h3 class="anchored" data-anchor-id="reusing-old-job-parameters">Reusing old job parameters</h3>
 <p>The very easy way (perhaps after your job has accidentally run out of time / disconnected due to a UCloud blip) is to simply hit ‘Run application again’.</p>
-<p><a href="./img/05a_data_analysis_setup/1124_restartUCloud_easy.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="./img/05a_data_analysis_setup/1124_restartUCloud_easy.png" class="img-fluid"></a></p>
+<p><a href="./img/05a_data_analysis_setup/1124_restartUCloud_easy.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="./img/05a_data_analysis_setup/1124_restartUCloud_easy.png" class="img-fluid"></a></p>
 <p>Other moderately easy methods include: A) accessing the <code>Runs</code> menu, where you can see completed, pending, and active jobs and select one to restart via <code>Run application again</code>. B) accessing the Transcriptomics Sandbox App job setup window, selecting <code>Import parameters</code>, and then importing from your last job. You can also select a <code>JobParameters.json</code> file if one has been shared with you to replicate parameters for a specific task.</p>
-<p><a href="./img/05a_data_analysis_setup/1124_importJobparams.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="./img/05a_data_analysis_setup/1124_importJobparams.png" class="img-fluid"></a></p>
 
 
 </section>
