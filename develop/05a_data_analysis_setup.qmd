@@ -42,74 +42,106 @@ To set up a job for using the bulk RNA-seq module in our Transcriptomics app, yo
 1. Check the App version (we recommend using the latest).
 2. Note that Documentation is available (though it redirects you to this website).
 3. If you have previously run the app, you can import job parameters from that run. We'll get to that later.
-4.  Set your job name (pick something original / with your initials!), your hours of use (you can top up later as the job runs, but give a good estimate), and your machine type (if you simply want to do the downstream analysis, you only need 1 core, but running the full pipeline will take 8-12 cores).
-5. Add folders containing any material that your job needs to run. For first time use, without your own data, you don't need a folder. However, we recommend making your own working directory in your member files (see my work_JAB example below) and eventually copying files to and editing files from there (e.g. `work_<YourInitials>`).
-6. Select the module you want to use. In this example, we select 'Introduction to bulk RNAseq analysis in R'.
+4.  Set your job name (pick something original / with your initials!), your hours of use (you can top up later as the job runs, but give a good estimate), and your machine type (if you simply want to do the downstream analysis, you only need 1 CPU).
+5. Add folders containing any material that your job needs to run. For first time use, without your own data, you don't need a folder. However, we recommend making your own working directory in your member files (see my bulk_ARM example below) and eventually copying files to and editing files from there (e.g. `bulk_<YourInitials>`).
+6. Select the module you want to use. In this example, we select 'Intro to bulk RNAseq with Rstudio'.
 7. Then you can submit your job.
 
-![Job setting using user preprocessing results](./img/05a_data_analysis_setup/1124_setupUCloudJob.png)
-
+![Job setting part 1](./img/05a_data_analysis_setup/setup1.png)
+![Job setting part 2](./img/05a_data_analysis_setup/setup2.png)
+![Job setting part 2](./img/05a_data_analysis_setup/setup3.png)
 
 Now, you are ready to run the app by clicking on the button on the right column of the screen (`submit`).
 
 Next, wait until the screen looks like the figure below. This process usually takes a few minutes. You can always come back to this screen via the `Runs` button in the left menu on UCloud. From there, you can add extra time or stop the app if you no longer need it.
 
-![](./img/05a_data_analysis_setup/startappTrans.png)
+![](./img/05a_data_analysis_setup/setup4.png)
 
 Click on `open interface` on the top right-hand side of the screen. You will start Rstudio through your browser!
 
-On the lower right side of Rstudio, in the file explorer, you should see a folder called `Intro_to_bulkRNAseq`. Here you will find the materials of the course. If you have added your own preprocessing results, they will also listed here.
+On the lower right side of Rstudio, in the file explorer, you should see a couple of folders `Notebooks`, `Data`, `Scripts` and `Results`. Here you will find the materials of the course. If you have added your own folder `bulk_<YourInitials>`, it will also listed here.
 
-![](./img/05a_data_analysis_setup/courseMaterial.png)
+Let’s move all the course material into your personal folder so we can reuse it in future sessions without downloading a fresh copy each time. You can do this either from the terminal in RStudio (option A. in the image below) or with option B.
 
-You are ready to start analysing your data!
+![](./img/05a_data_analysis_setup/setup5.png)
 
-:::{.callout-warning}
-**Does your session not seem to be starting properly?** If your 'Messages' window indicates the job has started, but your `open interface` button is not clickable, hit refresh. If it IS clickable, but the new tab that opens is just spinning without showing an interface, wait a few seconds and then hit refresh. It's probably there, but UCloud just takes a moment sometimes to gather its thoughts.
+```.bash
+mv Data Scripts Results Notebooks bulk_ARM/
+```
+
+Then, navigate to the Notebooks folder (bulk_XXX > Notebooks). You are ready to start analysing your data! 
+
+Open one of the notebooks and test that you can run it. 
+
+![](./img/05a_data_analysis_setup/setup6.png)
+
+:::{.callout-warning collapse="true"}
+# Does your session not seem to be starting properly?
+If your 'Messages' window indicates the job has started, but your `open interface` button is not clickable, hit refresh. If it IS clickable, but the new tab that opens is just spinning without showing an interface, wait a few seconds and then hit refresh. It's probably there, but UCloud just takes a moment sometimes to gather its thoughts.
 :::
 
 ## Stopping the app
 
-When you are finished, go to `Runs` > `Running jobs` in uCloud and click on the `Job name` you want to stop if you have several running. It is important to stop the job to prevent it from using unnecessary resources. Here, you can also click on the job and add extra time!
+When you are finished, go to `Runs` > `Running jobs` in UCloud and click on the `Job name` you want to stop if you have several running. It is important to stop the job to prevent it from using unnecessary resources. Here, you can also click on the job and add extra time!
 
 ## Saved work
 
-After running a first work session, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *Transcriptomics Sandbox*, which will contain all the jobs you have run with the Transcriptomics Sandbox app. Inside this folder, you will find your folder named after the job name you gave in the previous step.
+After running a first work session, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal folder you created.
 
 1. Your material will be saved in a volume with your username, that you should be able to see under the menu `Files`. 
 
 ![](./img/04c_preprocessing_setup/fileDrives.png)
 
-1. Go to `Jobs → Transcriptomics Sandbox → <Job name> → Intro_to_bulkRNAseq`
+2. Go to Member Files: YourName... 
+
+![](./img/05a_data_analysis_setup/fileDrives.png)
+
+:::{.callout-warning collapse="true"}
+# Did you not move the course material to your own folder?
+
+Then, everything that you have created, including the scripts and results of your analysis, will be saved in your own personal *"Jobs"* folder. Inside this folder there will be a subfolder called *Transcriptomics Sandbox*, which will contain all the jobs you have run with the Transcriptomics Sandbox app. Inside this folder, you will find your folder named after the job name you gave in the previous step or an ID attached to that session. 
+
+1. Go to `Jobs → Transcriptomics Sandbox → <Job name> → `. Here you will find the Data, Notebooks, and all the other folders needed for the exercises. 
 
 ![](./img/05a_data_analysis_setup/fileTranscript.png)
 
-## Restarting the Rstudio session
-
 ### Starting from in-progress work
 
-If you want to keep working on your previous results, it makes sense to copy the `Intro_to_bulkRNAseq` folder to your own working directory, and reload this folder for new jobs. If this exact folder with this exact name is available in the root directory of your job workspace, the app will not download fresh directories, and you will instead have your own edited/editable files.
+If you want to keep working on your previous results, it makes sense to copy the course material to your own working directory, and reload this folder for new jobs. If this exact folder with this exact name is available in the root directory of your job workspace, the app will not download fresh directories, and you will instead have your own edited/editable files.
 
 To copy the directory, complete the following steps:
 
-1. Go to `Jobs → Transcriptomics Sandbox → <Job name> → Intro_to_bulkRNAseq`
-2. Click ONCE to select `Intro_to_bulkRNAseq`
+1. Go to `Jobs → Transcriptomics Sandbox → <Job name> → `
+2. Click ONCE to select `Data`, `Notebooks`, `Scripts` and `Results`
 3. Click 'Copy to...'
 4. Click on your root member files directory
 5. Select 'Copy to' the custom working directory you made (you can `Create folder` now if you haven't previously)
-
-![](./img/05a_data_analysis_setup/1124_setupUCloudwriteabledir.png)
 
 :::{.callout-tip}
 # Ta-da
 **Now you will always have your own, writeable copy of this directory... AS LONG AS YOU LOAD IT IN YOUR NEXT JOB!**
 :::
 
-![](./img/05a_data_analysis_setup/1124_setupUCloudjob_owndir.png)
+:::
+
+## Restarting the Rstudio session
 
 :::{.callout-warning}
 **Remember to save your notebooks while working in an interactive session.** Otherwise you might lose edits to your .Rmd files.
 :::
+
+You will need to mount the course materials saved in your own member files. To do this, go to `Storage` and select the following folder: `Data`, `Scripts`, `Notebooks` and `Results`.
+
+![How to mount the data?](./img/05a_data_analysis_setup/mountData.png)
+
+Make sure your Storage window looks as follows: 
+
+![](./img/05a_data_analysis_setup/mountData2.png)
+
+Before you `Open Interface`, make sure that the job stats says using your own data. 
+
+![](./img/05a_data_analysis_setup/jobMessage.png)
+
 
 ### Reusing old job parameters
 
@@ -120,5 +152,3 @@ The very easy way (perhaps after your job has accidentally run out of time / dis
 Other moderately easy methods include:
 A) accessing the `Runs` menu, where you can see completed, pending, and active jobs and select one to restart via `Run application again`.
 B) accessing the Transcriptomics Sandbox App job setup window, selecting `Import parameters`, and then importing from your last job. You can also select a `JobParameters.json` file if one has been shared with you to replicate parameters for a specific task.
-
-![](./img/05a_data_analysis_setup/1124_importJobparams.png)
