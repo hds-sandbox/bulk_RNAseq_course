@@ -77,8 +77,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-754e06bca47185c82321ad0dd7a599a3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-df933d513891e5899f5248568452ee9a.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-cc8de530ce5d1d5fd61f479b2975d0c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b3e30ebae5c9394ce05a7bc52cc6d086.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -445,19 +445,19 @@ sample6   treat  </code></pre>
 <pre><code>log2 fold change (MLE): condition_treat_vs_control effect 
 Wald test p-value: condition_treat_vs_control effect 
 DataFrame with 1000 rows and 6 columns
-          baseMean log2FoldChange     lfcSE       stat      pvalue        padj
-         &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt;  &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
-gene1     14.53049     -0.2104103  0.835065 -0.2519687   0.8010653    0.877402
-gene2     11.83314     -1.1057314  0.985628 -1.1218548   0.2619242    0.399102
-gene3      5.76110      0.0481117  1.290527  0.0372807   0.9702612    0.978671
-gene4      1.48892     -0.5747262  2.429188 -0.2365919   0.8129734          NA
-gene5      5.94310     -2.2573882  1.284875 -1.7568926   0.0789361    0.161871
-...            ...            ...       ...        ...         ...         ...
-gene996    5.82767      -1.231395  1.548239  -0.795352 4.26409e-01 5.77016e-01
-gene997   12.56484       2.032046  0.957883   2.121393 3.38888e-02 8.52714e-02
-gene998   30.45390      -1.436356  0.612735  -2.344171 1.90694e-02 5.33142e-02
-gene999   30.32324      -0.485632  0.633602  -0.766463 4.43401e-01 5.88043e-01
-gene1000  40.82033      -4.326550  0.721518  -5.996456 2.01670e-09 2.80231e-08</code></pre>
+           baseMean log2FoldChange     lfcSE      stat      pvalue        padj
+          &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
+gene1     136.33229      -4.777293  0.494925  -9.65255 4.79484e-22 7.13952e-20
+gene2      77.70877       0.721449  0.475347   1.51773 1.29082e-01 2.44863e-01
+gene3     189.91383       2.390314  0.413208   5.78478 7.26088e-09 1.41809e-07
+gene4      46.17389      -0.827663  0.553391  -1.49562 1.34752e-01 2.49435e-01
+gene5       2.02818      -4.702216  2.927116  -1.60643 1.08179e-01 2.13458e-01
+...             ...            ...       ...       ...         ...         ...
+gene996    39.48136      -1.845696  0.599562 -3.078409 2.08109e-03 8.81242e-03
+gene997  1143.99513       2.655377  0.486686  5.456040 4.86870e-08 6.65621e-07
+gene998     6.87936       0.200877  1.198306  0.167634 8.66871e-01 9.13757e-01
+gene999    34.03574       1.472797  0.690308  2.133536 3.28808e-02 8.36887e-02
+gene1000    9.63996       4.660729  1.592824  2.926079 3.43263e-03 1.32461e-02</code></pre>
 </div>
 </div>
 <p>The above is a simple way to obtain the results of interest. But it is worth understanding how DESeq is getting to these results by looking at the model’s matrix. DESeq defines the model matrix using base R functionality:</p>
@@ -755,15 +755,15 @@ attr(,"contrasts")$bloodtype
 <pre><code>DataFrame with 9 rows and 3 columns
         bloodtype sizeFactor      A_B
          &lt;factor&gt;  &lt;numeric&gt; &lt;factor&gt;
-sample1    bloodA   0.925109    TRUE 
-sample2    bloodA   0.966874    TRUE 
-sample3    bloodA   0.966874    TRUE 
-sample4    bloodB   0.963049    TRUE 
-sample5    bloodB   0.941397    TRUE 
-sample6    bloodB   1.055213    TRUE 
-sample7    bloodO   1.133114    FALSE
-sample8    bloodO   1.191595    FALSE
-sample9    bloodO   1.133293    FALSE</code></pre>
+sample1    bloodA   0.888478    TRUE 
+sample2    bloodA   0.944816    TRUE 
+sample3    bloodA   0.951342    TRUE 
+sample4    bloodB   0.983622    TRUE 
+sample5    bloodB   0.919441    TRUE 
+sample6    bloodB   1.155518    TRUE 
+sample7    bloodO   1.161278    FALSE
+sample8    bloodO   1.162110    FALSE
+sample9    bloodO   1.184379    FALSE</code></pre>
 </div>
 </div>
 <p>and then re-run DESeq with a new design:</p>
