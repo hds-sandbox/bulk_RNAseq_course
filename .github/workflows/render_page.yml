@@ -36,7 +36,7 @@ jobs:
       - name: Pull Notebooks folder content
         run: |
           git clone https://github.com/hds-sandbox/bulk_RNAseq_course.git temp_repo
-          cp -r temp_repo/Notebooks/*.Rmd develop
+          cp -r temp_repo/Notebooks/*.qmd develop
           cp -r temp_repo/Notebooks/img/* develop/img/
           rm -rf temp_repo
 

@@ -47,4 +47,4 @@ old/
 zenodo/
 /.quarto/
 
-.codegpt
+.codegpt/_site/
