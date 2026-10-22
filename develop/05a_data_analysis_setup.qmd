@@ -25,7 +25,7 @@ Access [UCloud](https://cloud.sdu.dk) with your account and choose the project `
 
 ![](./img/05a_data_analysis_setup/01_workspace_student.png)
 
-Click on `Apps` on the left-side menu, and search for the application `Transcriptomics Sandbox` and select it:
+Click on `Applications` on the left-side menu, and go to `Courses` > `Health Data Science Sandbox` > `Transcriptomics Sandbox` and select it:
 
 ![](./img/05a_data_analysis_setup/02_openapp_student.png)
 
