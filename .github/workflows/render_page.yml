@@ -36,7 +36,10 @@ jobs:
       - name: Pull Notebooks folder content
         run: |
           git clone https://github.com/hds-sandbox/bulk_RNAseq_course.git temp_repo
-          cp -r temp_repo/Notebooks/*.qmd develop
+          # Drop the Quarto_ prefix so the names match the sidebar in _quarto.yml
+          for f in temp_repo/Notebooks/Quarto_*.qmd; do
+            cp "$f" "develop/$(basename "$f" | sed 's/^Quarto_//')"
+          done
           cp -r temp_repo/Notebooks/img/* develop/img/
           rm -rf temp_repo
 
