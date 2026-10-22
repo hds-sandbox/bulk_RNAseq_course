@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="You!">
+<meta name="dcterms.date" content="2026-10-22">
+
+<title>Functional Class Scoring – Bulk RNAseq data analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-754e06bca47185c82321ad0dd7a599a3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-df933d513891e5899f5248568452ee9a.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="http://hds-sandbox.github.io/" class="navbar-brand navbar-brand-logo">
+    <img src="../develop/img/logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="http://hds-sandbox.github.io/">
+    <span class="navbar-title">Bulk RNAseq data analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/index.html"> 
+<span class="menu-text">Start</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/workshop_RNAseq_oct2026.html"> 
+<span class="menu-text">Info Autumn ’26</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/02_experimental_planning.html"> 
+<span class="menu-text">Experiment design</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/04a_preprocessing.html"> 
+<span class="menu-text">Data processing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/05a_data_analysis_setup.html"> 
+<span class="menu-text">Data analyses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../develop/summary.html"> 
+<span class="menu-text">Workshop wrap-up</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/hds-sandbox"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives:</a></li>
+  <li><a href="#gene-set-enrichment-analysis-using-clusterprofiler-and-pathview" id="toc-gene-set-enrichment-analysis-using-clusterprofiler-and-pathview" class="nav-link" data-scroll-target="#gene-set-enrichment-analysis-using-clusterprofiler-and-pathview">Gene set enrichment analysis using clusterProfiler and Pathview</a>
+  <ul class="collapse">
+  <li><a href="#preparation-for-gsea" id="toc-preparation-for-gsea" class="nav-link" data-scroll-target="#preparation-for-gsea">Preparation for GSEA</a></li>
+  <li><a href="#performing-gsea" id="toc-performing-gsea" class="nav-link" data-scroll-target="#performing-gsea">Performing GSEA</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Functional Class Scoring</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>You! </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 22, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Approximate time: 30 minutes</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives:</h2>
+<ul>
+<li>Discuss functional class scoring</li>
+<li>Construct a GSEA analysis using GO and KEGG gene sets</li>
+<li>Examine results of a GSEA using pathview package</li>
+</ul>
+</section>
+<section id="gene-set-enrichment-analysis-using-clusterprofiler-and-pathview" class="level2">
+<h2 class="anchored" data-anchor-id="gene-set-enrichment-analysis-using-clusterprofiler-and-pathview">Gene set enrichment analysis using clusterProfiler and Pathview</h2>
+<p>Using the log2 fold changes obtained from the differential expression analysis for every gene, gene set enrichment analysis and pathway analysis can be performed using clusterProfiler and Pathview tools.</p>
+<p>For a gene set or pathway analysis using clusterProfiler, coordinated differential expression over gene sets is tested instead of changes of individual genes. “Gene sets are pre-defined groups of genes, which are functionally related. Commonly used gene sets include those derived from KEGG pathways, Gene Ontology terms, MSigDB, Reactome, or gene groups that share some other functional annotations, etc. Consistent perturbations over such gene sets frequently suggest mechanistic changes”.</p>
+<section id="preparation-for-gsea" class="level3">
+<h3 class="anchored" data-anchor-id="preparation-for-gsea">Preparation for GSEA</h3>
+<p>clusterProfiler offers several functions to perform GSEA using different genes sets, including but not limited to GO, KEGG, and MSigDb. We will use the KEGG gene sets, which identify genes using their Entrez IDs. Therefore, to perform the analysis, we will need to acquire the Entrez IDs. We will also need to remove the Entrez ID NA values and duplicates (due to gene ID conversion) prior to the analysis:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Remove any NA values (reduces the data by quite a bit) and duplicates</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>res_entrez <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(res_ids, entrez <span class="sc">!=</span> <span class="st">"NA"</span> <span class="sc">&amp;</span> <span class="fu">duplicated</span>(entrez)<span class="sc">==</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, extract and name the fold changes:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract the foldchanges</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>foldchanges <span class="ot">&lt;-</span> res_entrez<span class="sc">$</span>log2FoldChange</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Name each fold change with the corresponding Entrez ID</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(foldchanges) <span class="ot">&lt;-</span> res_entrez<span class="sc">$</span>entrez</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next we need to order the fold changes in decreasing order. To do this we’ll use the <code>sort()</code> function, which takes a vector as input. This is in contrast to Tidyverse’s <code>arrange()</code>, which requires a data frame.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Sort fold changes in decreasing order</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>foldchanges <span class="ot">&lt;-</span> <span class="fu">sort</span>(foldchanges, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(foldchanges)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     1297      1501 100996732 107985200      3263      3934 
+ 4.182128  3.467430  3.280630  3.280630  3.001757  2.922119 </code></pre>
+</div>
+</div>
+</section>
+<section id="performing-gsea" class="level3">
+<h3 class="anchored" data-anchor-id="performing-gsea">Performing GSEA</h3>
+<p>To perform the GSEA using KEGG gene sets with clusterProfiler, we can use the <code>gseKEGG()</code> function:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## GSEA using gene sets from KEGG pathways</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>gseaKEGG <span class="ot">&lt;-</span> <span class="fu">gseKEGG</span>(<span class="at">geneList =</span> foldchanges, <span class="co"># ordered named vector of fold changes (Entrez IDs are the associated names)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">organism =</span> <span class="st">"hsa"</span>, <span class="co"># supported organisms listed below</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>, <span class="co"># padj cutoff value</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Extract the GSEA results</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>gseaKEGG_results <span class="ot">&lt;-</span> gseaKEGG<span class="sc">@</span>result</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gseaKEGG_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["ID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Description"],"name":[2],"type":["chr"],"align":["left"]},{"label":["setSize"],"name":[3],"type":["int"],"align":["right"]},{"label":["enrichmentScore"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["NES"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["pvalue"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["p.adjust"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["qvalue"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["rank"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["leading_edge"],"name":[10],"type":["chr"],"align":["left"]},{"label":["core_enrichment"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"hsa03040","2":"Spliceosome","3":"143","4":"0.6455399","5":"2.062955","6":"4.767461e-09","7":"1.682914e-06","8":"1.480422e-06","9":"3793","10":"tags=36%, list=18%, signal=29%","11":"124904136/124904138/124904139/124904141/124904142/124904143/55702/10262/6634/6631/9939/220988/8683/9129/151903/3312/2521/84321/80145/24148/4809/57819/84991/3178/11325/4686/6637/6635/1655/27316/51503/9785/9343/22794/22985/9775/79228/6429/9410/6636/6625/11017/7307/102724594/9128/10992/6632/988/6426/23451/4116","_rn_":"hsa03040"},{"1":"hsa05322","2":"Systemic lupus erythematosus","3":"124","4":"-0.6259352","5":"-2.010512","6":"1.830274e-06","7":"3.230434e-04","8":"2.841741e-04","9":"1335","10":"tags=23%, list=6%, signal=21%","11":"8348/8353/3586/8347/440689/8970/92815/7124/8358/8336/942/1991/718/8343/8357/554313/723790/8341/8349/128312/440686/8329/8344/940/8360/3017/8367/8370","_rn_":"hsa05322"},{"1":"hsa04613","2":"Neutrophil extracellular trap formation","3":"176","4":"-0.5506794","5":"-1.843263","6":"1.108066e-05","7":"1.303825e-03","8":"1.146946e-03","9":"1406","10":"tags=20%, list=7%, signal=19%","11":"3689/51284/8348/1183/8353/8347/7450/440689/8970/92815/6403/8358/1432/8336/2243/2266/1991/718/8343/8357/554313/5330/723790/23569/8341/8349/128312/3683/440686/8329/8344/8360/3017/8367/8370","_rn_":"hsa04613"},{"1":"hsa05022","2":"Pathways of neurodegeneration - multiple diseases","3":"419","4":"0.4281509","5":"1.522291","6":"3.609193e-05","7":"3.185113e-03","8":"2.801874e-03","9":"4222","10":"tags=37%, list=20%, signal=30%","11":"2902/1769/598/4541/25981/81029/55567/1536/4539/4519/5970/2878/11211/50507/2776/5608/11047/4747/7415/7345/2932/22943/9776/572/7332/5664/22863/4893/1020/5532/818/4726/356/84516/8312/10010/120892/10105/5709/4720/4722/7326/3845/3552/581/2521/355/5599/808/3569/3265/5578/4702/7473/23236/578/1857/5609/5715/26100/5708/488/4514/5701/8851/81027/203068/2475/5707/11315/5692/27035/4725/5702/8322/1855/5705/5602/7477/3553/10131/324/5704/1131/79139/1139/4707/5071/4717/5687/6647/5691/8408/4718/54361/8678/55860/9861/7311/8326/836/3064/4723/317/9377/805/5606/9927/64837/126328/4728/11258/3799/10671/515/5714/7419/4715/10121/51465/516/4713/9217/514/5684/1459/4696/29982/5335/292/369/1329/4716/842/1349/5603/5706/7327/10376/5689/27429/4710/201625/1460/5481/513/518/4694/10297/776/23435/5663/5683/5682/1337","_rn_":"hsa05022"},{"1":"hsa05014","2":"Amyotrophic lateral sclerosis","3":"306","4":"0.4526409","5":"1.577263","6":"8.790731e-05","7":"6.206256e-03","8":"5.459507e-03","9":"4940","10":"tags=43%, list=24%, signal=33%","11":"2902/1769/598/4541/25981/55567/4539/4519/2878/60/5608/11047/4747/7415/9776/572/22863/5532/4726/84516/10010/220988/5709/4720/4722/581/2521/10482/4702/5903/5715/26100/311/5708/4514/5701/81027/203068/2475/5707/5692/81929/3178/4725/5702/79902/5705/10762/5704/79139/4707/55916/5071/4717/5687/6647/5691/4686/8408/4718/8678/55860/9861/836/4723/317/9377/5606/64837/126328/4728/11258/3799/10671/515/5714/4715/10121/516/4713/9217/514/5684/283/4696/29982/1329/4716/842/1349/5603/129401/5706/6396/100101267/10376/5689/9972/4710/201625/513/518/4694/8480/29979/55746/23435/5683/5682/1337/642659/10476/5718/596/9688/1537/55967/23064/51079/9818/3800/57122/23165/506/2876/7186/2891/1965/1351/10718/51807/25978","_rn_":"hsa05014"},{"1":"hsa05016","2":"Huntington disease","3":"266","4":"0.4452088","5":"1.518494","6":"2.381371e-04","7":"1.401040e-02","8":"1.232464e-02","9":"4936","10":"tags=46%, list=24%, signal=36%","11":"2902/1769/4541/25981/55567/4539/4519/2878/2776/11047/9776/5439/22863/5434/4726/84516/10105/5709/4720/4722/5438/581/548644/5599/3065/4702/23236/5609/5715/26100/5708/10488/4514/5701/81027/203068/2475/5707/7019/5692/4725/5702/5705/5602/1175/5704/1211/4707/4717/5687/6647/5691/8408/4718/1173/8678/55860/9861/836/3064/4723/317/9377/64837/126328/4728/11258/3799/10671/515/5714/7419/4715/10121/516/4713/514/5684/4899/4696/29982/292/1329/4716/842/5432/1349/5706/10376/5689/6908/4710/201625/1212/5433/513/5431/518/4694/161/5683/160/1387/5682/6648/1337/5468/10476/5718/1537/5437/55967/51079/3800/506/2876/7186/6874/5440/2891/1351/51807/841","_rn_":"hsa05016"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>NOTE:</strong> The organisms with KEGG pathway information are listed <a href="http://www.genome.jp/kegg/catalog/org_list.html">here</a>.</p>
+</blockquote>
+<p><strong>How many pathways are enriched?</strong></p>
+<p>View the enriched pathways:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Write GSEA results to file</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(gseaKEGG_results, <span class="st">"../Results/gsea_Cont-Vamp_kegg.csv"</span>, <span class="at">quote=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p><em><strong>NOTE:</strong> We will all get different results for the GSEA because the permutations performed use random reordering. If we would like to use the same permutations every time we run a function (i.e.&nbsp;we would like the same results every time we run the function), then we could use the <code>set.seed(123456)</code> function prior to running. The input to <code>set.seed()</code> could be any number, but if you would want the same results, then you would need to use the same number as input.</em></p>
+</blockquote>
+<p>Explore the GSEA plot of enrichment of one of the pathways in the ranked list:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot the GSEA plot for a single enriched pathway:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(gseaKEGG, <span class="at">geneSetID =</span> gseaKEGG_results<span class="sc">$</span>ID[<span class="dv">1</span>], <span class="at">title =</span> gseaKEGG_results<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./img/Quarto_08c_FA_GSEA.rmarkdown/gseaplot_KEGG-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In this plot, the lines in plot represent the genes in the gene set, and where they occur among the log2 fold changes. The largest positive log2 fold changes are on the left-hand side of the plot, while the largest negative log2 fold changes are on the right. The top plot shows the magnitude of the log2 fold changes for each gene, while the bottom plot shows the running sum, with the enrichment score peaking at the red dotted line (which is among the negative log2 fold changes).</p>
+<p>Use the <a href="http://bioconductor.org/packages/release/bioc/html/pathview.html">Pathview R package</a> to integrate the KEGG pathway data from clusterProfiler into pathway images:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Output images for a single significant KEGG pathway</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pathview</span>(<span class="at">gene.data =</span> foldchanges,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">pathway.id =</span> gseaKEGG_results<span class="sc">$</span>ID[<span class="dv">1</span>],</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">species =</span> <span class="st">"hsa"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">limit =</span> <span class="fu">list</span>(<span class="at">gene =</span> <span class="dv">2</span>, <span class="co"># value gives the max/min limit for foldchanges</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">cpd =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>NOTE:</strong> Printing out Pathview images for all significant pathways can be easily performed as follows:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Output images for all significant KEGG pathways</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>get_kegg_plots <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">pathview</span>(<span class="at">gene.data =</span> foldchanges, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">pathway.id =</span> gseaKEGG_results<span class="sc">$</span>ID[x], </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">species =</span> <span class="st">"hsa"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">limit =</span> <span class="fu">list</span>(<span class="at">gene =</span> <span class="dv">2</span>, <span class="at">cpd =</span> <span class="dv">1</span>))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(gseaKEGG_results<span class="sc">$</span>ID), </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>           get_kegg_plots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</blockquote>
+<p>Instead of exploring enrichment of KEGG gene sets, we can also explore the enrichment of BP Gene Ontology terms using gene set enrichment analysis:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GSEA using gene sets associated with BP Gene Ontology terms</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gseaGO <span class="ot">&lt;-</span> <span class="fu">gseGO</span>(<span class="at">geneList =</span> foldchanges, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">OrgDb =</span> org.Hs.eg.db, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">ont =</span> <span class="st">'BP'</span>, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">minGSSize =</span> <span class="dv">20</span>, </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="cn">FALSE</span>) </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>gseaGO_results <span class="ot">&lt;-</span> gseaGO<span class="sc">@</span>result</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gseaGO_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["ID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Description"],"name":[2],"type":["chr"],"align":["left"]},{"label":["setSize"],"name":[3],"type":["int"],"align":["right"]},{"label":["enrichmentScore"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["NES"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["pvalue"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["p.adjust"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["qvalue"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["rank"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["leading_edge"],"name":[10],"type":["chr"],"align":["left"]},{"label":["core_enrichment"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"GO:0022613","2":"ribonucleoprotein complex biogenesis","3":"406","4":"0.4783493","5":"1.690036","6":"9.680257e-08","7":"0.0003889527","8":"0.0003537879","9":"4548","10":"tags=42%, list=22%, signal=34%","11":"58155/27340/57647/10514/9136/84881/55702/115939/10262/84864/8161/388524/8850/6634/6631/708/25926/10078/7520/10978/26155/55153/8683/9129/25980/79979/23481/4839/5822/54555/8886/51018/6895/26574/8661/8663/728689/24148/8451/4809/51504/29777/1653/57819/114049/54496/81875/387338/27341/5036/22803/51121/5394/55299/56915/51096/1736/3692/65080/27043/23195/23246/51388/51010/2091/91893/5591/10600/9169/84549/51491/7375/79631/26523/79707/4686/6637/10969/6635/6147/84946/5303/55027/2068/3326/55272/79066/55505/25879/79050/64282/4869/8450/9775/10412/84769/51550/54663/121053/51119/6234/54433/10885/54913/92856/6209/25983/6636/79760/10856/130916/8669/90121/11218/6839/163859/8662/10658/134430/51001/26284/51631/51441/54955/57109/10992/51116/79033/6632/90459/55695/9669/83939/6203/6059/6191/6838/54059/6426/55720/23451/8568/8666/51367/10728/7514/5433/100101490/64794/10480/8665/56902/28985/1660/2971/54512/10200/9733/55178/11171/6128/26156/55003/23560/117246/50628/285855/54853/6232/79833/55226","_rn_":"GO:0022613"},{"1":"GO:0034470","2":"ncRNA processing","3":"375","4":"0.4694054","5":"1.649679","6":"1.189398e-06","7":"0.0019497512","8":"0.0017734763","9":"5109","10":"tags=45%, list=25%, signal=35%","11":"91646/10940/27340/57647/9136/84881/115939/81605/10269/23264/7015/8850/11180/285605/80745/51490/83707/80324/8518/25926/1787/10978/79979/23481/51574/4839/5822/55520/54555/2926/3569/8886/51018/6895/4087/4809/91801/81890/51504/29777/1653/57508/81556/114049/387338/27341/55152/5036/22803/23369/5394/26024/55299/56915/51096/1736/3692/65080/27043/10785/23246/283742/51010/2091/91893/5591/84549/26523/79707/9692/4686/283989/23587/10969/5303/1655/79897/51637/2068/55272/79066/55505/25879/79050/64282/55798/142940/9775/10412/80789/90353/54663/55124/63892/54859/51119/6234/54433/10885/54913/92856/6209/25983/27304/51605/11102/130916/90121/8846/6839/65123/163859/134430/27037/51441/57109/7257/5073/79042/51593/79033/90459/55695/6741/80746/54059/54974/55720/8568/51367/4088/3735/207/23424/131405/56339/54512/10200/55178/285381/26156/23560/389421/112858/117246/50628/84705/285855/54853/6232/54920/55226/7247/55656/54487/6774/54901/283120/144233/27079/51013/116461/55646/126789/23404/84135/260294/10248/51493/79922","_rn_":"GO:0034470"},{"1":"GO:0007005","2":"mitochondrion organization","3":"477","4":"0.4428455","5":"1.587483","6":"1.455762e-06","7":"0.0019497512","8":"0.0017734763","9":"4333","10":"tags=42%, list=21%, signal=34%","11":"2852/3375/598/4541/2931/80119/597/51499/84883/64756/55737/2932/116228/9776/7015/572/7332/8314/285636/22863/80224/5880/51024/57190/27166/120892/10105/5027/4720/1267/192111/6240/4722/51295/581/4318/4846/80273/23682/5599/10953/25989/4702/578/117145/1050/26100/125170/25813/29108/2034/5339/84895/2395/196294/3002/28978/25994/11315/7019/4836/10063/92609/59286/100287932/84971/51100/4725/23369/7755/26515/23761/51287/51537/23277/9804/55210/84987/3313/84275/1634/56947/3479/1513/64429/66008/728489/4707/10059/5071/23400/4717/64423/84233/26517/2011/8408/4718/10055/8546/2189/790955/8678/81892/6720/8326/54832/55750/81554/55072/28976/3064/5830/2810/3082/23787/29928/7249/55572/9049/26521/79784/9927/79017/65991/126328/7351/4728/401505/10715/3799/4082/142/5562/4715/9026/139341/51204/4713/51025/647087/130916/55245/54332/219293/125988/3954/1459/8834/91137/55186/131474/5819/3308/1352/4696/55187/57143/292/4716/1906/55744/6742/9141/4170/57226/5516/493856/10531/22906/54974/137392/6548/27429/124045/4710/55823/80821/10989/10245/11152/513/207/137682/4694/284114/2729/84266/90624/9512/8936/51571/6648/3329/54927/5468/79064/5864","_rn_":"GO:0007005"},{"1":"GO:0042254","2":"ribosome biogenesis","3":"266","4":"0.5003853","5":"1.718185","6":"2.152359e-06","7":"0.0021620447","8":"0.0019665765","9":"4548","10":"tags=45%, list=22%, signal=36%","11":"27340/57647/10514/9136/84881/115939/84864/388524/8850/708/25926/7520/26155/55153/79979/23481/4839/5822/54555/8886/51018/26574/8451/4809/51504/29777/114049/81875/387338/27341/5036/22803/51121/5394/55299/56915/51096/1736/3692/65080/27043/23195/23246/51388/51010/2091/91893/5591/10600/84549/51491/79631/79707/10969/6147/84946/5303/55027/2068/55272/79066/55505/25879/79050/64282/4869/8450/9775/10412/84769/51550/54663/51119/6234/54433/10885/54913/92856/6209/25983/130916/90121/6839/163859/134430/51001/26284/51441/54955/57109/51116/79033/90459/55695/9669/83939/6203/6059/6191/6838/54059/55720/8568/51367/7514/64794/56902/2971/54512/10200/55178/6128/26156/55003/23560/117246/50628/285855/54853/6232/55226","_rn_":"GO:0042254"},{"1":"GO:0006334","2":"nucleosome assembly","3":"98","4":"-0.6461617","5":"-1.981460","6":"3.804486e-06","7":"0.0030572849","8":"0.0027808790","9":"1335","10":"tags=22%, list=6%, signal=21%","11":"8348/8353/546/64754/8347/6046/8970/8358/8343/8357/554313/23569/8341/8349/3008/3007/8344/8360/3006/3005/8367/8370","_rn_":"GO:0006334"},{"1":"GO:0034728","2":"nucleosome organization","3":"114","4":"-0.5956783","5":"-1.861638","6":"3.951327e-05","7":"0.0214150959","8":"0.0194789796","9":"1335","10":"tags=22%, list=6%, signal=21%","11":"8289/126961/8348/8353/546/64754/8347/6046/8970/92815/8358/8343/8357/554313/23569/8341/8349/3008/3007/8344/8360/3006/3005/8367/8370","_rn_":"GO:0034728"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(gseaGO, <span class="at">geneSetID =</span> gseaGO_results<span class="sc">$</span>ID[<span class="dv">1</span>], <span class="at">title =</span> gseaGO_results<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./img/Quarto_08c_FA_GSEA.rmarkdown/gseaplotGO-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There are other gene sets available for GSEA analysis in clusterProfiler (Disease Ontology, Reactome pathways, etc.) You can check out this <a href="https://yulab-smu.top/biomedical-knowledge-mining-book/">link</a> for more!</p>
+<hr>
+<p><strong>Exercise 1</strong></p>
+<p>Run a Disease Ontology (DO) GSEA analysis using the <code>gseDO()</code> function. <strong>NOTE</strong> the arguments are very similar to the previous examples.</p>
+<ul>
+<li>Do you find anything interesting?</li>
+</ul>
+<hr>
+<p><strong>Exercise 2</strong></p>
+<p>Run an GSE on the results of the DEA for Garlicum vs Vampirium samples. Remember to use the annotated results!</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/hds-sandbox\.github\.io\/bulk_RNAseq_course");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
