@@ -23,11 +23,11 @@ summary: In this lesson we explain how to start an Rstudio session for data anal
 
 Access [UCloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` where you have been invited.
 
-![](./img/04c_preprocessing_setup/chooseProject.png)
+![](./img/05a_data_analysis_setup/01_workspace_student.png)
 
 Click on `Apps` on the left-side menu, and search for the application `Transcriptomics Sandbox` and select it:
 
-![](./img/05a_data_analysis_setup/apps.png)
+![](./img/05a_data_analysis_setup/02_openapp_student.png)
 
 Once you are in the `Transcriptomics Sandbox`, input appropriate parameters to run a job. Here, you will find a set of recommended values to choose. 
 
