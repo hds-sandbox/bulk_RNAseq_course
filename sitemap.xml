@@ -1,115 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/workshop_RNAseq_oct2026.html</loc>
-    <lastmod>2026-10-22T12:07:57.524Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/07_extra_contrast_design.html</loc>
-    <lastmod>2026-10-22T12:09:01.440Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/AlbaMartinez.html</loc>
-    <lastmod>2026-10-22T12:07:57.441Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/AdrijaKalvisa.html</loc>
-    <lastmod>2026-10-22T12:07:57.441Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/extraCards/SamueleSoraggi.html</loc>
-    <lastmod>2026-10-22T12:07:57.441Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/extraCards/HenrikeZschach.html</loc>
-    <lastmod>2026-10-22T12:07:57.441Z</lastmod>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/07b_hypothesis_testing.html</loc>
+    <lastmod>2026-10-22T12:34:21.293Z</lastmod>
   </url>
   <url>
     <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/08a_FA_genomic_annotation.html</loc>
-    <lastmod>2026-10-22T12:09:01.451Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/07a_DEA.html</loc>
-    <lastmod>2026-10-22T12:09:01.443Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/09_summarized_workflow.html</loc>
-    <lastmod>2026-10-22T12:09:01.459Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/02_experimental_planning.html</loc>
-    <lastmod>2026-10-22T12:07:57.421Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/summary.html</loc>
-    <lastmod>2026-10-22T12:07:57.523Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/05a_data_analysis_setup.html</loc>
-    <lastmod>2026-10-22T12:07:57.421Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/08c_FA_GSEA.html</loc>
-    <lastmod>2026-10-22T12:09:01.456Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/06_exploratory_analysis.html</loc>
-    <lastmod>2026-10-22T12:09:01.438Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/07c_DEA_visualization.html</loc>
-    <lastmod>2026-10-22T12:09:01.448Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/07b_hypothesis_testing.html</loc>
-    <lastmod>2026-10-22T12:09:01.446Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/04a_preprocessing.html</loc>
-    <lastmod>2026-10-22T12:07:57.421Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/index.html</loc>
-    <lastmod>2026-10-22T12:07:57.523Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/03_data_explanation.html</loc>
-    <lastmod>2026-10-22T12:07:57.421Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/04c_preprocessing_nf3270.html</loc>
-    <lastmod>2026-10-22T12:07:57.421Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/05c_count_normalization.html</loc>
-    <lastmod>2026-10-22T12:09:01.435Z</lastmod>
-  </url>
-  <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/05b_count_matrix.html</loc>
-    <lastmod>2026-10-22T12:09:01.432Z</lastmod>
+    <lastmod>2026-10-22T12:34:21.300Z</lastmod>
   </url>
   <url>
     <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/08b_FA_overrepresentation.html</loc>
-    <lastmod>2026-10-22T12:09:01.454Z</lastmod>
+    <lastmod>2026-10-22T12:34:21.303Z</lastmod>
   </url>
   <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/extraCards/JenniferBartell.html</loc>
-    <lastmod>2026-10-22T12:07:57.441Z</lastmod>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/03_data_explanation.html</loc>
+    <lastmod>2026-10-22T12:33:40.367Z</lastmod>
   </url>
   <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/DianaAndrejeva.html</loc>
-    <lastmod>2026-10-22T12:07:57.441Z</lastmod>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/07_extra_contrast_design.html</loc>
+    <lastmod>2026-10-22T12:34:21.285Z</lastmod>
   </url>
   <url>
-    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/thildeTerkelsen.html</loc>
-    <lastmod>2026-10-22T12:07:57.443Z</lastmod>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/04a_preprocessing.html</loc>
+    <lastmod>2026-10-22T12:33:40.367Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/02_experimental_planning.html</loc>
+    <lastmod>2026-10-22T12:33:40.367Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/09_summarized_workflow.html</loc>
+    <lastmod>2026-10-22T12:34:21.310Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/08c_FA_GSEA.html</loc>
+    <lastmod>2026-10-22T12:34:21.307Z</lastmod>
   </url>
   <url>
     <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/SuzeRoostee.html</loc>
-    <lastmod>2026-10-22T12:07:57.441Z</lastmod>
+    <lastmod>2026-10-22T12:33:40.399Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/extraCards/JenniferBartell.html</loc>
+    <lastmod>2026-10-22T12:33:40.400Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/extraCards/SamueleSoraggi.html</loc>
+    <lastmod>2026-10-22T12:33:40.400Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/AlbaMartinez.html</loc>
+    <lastmod>2026-10-22T12:33:40.399Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/05b_count_matrix.html</loc>
+    <lastmod>2026-10-22T12:34:21.274Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/05c_count_normalization.html</loc>
+    <lastmod>2026-10-22T12:34:21.277Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/DianaAndrejeva.html</loc>
+    <lastmod>2026-10-22T12:33:40.399Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/AdrijaKalvisa.html</loc>
+    <lastmod>2026-10-22T12:33:40.399Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/extraCards/HenrikeZschach.html</loc>
+    <lastmod>2026-10-22T12:33:40.399Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/cards/thildeTerkelsen.html</loc>
+    <lastmod>2026-10-22T12:33:40.401Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/summary.html</loc>
+    <lastmod>2026-10-22T12:33:40.495Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/06_exploratory_analysis.html</loc>
+    <lastmod>2026-10-22T12:34:21.281Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/04c_preprocessing_nf3270.html</loc>
+    <lastmod>2026-10-22T12:33:40.367Z</lastmod>
   </url>
   <url>
     <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/04b_pipelines.html</loc>
-    <lastmod>2026-10-22T12:07:57.421Z</lastmod>
+    <lastmod>2026-10-22T12:33:40.367Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/07c_DEA_visualization.html</loc>
+    <lastmod>2026-10-22T12:34:21.296Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/workshop_RNAseq_oct2026.html</loc>
+    <lastmod>2026-10-22T12:33:40.496Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/07a_DEA.html</loc>
+    <lastmod>2026-10-22T12:34:21.289Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/index.html</loc>
+    <lastmod>2026-10-22T12:33:40.495Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hds-sandbox.github.io/bulk_RNAseq_course/develop/05a_data_analysis_setup.html</loc>
+    <lastmod>2026-10-22T12:33:40.367Z</lastmod>
   </url>
 </urlset>
