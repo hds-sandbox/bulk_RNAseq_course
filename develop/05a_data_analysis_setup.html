@@ -64,6 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../develop/05b_count_matrix.html" rel="next">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -73,8 +74,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-69c3086dda2a4e4a6431d2bc02119e1e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-312b7fb938cbe6251fe1ff87846e2b4b.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-28ea9152e6d36f499b9652634583138f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-252f40c83e6164b523241973ae302576.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -199,8 +200,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
         <li class="sidebar-item">
- <span class="menu-text">develop/05b_count_matrix.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/05b_count_matrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The RNAseq count matrix</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
@@ -211,11 +215,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
- <span class="menu-text">develop/05c_count_normalization.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/05c_count_normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Count normalization with DESeq2</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
- <span class="menu-text">develop/06_exploratory_analysis.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/06_exploratory_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploratory analysis with DESeq2</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -228,17 +238,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
- <span class="menu-text">develop/07_extra_contrast_design.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07_extra_contrast_design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DESeq samples comparison: contrast designs</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
- <span class="menu-text">develop/07a_DEA.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07a_DEA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gene-level differential expression analysis with DESeq2</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
- <span class="menu-text">develop/07b_hypothesis_testing.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07b_hypothesis_testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hypothesis testing with DESeq2</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
- <span class="menu-text">develop/07c_DEA_visualization.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/07c_DEA_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Log Fold Shrinkage and DEA visualizations</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -251,14 +273,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
- <span class="menu-text">develop/08a_FA_genomic_annotation.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/08a_FA_genomic_annotation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Genomic annotations for functional analyses</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
- <span class="menu-text">develop/08b_FA_overrepresentation.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/08b_FA_overrepresentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Functional Analysis for RNA-seq</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
- <span class="menu-text">develop/08c_FA_GSEA.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/08c_FA_GSEA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Functional Class Scoring</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -271,8 +302,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
- <span class="menu-text">develop/09_summarized_workflow.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../develop/09_summarized_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary of DGE workflow</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -1040,6 +1074,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation column-page-right">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../develop/05b_count_matrix.html" class="pagination-link" aria-label="The RNAseq count matrix">
+        <span class="nav-page-text">The RNAseq count matrix</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
 (function() {
