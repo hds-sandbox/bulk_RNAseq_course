@@ -66,7 +66,7 @@ Let’s move all the course material into your personal folder so we can reuse i
 ![](./img/05a_data_analysis_setup/setup5.png)
 
 ```.bash
-mv Data Scripts Results Notebooks bulk_ARM/
+mv Data Notebooks Results bulk_ARM/
 ```
 
 Then, navigate to the Notebooks folder (bulk_XXX > Notebooks). You are ready to start analysing your data! 
