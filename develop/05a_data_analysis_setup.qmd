@@ -25,7 +25,7 @@ Access [UCloud](https://cloud.sdu.dk) with your account and choose the project `
 
 ![](./img/05a_data_analysis_setup/01_workspace_student.png)
 
-Click on `Apps` on the left-side menu, and search for the application `Transcriptomics Sandbox` and select it:
+Click on `Applications` on the left-side menu, and go to `Courses` > `Health Data Science Sandbox` > `Transcriptomics Sandbox` and select it:
 
 ![](./img/05a_data_analysis_setup/02_openapp_student.png)
 
@@ -127,16 +127,18 @@ To copy the directory, complete the following steps:
 ## Restarting the Rstudio session
 
 :::{.callout-warning}
-**Remember to save your notebooks while working in an interactive session.** Otherwise you might lose edits to your .Rmd files.
+**Remember to save your notebooks while working in an interactive session.** Otherwise you might lose edits to your .qmd files.
 :::
 
-You will need to mount the course materials saved in your own member files. To do this, go to `Storage` and select the following folder: `Data`, `Scripts`, `Notebooks` and `Results`.
+You will need to mount the course materials saved in your own member files. Open the `Transcriptomics Sandbox` application again. Go to `Storage` and select the following folders: `Data`, `Scripts`, `Notebooks` and `Results`.
 
 ![How to mount the data?](./img/05a_data_analysis_setup/mountData.png)
 
 Make sure your Storage window looks as follows: 
 
 ![](./img/05a_data_analysis_setup/mountData2.png)
+
+All other settings should be the same as the first time.
 
 Before you `Open Interface`, make sure that the job stats says using your own data. 
 

@@ -23,11 +23,11 @@ We will be running the nf-core/rnaseq pipeline. Please refer to their detailed d
 
 Access [Ucloud](https://cloud.sdu.dk) with your account and choose the project `Sandbox RNASeq Workshop` to which you have been invited ([contact](https://hds-sandbox.github.io/contact/contact.html) the team if you haven't). 
 
-![](./img/04c_preprocessing_setup/chooseProject.png)
+![](./img/05a_data_analysis_setup/01_workspace_student.png)
 
 Click on `Apps` on the left-side menu, search for the application `nf-core rnaseq`, and click on it.
 
-![](./img/04c_preprocessing_setup/chooseRNAseq.png)
+![](./img/04c_preprocessing_setup/02_openrnaseq.png)
 
 Next, let's set up the parameters to run the pipeline. Your screen should resemble the image below—please verify it does.
 
