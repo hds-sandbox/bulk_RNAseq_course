@@ -66,6 +66,19 @@ Our first choice is to provide all the **training materials, tutorials, and tool
 
 &nbsp;
 
+5. Course material
+
+<div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; padding: 10px 20px">
+  <a href="./fastqc_examples.zip" download="fastqc_examples.zip">
+    <button class="btn-action">Download fastqc files</button>
+  </a>
+  <a href="./multiqc_examples.zip" download="multiqc_examples.zip">
+    <button class="btn-action">Download multiqc files</button>
+  </a>
+</div>
+
+&nbsp;
+
 <!-- 
 6. COURSE EVALUATION SURVEY - The Novo Nordisk Foundation funds the Sandbox project and is interested in the outcomes of our training activities, so we really appreciate your responses!
 
