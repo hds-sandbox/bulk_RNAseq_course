@@ -58,7 +58,7 @@ Our first choice is to provide all the **training materials, tutorials, and tool
 5. Course slides
 
 <div style="display: flex; justify-content: center; padding: 10px 20px">
-  <a href="./BulkRNAseq_slides_nov24.zip" download="bulkRNAseq-slides.zip">
+  <a href="./slides_bulkrnaseq.zip" download="bulkRNAseq-slides.zip">
     <button class="btn-action">Download course slides</button>
   </a>
 </div>
