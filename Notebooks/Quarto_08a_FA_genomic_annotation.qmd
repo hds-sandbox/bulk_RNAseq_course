@@ -150,35 +150,19 @@ Now that we know the types of information available from AnnotationHub we can qu
 ```{r}
 # Query AnnotationHub
 human_ens <- query(ah, c("Homo sapiens", "EnsDb"))
-human_ens <- human_ens[which(human_ens$genome == "GRCh38")]
 ```
 
-The query retrieves all **hits for the `EnsDb` objects**, and you will see that they are listed by the release number. AnnotationHub offers multiple Ensembl releases for GRCh38. If you are using an older genome build like hg19/GRCh37, you would need to load the `EnsDb` package if available for that release or you might need to build your own with `ensembldb`.
+The query retrieves all **hits for the `EnsDb` objects**, and you will see that they are listed by the release number. The most current release for GRCh38 is Ensembl 109 and AnnotationHub offers that as an option to use. However, if you look at options for older releases, for Homo sapiens it only goes back as far as Ensembl 87. This is fine if you are using GRCh38, however if you were using an older genome build like hg19/GRCh37, you would need to load the `EnsDb` package if available for that release or you might need to build your own with `ensembldb`.
 
 ```{r}
 human_ens
 ```
 
-To use the newest EnsDb resource available from AnnotationHub, try the results from newest to oldest:
+If we are looking for the latest Ensembl release, so that the annotations are the most up-to-date, we can use the AnnotationHub ID to **subset the object**:
 
 ```{r}
-human_ens_db <- NULL
-for (i in rev(seq_along(human_ens))) {
-  human_ens_db <- tryCatch(
-    human_ens[[i]],
-    error = function(e) {
-      message("Unable to download this EnsDb resource; trying an older release.")
-      NULL
-    }
-  )
-  if (!is.null(human_ens_db)) break
-}
-
-if (is.null(human_ens_db)) {
-  stop("Unable to download any Homo sapiens EnsDb resource from AnnotationHub.")
-}
-
-human_ens <- human_ens_db
+# Extract annotations of interest
+human_ens <- human_ens[[length(human_ens)]]
 ```
 
 Now we can use `ensembldb` functions to extract the information at the gene, transcript, or exon levels. We are interested in the gene-level annotations, so we can extract that information as follows:
