@@ -328,17 +328,3 @@ Now you have access to the full results of your pipeline! As explained in the [p
 **Optional**: If you have successfully run nf-core RNA jobs and want to use the files you generated from your own preprocessing results, don't forget to choose `Use folder` when submitting a new job. How?
 
 > Go to `Select folders to use` and `Add folder` by selecting the one containing the pipeline results like shown in the image above. They will be located in `Member Files:YourName#numbers` -> `nfcore-results` -> `preprocessing_results_salmon` (unless you have moved them elsewhere). 
-
-<!-- 
-Do not select `add folder` if you haven't run nf-core pipeline. Once you launch RStudio, ensure there is a `Data` folder.
-
-IF (AND ONLY IF) you have **correctly imported parameters but you do not find the Data folder** follow the instructions below! If you still run into problems, please contact us.
-
-### "Mount the backup data drive"
-If the data isn't present, you will need to mount the data drive by selecting one of our backup folders that contains the data. Click on `add folder` and then choose `/sandbox_bulkRNAseq(82207)/Intro_to_bulkRNAseq/`. Change the drive by clicking the down arrow (**&or;**) icon to open a dropdown menu. Afterward, add your home folder so you can write the results to your own drive. **You will not have write permissions on the `sandbox_bulRNAseq` drive**. 
-
-![back-up data](./img/05a_data_analysis_setup/data_select.png)
-
-
-Alternatively, you can also select the hard-drive icon labeled "sequencing_data". 
--->
