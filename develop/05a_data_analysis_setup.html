@@ -74,8 +74,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-28ea9152e6d36f499b9652634583138f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-252f40c83e6164b523241973ae302576.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-a22daffa4bc49037ab7dbb2fb1c01f6a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-117b81580176a32e179cf69a0fdffd96.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -453,7 +453,7 @@ Did you not move the course material to your own folder?
 <p>To copy the directory, complete the following steps:</p>
 <ol type="1">
 <li>Go to <code>Jobs → Transcriptomics Sandbox → &lt;Job name&gt; →</code></li>
-<li>Click ONCE to select <code>Data</code>, <code>Notebooks</code>, <code>Scripts</code> and <code>Results</code></li>
+<li>Click ONCE to select <code>Data</code>, <code>Notebooks</code> and <code>Results</code></li>
 <li>Click ‘Copy to…’</li>
 <li>Click on your root member files directory</li>
 <li>Select ‘Copy to’ the custom working directory you made (you can <code>Create folder</code> now if you haven’t previously)</li>
@@ -503,6 +503,56 @@ Warning
 <p>All other settings should be the same as the first time.</p>
 <p>Before you <code>Open Interface</code>, make sure that the job stats says using your own data.</p>
 <p><a href="./img/05a_data_analysis_setup/jobMessage.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="./img/05a_data_analysis_setup/jobMessage.png" class="img-fluid"></a></p>
+<section id="using-your-preprocessing-results-from-nf-core" class="level3">
+<h3 class="anchored" data-anchor-id="using-your-preprocessing-results-from-nf-core">Using your preprocessing results from nf-core</h3>
+<p>The notebooks read the following input files. You can use the ones you produced with the nf-core/rnaseq pipeline instead of the ones provided.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Notebook input</th>
+<th>Preprocessing result</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Data/samplesheet.csv</code></td>
+<td><code>path/to/preprocessing_results_salmon/samplesheet.csv</code></td>
+<td>Every notebook except 07_extra</td>
+</tr>
+<tr class="even">
+<td><code>Data/salmon/salmon_tx2gene.tsv</code></td>
+<td><code>path/to/preprocessing_results_salmon/results_salmon/salmon/salmon_tx2gene.tsv</code></td>
+<td>Every notebook except 07_extra</td>
+</tr>
+<tr class="odd">
+<td><code>Data/salmon/&lt;sample&gt;/quant.sf</code></td>
+<td><code>path/to/preprocessing_results_salmon/results_salmon/salmon/&lt;sample&gt;/quant.sf</code></td>
+<td>Every notebook except 07_extra (05b also opens <code>control_1/quant.sf</code> directly)</td>
+</tr>
+<tr class="even">
+<td><code>Data/Vampirium_counts_traditional.tsv</code></td>
+<td><code>path/to/preprocessing_results_salmon/results_salmon/salmon/salmon.merged.gene_counts.tsv</code></td>
+<td>09 only (05c’s mention is in a “DO NOT RUN” chunk)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Option 1: Copy the files into the folder the notebooks expect</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode .bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> Data</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> path/to/preprocessing_results_salmon/samplesheet.csv Data/</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> path/to/preprocessing_results_salmon/results_salmon/salmon Data/</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> path/to/preprocessing_results_salmon/results_salmon/salmon/salmon.merged.gene_counts.tsv Data/Vampirium_counts_traditional.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The notebooks then run without changes.</p>
+<p><strong>Option 2: Change the input paths in the notebooks</strong></p>
+<p>Check the table above to see which notebooks need changes for which input. Then edit the input paths at the top of each notebook. For example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode .r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"path/to/preprocessing_results_salmon/samplesheet.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tx2gene <span class="ot">&lt;-</span> <span class="fu">read_table</span>(<span class="fu">file.path</span>(dir, <span class="st">"salmon_tx2gene.tsv"</span>), <span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">"transcript_ID"</span>,<span class="st">"gene_ID"</span>,<span class="st">"gene_symbol"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 <section id="reusing-old-job-parameters" class="level3">
 <h3 class="anchored" data-anchor-id="reusing-old-job-parameters">Reusing old job parameters</h3>
 <p>The very easy way (perhaps after your job has accidentally run out of time / disconnected due to a UCloud blip) is to simply hit ‘Run application again’.</p>
