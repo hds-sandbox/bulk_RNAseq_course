@@ -112,7 +112,7 @@ If you want to keep working on your previous results, it makes sense to copy the
 To copy the directory, complete the following steps:
 
 1. Go to `Jobs → Transcriptomics Sandbox → <Job name> → `
-2. Click ONCE to select `Data`, `Notebooks`, `Scripts` and `Results`
+2. Click ONCE to select `Data`, `Notebooks` and `Results`
 3. Click 'Copy to...'
 4. Click on your root member files directory
 5. Select 'Copy to' the custom working directory you made (you can `Create folder` now if you haven't previously)
@@ -144,6 +144,36 @@ Before you `Open Interface`, make sure that the job stats says using your own da
 
 ![](./img/05a_data_analysis_setup/jobMessage.png)
 
+### Using your preprocessing results from nf-core
+
+The notebooks read the following input files. You can use the ones you produced with the nf-core/rnaseq pipeline instead of the ones provided.
+
+| Notebook input | Preprocessing result | Used by |
+|---|---|---|
+| `Data/samplesheet.csv` | `path/to/preprocessing_results_salmon/samplesheet.csv` | Every notebook except 07_extra |
+| `Data/salmon/salmon_tx2gene.tsv` | `path/to/preprocessing_results_salmon/results_salmon/salmon/salmon_tx2gene.tsv` | Every notebook except 07_extra |
+| `Data/salmon/<sample>/quant.sf` | `path/to/preprocessing_results_salmon/results_salmon/salmon/<sample>/quant.sf` | Every notebook except 07_extra (05b also opens `control_1/quant.sf` directly) |
+| `Data/Vampirium_counts_traditional.tsv` | `path/to/preprocessing_results_salmon/results_salmon/salmon/salmon.merged.gene_counts.tsv` | 09 only (05c's mention is in a "DO NOT RUN" chunk) |
+
+**Option 1: Copy the files into the folder the notebooks expect**
+
+```.bash
+mkdir -p Data
+cp path/to/preprocessing_results_salmon/samplesheet.csv Data/
+cp -r path/to/preprocessing_results_salmon/results_salmon/salmon Data/
+cp path/to/preprocessing_results_salmon/results_salmon/salmon/salmon.merged.gene_counts.tsv Data/Vampirium_counts_traditional.tsv
+```
+
+The notebooks then run without changes.
+
+**Option 2: Change the input paths in the notebooks**
+
+Check the table above to see which notebooks need changes for which input. Then edit the input paths at the top of each notebook. For example:
+
+```.r
+meta <- read_csv("path/to/preprocessing_results_salmon/samplesheet.csv")
+tx2gene <- read_table(file.path(dir, "salmon_tx2gene.tsv"), col_names = c("transcript_ID","gene_ID","gene_symbol"))
+```
 
 ### Reusing old job parameters
 
