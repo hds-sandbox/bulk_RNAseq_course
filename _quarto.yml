@@ -20,6 +20,8 @@ website:
         file: develop/04a_preprocessing.qmd
       - text: Data analyses
         file: develop/05a_data_analysis_setup.qmd
+      - text: "Run on your own"
+        href: develop/running-nfcore-rnaseq.qmd
       - text: "Workshop wrap-up"
         file: develop/summary.qmd
     right: 

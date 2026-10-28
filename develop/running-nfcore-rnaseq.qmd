@@ -1,0 +1,532 @@
+---
+title: "Running nf-core/rnaseq with Conda or Singularity/Apptainer"
+subtitle: "A step-by-step guide starting from a computer with nothing installed"
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    code-copy: true
+---
+
+## Overview
+
+[nf-core/rnaseq](https://nf-co.re/rnaseq) is a community-maintained pipeline that takes raw RNA-seq FASTQ files and produces QC reports, alignments, and gene/transcript count tables. It is built on [Nextflow](https://www.nextflow.io/), a workflow manager that runs each analysis step for you, in the right order, and in parallel where possible.
+
+This guide assumes:
+
+- You have a Linux computer, a Linux server, or a Mac. (If you are on Windows, use [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and follow the Linux instructions.)
+- You have an internet connection (the pipeline downloads its software and the pipeline code on first run).
+
+If you have **nothing installed** yet (no Nextflow, no Java, no conda), start with [Installation](#sec-install).
+
+::: {.callout-important}
+## Working on an HPC cluster? You may not need to install anything
+On most HPC clusters, Nextflow and Apptainer are already available (try `module avail nextflow` and `module avail apptainer`), or your sysadmins can install them for you. In that case, skip [Installation](#sec-install) and go straight to [Step 1: Prepare your input](#sec-input).
+
+**One thing to do even if you skip:** set where container images are cached (see "Choose where container images are cached" in the Singularity/Apptainer tab of the "Install Nextflow and set up the tools" box under [Installation](#sec-install)), or ask your sysadmins which location they recommend. Images can take 10–20 GB and may fill a small home directory on a cluster.
+:::
+
+### Conda or Singularity/Apptainer?
+
+The pipeline runs dozens of bioinformatics tools, and Nextflow needs a way to get them. This guide covers two options. Wherever the instructions differ, you will see two tabs; **pick your option once and every tab in the guide switches to match.**
+
+| | Conda | Singularity/Apptainer |
+|---|---|---|
+| Works on | Linux and Mac | Linux only (servers and HPC clusters) |
+| Admin rights needed | No | No to run it; it is usually already installed on clusters |
+| First run | Slow: builds a conda environment for each tool | Faster: downloads ready-made container images |
+| Reproducibility | Good | Better (recommended by nf-core) |
+| Best for | Getting started on your own Mac or laptop | Regular analyses on a Linux server or cluster |
+
+::: {.callout-tip}
+## Which one should I choose?
+**Use Singularity/Apptainer whenever you can.** Containers are what the nf-core team recommends, and what you should use for any analysis you intend to publish or share: every tool runs in exactly the same image, on any Linux server or HPC cluster.
+
+**Conda is a great way to get started on your own Mac or laptop.** It needs no extra setup, so you can focus on learning how the pipeline works. As you start running analyses regularly, run the pipeline on a Linux server or cluster with Singularity/Apptainer instead. On a Mac, Apptainer only runs inside a Linux virtual machine (see the [Apptainer installation guide](https://apptainer.org/docs/admin/latest/installation.html)).
+:::
+
+## Hardware requirements
+
+| Resource | Minimum (small genomes) | Realistic for human/mouse data |
+|---|---|---|
+| CPU cores | 2 | 8 or more |
+| RAM | 8 GB | 32 GB or more (the STAR aligner needs ~30 GB to build a human genome index) |
+| Free disk space | 20 GB | 100 GB to several hundred GB, depending on the number of samples |
+
+If your computer has less RAM than you need for the full genome, consider running on a server or cluster, or providing a pre-built index (see [The reference genome](#sec-reference)).
+
+## Installation (only if needed) {#sec-install}
+
+Skip this section if conda, Nextflow and (for Singularity/Apptainer) Apptainer are already installed, and go straight to [Step 1](#sec-input). Otherwise, open the boxes below in order.
+
+::: {.callout-note collapse="true"}
+## Install conda (Miniforge)
+
+Both options use conda to install Nextflow itself. If you already have conda or mamba, skip to the next box. Otherwise, install **Miniforge**, a minimal conda installer that uses the `conda-forge` channel by default.
+
+Download and run the installer in a terminal:
+
+```bash
+curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+bash Miniforge3-$(uname)-$(uname -m).sh
+```
+
+Accept the defaults, and say **yes** when asked whether to initialise conda. Then **close and reopen your terminal**. You should see `(base)` at the start of your prompt. Check that it works:
+
+```bash
+conda --version
+```
+
+**Configure conda channels.** Bioinformatics software lives in the `bioconda` channel. Set up the channels once, in this order:
+
+```bash
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+```
+:::
+
+:::: {.callout-note collapse="true"}
+## Install Nextflow and set up the tools
+
+Create a dedicated conda environment for Nextflow. Nextflow needs Java, and the conda package brings it along automatically.
+
+```bash
+conda create -n nextflow -c conda-forge -c bioconda nextflow
+```
+
+Activate it (you must do this **every time you open a new terminal**):
+
+```bash
+conda activate nextflow
+```
+
+Check that it works:
+
+```bash
+nextflow -version
+```
+
+::: {.callout-tip}
+## Optional: limit Nextflow's own memory use
+Nextflow itself runs in a Java virtual machine. Adding this line to your `~/.bashrc` (or `~/.zshrc` on a Mac) keeps it from grabbing too much memory:
+
+```bash
+export NXF_OPTS='-Xms1g -Xmx4g'
+```
+:::
+
+**Set up how the pipeline gets its tools.**
+
+::: {.panel-tabset group="env"}
+
+#### Conda
+
+When you use `-profile conda`, Nextflow builds a separate conda environment for each tool. Setting a cache directory means they are built **once** and reused in later runs instead of rebuilt each time. Add this to `~/.bashrc` (change the path to somewhere with plenty of space):
+
+```bash
+export NXF_CONDA_CACHEDIR=$HOME/nextflow_conda_cache
+```
+
+Then run `source ~/.bashrc` (or open a new terminal).
+
+#### Singularity/Apptainer
+
+[Apptainer](https://apptainer.org/) (formerly called Singularity) runs each tool from a ready-made container image. It runs natively only on Linux; on a Mac, run it inside a Linux virtual machine or use conda.
+
+**Check whether it is already available.** On most clusters it is already installed, sometimes as a module:
+
+```bash
+apptainer --version     # or: singularity --version
+module avail apptainer  # on a cluster, if the command above is not found
+module load apptainer   # use the exact name shown by module avail
+```
+
+If you load it with `module load`, you need to do that in every new terminal, just like `conda activate nextflow`.
+
+**Install it only if it is not available.** On a cluster, ask your sysadmins rather than installing it yourself. On your own Linux machine, you can install it into the Nextflow conda environment:
+
+```bash
+conda install -n nextflow -c conda-forge apptainer
+```
+
+On Ubuntu with admin rights, the official package is an alternative:
+
+```bash
+sudo add-apt-repository -y ppa:apptainer/ppa
+sudo apt update
+sudo apt install -y apptainer
+```
+
+**Choose where container images are cached.** Each tool's image is downloaded once and reused. Images take a lot of space (often 10–20 GB for this pipeline), so put the cache somewhere with room, not in a small home directory on a cluster. Add this to `~/.bashrc`:
+
+```bash
+export NXF_SINGULARITY_CACHEDIR=$HOME/nextflow_singularity_cache
+export NXF_APPTAINER_CACHEDIR=$NXF_SINGULARITY_CACHEDIR
+```
+
+Then run `source ~/.bashrc` (or open a new terminal).
+
+::: {.callout-tip}
+## Running on a cluster
+Check whether your institution has a ready-made config on the [nf-core configs page](https://nf-co.re/configs). If it does, add its name to the profile in every command (for example `-profile singularity,<your_cluster>`), and Nextflow will submit jobs to the scheduler and use the right cache paths for you. Do not run the pipeline's heavy steps on the login node.
+:::
+
+:::
+::::
+
+## Step 1: Prepare your input {#sec-input}
+
+### Your FASTQ files
+
+Put all your FASTQ files somewhere accessible, for example `~/my_project/fastq/`. Files can be gzip-compressed (`.fastq.gz` or `.fq.gz`). Both single-end and paired-end data are supported.
+
+### The samplesheet
+
+The pipeline needs a **CSV file** that describes your samples. Create `samplesheet.csv` with these four columns:
+
+| Column | Meaning |
+|---|---|
+| `sample` | A unique sample name. No spaces. |
+| `fastq_1` | Full path to the FASTQ file (read 1). |
+| `fastq_2` | Full path to read 2. **Leave empty for single-end data.** |
+| `strandedness` | `forward`, `reverse`, `unstranded`, or `auto` (the pipeline will infer it from a subset of reads). |
+
+Example, with paired-end data:
+
+```csv
+sample,fastq_1,fastq_2,strandedness
+control_rep1,/home/me/my_project/fastq/ctrl1_R1.fastq.gz,/home/me/my_project/fastq/ctrl1_R2.fastq.gz,auto
+control_rep2,/home/me/my_project/fastq/ctrl2_R1.fastq.gz,/home/me/my_project/fastq/ctrl2_R2.fastq.gz,auto
+treated_rep1,/home/me/my_project/fastq/trt1_R1.fastq.gz,/home/me/my_project/fastq/trt1_R2.fastq.gz,auto
+treated_rep2,/home/me/my_project/fastq/trt2_R1.fastq.gz,/home/me/my_project/fastq/trt2_R2.fastq.gz,auto
+```
+
+::: {.callout-tip}
+## Tips for the samplesheet
+- Use **absolute paths** (starting with `/`) to avoid confusion.
+- If a sample was sequenced across several lanes or runs, give the **same `sample` name on several rows**. The pipeline will merge them.
+- Use `auto` for strandedness if you are unsure. It adds one extra step, but is safe.
+:::
+
+### The reference genome {#sec-reference}
+
+You have two options.
+
+**Option A (simplest): use a built-in genome name.** The pipeline can fetch common genomes from the [AWS iGenomes](https://ewels.github.io/AWS-iGenomes/) collection, for example `--genome GRCh38` (human) or `--genome GRCm39` (mouse). This is the least effort, but the iGenomes references can be older versions, so many people prefer Option B.
+
+**Option B (recommended for reproducibility): provide your own files.** Download a genome FASTA file and a matching GTF annotation file from [Ensembl](https://www.ensembl.org/info/data/ftp/index.html) or [GENCODE](https://www.gencodegenes.org/), making sure both come from the **same release and assembly**. Then pass them with `--fasta` and `--gtf`. The pipeline will build the alignment indices for you, which needs a lot of RAM for large genomes (see hardware table above). On later runs you can save time by providing the pre-built index with options such as `--star_index` (see the [parameter docs](https://nf-co.re/rnaseq/parameters)), or by using `--save_reference` to keep the indices the pipeline built.
+
+## Step 2: Run the pipeline
+
+First, create a project folder and move into it:
+
+```bash
+mkdir -p ~/my_project
+cd ~/my_project
+```
+
+Activate the Nextflow environment if it is not already active (and, on a cluster, `module load apptainer` if you needed it during [Installation](#sec-install)):
+
+```bash
+conda activate nextflow
+```
+
+Now run the pipeline.
+
+::: {.panel-tabset group="env"}
+
+### Conda
+
+Using your own FASTA and GTF files:
+
+```bash
+nextflow run nf-core/rnaseq \
+    -r 3.26.0 \
+    -profile conda \
+    --input samplesheet.csv \
+    --outdir results \
+    --fasta /path/to/genome.fa.gz \
+    --gtf /path/to/annotation.gtf.gz
+```
+
+Or, using a built-in genome:
+
+```bash
+nextflow run nf-core/rnaseq \
+    -r 3.26.0 \
+    -profile conda \
+    --input samplesheet.csv \
+    --outdir results \
+    --genome GRCh38
+```
+
+The first run will download the pipeline code and build all the conda environments. **This can take a long time (30 minutes to over an hour)** before any analysis starts; later runs are much faster because of the cache.
+
+### Singularity/Apptainer
+
+Using your own FASTA and GTF files:
+
+```bash
+nextflow run nf-core/rnaseq \
+    -r 3.26.0 \
+    -profile singularity \
+    --input samplesheet.csv \
+    --outdir results \
+    --fasta /path/to/genome.fa.gz \
+    --gtf /path/to/annotation.gtf.gz
+```
+
+Or, using a built-in genome:
+
+```bash
+nextflow run nf-core/rnaseq \
+    -r 3.26.0 \
+    -profile singularity \
+    --input samplesheet.csv \
+    --outdir results \
+    --genome GRCh38
+```
+
+`-profile apptainer` works too. The first run will download the pipeline code and all the container images, which can take a while; later runs reuse the cached images.
+
+:::
+
+What the options mean:
+
+| Option | Meaning |
+|---|---|
+| `-r 3.26.0` | Pins the pipeline version, so your analysis is reproducible. Check the [releases page](https://github.com/nf-core/rnaseq/releases) for the newest version and use that number. |
+| `-profile conda` / `-profile singularity` | Tells Nextflow how to get the software: build conda environments, or download container images. |
+| `--input` | Your samplesheet. |
+| `--outdir` | Where results are saved. |
+| `--fasta`, `--gtf` | Your reference genome and annotation (or use `--genome`). |
+
+Note that `-r`, `-profile` and `-resume` (single dash) are **Nextflow** options, while `--input`, `--outdir` and so on (double dash) are **pipeline** parameters.
+
+### Limit the resources the pipeline can use
+
+By default, the pipeline may request more CPUs or memory than your computer has, which makes it fail. Create a small file called `resources.config` that tells it what your machine can offer (adjust the numbers to your computer):
+
+```groovy
+process {
+    resourceLimits = [
+        cpus: 8,
+        memory: '32.GB',
+        time: '48.h'
+    ]
+}
+```
+
+Then add `-c resources.config` to the command:
+
+::: {.panel-tabset group="env"}
+
+#### Conda
+
+```bash
+nextflow run nf-core/rnaseq \
+    -r 3.26.0 \
+    -profile conda \
+    -c resources.config \
+    --input samplesheet.csv \
+    --outdir results \
+    --fasta /path/to/genome.fa.gz \
+    --gtf /path/to/annotation.gtf.gz
+```
+
+#### Singularity/Apptainer
+
+```bash
+nextflow run nf-core/rnaseq \
+    -r 3.26.0 \
+    -profile singularity \
+    -c resources.config \
+    --input samplesheet.csv \
+    --outdir results \
+    --fasta /path/to/genome.fa.gz \
+    --gtf /path/to/annotation.gtf.gz
+```
+
+If you use an institutional cluster profile, it usually sets these limits already, and you may not need `resources.config`.
+
+:::
+
+::: {.callout-note}
+Very old versions of the pipeline (before the 2024 nf-core template) use `--max_cpus`, `--max_memory` and `--max_time` instead. With a current version, use the config file above.
+:::
+
+### Keep it running in the background
+
+A real run can take hours. If you close your terminal, the run will stop. Use `tmux` (or `screen`) so it keeps going:
+
+::: {.panel-tabset group="env"}
+
+#### Conda
+
+```bash
+conda install -n nextflow -c conda-forge tmux   # one-time install, if you don't have it
+tmux new -s rnaseq
+conda activate nextflow
+# ... run the nextflow command here ...
+```
+
+#### Singularity/Apptainer
+
+`tmux` is usually already installed on Linux servers and clusters (check with `tmux -V`).
+
+```bash
+tmux new -s rnaseq
+conda activate nextflow   # Nextflow itself was installed with conda
+module load apptainer     # only if needed on your cluster
+# ... run the nextflow command here ...
+```
+
+On a cluster with a job scheduler (such as SLURM), many sites prefer that you submit the Nextflow command itself as a small, long-running job instead of keeping it open on the login node. Check your cluster's documentation or ask your sysadmins.
+
+:::
+
+Detach from the session with `Ctrl+b` then `d`. Come back later with `tmux attach -t rnaseq`.
+
+### If a run stops: resume it
+
+If the run crashes or you stop it, you do not have to start over. Run the **exact same command** in the **same folder** and add `-resume`:
+
+::: {.panel-tabset group="env"}
+
+#### Conda
+
+```bash
+nextflow run nf-core/rnaseq -r 3.26.0 -profile conda ... -resume
+```
+
+#### Singularity/Apptainer
+
+```bash
+nextflow run nf-core/rnaseq -r 3.26.0 -profile singularity ... -resume
+```
+
+:::
+
+Nextflow will skip every step that already finished successfully.
+
+## Step 3: Look at the results
+
+When the run finishes, your `results/` folder will contain several subfolders. The most useful ones:
+
+| Location | What it contains |
+|---|---|
+| `results/multiqc/` | **Start here.** Open `multiqc_report.html` in a web browser for an overview of the QC of all samples. |
+| `results/star_salmon/` | Alignments (BAM files) and quantification (default aligner: STAR, quantifier: Salmon). |
+| `results/star_salmon/salmon.merged.gene_counts.tsv` | Gene-level **raw counts** for all samples. This is the usual input for differential expression with DESeq2 or edgeR. |
+| `results/star_salmon/salmon.merged.gene_tpm.tsv` | Gene-level TPM values. |
+| `results/pipeline_info/` | Run reports, software versions, and the parameters you used. Keep this with your results. |
+
+For differential expression, the pipeline authors recommend using the Salmon outputs (the `salmon.merged.*` files, or the `.rds` file holding a SummarizedExperiment object) as input to DESeq2 via `tximport`.
+
+Once you are happy with the results, you can delete the `work/` directory to free disk space. **Only do this when you no longer need `-resume`**, because the work folder is what makes resuming possible.
+
+## Troubleshooting
+
+**`nextflow: command not found`**
+:   You probably forgot to activate the environment. Run `conda activate nextflow`.
+
+**The first run seems frozen**
+:   It is probably building conda environments or downloading container images. This is normal and can take a long time. Look at the `.nextflow.log` file in your run folder to check progress: `tail -f .nextflow.log`.
+
+**A process fails with an out-of-memory error (exit status 137 or 143)**
+:   Your computer does not have enough RAM for that step. Lower the limits in `resources.config` to match your hardware, free memory by closing other programs, or move to a machine with more RAM. Building a STAR index for a human genome is the most common culprit.
+
+**Conda "Solving environment" failures or very slow solving**
+:   Make sure the channels were set up as in [Installation](#sec-install), with strict priority. Updating conda with `conda update -n base conda` may also help. If conda keeps giving you problems, switch to Singularity/Apptainer (Linux). Only the `-profile` part of the command changes.
+
+**`apptainer: command not found` or `singularity: command not found`**
+:   On a cluster, run `module load apptainer` (or the module name shown by `module avail`). On your own machine, install it as described in [Installation](#sec-install).
+
+**Container downloads fail or your home directory fills up**
+:   Make sure `NXF_SINGULARITY_CACHEDIR` points to a location with enough space, and that you ran `source ~/.bashrc` after setting it.
+
+**You want to find out why a specific step failed**
+:   Nextflow prints the path of the failing task's work directory (something like `work/ab/cdef12...`). Look at `.command.err` and `.command.log` inside that folder.
+
+::: {.callout-note collapse="true"}
+## Advanced: check your setup with a tiny test dataset
+
+If runs keep failing and you are not sure whether the problem is your setup or your data, run the pipeline on its built-in test dataset. It needs no samplesheet or genome, and finishes quickly once the software is in place. Run it in a fresh folder:
+
+::: {.panel-tabset group="env"}
+
+#### Conda
+
+```bash
+mkdir -p ~/rnaseq_test
+cd ~/rnaseq_test
+
+nextflow run nf-core/rnaseq \
+    -profile test,conda \
+    --outdir test_results
+```
+
+#### Singularity/Apptainer
+
+```bash
+mkdir -p ~/rnaseq_test
+cd ~/rnaseq_test
+
+nextflow run nf-core/rnaseq \
+    -profile test,singularity \
+    --outdir test_results
+```
+
+:::
+
+If it ends with a green "Pipeline completed successfully" message, your installation works, and the problem is most likely in your samplesheet, file paths, reference files, or resource limits. If the test also fails, the problem is in the setup (see [Installation](#sec-install)).
+:::
+
+## Quick reference
+
+::: {.panel-tabset group="env"}
+
+### Conda
+
+```bash
+# every new terminal
+conda activate nextflow
+
+# real run
+nextflow run nf-core/rnaseq -r <VERSION> -profile conda -c resources.config \
+    --input samplesheet.csv --outdir results \
+    --fasta genome.fa.gz --gtf annotation.gtf.gz
+
+# resume after a failure (same folder, same command)
+nextflow run nf-core/rnaseq -r <VERSION> -profile conda ... -resume
+```
+
+### Singularity/Apptainer
+
+```bash
+# every new terminal
+conda activate nextflow
+module load apptainer   # only if needed on your cluster
+
+# real run
+nextflow run nf-core/rnaseq -r <VERSION> -profile singularity -c resources.config \
+    --input samplesheet.csv --outdir results \
+    --fasta genome.fa.gz --gtf annotation.gtf.gz
+
+# resume after a failure (same folder, same command)
+nextflow run nf-core/rnaseq -r <VERSION> -profile singularity ... -resume
+```
+
+:::
+
+## Further reading
+
+- [nf-core/rnaseq documentation](https://nf-co.re/rnaseq) (usage, parameters, and output descriptions)
+- [Nextflow installation guide](https://www.nextflow.io/docs/latest/install.html)
+- [nf-core: installing Nextflow](https://nf-co.re/docs/usage/getting_started/installation)
+- [nf-core configs for institutional clusters](https://nf-co.re/configs)
+- [Apptainer documentation](https://apptainer.org/docs/user/latest/)
+- [Get help on the nf-core Slack](https://nf-co.re/join)
